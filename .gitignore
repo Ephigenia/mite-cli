@@ -1,0 +1,7 @@
+# node specific
+node_modules
+npm-debug.log
+
+# client configuration which contains the API secret keys should never get 
+# published
+config.json

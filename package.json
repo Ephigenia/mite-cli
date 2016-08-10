@@ -1,0 +1,73 @@
+{
+  "author": "Ephigenia M. Eichner",
+  "name": "mite-cli",
+  "version": "0.0.0",
+  "description": "command line tool for time tracking service mite.yo.lk",
+  "preferGlobal": true,
+  "keywords": [
+    "budgets",
+    "cli",
+    "command-line-tool",
+    "commandline",
+    "list",
+    "mite",
+    "project",
+    "shell",
+    "time-tracking",
+    "tool"
+  ],
+  "license": "MIT",
+  "maintainer": {
+    "name": "Marcel Eichner",
+    "email": "marcel.eichner@ephigenia.de"
+  },
+  "contributors": [
+    {
+      "name": "Marcel Eichner",
+      "email": "marcel.eichner@ephigenia.de"
+    }
+  ],
+   "engines": {
+    "node": ">= 6.11.0",
+    "npm": ">= 3.10.0"
+  },
+   "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ephigenia/mite-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Ephigenia/mite-cli/issues"
+  },
+  "bin": {
+    "mite": "source/mite.js"
+  },
+  "main": "source/mite.js",
+  "scripts": {
+    "changelog": "conventional-changelog -s -i CHANGELOG.md -p angular -r 0",
+    "commitmsg": "conventional-changelog-lint -e",
+    "lint": "eslint source/**/*.js",
+    "postversion": "git push && git push --tags",
+    "preversion": "npm test",
+    "recommend-next-version": "conventional-recommended-bump --preset angular",
+    "start": "node $npm_package_main",
+    "test": "npm run lint",
+    "version": "npm run changelog && git add CHANGELOG.md"
+  },
+  "dependencies": {
+    "async": "^2.4.1",
+    "chalk": "^1.1.3",
+    "cli-table2": "^0.2.0",
+    "commander": "^2.9.0",
+    "inquirer": "^3.1.0",
+    "mite-api": "^0.1.0",
+    "nconf": "^0.8.4",
+    "request": "^2.81.0"
+  },
+  "devDependencies": {
+    "conventional-changelog-cli": "^1.2.0",
+    "conventional-changelog-lint": "^2.1.1",
+    "conventional-recommended-bump": "^1.0.1",
+    "eslint": "^4.3.0",
+    "husky": "^0.14.3"
+  }
+}
