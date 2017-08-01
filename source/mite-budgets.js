@@ -11,12 +11,20 @@ const config = require('./config.js')
 
 // set a default period argument if not set
 if (!process.argv[2] || process.argv[2].substr(0, 1) === '-' && process.argv[2] !== '--help') {
-  process.argv.splice(1, 0, 'this_month')
+  process.argv.splice(2, 0, 'this_month')
 }
 
 program
   .version(pkg.version)
   .arguments('<period>')
+  .option(
+    '--project_id <project_id>',
+    'project id, can be either a single ID, or multiple comma-separated IDs.'
+  )
+  .option(
+    '--customer_id <customer_id>',
+    'customer id, can be either a single ID, or multiple comma-separated IDs.'
+  )
   .description('show amount of used monthly budgets with time and money')
   .action((period) => {
     const mite = miteApi(config.get())
@@ -25,7 +33,9 @@ program
     const opts = {
       group_by: 'project',
       billable: 'true',
-      at: period
+      at: period,
+      project_id: program.project_id,
+      customer_id: program.customer_id
     };
     mite.getTimeEntries(opts, (err, results) => {
       if (err) {

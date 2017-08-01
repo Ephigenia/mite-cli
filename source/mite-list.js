@@ -15,16 +15,35 @@ function durationFromMinutes(minutes) {
 
 // set a default period argument if not set
 if (!process.argv[2] || process.argv[2].substr(0, 1) === '-' && process.argv[2] !== '--help') {
-  process.argv.splice(1, 0, 'today')
+  process.argv.splice(2, 0, 'today')
 }
 
 program
   .version(pkg.version)
   .description('list time entries')
   .arguments('<period>')
+  .option(
+    '--project_id <project_id>',
+    'project id, can be either a single ID, or multiple comma-separated IDs.'
+  )
+  .option(
+    '--customer_id <customer_id>',
+    'customer id, can be either a single ID, or multiple comma-separated IDs.'
+  )
+  .option(
+    '-l, --limit <limit>',
+    'numeric number of items to return',
+    10,
+    ((val) => parseInt(val, 10))
+  )
   .action((period) => {
     const mite = miteApi(config.get())
-    const opts = { at: period }
+    const opts = {
+      at: period,
+      limit: program.limit,
+      project_id: program.project_id,
+      customer_id: program.customer_id,
+    }
     mite.getTimeEntries(opts, (err, results) => {
       if (err) {
         throw err;
