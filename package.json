@@ -1,7 +1,7 @@
 {
   "author": "Ephigenia M. Eichner",
   "name": "mite-cli",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "command line tool for time tracking service mite.yo.lk",
   "preferGlobal": true,
   "keywords": [
@@ -27,11 +27,11 @@
       "email": "marcel.eichner@ephigenia.de"
     }
   ],
-   "engines": {
+  "engines": {
     "node": ">= 6.11.0",
     "npm": ">= 3.10.0"
   },
-   "repository": {
+  "repository": {
     "type": "git",
     "url": "git+https://github.com/Ephigenia/mite-cli.git"
   },
