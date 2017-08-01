@@ -9,8 +9,9 @@ const miteApi = require('mite-api')
 const pkg = require('./../package.json')
 const config = require('./config.js')
 
-if (!process.argv[2]) {
-  process.argv[2] = 'this_month'
+// set a default period argument if not set
+if (!process.argv[2] || process.argv[2].substr(0, 1) === '-' && process.argv[2] !== '--help') {
+  process.argv.splice(1, 0, 'this_month')
 }
 
 program

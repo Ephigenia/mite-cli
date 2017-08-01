@@ -13,8 +13,9 @@ function durationFromMinutes(minutes) {
   return (new Date(minutes * 60 * 1000)).toISOString().substr(11, 5)
 }
 
-if (!process.argv[2]) {
-  process.argv[2] = 'today'
+// set a default period argument if not set
+if (!process.argv[2] || process.argv[2].substr(0, 1) === '-' && process.argv[2] !== '--help') {
+  process.argv.splice(1, 0, 'today')
 }
 
 program
