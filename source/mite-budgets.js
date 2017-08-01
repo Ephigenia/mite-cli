@@ -1,14 +1,13 @@
 #!/usr/bin/env node
 'use strict'
 
-const path = require('path')
 const program = require('commander')
 const chalk = require('chalk')
 const Table = require('cli-table2')
 const miteApi = require('mite-api')
 
-const pkg = require(path.resolve('package.json'))
-const config = require(path.resolve('source/config.js'))('./config.json')
+const pkg = require('./../package.json')
+const config = require('./config.js')
 
 if (!process.argv[2]) {
   process.argv[2] = 'this_month'

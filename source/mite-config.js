@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 'use strict'
 
-const path = require('path')
 const program = require('commander')
 
-const pkg = require(path.resolve('package.json'))
-const config = require(path.resolve('source/config.js'))('./config.json')
+const pkg = require('./../package.json')
+const config = require('./config.js')
 
 program
   .version(pkg.version)

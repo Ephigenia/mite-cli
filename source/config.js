@@ -1,21 +1,20 @@
 const nconf = require('nconf')
 const path = require('path')
 
-const pkg = require(path.resolve('package.json'))
+const pkg = require('./../package.json')
 
-module.exports = function(filename) {
+const configFilename = path.resolve(path.join(__dirname, './../config.json'))
 
-  nconf
-    .env([
-      'account',
-      'apiKey',
-      'application'
-    ])
-    .file(filename)
+nconf
+  .env([
+    'account',
+    'apiKey',
+    'application'
+  ])
+  .file(configFilename)
 
-  nconf.defaults({
-    applicationName: `mite-cli/${pkg.version}`,
-  })
+nconf.defaults({
+  applicationName: `mite-cli/${pkg.version}`,
+})
 
-  return nconf
-}
+module.exports = nconf

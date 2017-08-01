@@ -2,9 +2,8 @@
 'use strict'
 
 const program = require('commander')
-const path = require('path')
 
-const pkg = require(path.resolve('package.json'))
+const pkg = require('./../package.json')
 
 program
   .version(pkg.version)

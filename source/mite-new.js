@@ -1,17 +1,16 @@
 #!/usr/bin/env node
 'use strict'
 
-const path = require('path')
 const program = require('commander')
 const inquirer = require('inquirer')
 const parallel = require('async/parallel')
 const chalk = require('chalk')
 const miteApi = require('mite-api')
 
-const pkg = require(path.resolve('package.json'))
-const config = require(path.resolve('source/config.js'))('./config.json')
+const pkg = require('./../package.json')
+const config = require('./config.js')
 const mite = miteApi(config.get())
-const miteTracker = require(path.resolve('source/lib/mite-tracker'))(config.get())
+const miteTracker = require('./lib/mite-tracker')(config.get())
 
 program
   .version(pkg.version)

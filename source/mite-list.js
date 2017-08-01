@@ -1,14 +1,13 @@
 #!/usr/bin/env node
 'use strict'
 
-const path = require('path')
 const program = require('commander')
 const chalk = require('chalk')
 const Table = require('cli-table2')
 const miteApi = require('mite-api')
 
-const pkg = require(path.resolve('package.json'))
-const config = require(path.resolve('source/config.js'))('./config.json')
+const pkg = require('./../package.json')
+const config = require('./config.js')
 
 function durationFromMinutes(minutes) {
   return (new Date(minutes * 60 * 1000)).toISOString().substr(11, 5)
