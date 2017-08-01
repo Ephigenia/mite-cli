@@ -31,19 +31,36 @@ program
     'customer id, can be either a single ID, or multiple comma-separated IDs.'
   )
   .option(
+    '--service_id <service_id>',
+    'service id, can be either a single ID, or multiple comma-separated IDs.'
+  )
+  .option(
+    '-s --search <query>',
+    'search within the notes, to filter by multiple criteria connected with OR use comma-separated query values',
+    ((val) => {
+      if (typeof val === 'string') {
+        return val.split(/\s*,\s*/)
+      }
+      return val
+    })
+  )
+  .option(
     '-l, --limit <limit>',
-    'numeric number of items to return',
-    10,
+    'numeric number of items to return (default 1000)',
+    1000,
     ((val) => parseInt(val, 10))
   )
   .action((period) => {
     const mite = miteApi(config.get())
     const opts = {
       at: period,
-      limit: program.limit,
-      project_id: program.project_id,
       customer_id: program.customer_id,
+      limit: program.limit,
+      note: program.search,
+      project_id: program.project_id,
+      service_id: program.service_id,
     }
+
     mite.getTimeEntries(opts, (err, results) => {
       if (err) {
         throw err;
