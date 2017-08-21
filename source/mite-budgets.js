@@ -42,6 +42,7 @@ program
         throw err;
       }
       const table = new Table({
+        style: { 'padding-left': 1, 'padding-right': 0 },
         head: ['id', 'project', 'days', 'revenue'],
         colAligns: ['right', null, 'right', 'right']
       });
