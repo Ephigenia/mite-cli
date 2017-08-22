@@ -88,6 +88,9 @@ program
         if (timeEntry.locked) {
           duration = '🔒 ' + duration;
         }
+        if (timeEntry.tracking) {
+          duration = '▶ ' + duration;
+        }
         let row = [
           index + 1,
           timeEntry.date_at,
