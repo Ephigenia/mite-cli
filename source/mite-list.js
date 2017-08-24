@@ -69,7 +69,7 @@ program
       const table = new Table({
         wordWrap: true,
         colWidths: [null, null, null, null, null, null, 50],
-        colAligns: [null, null, 'right', 'right', 'right', null],
+        colAligns: ['right', null, 'right', 'right', 'right', null],
         head: ['#', 'date', 'project', 'duration', 'revenue', 'service', 'note']
       })
 
