@@ -67,7 +67,6 @@ program
       }
 
       const table = new Table({
-        style: { 'padding-left': 1, 'padding-right': 0 },
         wordWrap: true,
         colWidths: [null, null, null, null, null, null, 50],
         colAligns: [null, null, 'right', 'right', 'right', null],
