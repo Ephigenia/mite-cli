@@ -13,5 +13,6 @@ program
     isDefault: true
   })
   .command('new', 'create a new time entry')
+  .command('stop', 'stop any running counter')
   .description(pkg.description)
   .parse(process.argv)
