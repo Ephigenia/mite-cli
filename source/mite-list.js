@@ -121,6 +121,7 @@ program
         null,
         null,
         null,
+        null,
         chalk.bold(durationFromMinutes(minutesTotal)),
         chalk.bold((revenueTotal / 100).toFixed(2))
       ])
