@@ -68,9 +68,9 @@ program
 
       const table = new Table({
         wordWrap: true,
-        colWidths: [null, null, null, null, null, null, 50],
-        colAligns: ['right', null, 'right', 'right', 'right', null],
-        head: ['#', 'date', 'project', 'duration', 'revenue', 'service', 'note']
+        colWidths: [null, null, null, null, null, null, null, 50],
+        colAligns: ['right', 'right', null, 'right', 'right', 'right', null],
+        head: ['#', 'id', 'date', 'project', 'duration', 'revenue', 'service', 'note']
       })
 
       // format each time entry and add it to the report table
@@ -92,6 +92,7 @@ program
         }
         let row = [
           index + 1,
+          timeEntry.id,
           timeEntry.date_at,
           timeEntry.project_name,
           duration,
