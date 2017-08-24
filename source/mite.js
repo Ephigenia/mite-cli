@@ -14,5 +14,6 @@ program
   })
   .command('new', 'create a new time entry')
   .command('stop', 'stop any running counter')
+  .command('start', 'start a specific time entry by id')
   .description(pkg.description)
   .parse(process.argv)
