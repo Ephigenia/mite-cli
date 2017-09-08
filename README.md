@@ -43,6 +43,16 @@ Interactive questionaire to create a new entry
 
     mite new
 
+## Tracker
+
+Start a specific tracker
+
+    mite start <id>
+
+## Stop Tracker
+
+    mite stop
+
 # Alternative CLI Interfaces
 
 - https://github.com/lionralfs/mitey

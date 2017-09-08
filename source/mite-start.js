@@ -8,7 +8,7 @@ const config = require('./config.js')
 
 program
   .version(pkg.version)
-  .description('start tracking on a specific time entry')
+  .description('start the tracker for the given id, will also stop allready running entry')
   .arguments('<timeEntryId>')
   .action((timeEntryId) => {
     const miteTracker = require('./lib/mite-tracker')(config.get())

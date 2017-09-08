@@ -14,6 +14,6 @@ program
   })
   .command('new', 'create a new time entry')
   .command('stop', 'stop any running counter')
-  .command('start', 'start a specific time entry by id')
+  .command('start', 'start the tracker for the given id, will also stop allready running entry')
   .description(pkg.description)
   .parse(process.argv)
