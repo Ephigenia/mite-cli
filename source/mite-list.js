@@ -46,8 +46,8 @@ program
   )
   .option(
     '-l, --limit <limit>',
-    'numeric number of items to return (default 1000)',
-    1000,
+    'numeric number of items to return (default 100)',
+    100,
     ((val) => parseInt(val, 10))
   )
   .action((period) => {
