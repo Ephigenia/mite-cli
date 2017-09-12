@@ -35,6 +35,16 @@ program
     'service id, can be either a single ID, or multiple comma-separated IDs.'
   )
   .option(
+    '--billable <true|false>',
+    'wheter to show only billable or not-billable entries, all kinds of entries are returned by default',
+    ((val) => {
+      if (typeof val !== 'string') {
+        return val;
+      }
+      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
+    })
+  )
+  .option(
     '-s --search <query>',
     'search within the notes, to filter by multiple criteria connected with OR use comma-separated query values',
     ((val) => {
@@ -59,6 +69,10 @@ program
       note: program.search,
       project_id: program.project_id,
       service_id: program.service_id,
+    }
+
+    if (typeof program.billable === 'boolean') {
+      opts.billable = program.billable
     }
 
     mite.getTimeEntries(opts, (err, results) => {
