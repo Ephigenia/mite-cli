@@ -1,3 +1,19 @@
+<a name="0.4.0"></a>
+# [0.4.0](https://github.com/Ephigenia/mite-cli/compare/v0.3.0...v0.4.0) (2017-09-19)
+
+
+### Bug Fixes
+
+* **list:** set default limit to 100 to return not-billable entries ([fb9c476](https://github.com/Ephigenia/mite-cli/commit/fb9c476))
+
+
+### Features
+
+* **list:** adds billable argument ([6f743a4](https://github.com/Ephigenia/mite-cli/commit/6f743a4))
+* mite open to open specific entries in browser ([8ac7edb](https://github.com/Ephigenia/mite-cli/commit/8ac7edb))
+
+
+
 <a name="0.3.0"></a>
 # [0.3.0](https://github.com/Ephigenia/mite-cli/compare/v0.2.0...v0.3.0) (2017-08-24)
 
