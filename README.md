@@ -47,8 +47,8 @@ By default lists today’s time-entries including id, date, project name, revenu
     ├───┼──────────┼────────────┼────────────┼──────────┼─────────┼───────────────────┼──────────────────────────────────────────────────┤
     │ 2 │ 73628761 │ 2017-09-13 │        ABC │    00:07 │    9.33 │ Communication     │ lorem ipsum dolor                                │
     ├───┼──────────┼────────────┼────────────┼──────────┼─────────┼───────────────────┼──────────────────────────────────────────────────┤
-    │ 3 │ 73627950 │ 2017-09-13 │ sp support │    00:04 │    4.84 │ Programming       │ HASH-302 update story with used thumbnail        │
-    │   │          │            │            │          │         │                   │ formats                                          │
+    │ 3 │ 73627950 │ 2017-09-13 │ sp support │    00:04 │    4.84 │ Programming       │ JIRA-123 Lorem ipsum dolor sit amet, consetetur  │
+    │   │          │            │            │          │         │                   │ sadipscing.                                      │
     ├───┼──────────┼────────────┼────────────┼──────────┼─────────┼───────────────────┼──────────────────────────────────────────────────┤
     │ 4 │ 73627919 │ 2017-09-13 │        XYZ │    00:10 │   13.33 │ Communication     │ Lorem ipsum dolor sit amet, consetetur           │
     │   │          │            │            │          │         │                   │ sadipscing elitr, sed diam nonumy eirmod         │
@@ -92,6 +92,7 @@ Stops any tracked time tracker.
     mite stop
 
 
-# Alternative CLI Interfaces
+# Other Projects
 
-- https://github.com/lionralfs/mitey
+- [Mitey](https://github.com/lionralfs/)
+- [mite.cmd](https://github.com/Overbryd/mite.cmd/tree/master)
