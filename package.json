@@ -58,7 +58,7 @@
     "chalk": "^2.1.0",
     "cli-table2": "^0.2.0",
     "commander": "^2.11.0",
-    "inquirer": "^3.2.2",
+    "inquirer": "^3.3.0",
     "mite-api": "^0.1.0",
     "nconf": "^0.8.4",
     "opn": "^5.1.0",
@@ -68,7 +68,7 @@
     "conventional-changelog-cli": "^1.2.0",
     "conventional-changelog-lint": "^2.1.1",
     "conventional-recommended-bump": "^1.0.1",
-    "eslint": "^4.5.0",
+    "eslint": "^4.7.1",
     "husky": "^0.14.3"
   }
 }

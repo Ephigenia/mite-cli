@@ -33,15 +33,48 @@ The supported time-frames are documented in the [Time Entries API](https://mite.
 
 ## List
 
-By default lists all time-entries including duration, reveneu, locked state, tracking status from "today".
+By default lists today’s time-entries including id, date, project name, revenue, service and the entries note. When an entry is currently active and tracked it will be yellow and indicated with a little play icon. Also locked entries are greyed out and indicated with a lock symbol.
 
     mite list
 
+    ┌───┬──────────┬────────────┬────────────┬──────────┬─────────┬───────────────────┬──────────────────────────────────────────────────┐
+    │ # │       id │ date       │    project │ duration │ revenue │ service           │ note                                             │
+    ├───┼──────────┼────────────┼────────────┼──────────┼─────────┼───────────────────┼──────────────────────────────────────────────────┤
+    │ 1 │ 73628791 │ 2017-09-13 │ carservice │  ▶ 01:36 │    0.00 │ Programming       │ open in browser                                  │
+    ├───┼──────────┼────────────┼────────────┼──────────┼─────────┼───────────────────┼──────────────────────────────────────────────────┤
+    │ 2 │ 73628761 │ 2017-09-13 │        ABC │    00:07 │    9.33 │ Communication     │ lorem ipsum dolor                                │
+    ├───┼──────────┼────────────┼────────────┼──────────┼─────────┼───────────────────┼──────────────────────────────────────────────────┤
+    │ 3 │ 73627950 │ 2017-09-13 │ sp support │    00:04 │    4.84 │ Programming       │ HASH-302 update story with used thumbnail        │
+    │   │          │            │            │          │         │                   │ formats                                          │
+    ├───┼──────────┼────────────┼────────────┼──────────┼─────────┼───────────────────┼──────────────────────────────────────────────────┤
+    │ 4 │ 73627919 │ 2017-09-13 │        XYZ │    00:10 │   13.33 │ Communication     │ Lorem ipsum dolor sit amet, consetetur           │
+    │   │          │            │            │          │         │                   │ sadipscing elitr, sed diam nonumy eirmod         │
+    │   │          │            │            │          │         │                   │ tempor invidunt ut labore et dolore              │
+    ├───┼──────────┼────────────┼────────────┼──────────┼─────────┼───────────────────┴──────────────────────────────────────────────────┤
+    │   │          │            │            │    00:21 │   27.50 │                                                                      │
+    └───┴──────────┴────────────┴────────────┴──────────┴─────────┴──────────────────────────────────────────────────────────────────────┘
+
+You also can request longer time frames by using the first argument
+
+    mite list this_month
+
+Or search for specific entries
+
+    mite list --search JIRA-123
+
+There are also a bunch of other options available, just check `mite list --help`.
+
 ## New
 
-Interactive questionaire to create a new entry
+Interactive multi-step questionaire to create a new entry:
 
     mite new
+
+## Open
+
+Opens a specific time entry in your browser
+
+    mite open 1234567
 
 ## Tracker
 
