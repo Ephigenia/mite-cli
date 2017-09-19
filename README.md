@@ -1,8 +1,10 @@
-__WIP__ CLI tool for [Mite](https://mite.yo.lk)
+Simple CLI tool for creating, listing, starting and stopping time tracking entries in[Mite](https://mite.yo.lk).
+
 
 # Install
 
     npm install -g mite-cli
+
 
 # Configuration
 
@@ -10,6 +12,7 @@ Before you can start you’ll have to setup your mite account and api key which 
 
     mite config set account <name>
     mite config set apiKey <key>
+
 
 # Usage
 
@@ -84,7 +87,10 @@ Start a specific tracker
 
 ## Stop Tracker
 
+Stops any tracked time tracker.
+
     mite stop
+
 
 # Alternative CLI Interfaces
 
