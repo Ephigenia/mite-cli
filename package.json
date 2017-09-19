@@ -44,6 +44,7 @@
   "main": "source/mite.js",
   "scripts": {
     "changelog": "conventional-changelog -s -i CHANGELOG.md -p angular -r 0",
+    "changelog-preview": "conventional-changelog --output-unreleased -p angular",
     "commitmsg": "conventional-changelog-lint -e",
     "lint": "eslint source/**/*.js",
     "postversion": "git push && git push --tags",
