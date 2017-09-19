@@ -61,6 +61,7 @@
     "inquirer": "^3.2.2",
     "mite-api": "^0.1.0",
     "nconf": "^0.8.4",
+    "opn": "^5.1.0",
     "request": "^2.81.0"
   },
   "devDependencies": {

@@ -13,6 +13,7 @@ program
     isDefault: true
   })
   .command('new', 'create a new time entry')
+  .command('open', 'open the given time entry in browser')
   .command('stop', 'stop any running counter')
   .command('start', 'start the tracker for the given id, will also stop allready running entry')
   .description(pkg.description)
