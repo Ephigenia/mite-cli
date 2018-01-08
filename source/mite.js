@@ -12,7 +12,9 @@ program
   .command('list', 'list time entries', {
     isDefault: true
   })
+  .alias('ls')
   .command('new', 'create a new time entry')
+  .alias('create')
   .command('open', 'open the given time entry in browser')
   .command('stop', 'stop any running counter')
   .command('start', 'start the tracker for the given id, will also stop allready running entry')
