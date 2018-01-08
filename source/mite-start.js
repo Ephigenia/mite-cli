@@ -17,6 +17,7 @@ program
         console.log(`Successfully started the time entry with the id "${timeEntryId}"`)
       })
       .catch((err) => {
+        console.log(`Unable to start the time entry with the id "${timeEntryId}"`)
         console.error(err.message)
         process.exit(1)
       })
