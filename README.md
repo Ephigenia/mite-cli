@@ -106,3 +106,15 @@ Stops any tracked time tracker.
 
 - [Mitey](https://github.com/lionralfs/)
 - [mite.cmd](https://github.com/Overbryd/mite.cmd/tree/master)
+
+# Ideas
+
+- [ ] start time entries with command line arguments like `mite new <note> <project> <service>`
+- [ ] mite list `--user-id` for filtering for time entries by specific users
+- [ ] mite list alternative output format, f.e. JSON
+- [ ] mite list `--from <date> --to <date>`
+- [ ] list user accounts
+- [ ] list Projects
+- [ ] list customers
+- [ ] auto-completion for "new"
+- [ ] auto-completion for "list"
