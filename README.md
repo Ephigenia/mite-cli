@@ -18,7 +18,7 @@ Before you can start you’ll have to setup your mite account and api key which 
 
 ## Budgets
 
-By default this command will list the time entries duration and revenue sums grouped by the active projects during the current month. You can specify other time-frames as second parameter:
+By default this command will list the time entries duration and revenue sums grouped by the active projects during the current month (`this_month`). You can specify other time-frames as second parameter:
 
     mite budgets last_month
 
@@ -36,7 +36,9 @@ The supported time-frames are documented in the [Time Entries API](https://mite.
 
 ## List
 
-By default lists today’s time-entries including id, date, project name, revenue, service and the entries note. When an entry is currently active and tracked it will be yellow and indicated with a little play icon. Also locked entries are greyed out and indicated with a lock symbol.
+By default lists today’s time-entries including id, date, project name, revenue, service and the entries note.
+
+When an entry is currently active and tracked it will be yellow and indicated with a little play icon. Also locked entries are greyed out and indicated with a lock symbol.
 
     mite list
 
@@ -57,19 +59,25 @@ By default lists today’s time-entries including id, date, project name, revenu
     │   │          │            │            │    00:21 │   27.50 │                                                                      │
     └───┴──────────┴────────────┴────────────┴──────────┴─────────┴──────────────────────────────────────────────────────────────────────┘
 
-You also can request longer time frames by using the first argument
+You also can request longer time frames by using the first argument which is bascially the [`at` parameter](https://mite.yo.lk/en/api/time-entries.html#list-all) of the time entries api:
 
     mite list this_month
 
-Or search for specific entries
+    mite list last_month
 
-    mite list --search JIRA-123
+Or Specific dates:
+
+    mite list 2017-01-02
+
+Or search for specific entries in all time-entries from the current year
+
+    mite list this_year --search JIRA-123
 
 There are also a bunch of other options available, just check `mite list --help`.
 
 ## New
 
-Interactive multi-step questionaire to create a new entry:
+Interactive cli-based multi-step form for creating / starting new time entries. It will read and show a list of projects, services.
 
     mite new
 
@@ -78,6 +86,8 @@ Interactive multi-step questionaire to create a new entry:
 Opens a specific time entry in your browser
 
     mite open 1234567
+
+If you don’t specify a time entry id the index page of your mite client account will be opened.
 
 ## Tracker
 
