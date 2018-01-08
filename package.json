@@ -1,7 +1,7 @@
 {
   "author": "Ephigenia M. Eichner",
   "name": "mite-cli",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "command line tool for time tracking service mite.yo.lk",
   "preferGlobal": true,
   "keywords": [
