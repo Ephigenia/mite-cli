@@ -39,11 +39,11 @@ function main(timeEntryId) {
   })
   .then((entry) => {
     let url = 'https://' + config.get('account') + '.mite.yo.lk/';
+    console.log('No time entry id given, opening the organisation’s account');
     if (entry) {
       url += 'daily/#' + (entry.date_at).replace('-', '/') + '?open=time_entry_' + entry.id
     }
     opn(url).then(() => {
-      console.log('Ok, bye then …')
       process.exit(0)
     })
   })
