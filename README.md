@@ -1,4 +1,4 @@
-Simple CLI tool for creating, listing, starting and stopping time tracking entries in[Mite](https://mite.yo.lk).
+Simple CLI tool for creating, listing, starting and stopping time tracking entries in [Mite](https://mite.yo.lk).
 
 
 # Install
@@ -104,7 +104,7 @@ Stops any tracked time tracker.
 
 # Other Projects
 
-- [Mitey](https://github.com/lionralfs/)
+- [Mitey](https://github.com/lionralfs/mitey)
 - [mite.cmd](https://github.com/Overbryd/mite.cmd/tree/master)
 
 # Ideas
