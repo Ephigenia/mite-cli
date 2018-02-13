@@ -52,6 +52,7 @@
     "recommend-next-version": "conventional-recommended-bump --preset angular",
     "start": "node $npm_package_main",
     "test": "npm run lint",
+    "update": "npm-check --update",
     "version": "npm run changelog && git add CHANGELOG.md"
   },
   "dependencies": {
@@ -70,6 +71,7 @@
     "conventional-changelog-lint": "^2.1.1",
     "conventional-recommended-bump": "^1.0.1",
     "eslint": "^4.7.1",
-    "husky": "^0.14.3"
+    "husky": "^0.14.3",
+    "npm-check": "^5.5.2"
   }
 }
