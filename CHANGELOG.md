@@ -1,3 +1,13 @@
+<a name="0.4.2"></a>
+## [0.4.2](https://github.com/Ephigenia/mite-cli/compare/v0.4.1...v0.4.2) (2018-02-13)
+
+
+### Bug Fixes
+
+* **new:** show error message when creation fails ([ab4a895](https://github.com/Ephigenia/mite-cli/commit/ab4a895))
+
+
+
 <a name="0.4.1"></a>
 ## [0.4.1](https://github.com/Ephigenia/mite-cli/compare/v0.4.0...v0.4.1) (2018-01-08)
 
