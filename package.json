@@ -53,7 +53,8 @@
     "start": "node $npm_package_main",
     "test": "npm run lint",
     "update": "npm-check --update",
-    "version": "npm run changelog && git add CHANGELOG.md"
+    "version": "npm run changelog && git add CHANGELOG.md",
+    "version:recommend": "conventional-recommended-bump --preset angular"
   },
   "dependencies": {
     "async": "^2.5.0",
