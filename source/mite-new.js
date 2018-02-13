@@ -95,9 +95,14 @@ parallel({
 
     // http://mite.yo.lk/en/api/time-entries.html#create
     mite.addTimeEntry({ time_entry: entry }, (response) => {
+      var data = JSON.parse(response);
+      if (data.error) {
+        console.error('Error while creating new time entry:', data.error)
+        process.exit(1)
+        return
+      }
       console.log('Successfully created new time entry')
       if (startTracker) {
-        var data = JSON.parse(response);
         miteTracker.start(data.time_entry.id).then(() => {
           console.log('Successfully started tracker for time entry')
         })
