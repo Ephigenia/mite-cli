@@ -3,7 +3,8 @@
 
 const program = require('commander')
 const chalk = require('chalk')
-const Table = require('cli-table2')
+const tableLib = require('table')
+const table = tableLib.table;
 const miteApi = require('mite-api')
 
 const pkg = require('./../package.json')
@@ -80,15 +81,8 @@ program
         throw err;
       }
 
-      const table = new Table({
-        wordWrap: true,
-        colWidths: [null, null, null, null, null, null, null, 50],
-        colAligns: ['right', 'right', null, 'right', 'right', 'right', null],
-        head: ['#', 'id', 'date', 'project', 'duration', 'revenue', 'service', 'note']
-      })
 
-      // format each time entry and add it to the report table
-      Array.prototype.push.apply(table, results.map((data, index) => {
+      const tableData = results.map((data, index) => {
         const timeEntry = data.time_entry;
         let minutes = timeEntry.minutes
         // detect time entries that are tracked (running) and add an indicator
@@ -121,7 +115,7 @@ program
           row = row.map((v) => chalk.grey(v))
         }
         return row;
-      }))
+      })
 
       const minutesTotal = results.reduce((sum, cur) => {
         return sum + cur.time_entry.minutes;
@@ -130,18 +124,62 @@ program
         return sum + cur.time_entry.revenue;
       }, 0)
 
+      tableData.unshift([
+        '#', 'id', 'date', 'project', 'duration', 'revenue', 'service', 'note'
+      ].map(function(v) { return chalk.bold(v); }))
       // sum up everything as last row
-      table.push([
+      tableData.push([
         null,
         null,
         null,
         null,
         chalk.bold(durationFromMinutes(minutesTotal)),
-        chalk.bold((revenueTotal / 100).toFixed(2))
+        chalk.bold((revenueTotal / 100).toFixed(2)),
+        null,
+        null,
       ])
 
-      // show list to choose from
-      console.log(table.toString())
+      const tableConfig = {
+        border: tableLib.getBorderCharacters('norc'),
+        columns: {
+          0: {
+            width: 10,
+            alignment: 'right',
+          },
+          1: {
+            width: 10,
+            alignment: 'right',
+          },
+          2: {
+            width: 10,
+            alignment: 'right',
+          },
+          3: { // project
+            width: 20,
+            alignment: 'right',
+            wrapWord: true,
+          },
+          4: { // duration
+            width: 10,
+            alignment: 'right',
+          },
+          5: { // revenue
+            width: 10,
+            alignment: 'right',
+          },
+          6: { // service
+            width: 20,
+            wrapWord: true,
+            alignment: 'right',
+          },
+          7: { // note
+            width: 80,
+            wrapWord: true,
+            alignment: 'left',
+          }
+        }
+      }
+      console.log(table(tableData, tableConfig))
     }) // get time entries
 
   })

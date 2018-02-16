@@ -3,8 +3,9 @@
 
 const program = require('commander')
 const chalk = require('chalk')
-const Table = require('cli-table2')
 const miteApi = require('mite-api')
+const tableLib = require('table')
+const table = tableLib.table;
 
 const pkg = require('./../package.json')
 const config = require('./config.js')
@@ -50,13 +51,9 @@ program
       if (err) {
         throw err;
       }
-      const table = new Table({
-        head: ['id', 'project', 'duration', 'days', 'revenue'],
-        colAligns: ['right', null, 'right', 'right', 'right']
-      });
 
       // format each table row
-      Array.prototype.push.apply(table, results
+      const tableData = results
         .map((entry) => entry.time_entry_group)
         .map((entry) => {
           return [
@@ -67,7 +64,6 @@ program
             (entry.revenue / 100).toFixed(2)
           ]
         })
-      )
 
       // table footer with sums
       const minutesTotal = results
@@ -77,7 +73,15 @@ program
         .map(r => r.time_entry_group.revenue)
         .reduce((sum, cur) => sum + cur, 0)
 
-      table.push([
+      // header
+      tableData.unshift(
+        ['id', 'project', 'duration', 'days', 'revenue']
+        .map(function(v) {
+          return chalk.bold(v);
+        })
+      )
+      // footer
+      tableData.push([
         '',
         '',
         minutesToHoursDuration(minutesTotal),
@@ -85,7 +89,34 @@ program
         (revenueTotal / 100).toFixed(2)
       ].map(s => chalk.bold(s)));
 
-      console.log(table.toString())
+      const tableConfig = {
+        border: tableLib.getBorderCharacters('norc'),
+        columns: {
+          0: {
+            width: 10,
+            alignment: 'right',
+          },
+          1: { // project
+            width: 20,
+            wrapWord: true,
+            alignment: 'right',
+          },
+          2: { // duration
+            width: 10,
+            alignment: 'right',
+          },
+          3: { // days
+            width: 10,
+            alignment: 'right',
+          },
+          4: {
+            width: 10,
+            alignment: 'right',
+          },
+        }
+      }
+
+      console.log(table(tableData, tableConfig))
     });
 
   })
