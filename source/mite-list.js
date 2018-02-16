@@ -99,7 +99,7 @@ program
         let duration = durationFromMinutes(minutes)
         // add a lock symbol to the duration when the time entry cannot be edited
         if (timeEntry.locked) {
-          duration = '🔒 ' + duration;
+          duration = chalk.green('✔') + ' ' + duration;
         }
         if (timeEntry.tracking) {
           duration = '▶ ' + duration;

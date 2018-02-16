@@ -43,7 +43,7 @@ The supported time-frames are documented in the [Time Entries API](https://mite.
 
 By default lists today’s time-entries including id, date, project name, revenue, service and the entries note.
 
-When an entry is currently active and tracked it will be yellow and indicated with a little play icon. Also locked entries are greyed out and indicated with a lock symbol.
+When an entry is currently active and tracked it will be yellow and indicated with a little play icon "▶". Also locked entries are greyed out and indicated with a green checkmark "✔" symbol.
 
     mite list
 
