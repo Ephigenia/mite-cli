@@ -1,3 +1,13 @@
+<a name="0.4.3"></a>
+## [0.4.3](https://github.com/Ephigenia/mite-cli/compare/v0.4.2...v0.4.3) (2018-02-16)
+
+
+### Bug Fixes
+
+* using mite-api fork for updated npm packages ([c83b1af](https://github.com/Ephigenia/mite-cli/commit/c83b1af))
+
+
+
 <a name="0.4.2"></a>
 ## [0.4.2](https://github.com/Ephigenia/mite-cli/compare/v0.4.1...v0.4.2) (2018-02-13)
 
