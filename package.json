@@ -62,7 +62,7 @@
     "cli-table2": "^0.2.0",
     "commander": "^2.14.1",
     "inquirer": "^5.1.0",
-    "mite-api": "^0.1.0",
+    "mite-api": "git@github.com:Ephigenia/mite-api.git#npm-packages-update",
     "nconf": "^0.10.0",
     "opn": "^5.2.0",
     "request": "^2.81.0"
