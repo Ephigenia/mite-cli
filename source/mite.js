@@ -9,6 +9,8 @@ program
   .version(pkg.version)
   .command('budgets', 'list money and time budgets for current month')
   .command('config', 'show or set configuration settings')
+  .command('delete', 'delete a specific time entry')
+  .alias('rm')
   .command('list', 'list time entries', {
     isDefault: true
   })

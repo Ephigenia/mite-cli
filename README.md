@@ -107,6 +107,12 @@ Stops any tracked time tracker.
 
     mite stop
 
+## Delete entry
+
+Delete a single entry
+
+    mite delete 18472721
+
 
 # Other Projects
 
