@@ -116,12 +116,24 @@ parallel({
         process.exit(1)
         return
       }
-      console.log('Successfully created new time entry (id: %s)', data.time_entry.id);
+      const timeEntryId = data.time_entry.id;
+      console.log('Successfully created new time entry (id: %s)', timeEntryId);
       if (startTracker) {
-        miteTracker.start(data.time_entry.id).then(() => {
-          console.log('Successfully started tracker for time entry')
-        })
+        miteTracker.start(timeEntryId)
+          .then(() => {
+            console.log('Successfully started tracker for time entry')
+          })
+          .catch((err) => {
+            console.log(
+              'Unable to start the time entry with the id "%s"',
+              timeEntryId
+            );
+            console.error(err.message);
+            process.exit(1);
+          })
       }
+      process.exit(0);
+
     })
   }) // inquirer
 }) // parallel
