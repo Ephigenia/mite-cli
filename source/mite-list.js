@@ -46,6 +46,18 @@ program
     })
   )
   .option(
+    '--from <period|YYYY-MM-DD>',
+    'in combination with "to" used for selecting a specific time frame of ' +
+    'time entries to return, same as "period" argument or a specific date in ' +
+    'the format "YYYY-MM-DD". The period argument is ignored.'
+  )
+  .option(
+    '--to <period|YYYY-MM-DD>',
+    'in combination with "from" used for selecting a specific time frame of ' +
+    'time entries to return, same as "period" argument or a specific date in ' +
+    'the format "YYYY-MM-DD". The period argument is ignored.'
+  )
+  .option(
     '-s --search <query>',
     'search within the notes, to filter by multiple criteria connected with OR use comma-separated query values',
     ((val) => {
@@ -70,6 +82,12 @@ program
       note: program.search,
       project_id: program.project_id,
       service_id: program.service_id,
+    }
+
+    if (program.from && program.to) {
+      opts.from = program.from;
+      opts.to = program.to;
+      delete opts.at;
     }
 
     if (typeof program.billable === 'boolean') {
