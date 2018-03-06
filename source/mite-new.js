@@ -116,7 +116,7 @@ parallel({
         process.exit(1)
         return
       }
-      console.log('Successfully created new time entry')
+      console.log('Successfully created new time entry (id: %s)', data.time_entry.id);
       if (startTracker) {
         miteTracker.start(data.time_entry.id).then(() => {
           console.log('Successfully started tracker for time entry')
