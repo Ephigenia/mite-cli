@@ -46,6 +46,16 @@ program
     })
   )
   .option(
+    '--tracking <true|false>',
+    'wheter to show only currently running entries or not running entries',
+    ((val) => {
+      if (typeof val !== 'string') {
+        return val;
+      }
+      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
+    })
+  )
+  .option(
     '--from <period|YYYY-MM-DD>',
     'in combination with "to" used for selecting a specific time frame of ' +
     'time entries to return, same as "period" argument or a specific date in ' +
@@ -90,6 +100,9 @@ program
       delete opts.at;
     }
 
+    if (typeof program.tracking === 'boolean') {
+      opts.tracking = program.tracking;
+    }
     if (typeof program.billable === 'boolean') {
       opts.billable = program.billable
     }
