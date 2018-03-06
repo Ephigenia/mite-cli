@@ -115,13 +115,4 @@ Stops any tracked time tracker.
 
 # Ideas
 
-- [ ] create some tests where possible
-- [ ] start time entries with command line arguments like `mite new <note> <project> <service>`
-- [ ] mite list `--user-id` for filtering for time entries by specific users
-- [ ] mite list alternative output format, f.e. JSON
-- [ ] mite list `--from <date> --to <date>`
-- [ ] list user accounts
-- [ ] list Projects
-- [ ] list customers
-- [ ] auto-completion for "new"
-- [ ] auto-completion for "list"
+Ideas for other planned features can be found in the [wiki](./wiki).
