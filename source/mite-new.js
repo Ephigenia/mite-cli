@@ -25,23 +25,49 @@ parallel({
     throw err;
   }
 
+  // compile a list of possible project options including an empty option
+  // which doesn’t set the project for the newly created time entry
+  const projectChoices = results.projects
+    .map(function(data) {
+      var nameParts = [data.project.name];
+      if (data.project.customer_name) {
+        nameParts.push('(' + data.project.customer_name + ')')
+      }
+      return {
+        name: nameParts.join(' '),
+        value: data.project.id
+      };
+    })
+    .sort();
+  projectChoices.push({
+    name: '– (no project)',
+    value: null,
+  });
+
+  // compile a list of
+  const servicesChoices = results.services
+    .map(function(data) {
+      let name = data.service.name;
+      if (data.service.billable) {
+        name += chalk.yellow.bold('$')
+      }
+      return {
+        name: name,
+        value: data.service.id
+      };
+    })
+    .sort();
+  servicesChoices.push({
+    name: '– (no service)',
+    value: null,
+  });
+
   const questions = [
     {
       type: 'list',
       name: 'project_id',
       message: 'Choose Project',
-      choices: results.projects
-        .map(function(data) {
-          var nameParts = [data.project.name];
-          if (data.project.customer_name) {
-            nameParts.push('(' + data.project.customer_name + ')')
-          }
-          return {
-            name: nameParts.join(' '),
-            value: data.project.id
-          };
-        })
-        .sort()
+      choices: projectChoices
     },
     {
       type: 'input',
@@ -57,18 +83,7 @@ parallel({
       type: 'list',
       name: 'service_id',
       message: 'What service?',
-      choices: results.services
-        .map((data) => {
-          let name = data.service.name;
-          if (data.service.billable) {
-            name += chalk.yellow.bold('$')
-          }
-          return {
-            name: name,
-            value: data.service.id
-          };
-        })
-        .sort()
+      choices: servicesChoices,
     },
     {
       type: 'input',
@@ -79,8 +94,8 @@ parallel({
   ];
 
   inquirer.prompt(questions).then((entry) => {
-    // do not create an entry when project_id or minutes are empty
-    if (!entry.project_id || !entry.minutes) {
+    // do not create an entry when minutes are invalid
+    if (!entry.minutes) {
       console.log('no time entry created due to empty project id or empty minutes')
       return;
     }
