@@ -24,6 +24,19 @@ program
   .description('list time entries')
   .arguments('<period>')
   .option(
+    '--user_id <user_id>',
+    'optional single user_id who’s time entries should be returned or ' +
+    'multiple values comma-separated. Note that the current user may not ' +
+    'have the permission ot read other user’s time entries which will result ' +
+    'in an empty response',
+    ((val) => {
+      if (typeof val === 'string') {
+        return val.split(/\s*,\s*/)
+      }
+      return val
+    })
+  )
+  .option(
     '--project_id <project_id>',
     'project id, can be either a single ID, or multiple comma-separated IDs.'
   )
@@ -92,6 +105,10 @@ program
       note: program.search,
       project_id: program.project_id,
       service_id: program.service_id,
+    }
+
+    if (program.user_id) {
+      opts.user_id = program.user_id;
     }
 
     if (program.from && program.to) {
