@@ -12,7 +12,7 @@ const config = require('./config.js');
 
 program
   .version(pkg.version)
-  .description('list & search for users')
+  .description('list, filter & search for users')
   .option(
     '--search <regexp>',
     'optional cient-side case-insensitive search in user name, email and note.'
@@ -38,6 +38,16 @@ program
     'optional numeric offset of items to return (default 0)',
     0,
     ((val) => parseInt(val, 10))
+  )
+  .option(
+    '--role <role>',
+    'optional user role to filter, multiple arguments comma-separated',
+    ((val) => {
+      if (typeof val === 'string') {
+        return val.split(/\s*,\s*/)
+      }
+      return val
+    })
   )
   .option(
     '-a, --archived',
@@ -75,16 +85,25 @@ mite[method](opts, (err, results) => {
 
   const tableData = results.map((row) => {
     return row.user;
-  }).filter((user) => {
-    // filter users when "search" was used
+  })
+  // filter by user roles
+  .filter((user) => {
+    if (!program.role) {
+      return user;
+    }
+    return program.role.indexOf(user.role) > -1;
+  })
+  // filter users when "search" was used
+  .filter((user) => {
     if (!program.search) {
       return user;
     }
     const regexp = new RegExp(program.search, 'i');
     const target = [user.name, user.email, user.note].join('');
     return target.match(regexp);
-  }).map((user) => {
-    // colorize the user name depending on his role
+  })
+  // colorize the user name depending on his role
+  .map((user) => {
     switch(user.role) {
       case 'admin':
         user.name = chalk.yellow(user.name);
@@ -94,7 +113,8 @@ mite[method](opts, (err, results) => {
         break;
     }
     return user;
-  }).map((user) => {
+  })
+  .map((user) => {
     return [
       user.id,
       user.role,

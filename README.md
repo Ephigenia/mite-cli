@@ -126,9 +126,9 @@ Delete a single entry
 
 ## Users
 
-List user accounts and search for specific users using regexp which searches in name, email & note
+List user accounts while client-side search in name, email & note and list only time_trackers and admins
 
-    mite user --search frank
+    mite user --search frank --role admin,time_tracker
 
     ┌────────────┬──────────────┬─────────────────┬─────────────────────────────┬────────────────────────────────────────────────────┐
     │         id │ role         │ name            │ email                       │ note                                               │
