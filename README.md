@@ -126,9 +126,9 @@ Delete a single entry
 
 ## Users
 
-List user accounts and search for specific users
+List user accounts and search for specific users using regexp which searches in name, email & note
 
-    mite user -s frank
+    mite user --search frank
 
     ┌────────────┬──────────────┬─────────────────┬─────────────────────────────┬────────────────────────────────────────────────────┐
     │         id │ role         │ name            │ email                       │ note                                               │

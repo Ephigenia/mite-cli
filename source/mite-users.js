@@ -14,31 +14,35 @@ program
   .version(pkg.version)
   .description('list & search for users')
   .option(
-    '-s, --search <query>',
-    'search for users who’s name contains the given query string ' +
+    '--search <regexp>',
+    'optional cient-side case-insensitive search in user name, email and note.'
+  )
+  .option(
+    '--name <query>',
+    'optional search for users who’s name contains the given query string ' +
     'while beeing not case-sensivite. No support multiple values.'
   )
   .option(
-    '-e, --email <query>',
-    'search for users who’s email contains the given query string ' +
+    '--email <query>',
+    'optional search for users who’s email contains the given query string ' +
     'while beeing not case-sensivite. No support multiple values.'
   )
   .option(
     '-l, --limit <limit>',
-    'numeric number of items to return (default 1000)',
+    'optional numeric number of items to return (default 1000)',
     null,
     ((val) => parseInt(val, 10))
   )
   .option(
     '-o, --offset <offset>',
-    'numeric offset of items to return (default 0)',
+    'optional numeric offset of items to return (default 0)',
     0,
     ((val) => parseInt(val, 10))
   )
   .option(
     '-a, --archived',
-    'Archived users are not returned by default, use this flag to only ' +
-    'archived users accounts',
+    'When used will only return archived users which are not returned when ' +
+    'not used',
     false
   )
   .parse(process.argv);
@@ -53,13 +57,16 @@ if (typeof program.limit === 'number') {
 if (program.email) {
   opts.email = program.email;
 }
-if (program.search) {
-  opts.name = program.search;
+if (program.name) {
+  opts.name = program.name;
 }
 let method = 'getUsers';
 if (program.archived) {
   method = 'getArchivedUsers';
 }
+
+// @TODO add client side sorting
+// @TODO add client side search
 
 mite[method](opts, (err, results) => {
   if (err) {
@@ -68,6 +75,14 @@ mite[method](opts, (err, results) => {
 
   const tableData = results.map((row) => {
     return row.user;
+  }).filter((user) => {
+    // filter users when "search" was used
+    if (!program.search) {
+      return user;
+    }
+    const regexp = new RegExp(program.search, 'i');
+    const target = [user.name, user.email, user.note].join('');
+    return target.match(regexp);
   }).map((user) => {
     // colorize the user name depending on his role
     switch(user.role) {
