@@ -157,8 +157,9 @@ mite[method](opts, (err, results) => {
     }
     return user;
   })
-  .map((user) => {
+  .map((user, index) => {
     return [
+      index + 1,
       user.id,
       user.role,
       user.name,
@@ -169,6 +170,7 @@ mite[method](opts, (err, results) => {
 
   // table header
   tableData.unshift([
+    '#',
     'id',
     'role',
     'name',
@@ -180,10 +182,14 @@ mite[method](opts, (err, results) => {
     border: tableLib.getBorderCharacters('norc'),
     columns: {
       0: {
+        width: 4,
+        alignment: 'right',
+      },
+      1: {
         width: 10,
         alignment: 'right',
       },
-      4: {
+      5: {
         width: 50,
         alignment: 'left',
       }
