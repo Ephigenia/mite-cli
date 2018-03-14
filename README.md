@@ -12,12 +12,22 @@ Simple CLI tool for creating, listing, starting and stopping time tracking entri
     npm install -g mite-cli
 
 
+
 # Configuration
 
 Before you can start you’ll have to setup your mite account and api key which you can find in your mite "Account" tab.
 
     mite config set account <name>
     mite config set apiKey <key>
+
+
+# Features
+
+- Create and start new Entries with interactive survey-like cli interface
+- Show & filter time entries to show reports for last month, current week etc.
+- Delete single entries by id
+
+Other ideas & planned features can be found in the [wiki](./wiki). If something doesn’t work please [create a new issue](https://github.com/Ephigenia/mite-cli/issues).
 
 
 # Usage
@@ -118,7 +128,3 @@ Delete a single entry
 
 - [Mitey](https://github.com/lionralfs/mitey)
 - [mite.cmd](https://github.com/Overbryd/mite.cmd/tree/master)
-
-# Ideas
-
-Ideas for other planned features can be found in the [wiki](./wiki).
