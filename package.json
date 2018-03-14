@@ -44,12 +44,11 @@
   "main": "source/mite.js",
   "scripts": {
     "changelog": "conventional-changelog -s -i CHANGELOG.md -p angular -r 0",
-    "changelog-preview": "conventional-changelog --output-unreleased -p angular",
+    "changelog:preview": "conventional-changelog --output-unreleased -p angular",
     "commitmsg": "conventional-changelog-lint -e",
     "lint": "eslint source/**/*.js",
     "postversion": "git push && git push --tags",
     "preversion": "npm test",
-    "recommend-next-version": "conventional-recommended-bump --preset angular",
     "start": "node $npm_package_main",
     "test": "npm run lint",
     "update": "npm-check --update",
