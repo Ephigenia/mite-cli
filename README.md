@@ -26,6 +26,7 @@ Before you can start you’ll have to setup your mite account and api key which 
 - Create and start new Entries with interactive survey-like cli interface
 - Show & filter time entries to show reports for last month, current week etc.
 - Delete single entries by id
+- List user accounts
 
 Other ideas & planned features can be found in the [wiki](./wiki). If something doesn’t work please [create a new issue](https://github.com/Ephigenia/mite-cli/issues).
 
@@ -122,6 +123,38 @@ Stops any tracked time tracker.
 Delete a single entry
 
     mite delete 18472721
+
+## Users
+
+List user accounts and search for specific users
+
+    mite user -s frank
+
+    ┌────────────┬──────────────┬─────────────────┬─────────────────────────────┬────────────────────────────────────────────────────┐
+    │         id │ role         │ name            │ email                       │ note                                               │
+    ├────────────┼──────────────┼─────────────────┼─────────────────────────────┼────────────────────────────────────────────────────┤
+    │     123456 │ admin        │ Frank Abergnale │ email@host.com              │ Lorem ipsum dolor sit amet, consectetur adipisicin │
+    │            │              │                 │                             │ g elit, sed do eiusmod tempor incididunt ut labore │
+    │            │              │                 │                             │ et dolore magna aliqua. Ut enim ad minim veniam, q │
+    │            │              │                 │                             │ uis nostrud exercitation ullamco laboris nisi ut a │
+    │            │              │                 │                             │ liquip ex ea commodo consequat. Duis aute irure do │
+    │            │              │                 │                             │ lor in reprehenderit in voluptate velit esse cillu │
+    │            │              │                 │                             │ m dolore eu fugiat nulla pariatur. Excepteur sint  │
+    │            │              │                 │                             │ occaecat cupidatat non proident, sunt in culpa qui │
+    │            │              │                 │                             │ officia deserunt mollit anim id est laborum.       │
+    ├────────────┼──────────────┼─────────────────┼─────────────────────────────┼────────────────────────────────────────────────────┤
+    │      12345 │ time_tracker │ Heinz Frankfurt │ email2@host.com             │                                                    │
+    └────────────┴──────────────┴─────────────────┴─────────────────────────────┴────────────────────────────────────────────────────┘
+
+List archived user accounts
+
+    mite user --archived
+
+    ┌────────────┬──────────────┬─────────────────┬─────────────────────────────┬────────────────────────────────────────────────────┐
+    │         id │ role         │ name            │ email                       │ note                                               │
+    ├────────────┼──────────────┼─────────────────┼─────────────────────────────┼────────────────────────────────────────────────────┤
+    │       1234 │ time_tracker │ James Howlett   │ email3@host.com             │                                                    │
+    └────────────┴──────────────┴─────────────────┴─────────────────────────────┴────────────────────────────────────────────────────┘
 
 
 # Other Projects
