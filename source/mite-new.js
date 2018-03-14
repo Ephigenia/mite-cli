@@ -121,7 +121,10 @@ parallel({
       if (startTracker) {
         miteTracker.start(timeEntryId)
           .then(() => {
-            console.log('Successfully started tracker for time entry')
+            console.log(
+              'Successfully started the time entry with the id "%s"',
+              timeEntryId
+            );
           })
           .catch((err) => {
             console.log(
@@ -131,10 +134,7 @@ parallel({
             console.error(err.message);
             process.exit(1);
           })
-      } else {
-        process.exit(0);
       }
-
     })
   }) // inquirer
 }) // parallel
