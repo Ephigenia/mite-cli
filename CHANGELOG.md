@@ -1,3 +1,30 @@
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/Ephigenia/mite-cli/compare/v0.4.4...v0.5.0) (2018-03-14)
+
+
+### Bug Fixes
+
+* **new:** errors while starting time entry are shown ([abf2869](https://github.com/Ephigenia/mite-cli/commit/abf2869))
+* **new:** newly create time entry id is shown in output ([3967f29](https://github.com/Ephigenia/mite-cli/commit/3967f29))
+* **new:** start tracker ([312a0fc](https://github.com/Ephigenia/mite-cli/commit/312a0fc))
+* **new:** start tracker ([3fcd425](https://github.com/Ephigenia/mite-cli/commit/3fcd425))
+
+
+### Features
+
+* **delete:** introduces mite delete <id> command ([75aa6ed](https://github.com/Ephigenia/mite-cli/commit/75aa6ed))
+* **list:** adds from & to options ([47fcd37](https://github.com/Ephigenia/mite-cli/commit/47fcd37))
+* **list:** adds tracking option ([83e208c](https://github.com/Ephigenia/mite-cli/commit/83e208c))
+* **list:** filter using user_id ([5866a75](https://github.com/Ephigenia/mite-cli/commit/5866a75))
+* **new:** optional leave service & project empty ([d4ec166](https://github.com/Ephigenia/mite-cli/commit/d4ec166))
+* **user:** adds first index column ([e8fd2fe](https://github.com/Ephigenia/mite-cli/commit/e8fd2fe))
+* **user:** adds user list & archived user list ([bcc015c](https://github.com/Ephigenia/mite-cli/commit/bcc015c))
+* **user:** client-side search in email, name & note with regexp ([2bde83c](https://github.com/Ephigenia/mite-cli/commit/2bde83c))
+* **user:** filter by user roles ([8b83154](https://github.com/Ephigenia/mite-cli/commit/8b83154))
+* **user:** sort by column name ([de3e471](https://github.com/Ephigenia/mite-cli/commit/de3e471))
+
+
+
 <a name="0.4.4"></a>
 ## [0.4.4](https://github.com/Ephigenia/mite-cli/compare/v0.4.3...v0.4.4) (2018-02-16)
 
