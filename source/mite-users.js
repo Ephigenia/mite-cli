@@ -10,9 +10,38 @@ const table = tableLib.table;
 const pkg = require('./../package.json');
 const config = require('./config.js');
 
+const SORT_OPTIONS = [
+  'id',
+  'name',
+  'email',
+  'role',
+  'note',
+  'updated_at',
+  'created_at',
+];
+const SORT_OPTIONS_DEFAULT = 'name';
+
 program
   .version(pkg.version)
   .description('list, filter & search for users')
+  .option(
+    '--sort <column>',
+    `optional column the results should be case-insensitive ordered by `+
+    `(default: "${SORT_OPTIONS_DEFAULT}"), ` +
+    `valid values: ${SORT_OPTIONS.join(', ')}`,
+    (value) => {
+      if (SORT_OPTIONS.indexOf(value) === -1) {
+        console.error(
+          'Invalid value for sort option: "%s", valid values are: ',
+          value,
+          SORT_OPTIONS.join(', ')
+        );
+        process.exit(2);
+      }
+      return value;
+    },
+    'name' // default sor
+  )
   .option(
     '--search <regexp>',
     'optional cient-side case-insensitive search in user name, email and note.'
@@ -101,6 +130,20 @@ mite[method](opts, (err, results) => {
     const regexp = new RegExp(program.search, 'i');
     const target = [user.name, user.email, user.note].join('');
     return target.match(regexp);
+  })
+  // optional sort
+  .sort((u1, u2) => {
+    if (!program.sort) return 0;
+    const sortByAttributeName = program.sort;
+    var val1 = String(u1[sortByAttributeName]).toLowerCase();
+    var val2 = String(u2[sortByAttributeName]).toLowerCase();
+    if (val1 > val2) {
+      return 1;
+    } else if (val1 < val2) {
+      return -1;
+    } else {
+      return 0;
+    }
   })
   // colorize the user name depending on his role
   .map((user) => {
