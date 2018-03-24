@@ -9,19 +9,12 @@ const table = tableLib.table;
 
 const pkg = require('./../package.json')
 const config = require('./config.js')
+const formater = require('./lib/formater');
+const BUDGET_TYPE = formater.BUDGET_TYPE;
 
 // set a default period argument if not set
 if (!process.argv[2] || process.argv[2].substr(0, 1) === '-' && process.argv[2] !== '--help') {
   process.argv.splice(2, 0, 'this_month')
-}
-
-function minutesToHoursDuration(minutes) {
-  let hours = Math.floor(minutes / 60)
-  let remainingMinutes = minutes - hours * 60;
-  if (String(remainingMinutes).length === 1) {
-    return hours + ':0' + remainingMinutes
-  }
-  return hours + ':' + remainingMinutes
 }
 
 program
@@ -56,12 +49,16 @@ program
       const tableData = results
         .map((entry) => entry.time_entry_group)
         .map((entry) => {
+          let revenue = formater.budget(BUDGET_TYPE.CENTS, entry.revenue || 0);
+          if (entry.revenue === null) {
+            revenue = '-'
+          }
           return [
             entry.project_id,
             entry.project_name,
-            minutesToHoursDuration(entry.minutes),
-            (entry.minutes / 8 / 60).toFixed(2),
-            (entry.revenue / 100).toFixed(2)
+            formater.minutesToDuration(entry.minutes || 0),
+            formater.minutesToWorkDays(entry.minutes || 0),
+            revenue,
           ]
         })
 
@@ -84,9 +81,9 @@ program
       tableData.push([
         '',
         '',
-        minutesToHoursDuration(minutesTotal),
-        (minutesTotal / 8 / 60).toFixed(2),
-        (revenueTotal / 100).toFixed(2)
+        formater.minutesToDuration(minutesTotal),
+        formater.minutesToWorkDays(minutesTotal),
+        formater.budget(BUDGET_TYPE.CENTS, revenueTotal)
       ].map(s => chalk.bold(s)));
 
       const tableConfig = {

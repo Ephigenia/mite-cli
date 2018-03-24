@@ -9,10 +9,8 @@ const miteApi = require('mite-api')
 
 const pkg = require('./../package.json')
 const config = require('./config.js')
-
-function durationFromMinutes(minutes) {
-  return (new Date(minutes * 60 * 1000)).toISOString().substr(11, 5)
-}
+const formater = require('./lib/formater');
+const BUDGET_TYPE = formater.BUDGET_TYPE;
 
 // set a default period argument if not set
 if (!process.argv[2] || process.argv[2].substr(0, 1) === '-' && process.argv[2] !== '--help') {
@@ -138,7 +136,7 @@ program
         if (timeEntry.tracking) {
           minutes = timeEntry.tracking.minutes;
         }
-        let duration = durationFromMinutes(minutes)
+        let duration = formater.minutesToDuration(minutes)
         // add a lock symbol to the duration when the time entry cannot be edited
         if (timeEntry.locked) {
           duration = chalk.green('✔') + ' ' + duration;
@@ -152,7 +150,7 @@ program
           timeEntry.date_at,
           timeEntry.project_name,
           duration,
-          (timeEntry.revenue / 100).toFixed(2),
+          formater.budget(BUDGET_TYPE.CENTS, timeEntry.revenue || 0),
           timeEntry.service_name,
           timeEntry.note
         ]
@@ -181,8 +179,8 @@ program
         null,
         null,
         null,
-        chalk.bold(durationFromMinutes(minutesTotal)),
-        chalk.bold((revenueTotal / 100).toFixed(2)),
+        chalk.bold(formater.minutesToDuration(minutesTotal)),
+        chalk.bold(formater.budget(BUDGET_TYPE.CENTS, revenueTotal)),
         null,
         null,
       ])

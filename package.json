@@ -43,17 +43,18 @@
   },
   "main": "source/mite.js",
   "scripts": {
-    "changelog": "conventional-changelog -s -i CHANGELOG.md -p angular -r 0",
     "changelog:preview": "conventional-changelog --output-unreleased -p angular",
+    "changelog": "conventional-changelog -s -i CHANGELOG.md -p angular -r 0",
     "commitmsg": "conventional-changelog-lint -e",
     "lint": "eslint source/**/*.js",
     "postversion": "git push && git push --tags",
     "preversion": "npm test",
     "start": "node $npm_package_main",
-    "test": "npm run lint",
+    "tdd": "npm run test -- --watch",
+    "test": "mocha --check-leaks --throw-deprecation --use_strict source/**/*test.js --exit",
     "update": "npm-check --update",
-    "version": "npm run changelog && git add CHANGELOG.md",
-    "version:recommend": "conventional-recommended-bump --preset angular"
+    "version:recommend": "conventional-recommended-bump --preset angular",
+    "version": "npm run changelog && git add CHANGELOG.md"
   },
   "dependencies": {
     "async": "^2.5.0",
@@ -67,11 +68,13 @@
     "table": "^4.0.2"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
     "conventional-changelog-cli": "^1.3.13",
     "conventional-changelog-lint": "^2.1.1",
     "conventional-recommended-bump": "^2.0.4",
     "eslint": "^4.17.0",
     "husky": "^0.14.3",
+    "mocha": "^5.0.5",
     "npm-check": "^5.5.2"
   }
 }
