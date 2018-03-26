@@ -32,7 +32,8 @@ program
   )
   .option(
     '-a, --archived <true|false>',
-    'When used will only show either archived users or not archived users',
+    'When used will only show either archived services or not archived ' +
+    'services',
     ((val) => {
       if (typeof val !== 'string') {
         return val;

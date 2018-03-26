@@ -4,6 +4,7 @@
 const program = require('commander');
 const miteApi = require('mite-api');
 const chalk = require('chalk');
+const async = require('async');
 const tableLib = require('table')
 const table = tableLib.table;
 
@@ -57,35 +58,44 @@ program
     'optional client-side filter for customer names, case-insensitive'
   )
   .option(
-    '-a, --archived',
-    'When used will only return archived projects which are not returned when ' +
-    'not used.',
-    false
+    '-a, --archived <true|false>',
+    'When used will only show either archived users or not archived users',
+    ((val) => {
+      if (typeof val !== 'string') {
+        return val;
+      }
+      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
+    }),
+    null
   )
   .parse(process.argv);
 
 const opts = {
-  limit: 10000
+  limit: 10000,
+  name: program.search,
+  customer_id: program.customer_id
 };
-if (program.customer_id) {
-  opts.customer_id = program.customer_id;
-}
-if (program.search) {
-  opts.name = program.search;
-}
-let method = 'getProjects';
-if (program.archived) {
-  method = 'getArchivedProjects';
-}
 
 const mite = miteApi(config.get());
-mite[method](opts, (err, responseData) => {
+
+async.parallel([
+  async.apply(mite.getProjects, opts),
+  async.apply(mite.getArchivedProjects, opts)
+], (err, results) => {
+
   if (err) {
     throw err;
   }
 
-  const tableData = responseData
+  const allProjects = [].concat(results[0], results[1]);
+  const tableData = allProjects
     .map((e) => e.project)
+    .filter((p) => {
+      if (program.archived === null) {
+        return true;
+      }
+      return program.archived === p.archived;
+    })
     .filter((p) => {
       if (!program.customer) {
         return true;
@@ -129,7 +139,12 @@ mite[method](opts, (err, responseData) => {
         budget,
         rate,
         data.note.replace(/\r?\n/g, ' '),
-      ];
+      ].map((v) => {
+        if (data.archived) {
+          return chalk.grey(v);
+        }
+        return v;
+      })
     });
   tableData.unshift([
     'id',
@@ -142,9 +157,9 @@ mite[method](opts, (err, responseData) => {
   const tableConfig = {
     border: tableLib.getBorderCharacters('norc'),
     columns: {
-      0: {},
-      1: {},
-      2: {},
+      1: {
+        wrapWord: true,
+      },
       3: {
         alignment: 'right',
       },
