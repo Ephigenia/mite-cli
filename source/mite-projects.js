@@ -14,7 +14,9 @@ const BUDGET_TYPE = formater.BUDGET_TYPE;
 const SORT_OPTIONS = [
   'id',
   'name',
+  'customer',
   'customer_name',
+  'customer_id',
   'updated_at',
   'created_at',
 ];
@@ -82,7 +84,10 @@ mite[method](opts, (err, responseData) => {
     .map((e) => e.project)
     .sort((a, b) => {
       if (!program.sort) return 0;
-      const sortByAttributeName = program.sort;
+      let sortByAttributeName = program.sort;
+      if (sortByAttributeName === 'customer') {
+        sortByAttributeName = 'customer_name';
+      }
       var val1 = String(a[sortByAttributeName]).toLowerCase();
       var val2 = String(b[sortByAttributeName]).toLowerCase();
       if (val1 > val2) {
