@@ -178,7 +178,7 @@ List, filter and search for projects. Example showing only archived projects ord
 
 ## Customers
 
-List, filter and search for customers.
+List, filter and search for customers. Archived customers will be shown in grey.
 
     mite customers --search web --sort=id
 

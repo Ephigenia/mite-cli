@@ -4,11 +4,13 @@
 const program = require('commander');
 const miteApi = require('mite-api');
 const chalk = require('chalk');
+const async = require('async');
 const tableLib = require('table')
 const table = tableLib.table;
 
 const pkg = require('./../package.json');
 const config = require('./config.js');
+const mite = miteApi(config.get());
 const formater = require('./lib/formater');
 const BUDGET_TYPE = formater.BUDGET_TYPE;
 const SORT_OPTIONS = [
@@ -30,10 +32,16 @@ program
     '(case insensitive)'
   )
   .option(
-    '-a, --archived',
-    'When used will only return archived service which are not returned when ' +
-    'not used.',
-    false
+    '-a, --archived <value>',
+    'When used will only show either archived customers or not archived ' +
+    'customers',
+    ((val) => {
+      if (typeof val !== 'string') {
+        return val;
+      }
+      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
+    }),
+    null
   )
   .option(
     '--sort <column>',
@@ -56,24 +64,26 @@ program
   .parse(process.argv);
 
 const opts = {
-  limit: 1000
+  limit: 1000,
+  name: program.search
 };
-if (program.search) {
-  opts.name = program.search;
-}
 
-let method = 'getCustomers';
-if (program.archived) {
-  method = 'getArchivedCustomers';
-}
-
-const mite = miteApi(config.get());
-mite[method](opts, (err, responseData) => {
+async.parallel([
+  async.apply(mite.getCustomers, opts),
+  async.apply(mite.getArchivedCustomers, opts),
+], (err, results) => {
   if (err) {
     throw err;
   }
 
-  const tableData = responseData.map((v) => v.customer)
+  const allCustomers = [].concat(results[0], results[1]);
+  const tableData = allCustomers.map((v) => v.customer)
+    .filter((customer) => {
+      if (program.archived === null) {
+        return true;
+      }
+      return customer.archived === program.archived;
+    })
     .sort((a, b) => {
       if (!program.sort) {
         return 0;
@@ -102,26 +112,31 @@ mite[method](opts, (err, responseData) => {
         customer.name,
         rate,
         customer.note.replace(/\r?\n/g, ' '),
-      ]
+      ].map((v) => {
+        if (customer.archived) {
+          return chalk.grey(v);
+        }
+        return v;
+      })
     });
 
-  tableData.unshift([
-    'id',
-    'name',
-    'rate',
-    'note'
-  ].map(v=> chalk.bold(v)));
-  const tableConfig = {
-    border: tableLib.getBorderCharacters('norc'),
-    columns: {
-      2: {
-        alignment: 'right',
-      },
-      3: {
-        width: 80,
-        wrapWord: true,
+    tableData.unshift([
+      'id',
+      'name',
+      'rate',
+      'note'
+    ].map(v=> chalk.bold(v)));
+    const tableConfig = {
+      border: tableLib.getBorderCharacters('norc'),
+      columns: {
+        2: {
+          alignment: 'right',
+        },
+        3: {
+          width: 80,
+          wrapWord: true,
+        }
       }
-    }
-  };
-  console.log(table(tableData, tableConfig));
+    };
+    console.log(table(tableData, tableConfig));
 });
