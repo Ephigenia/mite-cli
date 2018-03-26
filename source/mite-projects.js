@@ -53,6 +53,10 @@ program
     'optional id of a customer (use mite customer) to filter the projects by'
   )
   .option(
+    '--customer <regexp>',
+    'optional client-side filter for customer names, case-insensitive'
+  )
+  .option(
     '-a, --archived',
     'When used will only return archived projects which are not returned when ' +
     'not used.',
@@ -82,6 +86,13 @@ mite[method](opts, (err, responseData) => {
 
   const tableData = responseData
     .map((e) => e.project)
+    .filter((p) => {
+      if (!program.customer) {
+        return true;
+      }
+      const regexp = new RegExp(program.customer, 'i');
+      return regexp.exec(p.customer_name) || regexp.exec(String(p.customer_id));
+    })
     .sort((a, b) => {
       if (!program.sort) return 0;
       let sortByAttributeName = program.sort;
