@@ -137,7 +137,7 @@ mite[method](opts, (err, responseData) => {
         alignment: 'right',
       },
       4: {
-        width: 80,
+        width: 50,
         wrapWord: true,
       }
     }

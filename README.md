@@ -126,7 +126,7 @@ Delete a single entry
 
 ## Users
 
-List user accounts while client-side search in name, email & note, sort by email and list only time_trackers and admins
+List user accounts while client-side search in name, email & note, sort by email and list only time_trackers and admins. Archived users will be grey.
 
     mite user --search frank --role admin,time_tracker --sort email
 

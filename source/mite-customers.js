@@ -133,7 +133,7 @@ async.parallel([
           alignment: 'right',
         },
         3: {
-          width: 80,
+          width: 50,
           wrapWord: true,
         }
       }
