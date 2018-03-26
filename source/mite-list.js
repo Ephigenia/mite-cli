@@ -152,7 +152,7 @@ program
           duration,
           formater.budget(BUDGET_TYPE.CENTS, timeEntry.revenue || 0),
           timeEntry.service_name,
-          timeEntry.note
+          timeEntry.note.replace(/\r?\n/g, ' ')
         ]
         if (timeEntry.tracking) {
           row = row.map((v) => chalk.yellow(v))
