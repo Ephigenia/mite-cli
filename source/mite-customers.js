@@ -16,6 +16,8 @@ const SORT_OPTIONS = [
   'name',
   'updated_at',
   'created_at',
+  'hourly_rate',
+  'rate',
 ];
 const SORT_OPTIONS_DEFAULT = 'name';
 
@@ -76,8 +78,12 @@ mite[method](opts, (err, responseData) => {
       if (!program.sort) {
         return 0;
       }
-      var val1 = String(a[program.sort]).toLowerCase();
-      var val2 = String(b[program.sort]).toLowerCase();
+      let key = program.sort;
+      if (key === 'rate') {
+        key = 'hourly_rate';
+      }
+      var val1 = String(a[key]).toLowerCase();
+      var val2 = String(b[key]).toLowerCase();
       if (val1 > val2) {
         return 1;
       } else if (val1 < val2) {
