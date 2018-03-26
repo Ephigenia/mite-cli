@@ -14,15 +14,26 @@ const BUDGET_TYPE = formater.BUDGET_TYPE;
 const SORT_OPTIONS = [
   'id',
   'name',
-  'customer_name',
   'updated_at',
   'created_at',
+  'hourly_rate'
 ];
 const SORT_OPTIONS_DEFAULT = 'name';
 
 program
   .version(pkg.version)
   .description('list, filter & search for projects')
+  .option(
+    '--search <query>',
+    'optional search string which must be somewhere in the services’ name ' +
+    '(case insensitive)'
+  )
+  .option(
+    '-a, --archived',
+    'When used will only return archived projects which are not returned when ' +
+    'not used.',
+    false
+  )
   .option(
     '--sort <column>',
     `optional column the results should be case-insensitive ordered by `+
@@ -42,34 +53,29 @@ program
     'name' // default sor
   )
   .option(
-    '--search <query>',
-    'optional search string which must be somewhere in the project’s name ' +
-    '(case insensitive)'
-  )
-  .option(
-    '--customer_id <id>',
-    'optional id of a customer (use mite customer) to filter the projects by'
-  )
-  .option(
-    '-a, --archived',
-    'When used will only return archived projects which are not returned when ' +
-    'not used.',
-    false
+    '--billable <true|false>',
+    'wheter to show only billable or not-billable entries, no filter is used ' +
+    'when argument is not used',
+    ((val) => {
+      if (typeof val !== 'string') {
+        return val;
+      }
+      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
+    }),
+    null
   )
   .parse(process.argv);
 
 const opts = {
-  limit: 10000
+  limit: 1000
 };
-if (program.customer_id) {
-  opts.customer_id = program.customer_id;
-}
 if (program.search) {
   opts.name = program.search;
 }
-let method = 'getProjects';
+
+let method = 'getServices';
 if (program.archived) {
-  method = 'getArchivedProjects';
+  method = 'getArchivedServices';
 }
 
 const mite = miteApi(config.get());
@@ -78,10 +84,17 @@ mite[method](opts, (err, responseData) => {
     throw err;
   }
 
-  const tableData = responseData
-    .map((e) => e.project)
+  const tableData = responseData.map((v) => v.service)
+    .filter((a) => {
+      if (program.billable === null) {
+        return true;
+      }
+      return program.billable === a.billable;
+    })
     .sort((a, b) => {
-      if (!program.sort) return 0;
+      if (!program.sort) {
+        return 0;
+      }
       const sortByAttributeName = program.sort;
       var val1 = String(a[sortByAttributeName]).toLowerCase();
       var val2 = String(b[sortByAttributeName]).toLowerCase();
@@ -93,45 +106,29 @@ mite[method](opts, (err, responseData) => {
         return 0;
       }
     })
-    .map((data) => {
-      let budget = formater.budget(data.budget_type, data.budget);
-      if (!data.budget) {
-        budget = '-'
-      }
-      let rate = formater.budget(BUDGET_TYPE.CENTS, data.hourly_rate);
-      if (!data.hourly_rate) {
-        rate = '-';
-      }
+    .map((service) => {
       return [
-        data.id,
-        data.name,
-        data.customer_name + ' (' + data.customer_id + ')',
-        budget,
-        rate,
-        data.note.replace(/\r?\n/g, ' '),
+        service.id,
+        service.name,
+        service.billable ? 'yes' : 'no',
+        formater.budget(BUDGET_TYPE.CENTS, service.hourly_rate),
+        service.note.replace(/\r?\n/g, ' '),
       ];
     });
   tableData.unshift([
     'id',
     'name',
-    'customer',
-    'budget',
+    'billable',
     'rate',
     'note',
-  ].map((v) => chalk.bold(v)));
+  ].map(v=> chalk.bold(v)));
   const tableConfig = {
     border: tableLib.getBorderCharacters('norc'),
     columns: {
-      0: {},
-      1: {},
-      2: {},
       3: {
         alignment: 'right',
       },
       4: {
-        alignment: 'right',
-      },
-      5: {
         width: 80,
         wrapWord: true,
       }

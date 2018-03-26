@@ -1,4 +1,4 @@
-Simple CLI tool for creating, listing, starting and stopping time tracking entries in [Mite](https://mite.yo.lk).
+Simple CLI tool for creating, listing, starting and stopping time tracking entries in [Mite](https://mite.yo.lk) using the [mite-api](https://www.npmjs.com/package/mite-api) npm package which is using the [official mite api](https://mite.yo.lk/api/index.html)
 
 [![MIT License](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 [![NPM Package](https://badge.fury.io/js/mite-cli.svg)](https://www.npmjs.com/package/mite-cli)

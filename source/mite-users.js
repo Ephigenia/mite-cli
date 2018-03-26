@@ -164,7 +164,7 @@ mite[method](opts, (err, results) => {
       user.role,
       user.name,
       user.email,
-      user.note
+      user.note.replace(/\r?\n/g, ' ')
     ];
   });
 

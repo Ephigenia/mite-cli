@@ -24,5 +24,6 @@ program
   .command('start', 'start the tracker for the given id, will also stop allready running entry')
   .command('users', 'list, filter & search for users')
   .command('projects', 'list, filter & search projects')
+  .command('services', 'list, filter & search services')
   .description(pkg.description)
   .parse(process.argv)
