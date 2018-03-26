@@ -148,10 +148,10 @@ program
           index + 1,
           timeEntry.id,
           timeEntry.date_at,
-          timeEntry.project_name,
+          timeEntry.project_name || '-',
           duration,
           formater.budget(BUDGET_TYPE.CENTS, timeEntry.revenue || 0),
-          timeEntry.service_name,
+          timeEntry.service_name || '-',
           timeEntry.note.replace(/\r?\n/g, ' ')
         ]
         if (timeEntry.tracking) {
