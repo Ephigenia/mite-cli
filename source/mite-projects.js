@@ -20,6 +20,9 @@ const SORT_OPTIONS = [
   'customer_id',
   'updated_at',
   'created_at',
+  'hourly_rate',
+  'rate',
+  'budget',
 ];
 const SORT_OPTIONS_DEFAULT = 'name';
 
@@ -108,6 +111,9 @@ async.parallel([
       let sortByAttributeName = program.sort;
       if (sortByAttributeName === 'customer') {
         sortByAttributeName = 'customer_name';
+      }
+      if (sortByAttributeName === 'rate') {
+        sortByAttributeName = 'hourly_rate';
       }
       var val1 = String(a[sortByAttributeName]).toLowerCase();
       var val2 = String(b[sortByAttributeName]).toLowerCase();

@@ -161,7 +161,7 @@ List archived user accounts
 
 List, filter and search for projects. Example showing only archived projects ordered by customer_id in ascending order
 
-    mite projects --archived --sort=customer_id
+    mite projects --archived yes --sort=customer_id
 
     ┌─────────┬───────────────┬──────────────────────────┬─────────────┬─────────┬──────────────────────────────────────────────────────────────────────────────────┐
     │ id      │ name          │ customer                 │      budget │    rate │ note                                                                             │
@@ -195,7 +195,7 @@ List, filter and search for customers. Archived customers will be shown in grey.
 
 ## Services
 
-List, filter and search for services.
+List, filter and search for services. Archived services will be grey.
 
     mite services
 
