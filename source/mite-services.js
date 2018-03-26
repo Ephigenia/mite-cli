@@ -16,7 +16,8 @@ const SORT_OPTIONS = [
   'name',
   'updated_at',
   'created_at',
-  'hourly_rate'
+  'hourly_rate',
+  'rate' // alias for hourly_rate
 ];
 const SORT_OPTIONS_DEFAULT = 'name';
 
@@ -50,7 +51,7 @@ program
       }
       return value;
     },
-    SORT_OPTIONS_DEFAULT // default sor
+    SORT_OPTIONS_DEFAULT // default sort
   )
   .option(
     '--billable <true|false>',
@@ -95,7 +96,10 @@ mite[method](opts, (err, responseData) => {
       if (!program.sort) {
         return 0;
       }
-      const sortByAttributeName = program.sort;
+      let sortByAttributeName = program.sort;
+      if (sortByAttributeName === 'rate') {
+        sortByAttributeName = 'hourly_rate';
+      }
       var val1 = String(a[sortByAttributeName]).toLowerCase();
       var val2 = String(b[sortByAttributeName]).toLowerCase();
       if (val1 > val2) {
@@ -107,11 +111,15 @@ mite[method](opts, (err, responseData) => {
       }
     })
     .map((service) => {
+      let rate = formater.budget(BUDGET_TYPE.CENTS, service.hourly_rate);
+      if (!service.hourly_rate) {
+        rate = '-';
+      }
       return [
         service.id,
         service.name,
         service.billable ? 'yes' : 'no',
-        formater.budget(BUDGET_TYPE.CENTS, service.hourly_rate),
+        rate,
         service.note.replace(/\r?\n/g, ' '),
       ];
     });
