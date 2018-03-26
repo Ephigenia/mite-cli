@@ -68,7 +68,7 @@ program
     })
   )
   .option(
-    '-a, --archived <value>',
+    '-a, --archived <true|false>',
     'When used will only show either archived users or not archived users',
     ((val) => {
       if (typeof val !== 'string') {
@@ -152,7 +152,7 @@ async.parallel([
       }
       return user;
     })
-    .map((user, index) => {
+    .map((user) => {
       return [
         user.id,
         user.role,
@@ -160,6 +160,7 @@ async.parallel([
         user.email,
         user.note.replace(/\r?\n/g, ' ')
       ].map((v) => {
+        // make archived users grey
         if (user.archived) {
           return chalk.grey(v);
         }

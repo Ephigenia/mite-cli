@@ -4,6 +4,7 @@
 const program = require('commander');
 const miteApi = require('mite-api');
 const chalk = require('chalk');
+const async = require('async');
 const tableLib = require('table')
 const table = tableLib.table;
 
@@ -30,10 +31,15 @@ program
     '(case insensitive)'
   )
   .option(
-    '-a, --archived',
-    'When used will only return archived service which are not returned when ' +
-    'not used.',
-    false
+    '-a, --archived <true|false>',
+    'When used will only show either archived users or not archived users',
+    ((val) => {
+      if (typeof val !== 'string') {
+        return val;
+      }
+      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
+    }),
+    null
   )
   .option(
     '--sort <column>',
@@ -68,24 +74,31 @@ program
   .parse(process.argv);
 
 const opts = {
-  limit: 1000
+  limit: 1000,
+  offset: 0,
+  name: program.search
 };
-if (program.search) {
-  opts.name = program.search;
-}
-
-let method = 'getServices';
-if (program.archived) {
-  method = 'getArchivedServices';
-}
 
 const mite = miteApi(config.get());
-mite[method](opts, (err, responseData) => {
+
+async.parallel([
+  async.apply(mite.getServices, opts),
+  async.apply(mite.getArchivedServices, opts)
+], (err, results) => {
   if (err) {
     throw err;
   }
 
-  const tableData = responseData.map((v) => v.service)
+  const allServices = [].concat(results[0], results[1]);
+  const tableData = allServices.map((v) => v.service)
+    // filter archived services?
+    .filter((a) => {
+      if (program.archived === null) {
+        return true;
+      }
+      return a.archived === program.archived;
+    })
+    // filter billable services?
     .filter((a) => {
       if (program.billable === null) {
         return true;
@@ -121,7 +134,12 @@ mite[method](opts, (err, responseData) => {
         service.billable ? 'yes' : 'no',
         rate,
         service.note.replace(/\r?\n/g, ' '),
-      ];
+      ].map(v => {
+        if (service.archived) {
+          return chalk.grey(v);
+        }
+        return v;
+      });
     });
   tableData.unshift([
     'id',
