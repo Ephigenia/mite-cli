@@ -39,7 +39,7 @@ program
       }
       return value;
     },
-    'name' // default sor
+    SORT_OPTIONS_DEFAULT // default sor
   )
   .option(
     '--search <query>',

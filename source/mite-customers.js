@@ -16,7 +16,6 @@ const SORT_OPTIONS = [
   'name',
   'updated_at',
   'created_at',
-  'hourly_rate'
 ];
 const SORT_OPTIONS_DEFAULT = 'name';
 
@@ -50,19 +49,7 @@ program
       }
       return value;
     },
-    SORT_OPTIONS_DEFAULT // default sor
-  )
-  .option(
-    '--billable <true|false>',
-    'wheter to show only billable or not-billable entries, no filter is used ' +
-    'when argument is not used',
-    ((val) => {
-      if (typeof val !== 'string') {
-        return val;
-      }
-      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
-    }),
-    null
+    'name' // default sort
   )
   .parse(process.argv);
 
@@ -73,9 +60,9 @@ if (program.search) {
   opts.name = program.search;
 }
 
-let method = 'getServices';
+let method = 'getCustomers';
 if (program.archived) {
-  method = 'getArchivedServices';
+  method = 'getArchivedCustomers';
 }
 
 const mite = miteApi(config.get());
@@ -84,20 +71,13 @@ mite[method](opts, (err, responseData) => {
     throw err;
   }
 
-  const tableData = responseData.map((v) => v.service)
-    .filter((a) => {
-      if (program.billable === null) {
-        return true;
-      }
-      return program.billable === a.billable;
-    })
+  const tableData = responseData.map((v) => v.customer)
     .sort((a, b) => {
       if (!program.sort) {
         return 0;
       }
-      const sortByAttributeName = program.sort;
-      var val1 = String(a[sortByAttributeName]).toLowerCase();
-      var val2 = String(b[sortByAttributeName]).toLowerCase();
+      var val1 = String(a[program.sort]).toLowerCase();
+      var val2 = String(b[program.sort]).toLowerCase();
       if (val1 > val2) {
         return 1;
       } else if (val1 < val2) {
@@ -106,29 +86,32 @@ mite[method](opts, (err, responseData) => {
         return 0;
       }
     })
-    .map((service) => {
+    .map((customer) => {
+      let rate = formater.budget(BUDGET_TYPE.CENTS, customer.hourly_rate);
+      if (!customer.hourly_rate) {
+        rate = '-';
+      }
       return [
-        service.id,
-        service.name,
-        service.billable ? 'yes' : 'no',
-        formater.budget(BUDGET_TYPE.CENTS, service.hourly_rate),
-        service.note.replace(/\r?\n/g, ' '),
-      ];
+        customer.id,
+        customer.name,
+        rate,
+        customer.note.replace(/\r?\n/g, ' '),
+      ]
     });
+
   tableData.unshift([
     'id',
     'name',
-    'billable',
     'rate',
-    'note',
+    'note'
   ].map(v=> chalk.bold(v)));
   const tableConfig = {
     border: tableLib.getBorderCharacters('norc'),
     columns: {
-      3: {
+      2: {
         alignment: 'right',
       },
-      4: {
+      3: {
         width: 80,
         wrapWord: true,
       }

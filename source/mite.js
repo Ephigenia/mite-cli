@@ -25,5 +25,7 @@ program
   .command('users', 'list, filter & search for users')
   .command('projects', 'list, filter & search projects')
   .command('services', 'list, filter & search services')
+  .command('customers', 'list, filter & search customers')
+  .alias('clients')
   .description(pkg.description)
   .parse(process.argv)
