@@ -118,10 +118,14 @@ mite[method](opts, (err, responseData) => {
       if (!data.hourly_rate) {
         rate = '-';
       }
+      let customer = data.customer_name + ' (' + data.customer_id + ')';
+      if (!data.customer_id) {
+        customer = '-';
+      }
       return [
         data.id,
         data.name,
-        data.customer_name + ' (' + data.customer_id + ')',
+        customer,
         budget,
         rate,
         data.note.replace(/\r?\n/g, ' '),
