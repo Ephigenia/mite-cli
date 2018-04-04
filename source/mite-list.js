@@ -144,13 +144,17 @@ program
         if (timeEntry.tracking) {
           duration = '▶ ' + duration;
         }
+        let revenue = formater.budget(BUDGET_TYPE.CENTS, timeEntry.revenue || 0);
+        if (!timeEntry.revenue) {
+          revenue = '-';
+        }
         let row = [
           index + 1,
           timeEntry.id,
           timeEntry.date_at,
           timeEntry.project_name || '-',
           duration,
-          formater.budget(BUDGET_TYPE.CENTS, timeEntry.revenue || 0),
+          revenue,
           timeEntry.service_name || '-',
           timeEntry.note.replace(/\r?\n/g, ' ')
         ]
