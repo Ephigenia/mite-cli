@@ -1,5 +1,7 @@
 'use strict';
 
+const chalk = require('chalk');
+
 const BUDGET_TYPE = {
   MINUTES_PER_MONTH: 'minutes_per_month',
   MINUTES: 'minutes',
@@ -7,10 +9,25 @@ const BUDGET_TYPE = {
   CENTS_PER_MONTH: 'cents_per_month',
 };
 
+const JIRA_IDENTIFIERS_REGEXP = /([A-Z]{1,10}-\d{1,10})/g;
 const DEFAULT_CURRENCY = '€';
 
 module.exports = {
   BUDGET_TYPE: BUDGET_TYPE,
+
+  note(note, stripNewLines = true, highlightJiraIdentifiers = true) {
+    let result = (note || '');
+    if (stripNewLines) {
+      result = result.replace(/\r?\n/g, ' ')
+    }
+    if (highlightJiraIdentifiers) {
+      let matches = result.match(JIRA_IDENTIFIERS_REGEXP) || [];
+      matches.forEach((str) => {
+        result = result.replace(str, chalk.bold(chalk.blue(str)));
+      })
+    }
+    return result;
+  },
 
   minutesToWorkDays(minutes) {
     return this.number(minutes / 8 / 60, 2);

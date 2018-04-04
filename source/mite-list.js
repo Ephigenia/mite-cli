@@ -187,7 +187,7 @@ program
           duration,
           revenue,
           timeEntry.service_name || '-',
-          timeEntry.note.replace(/\r?\n/g, ' ')
+          formater.note(timeEntry.note)
         ]
         if (timeEntry.tracking) {
           row = row.map((v) => chalk.yellow(v))

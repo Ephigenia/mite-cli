@@ -27,6 +27,7 @@ Before you can start you’ll have to setup your mite account and api key which 
 - Show & filter time entries to show reports for last month, current week etc.
 - Delete single entries by id
 - List, sort, filter user accounts, customers, projects & services
+- Highlight JIRA identifiers in time entry notes
 
 Other ideas & planned features can be found in the [wiki](./wiki). If something doesn’t work please [create a new issue](https://github.com/Ephigenia/mite-cli/issues).
 

@@ -1,11 +1,36 @@
 'use strict';
 
 const expect = require('chai').expect;
+const chalk = require('chalk');
 
 const formater = require('./formater');
 const BUDGET_TYPE = require('./formater').BUDGET_TYPE;
 
 describe('formater', () => {
+
+  describe('note', () => {
+    it('strips line breaks by default', () => {
+      expect(formater.note("a\r\nb")).to.equal("a b");
+    });
+    it('doesn’t do anything when there’s no JIRA identifier', () => {
+      expect(formater.note('nothing here man!')).to.equal('nothing here man!');
+    });
+    it('uses the specified highlight color and bold for jira identifiers', () => {
+      expect(formater.note(
+        'ABC-1234 this is a note'
+      )).to.equal(
+        chalk.bold(chalk.blue('ABC-1234')) + ' this is a note'
+      );
+    });
+    it('highlights multiple occurrences', () => {
+      expect(formater.note(
+        'BF-1234 this is a note and BLABLUB-0002 is cool'
+      )).to.equal(
+        chalk.bold(chalk.blue('BF-1234')) + ' this is a note' +
+        ' and ' + chalk.bold(chalk.blue('BLABLUB-0002')) + ' is cool'
+      );
+    });
+  });
 
   describe('number', () => {
     it('returns the number with default precision of 2', () => {
