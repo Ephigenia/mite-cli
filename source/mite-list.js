@@ -10,6 +10,18 @@ const miteApi = require('mite-api')
 const pkg = require('./../package.json')
 const config = require('./config.js')
 const formater = require('./lib/formater');
+
+const SORT_OPTIONS = [
+  'date',
+  'user',
+  'customer',
+  'project',
+  'service',
+  'note',
+  'minutes',
+  'revenue',
+];
+const SORT_OPTIONS_DEFAULT = 'date';
 const BUDGET_TYPE = formater.BUDGET_TYPE;
 
 // set a default period argument if not set
@@ -45,6 +57,24 @@ program
   .option(
     '--service_id <service_id>',
     'service id, can be either a single ID, or multiple comma-separated IDs.'
+  )
+  .option(
+    '--sort <column>',
+    `optional column the results should be sorted `+
+    `(default: "${SORT_OPTIONS_DEFAULT}"), ` +
+    `valid values: ${SORT_OPTIONS.join(', ')}`,
+    (value) => {
+      if (SORT_OPTIONS.indexOf(value) === -1) {
+        console.error(
+          'Invalid value for sort option: "%s", valid values are: ',
+          value,
+          SORT_OPTIONS.join(', ')
+        );
+        process.exit(2);
+      }
+      return value;
+    },
+    'name' // default sort
   )
   .option(
     '--billable <true|false>',
@@ -103,6 +133,7 @@ program
       note: program.search,
       project_id: program.project_id,
       service_id: program.service_id,
+      sort: program.sort,
     }
 
     if (program.user_id) {
