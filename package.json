@@ -47,6 +47,7 @@
     "changelog": "conventional-changelog -s -i CHANGELOG.md -p angular -r 0",
     "commitmsg": "conventional-changelog-lint -e",
     "lint": "eslint source/**/*.js",
+    "lint:fix": "npm run lint --fix",
     "postversion": "git push && git push --tags",
     "preversion": "npm test",
     "start": "node $npm_package_main",

@@ -20,9 +20,9 @@ module.exports = (config) => {
           return reject(err)
         }
         if (response.body.error) {
-          return reject(new Error(response.body.error))
+          return reject(new Error(response.body.error));
         }
-        return resolve(response.body)
+        return resolve(response.body);
       })
     })
   }

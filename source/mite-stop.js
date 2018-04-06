@@ -15,17 +15,17 @@ const miteTracker = require('./lib/mite-tracker')(config.get())
 miteTracker.get()
   .then((response) => {
     if (!response.tracker || !response.tracker.tracking_time_entry) {
-      throw new Error('There doesn’t seem to be a running time entry')
+      console.log('No running tracker found.');
+      process.exit(0);
     }
     return response.tracker.tracking_time_entry.id;
   })
   .then((timeEntryId) => {
-    return miteTracker.stop(timeEntryId)
-  })
-  .then(() => {
-    console.log('Successfully stopped time tracking')
+    return miteTracker.stop(timeEntryId).then(() => {
+      console.log('Successfully stopped time tracking (id: %s)', timeEntryId);
+    });
   })
   .catch((err) => {
-    console.error(err.message);
+    console.log('Error while stopping time entry: %s', err.message);
     process.exit(1)
   })

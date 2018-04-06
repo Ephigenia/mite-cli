@@ -14,17 +14,10 @@ program
     const miteTracker = require('./lib/mite-tracker')(config.get())
     miteTracker.start(timeEntryId)
       .then(() => {
-        console.log(
-          'Successfully started the time entry with the id "%s"',
-          timeEntryId
-        );
+        console.log('Successfully started the time entry (id: %s)', timeEntryId);
       })
       .catch((err) => {
-        console.log(
-          'Unable to start the time entry with the id "%s"',
-          timeEntryId
-        );
-        console.error(err.message);
+        console.log('Unable to start the time entry (id: %s): %s', timeEntryId, err.message);
         process.exit(1)
       })
   })
