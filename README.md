@@ -24,10 +24,10 @@ Before you can start you’ll have to setup your mite account and api key which 
 # Features
 
 - Create and start new Entries with interactive survey-like cli interface
-- Show & filter time entries to show reports for last month, current week etc.
-- Edit (amend) the currently running entries text for fast updating the work log
-- Delete single entries by id
+- Edit the currently running entries text for fast updating the work log
+- Show, filter, group time entries to show reports for last month, current week etc.
 - List, sort, filter user accounts, customers, projects & services
+- Delete single entries by id
 - Highlight JIRA identifiers in time entry notes
 
 Other ideas & planned features can be found in the [wiki](./wiki). If something doesn’t work please [create a new issue](https://github.com/Ephigenia/mite-cli/issues).
@@ -61,22 +61,22 @@ When an entry is currently active and tracked it will be yellow and indicated wi
 
     mite list
 
-    ┌───┬──────────┬────────────┬────────────┬──────────┬─────────┬───────────────────┬──────────────────────────────────────────────────┐
-    │ # │       id │ date       │    project │ duration │ revenue │ service           │ note                                             │
-    ├───┼──────────┼────────────┼────────────┼──────────┼─────────┼───────────────────┼──────────────────────────────────────────────────┤
-    │ 1 │ 73628791 │ 2017-09-13 │ carservice │  ▶ 01:36 │       - │ Programming       │ open in browser                                  │
-    ├───┼──────────┼────────────┼────────────┼──────────┼─────────┼───────────────────┼──────────────────────────────────────────────────┤
-    │ 2 │ 73628761 │ 2017-09-13 │        ABC │    00:07 │    9.33 │ Communication     │ lorem ipsum dolor                                │
-    ├───┼──────────┼────────────┼────────────┼──────────┼─────────┼───────────────────┼──────────────────────────────────────────────────┤
-    │ 3 │ 73627950 │ 2017-09-13 │ sp support │    00:04 │    4.84 │ Programming       │ JIRA-123 Lorem ipsum dolor sit amet, consetetur  │
-    │   │          │            │            │          │         │                   │ sadipscing.                                      │
-    ├───┼──────────┼────────────┼────────────┼──────────┼─────────┼───────────────────┼──────────────────────────────────────────────────┤
-    │ 4 │ 73627919 │ 2017-09-13 │        XYZ │    00:10 │   13.33 │ Communication     │ Lorem ipsum dolor sit amet, consetetur           │
-    │   │          │            │            │          │         │                   │ sadipscing elitr, sed diam nonumy eirmod         │
-    │   │          │            │            │          │         │                   │ tempor invidunt ut labore et dolore              │
-    ├───┼──────────┼────────────┼────────────┼──────────┼─────────┼───────────────────┴──────────────────────────────────────────────────┤
-    │   │          │            │            │    00:21 │   27.50 │                                                                      │
-    └───┴──────────┴────────────┴────────────┴──────────┴─────────┴──────────────────────────────────────────────────────────────────────┘
+    ┌──────────┬────────────┬────────────┬──────────┬─────────┬───────────────────┬──────────────────────────────────────────────────┐
+    │       id │ date       │    project │ duration │ revenue │ service           │ note                                             │
+    ├──────────┼────────────┼────────────┼──────────┼─────────┼───────────────────┼──────────────────────────────────────────────────┤
+    │ 73628791 │ 2017-09-13 │ carservice │  ▶ 01:36 │       - │ Programming       │ open in browser                                  │
+    ├──────────┼────────────┼────────────┼──────────┼─────────┼───────────────────┼──────────────────────────────────────────────────┤
+    │ 73628761 │ 2017-09-13 │        ABC │    00:07 │    9.33 │ Communication     │ lorem ipsum dolor                                │
+    ├──────────┼────────────┼────────────┼──────────┼─────────┼───────────────────┼──────────────────────────────────────────────────┤
+    │ 73627950 │ 2017-09-13 │ sp support │    00:04 │    4.84 │ Programming       │ JIRA-123 Lorem ipsum dolor sit amet, consetetur  │
+    │          │            │            │          │         │                   │ sadipscing.                                      │
+    ├──────────┼────────────┼────────────┼──────────┼─────────┼───────────────────┼──────────────────────────────────────────────────┤
+    │ 73627919 │ 2017-09-13 │        XYZ │    00:10 │   13.33 │ Communication     │ Lorem ipsum dolor sit amet, consetetur           │
+    │          │            │            │          │         │                   │ sadipscing elitr, sed diam nonumy eirmod         │
+    │          │            │            │          │         │                   │ tempor invidunt ut labore et dolore              │
+    ├──────────┼────────────┼────────────┼──────────┼─────────┼───────────────────┴──────────────────────────────────────────────────┤
+    │          │            │            │    00:21 │   27.50 │                                                                      │
+    └──────────┴────────────┴────────────┴──────────┴─────────┴──────────────────────────────────────────────────────────────────────┘
 
 You also can request longer time frames by using the first argument which is bascially the [`at` parameter](https://mite.yo.lk/en/api/time-entries.html#list-all) of the time entries api:
 
@@ -93,6 +93,46 @@ Or search for specific entries in all time-entries from the current year
     mite list this_year --search JIRA-123
 
 There are also a bunch of other options available, just check `mite list --help`.
+
+## Grouped lists
+
+For getting a rough overview of the monthly project or services distribution you can use the `--group_by` argument which will group the time entries. This could also be helpful for creating bills.
+
+    mite list last_month --group_by=service
+
+    ┌────────────────────┬────────┬────────────┐
+    │ Communication      │  13:03 │   994.98 € │
+    ├────────────────────┼────────┼────────────┤
+    │ Programming        │ 109:27 │  9387.11 € │
+    ├────────────────────┼────────┼────────────┤
+    │ Project Management │  15:43 │  1484.48 € │
+    ├────────────────────┼────────┼────────────┤
+    │                    │ 138:13 │ 11866.57 € │
+    └────────────────────┴────────┴────────────┘
+
+Or even more groups which also allows splitting between customers:
+
+    mite list last_month --group_by=customer,service
+
+    ┌─────────────────┬───────────────────┬────────┬────────────┐
+    │ Soup Inc.       │ Communication     │   3:48 │   361.00 € │
+    ├─────────────────┼───────────────────┼────────┼────────────┤
+    │ Soup Inc.       │ Programming       │  88:15 │  1383.75 € │
+    ├─────────────────┼───────────────────┼────────┼────────────┤
+    │ Soup Inc.       │ ProjectManagement │  15:20 │   456.67 € │
+    ├─────────────────┼───────────────────┼────────┼────────────┤
+    │ Musterman Corp. │ Communication     │   0:47 │          - │
+    ├─────────────────┼───────────────────┼────────┼────────────┤
+    │ Musterman Corp. │ Programming       │   7:35 │          - │
+    ├─────────────────┼───────────────────┼────────┼────────────┤
+    │ Beans Gmbh      │ Communication     │   8:28 │   133.98 € │
+    ├─────────────────┼───────────────────┼────────┼────────────┤
+    │ Beans Gmbh      │ Programming       │  13:37 │   203.36 € │
+    ├─────────────────┼───────────────────┼────────┼────────────┤
+    │ Beans Gmbh      │ ProjectManagement │   0:23 │    97.81 € │
+    ├─────────────────┼───────────────────┼────────┼────────────┤
+    │                 │                   │ 138:13 │  2635.15 € │
+    └─────────────────┴───────────────────┴────────┴────────────┘
 
 ## New
 

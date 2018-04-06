@@ -24,6 +24,17 @@ const SORT_OPTIONS = [
 const SORT_OPTIONS_DEFAULT = 'date';
 const BUDGET_TYPE = formater.BUDGET_TYPE;
 
+const GROUP_BY_OPTIONS = [
+  'user',
+  'customer',
+  'project',
+  'service',
+  'day',
+  'week',
+  'month',
+  'year',
+];
+
 // set a default period argument if not set
 if (!process.argv[2] || process.argv[2].substr(0, 1) === '-' && process.argv[2] !== '--help') {
   process.argv.splice(2, 0, 'today')
@@ -33,6 +44,11 @@ program
   .version(pkg.version)
   .description('list time entries')
   .arguments('<period>')
+  .option(
+    '--group_by <value>',
+    'optional group_by parameter which should be used. Valid values are ' +
+    GROUP_BY_OPTIONS.join(', ')
+  )
   .option(
     '--user_id <user_id>',
     'optional single user_id who’s time entries should be returned or ' +
@@ -133,6 +149,7 @@ program
       note: program.search,
       project_id: program.project_id,
       service_id: program.service_id,
+      group_by: program.group_by,
       sort: program.sort,
     }
 
@@ -158,8 +175,55 @@ program
         throw err;
       }
 
+      // decide wheter to output grouped report or single entry report
+      const groupedResults = results
+        .map((r) => r.time_entry_group)
+        .filter((v) => v);
+      if (groupedResults.length > 0) {
+        const tableData = groupedResults.map((groupedTimeEntry) => {
+          const row = [
+            groupedTimeEntry.year,
+            groupedTimeEntry.month,
+            groupedTimeEntry.week,
+            groupedTimeEntry.day,
+            groupedTimeEntry.customer_name || groupedTimeEntry.customer_id,
+            groupedTimeEntry.user_name,
+            groupedTimeEntry.project_name || groupedTimeEntry.project_id,
+            groupedTimeEntry.service_name || groupedTimeEntry.service_id,
+            formater.minutesToDuration(groupedTimeEntry.minutes || 0),
+            groupedTimeEntry.revenue === null ? '-' : formater.budget(BUDGET_TYPE.CENTS, groupedTimeEntry.revenue || 0),
+          ]
+          .filter((v) => (typeof v !== 'undefined'));
+          return row;
+        });
 
-      const tableData = results.map((data, index) => {
+        const columnCount = tableData[0].length;
+
+        // add one last row which contains minutes & revenue sums
+        const footerRow = new Array(columnCount);
+        const revenueSum = groupedResults.reduce((v, a) => {
+          return v + a.revenue || 0;
+        }, 0);
+        footerRow[columnCount - 1] = formater.budget(BUDGET_TYPE.CENTS, revenueSum || 0);
+        const minutesSum = groupedResults.reduce((v, a) => {
+          return v + a.minutes || 0;
+        }, 0);
+        footerRow[columnCount - 2] = formater.minutesToDuration(minutesSum);
+        tableData.push(footerRow.map(v => chalk.yellow(v)));
+
+        const tableConfig = {
+          border: tableLib.getBorderCharacters('norc'),
+          columns: {}
+        };
+        tableConfig.columns[columnCount - 2] = tableConfig.columns[columnCount - 1] = {
+          alignment: 'right'
+        };
+
+        console.log(table(tableData, tableConfig));
+        process.exit(0);
+      } // end grouped reports
+
+      const tableData = results.map((data) => {
         const timeEntry = data.time_entry;
         let minutes = timeEntry.minutes
         // detect time entries that are tracked (running) and add an indicator
@@ -180,7 +244,6 @@ program
           revenue = '-';
         }
         let row = [
-          index + 1,
           timeEntry.id,
           timeEntry.date_at,
           timeEntry.project_name || '-',
@@ -206,11 +269,10 @@ program
       }, 0)
 
       tableData.unshift([
-        '#', 'id', 'date', 'project', 'duration', 'revenue', 'service', 'note'
+        'id', 'date', 'project', 'duration', 'revenue', 'service', 'note'
       ].map(function(v) { return chalk.bold(v); }))
       // sum up everything as last row
       tableData.push([
-        null,
         null,
         null,
         null,
@@ -231,29 +293,25 @@ program
             width: 10,
             alignment: 'right',
           },
-          2: {
-            width: 10,
-            alignment: 'right',
-          },
-          3: { // project
+          2: { // project
             width: 20,
             alignment: 'right',
             wrapWord: true,
           },
-          4: { // duration
+          3: { // duration
             width: 10,
             alignment: 'right',
           },
-          5: { // revenue
+          4: { // revenue
             width: 10,
             alignment: 'right',
           },
-          6: { // service
+          5: { // service
             width: 20,
             wrapWord: true,
             alignment: 'right',
           },
-          7: { // note
+          6: { // note
             width: 80,
             wrapWord: true,
             alignment: 'left',
