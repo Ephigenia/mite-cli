@@ -7,6 +7,8 @@ const pkg = require('./../package.json')
 
 program
   .version(pkg.version)
+  .command('amend', 'edit the text for a specific time entry or the currently runnning entry')
+  .alias('reword')
   .command('budgets', 'list money and time budgets for current month')
   .command('config', 'show or set configuration settings')
   .command('delete', 'delete a specific time entry')

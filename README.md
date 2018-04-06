@@ -25,6 +25,7 @@ Before you can start you’ll have to setup your mite account and api key which 
 
 - Create and start new Entries with interactive survey-like cli interface
 - Show & filter time entries to show reports for last month, current week etc.
+- Edit (amend) the currently running entries text for fast updating the work log
 - Delete single entries by id
 - List, sort, filter user accounts, customers, projects & services
 - Highlight JIRA identifiers in time entry notes
@@ -118,6 +119,20 @@ Start a specific tracker
 Stops any tracked time tracker.
 
     mite stop
+
+## Edit Currently Tracked Note
+
+When there’s a tracker running you may want to update the note without opening the browser and enter the new details. You can use `amend` or `reword` command which will load the time entry and you can enter the new note.
+
+    mite amend
+
+You can also add the `--editor` option so that your favorite editor opens up with the current note prefilled. Make sure your `$EDITOR` is correctly set.
+
+    mite amend --editor
+
+You can also alter the notes of other time entries when you specify their id
+
+    mite amend 1847132
 
 ## Delete entry
 
