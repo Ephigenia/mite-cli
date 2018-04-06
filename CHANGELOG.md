@@ -1,3 +1,35 @@
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/Ephigenia/mite-cli/compare/v0.5.0...v0.6.0) (2018-04-06)
+
+
+### Bug Fixes
+
+* **list:** empty service & project names displayed as "-" ([89add52](https://github.com/Ephigenia/mite-cli/commit/89add52))
+* **list:** notes with line-breaks ([687384f](https://github.com/Ephigenia/mite-cli/commit/687384f))
+* **list:** null revenues shown as "-" ([0d9d074](https://github.com/Ephigenia/mite-cli/commit/0d9d074))
+* **projects:** empty customer displayed as "-" ([ae515d1](https://github.com/Ephigenia/mite-cli/commit/ae515d1))
+* **service:** rate displayed as "-" when null ([f380878](https://github.com/Ephigenia/mite-cli/commit/f380878))
+
+
+### Features
+
+* **amend:** adds inline or editor-edit currently tracked entry’s note ([ad435c7](https://github.com/Ephigenia/mite-cli/commit/ad435c7))
+* **customers:** adds list of customers ([9f634c5](https://github.com/Ephigenia/mite-cli/commit/9f634c5))
+* **customers:** sort by rate / hourly_rate ([dd82769](https://github.com/Ephigenia/mite-cli/commit/dd82769))
+* **list:** adds "sort" options for api-side ordering the results ([ffbd738](https://github.com/Ephigenia/mite-cli/commit/ffbd738))
+* **list:** adds group_by argument and alternate table output format ([541d0f3](https://github.com/Ephigenia/mite-cli/commit/541d0f3))
+* **list:** highlight jira identifiers ([cabd423](https://github.com/Ephigenia/mite-cli/commit/cabd423))
+* **project:** show archived & not archived in one list ([185c876](https://github.com/Ephigenia/mite-cli/commit/185c876))
+* **project:** sort by budgets & hourly_rate ([0609b91](https://github.com/Ephigenia/mite-cli/commit/0609b91))
+* **projects:** list projects ([0a32f3a](https://github.com/Ephigenia/mite-cli/commit/0a32f3a))
+* **projects:** order by customer_name & id ([59103c3](https://github.com/Ephigenia/mite-cli/commit/59103c3))
+* **projects:** search for customer names ([15a9c0d](https://github.com/Ephigenia/mite-cli/commit/15a9c0d))
+* **services:** adds list of services ([c0464f5](https://github.com/Ephigenia/mite-cli/commit/c0464f5))
+* **services:** show archived & not archived in one list ([0b4556f](https://github.com/Ephigenia/mite-cli/commit/0b4556f))
+* **users:** shows archived & not archived users in one list ([a1f721d](https://github.com/Ephigenia/mite-cli/commit/a1f721d))
+
+
+
 <a name="0.5.0"></a>
 # [0.5.0](https://github.com/Ephigenia/mite-cli/compare/v0.4.4...v0.5.0) (2018-03-14)
 
