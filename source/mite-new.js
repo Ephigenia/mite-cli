@@ -83,7 +83,7 @@ function main(note) {
         type: 'input',
         name: 'note',
         message: 'What was done?',
-        when: !note
+        when: !note,
       },
       {
         type: 'input',
@@ -106,6 +106,8 @@ function main(note) {
   })
   .then((questions) => inquirer.prompt(questions))
   .then((entry) => {
+    entry.note = entry.note || note;
+
     // do not create an entry when minutes are invalid
     if (!entry.minutes) {
       console.log('no time entry created due to empty project id or empty minutes')
