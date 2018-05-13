@@ -7,10 +7,41 @@ Simple CLI tool for creating, listing, starting and stopping time tracking entri
 [![Known Vulnerabilities](https://snyk.io/test/github/ephigenia/mite-cli/badge.svg)](https://snyk.io/test/github/ephigenia/mite-cli)
 [![Maintainability](https://api.codeclimate.com/v1/badges/791e0126615bcd34a0e5/maintainability)](https://codeclimate.com/github/Ephigenia/mite-cli/maintainability)
 
+Help message
+
+```
+    Usage: mite [options] [command]
+
+    command line tool for time tracking service mite.yo.lk
+
+
+    Options:
+
+      -V, --version  output the version number
+      -h, --help     output usage information
+
+
+    Commands:
+
+      amend|reword       edit the text for a specific time entry or the currently runnning entry
+      budgets            list money and time budgets for current month
+      config             show or set configuration settings
+      delete|rm          delete a specific time entry
+      list|st            list time entries
+      new|create         create a new time entry
+      open               open the given time entry in browser
+      stop               stop any running counter
+      start              start the tracker for the given id, will also stop allready running entry
+      users              list, filter & search for users
+      projects           list, filter & search projects
+      services           list, filter & search services
+      customers|clients  list, filter & search customers
+      help [cmd]         display help for [cmd]
+```
+
 # Install
 
     npm install -g mite-cli
-
 
 
 # Configuration
@@ -19,6 +50,8 @@ Before you can start you’ll have to setup your mite account and api key which 
 
     mite config set account <name>
     mite config set apiKey <key>
+
+In case you want to use multiple mite accounts please open up a [change request](https://github.com/Ephigenia/mite-cli/issues)
 
 
 # Features

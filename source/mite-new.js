@@ -3,7 +3,6 @@
 
 const program = require('commander')
 const inquirer = require('inquirer')
-const parallel = require('async/parallel')
 const chalk = require('chalk')
 const miteApi = require('mite-api')
 const bluebird = require('bluebird');
