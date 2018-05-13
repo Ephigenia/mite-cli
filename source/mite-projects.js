@@ -69,7 +69,7 @@ program
       }
       return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
     }),
-    null
+    false // default archive argument
   )
   .parse(process.argv);
 
@@ -89,8 +89,9 @@ async.parallel([
   if (err) {
     throw err;
   }
-
+  // merge archived and not archived projects together in one array
   const allProjects = [].concat(results[0], results[1]);
+  // proclaim an array of tabular data by mapping and filtering the data
   const tableData = allProjects
     .map((e) => e.project)
     .filter((p) => {
@@ -100,6 +101,7 @@ async.parallel([
       return program.archived === p.archived;
     })
     .filter((p) => {
+      // filter by customer regexp, skip if no cli argument was given
       if (!program.customer) {
         return true;
       }
