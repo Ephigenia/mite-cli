@@ -1,7 +1,7 @@
 {
   "author": "Ephigenia M. Eichner",
   "name": "mite-cli",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "description": "command line tool for time tracking service mite.yo.lk",
   "preferGlobal": true,
   "keywords": [
@@ -76,7 +76,6 @@
     "conventional-changelog-lint": "^2.1.1",
     "conventional-recommended-bump": "^4.0.1",
     "eslint": "^5.6.0",
-    "husky": "^0.14.3",
     "mocha": "^5.2.0",
     "npm-check": "^5.9.0"
   }

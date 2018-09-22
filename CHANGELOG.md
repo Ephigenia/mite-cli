@@ -1,3 +1,19 @@
+<a name="0.6.1"></a>
+## [0.6.1](https://github.com/Ephigenia/mite-cli/compare/v0.6.0...v0.6.1) (2018-09-22)
+
+
+### Bug Fixes
+
+* **new:** use of note argument ([0d598f2](https://github.com/Ephigenia/mite-cli/commit/0d598f2))
+
+
+### Features
+
+* **new:** first arguments used as note ([e478dd1](https://github.com/Ephigenia/mite-cli/commit/e478dd1))
+* **projects:** making archived true the default option ([0ed2510](https://github.com/Ephigenia/mite-cli/commit/0ed2510))
+
+
+
 <a name="0.6.0"></a>
 # [0.6.0](https://github.com/Ephigenia/mite-cli/compare/v0.5.0...v0.6.0) (2018-04-06)
 
