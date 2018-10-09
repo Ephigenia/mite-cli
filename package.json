@@ -61,21 +61,21 @@
     "async": "^2.6.1",
     "bluebird": "^3.5.2",
     "chalk": "^2.4.1",
-    "commander": "^2.18.0",
+    "commander": "^2.19.0",
     "external-editor": "^3.0.3",
     "inquirer": "^6.2.0",
     "mite-api": "marcel-devdude/mite-api#master",
     "nconf": "^0.10.0",
     "opn": "^5.4.0",
     "request": "^2.88.0",
-    "table": "^5.0.2"
+    "table": "^5.1.0"
   },
   "devDependencies": {
-    "chai": "^4.1.2",
+    "chai": "^4.2.0",
     "conventional-changelog-cli": "^2.0.5",
     "conventional-changelog-lint": "^2.1.1",
     "conventional-recommended-bump": "^4.0.1",
-    "eslint": "^5.6.0",
+    "eslint": "^5.6.1",
     "mocha": "^5.2.0",
     "npm-check": "^5.9.0"
   }
