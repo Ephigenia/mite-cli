@@ -4,35 +4,63 @@
 #
 version: 2
 jobs:
-  build:
+  setup:
+    working_directory: ~/project
     docker:
-      # specify the version you desire here
       - image: circleci/node:6.11
-
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/mongo:3.4.4
-
-    working_directory: ~/repo
-
     steps:
       - checkout
-
-      # Download and cache dependencies
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "package.json" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
+            - v1-dependencies-{{ checksum "package-lock.json" }}
       - run: npm install
-
       - save_cache:
+          when: on_success
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: v1-dependencies-{{ checksum "package-lock.json" }}
+      - persist_to_workspace:
+          root: ~/project
+          paths: ./*
 
+  test:
+    working_directory: ~/project
+    docker:
+      - image: circleci/node:6.11
+    steps:
+      - attach_workspace:
+          at: ~/project
       - run: npm test
 
-      - run: npm run lint
+  lint:
+    working_directory: ~/project
+    docker:
+      - image: circleci/node:6.11
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: npm run -s lint
+
+  outdated:
+    working_directory: ~/project
+    docker:
+      - image: circleci/node:6.11
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: npm run -s test:outdated
+
+workflows:
+  version: 2
+  default:
+    jobs:
+      - setup
+      - test:
+          requires:
+            - setup
+      - lint:
+          requires:
+            - setup
+      - outdated:
+          requires:
+            - setup

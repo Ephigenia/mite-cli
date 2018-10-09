@@ -41,6 +41,9 @@
   "bin": {
     "mite": "source/mite.js"
   },
+  "npmCheck": {
+    "ignore": "{}"
+  },
   "main": "source/mite.js",
   "scripts": {
     "changelog:preview": "conventional-changelog --output-unreleased -p angular",
@@ -53,6 +56,7 @@
     "start": "node $npm_package_main",
     "tdd": "npm run test -- --watch",
     "test": "mocha --check-leaks --throw-deprecation --use_strict source/**/*test.js --exit",
+    "test:outdated": "npm-check --ignore $npm_package_npmCheck_ignore",
     "update": "npm-check --update",
     "version:recommend": "conventional-recommended-bump --preset angular",
     "version": "npm run changelog && git add CHANGELOG.md"
