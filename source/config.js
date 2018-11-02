@@ -7,13 +7,7 @@ const pkg = require('./../package.json')
 const homedir = os.homedir()
 const configFilename = path.resolve(path.join(homedir, '.mite-cli.json'))
 
-nconf
-  .env([
-    'account',
-    'apiKey',
-    'application'
-  ])
-  .file(configFilename)
+nconf.file(configFilename)
 
 nconf.defaults({
   applicationName: `mite-cli/${pkg.version}`,
