@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 'use strict'
 
+const fs = require('fs')
 const program = require('commander')
 
 const pkg = require('./../package.json')
@@ -21,6 +22,9 @@ program
         return
       }
       console.log(`successfully set "${key}" to "${value}"`)
+      // make sure file is only write- and readable by the user
+      const configFilename = config.stores.file.file
+      fs.chmodSync(configFilename, 0o600)
     })
   })
 

@@ -52,6 +52,8 @@ Before you can start you’ll have to setup your mite account and api key which 
     mite config set account <name>
     mite config set apiKey <key>
 
+The configuration is stored in a file which is only writable and readable by you in your home directory: `~/.mite-cli.json`.
+
 In case you want to use multiple mite accounts please open up a [change request](https://github.com/Ephigenia/mite-cli/issues)
 
 

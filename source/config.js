@@ -1,9 +1,11 @@
 const nconf = require('nconf')
 const path = require('path')
+const os = require('os')
 
 const pkg = require('./../package.json')
 
-const configFilename = path.resolve(path.join(__dirname, './../config.json'))
+const homedir = os.homedir()
+const configFilename = path.resolve(path.join(homedir, '.mite-cli.json'))
 
 nconf
   .env([
