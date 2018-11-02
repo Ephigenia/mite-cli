@@ -1,9 +1,17 @@
-<a name="0.6.2"></a>
+## [0.6.3](https://github.com/Ephigenia/mite-cli/compare/v0.6.2...v0.6.3) (2018-11-02)
+
+
+### Bug Fixes
+
+* **config:** config file stored securely in home directory ([f17e448](https://github.com/Ephigenia/mite-cli/commit/f17e448)), closes [#2](https://github.com/Ephigenia/mite-cli/issues/2)
+* **config:** removes ENV injectable account, apiKey and application ([af4268a](https://github.com/Ephigenia/mite-cli/commit/af4268a))
+
+
+
 ## [0.6.2](https://github.com/Ephigenia/mite-cli/compare/v0.6.1...v0.6.2) (2018-10-09)
 
 
 
-<a name="0.6.1"></a>
 ## [0.6.1](https://github.com/Ephigenia/mite-cli/compare/v0.6.0...v0.6.1) (2018-09-22)
 
 
@@ -19,7 +27,6 @@
 
 
 
-<a name="0.6.0"></a>
 # [0.6.0](https://github.com/Ephigenia/mite-cli/compare/v0.5.0...v0.6.0) (2018-04-06)
 
 
@@ -51,7 +58,6 @@
 
 
 
-<a name="0.5.0"></a>
 # [0.5.0](https://github.com/Ephigenia/mite-cli/compare/v0.4.4...v0.5.0) (2018-03-14)
 
 
@@ -78,7 +84,6 @@
 
 
 
-<a name="0.4.4"></a>
 ## [0.4.4](https://github.com/Ephigenia/mite-cli/compare/v0.4.3...v0.4.4) (2018-02-16)
 
 
@@ -89,7 +94,6 @@
 
 
 
-<a name="0.4.3"></a>
 ## [0.4.3](https://github.com/Ephigenia/mite-cli/compare/v0.4.2...v0.4.3) (2018-02-16)
 
 
@@ -99,7 +103,6 @@
 
 
 
-<a name="0.4.2"></a>
 ## [0.4.2](https://github.com/Ephigenia/mite-cli/compare/v0.4.1...v0.4.2) (2018-02-13)
 
 
@@ -109,7 +112,6 @@
 
 
 
-<a name="0.4.1"></a>
 ## [0.4.1](https://github.com/Ephigenia/mite-cli/compare/v0.4.0...v0.4.1) (2018-01-08)
 
 
@@ -123,7 +125,6 @@
 
 
 
-<a name="0.4.0"></a>
 # [0.4.0](https://github.com/Ephigenia/mite-cli/compare/v0.3.0...v0.4.0) (2017-09-19)
 
 
@@ -139,7 +140,6 @@
 
 
 
-<a name="0.3.0"></a>
 # [0.3.0](https://github.com/Ephigenia/mite-cli/compare/v0.2.0...v0.3.0) (2017-08-24)
 
 
@@ -160,7 +160,6 @@
 
 
 
-<a name="0.2.0"></a>
 # [0.2.0](https://github.com/Ephigenia/mite-cli/compare/v0.0.0...v0.2.0) (2017-08-01)
 
 
@@ -177,7 +176,6 @@
 
 
 
-<a name="0.0.0"></a>
 # 0.0.0 (2017-08-01)
 
 
