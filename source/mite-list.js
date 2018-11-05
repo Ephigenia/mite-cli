@@ -246,6 +246,7 @@ program
         let row = [
           timeEntry.id,
           timeEntry.date_at,
+          timeEntry.user_name,
           timeEntry.project_name || '-',
           duration,
           revenue,
@@ -269,10 +270,11 @@ program
       }, 0)
 
       tableData.unshift([
-        'id', 'date', 'project', 'duration', 'revenue', 'service', 'note'
+        'id', 'date', 'user', 'project', 'duration', 'revenue', 'service', 'note'
       ].map(function(v) { return chalk.bold(v); }))
       // sum up everything as last row
       tableData.push([
+        null,
         null,
         null,
         null,
@@ -285,34 +287,36 @@ program
       const tableConfig = {
         border: tableLib.getBorderCharacters('norc'),
         columns: {
-          0: {
+          0: { // id
             width: 10,
             alignment: 'right',
           },
-          1: {
+          1: { // date
             width: 10,
             alignment: 'right',
           },
-          2: { // project
+          // user
+          // no-definition
+          3: { // project
             width: 20,
             alignment: 'right',
             wrapWord: true,
           },
-          3: { // duration
+          4: { // duration
             width: 10,
             alignment: 'right',
           },
-          4: { // revenue
+          5: { // revenue
             width: 10,
             alignment: 'right',
           },
-          5: { // service
+          6: { // service
             width: 20,
             wrapWord: true,
             alignment: 'right',
           },
-          6: { // note
-            width: 80,
+          7: { // note
+            width: 70,
             wrapWord: true,
             alignment: 'left',
           }
