@@ -1,3 +1,12 @@
+## [0.6.4](https://github.com/Ephigenia/mite-cli/compare/v0.6.3...v0.6.4) (2018-11-05)
+
+
+### Bug Fixes
+
+* **list:** adds missing user column ([bae35b5](https://github.com/Ephigenia/mite-cli/commit/bae35b5))
+
+
+
 ## [0.6.3](https://github.com/Ephigenia/mite-cli/compare/v0.6.2...v0.6.3) (2018-11-02)
 
 
