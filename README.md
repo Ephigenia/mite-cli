@@ -44,6 +44,12 @@ Help message
 
     npm install -g mite-cli
 
+Or use it directly using `npx`:
+
+    npx mite-cli
+
+Please note that all examples in this README.md assume that you have installed mite-cli globally. If not, just replace the `mite` call with `npx mite-cli` and you’re fine.
+
 
 # Configuration
 
