@@ -18,7 +18,7 @@ module.exports = {
 
   note(note, stripNewLines = true,
     highlightJiraIdentifiers = true,
-    highlightNumeralHashtags = true,
+    highlightNumeralHashtags = true
   ) {
     let result = (note || '');
     if (stripNewLines) {
