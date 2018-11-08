@@ -117,6 +117,7 @@ const COLUMNS_OPTIONS = {
     width: 70,
     wrapWord: true,
     alignment: 'left',
+    format: formater.note,
   },
   project: {
     label: 'Project',

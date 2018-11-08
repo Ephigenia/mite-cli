@@ -15,7 +15,7 @@ Simple CLI tool for creating, listing, starting and stopping time tracking entri
 - Show, filter, group time entries to show reports for last month, current week etc.
 - List, sort, filter user accounts, customers, projects & services using variable columns and cli-tables, csv or tsv data
 - Delete single entries by id
-- Highlight JIRA identifiers in time entry notes
+- Highlight JIRA identifiers and github numeral hashtags in time entry’s notes
 
 Other ideas & planned features can be found in the [wiki](./wiki). If something doesn’t work please [create a new issue](https://github.com/Ephigenia/mite-cli/issues).
 
