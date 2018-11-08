@@ -4,6 +4,7 @@
 const program = require('commander')
 const chalk = require('chalk')
 const tableLib = require('table')
+const bluebird = require('bluebird');
 const table = tableLib.table;
 const miteApi = require('mite-api')
 
@@ -35,6 +36,138 @@ const GROUP_BY_OPTIONS = [
   'year',
 ];
 
+const COLUMNS_OPTIONS_DEFAULT = 'id,date,user,project,duration,revenue,service,note';
+const COLUMNS_OPTIONS = {
+  billable: {
+    label: 'billable',
+    attribute: 'billable',
+    format: (value) => {
+      return value ? 'yes' : 'no'
+    }
+  },
+  created: {
+    label: 'Created',
+    attribute: 'created_at',
+  },
+  customer: {
+    label: 'Customer',
+    attribute: 'customer_name',
+  },
+  customer_id: {
+    label: 'Customer ID',
+    attribute: 'customer_id',
+  },
+  date: {
+    label: 'Date',
+    attribute: 'date_at',
+    width: 10,
+    alignment: 'right'
+  },
+  duration: {
+    label: 'Duration',
+    attribute: 'minutes',
+    width: 10,
+    alignment: 'right',
+    format: (value, timeEntry) => {
+      if (timeEntry && timeEntry.tracking) {
+        value = timeEntry.tracking.minutes;
+      }
+      let duration = formater.minutesToDuration(value);
+      if (timeEntry && timeEntry.locked) {
+        duration = chalk.green('✔') + ' ' + duration;
+      }
+      if (timeEntry && timeEntry.tracking) {
+        duration = '▶ ' + duration;
+      }
+      return duration;
+    },
+    reducer: (sum, cur) => {
+      if (!sum) sum = 0;
+      return sum + cur.minutes;
+    }
+  },
+  hourly_rate: {
+    label: 'Rate',
+    attribute: 'hourly_rate',
+  },
+  id: {
+    label: 'ID',
+    attribute: 'id',
+    width: 10,
+    alignment: 'right',
+  },
+  locked: {
+    label: 'Locked',
+    attribute: 'locked',
+    format: (value) => {
+      return value ? 'yes' : 'no'
+    }
+  },
+  minutes: {
+    label: 'Minutes',
+    attribute: 'minutes',
+    reducer: (sum, cur) => {
+      return sum + cur.minutes;
+    }
+  },
+  note: {
+    label: 'Note',
+    attribute: 'note',
+    width: 70,
+    wrapWord: true,
+    alignment: 'left',
+  },
+  project: {
+    label: 'Project',
+    attribute: 'project_name',
+    width: 20,
+    alignment: 'right',
+    wrapWord: true,
+  },
+  project_id: {
+    label: 'Project ID',
+    attribute: 'project_id',
+  },
+  revenue: {
+    label: 'Revenue',
+    attribute: 'revenue',
+    width: 10,
+    alignment: 'right',
+    format: (value) => {
+      if (!value) {
+        return '-';
+      }
+      return formater.budget(BUDGET_TYPE.CENTS, value || 0);
+    },
+    reducer: (sum, cur) => {
+      if (!sum) sum = 0;
+      return sum + cur.minutes;
+    }
+  },
+  service: {
+    label: 'Service',
+    attribute: 'service_name',
+    width: 20,
+    alignment: 'right',
+  },
+  service_id: {
+    label: 'Service ID',
+    attribute: 'service_id',
+  },
+  updated: {
+    label: 'Updated',
+    attribute: 'updated',
+  },
+  user: {
+    attribute: 'user_name',
+    label: 'User',
+  },
+  user_id: {
+    label: 'User ID',
+    attribute: 'user_id',
+  },
+};
+
 // set a default period argument if not set
 if (!process.argv[2] || process.argv[2].substr(0, 1) === '-' && process.argv[2] !== '--help') {
   process.argv.splice(2, 0, 'today')
@@ -61,6 +194,13 @@ program
       }
       return val
     })
+  )
+  .option(
+    '--columns <columns>',
+    'custom list of columns to use in the output, pass in a comma-separated ' +
+    'list of attribute names: ' + Object.keys(COLUMNS_OPTIONS).join(', '),
+    (str) => str.split(',').filter(v => v).join(','),
+    COLUMNS_OPTIONS_DEFAULT
   )
   .option(
     '--project_id <project_id>',
@@ -140,190 +280,154 @@ program
     100,
     ((val) => parseInt(val, 10))
   )
-  .action((period) => {
-    const mite = miteApi(config.get())
-    const opts = {
-      at: period,
-      customer_id: program.customer_id,
-      limit: program.limit,
-      note: program.search,
-      project_id: program.project_id,
-      service_id: program.service_id,
-      group_by: program.group_by,
-      sort: program.sort,
-    }
+  .action(main)
+  .parse(process.argv)
 
-    if (program.user_id) {
-      opts.user_id = program.user_id;
-    }
 
-    if (program.from && program.to) {
-      opts.from = program.from;
-      opts.to = program.to;
-      delete opts.at;
-    }
+function main(period) {
+  const mite = miteApi(config.get())
 
-    if (typeof program.tracking === 'boolean') {
-      opts.tracking = program.tracking;
-    }
-    if (typeof program.billable === 'boolean') {
-      opts.billable = program.billable
-    }
+  const opts = {
+    at: period,
+    customer_id: program.customer_id,
+    limit: program.limit,
+    note: program.search,
+    project_id: program.project_id,
+    service_id: program.service_id,
+    group_by: program.group_by,
+    sort: program.sort,
+  }
 
-    mite.getTimeEntries(opts, (err, results) => {
-      if (err) {
-        throw err;
+  if (program.user_id) {
+    opts.user_id = program.user_id;
+  }
+
+  if (program.from && program.to) {
+    opts.from = program.from;
+    opts.to = program.to;
+    delete opts.at;
+  }
+
+  if (typeof program.tracking === 'boolean') {
+    opts.tracking = program.tracking;
+  }
+  if (typeof program.billable === 'boolean') {
+    opts.billable = program.billable
+  }
+
+  const columns = program.columns
+    .split(',')
+    .map(attrName => {
+      const columnDefinition = COLUMNS_OPTIONS[attrName];
+      if (!columnDefinition) {
+        console.error('Invalid column name "' + attrName + '"');
+        process.exit(2);
       }
+      return columnDefinition;
+    });
 
-      // decide wheter to output grouped report or single entry report
-      const groupedResults = results
-        .map((r) => r.time_entry_group)
-        .filter((v) => v);
-      if (groupedResults.length > 0) {
-        const tableData = groupedResults.map((groupedTimeEntry) => {
-          const row = [
-            groupedTimeEntry.year,
-            groupedTimeEntry.month,
-            groupedTimeEntry.week,
-            groupedTimeEntry.day,
-            groupedTimeEntry.customer_name || groupedTimeEntry.customer_id,
-            groupedTimeEntry.user_name,
-            groupedTimeEntry.project_name || groupedTimeEntry.project_id,
-            groupedTimeEntry.service_name || groupedTimeEntry.service_id,
-            formater.minutesToDuration(groupedTimeEntry.minutes || 0),
-            groupedTimeEntry.revenue === null ? '-' : formater.budget(BUDGET_TYPE.CENTS, groupedTimeEntry.revenue || 0),
-          ]
-          .filter((v) => (typeof v !== 'undefined'));
-          return row;
-        });
+  mite.getTimeEntries(opts, (err, results) => {
+    if (err) {
+      throw err;
+    }
 
-        const columnCount = tableData[0].length;
+    const timeEntries = results.map(data => data.time_entry);
+    const timeEntryGroups = results.map(data => data.time_entry_group);
 
-        // add one last row which contains minutes & revenue sums
-        const footerRow = new Array(columnCount);
-        const revenueSum = groupedResults.reduce((v, a) => {
-          return v + a.revenue || 0;
-        }, 0);
-        footerRow[columnCount - 1] = formater.budget(BUDGET_TYPE.CENTS, revenueSum || 0);
-        const minutesSum = groupedResults.reduce((v, a) => {
-          return v + a.minutes || 0;
-        }, 0);
-        footerRow[columnCount - 2] = formater.minutesToDuration(minutesSum);
-        tableData.push(footerRow.map(v => chalk.yellow(v)));
+    // decide wheter to output grouped report or single entry report
+    if (timeEntryGroups.length > 0) {
+      const tableData = timeEntryGroups.map((groupedTimeEntry) => {
+        return [
+          groupedTimeEntry.year,
+          groupedTimeEntry.month,
+          groupedTimeEntry.week,
+          groupedTimeEntry.day,
+          groupedTimeEntry.customer_name || groupedTimeEntry.customer_id,
+          groupedTimeEntry.user_name,
+          groupedTimeEntry.project_name || groupedTimeEntry.project_id,
+          groupedTimeEntry.service_name || groupedTimeEntry.service_id,
+          formater.minutesToDuration(groupedTimeEntry.minutes || 0),
+          groupedTimeEntry.revenue === null ? '-' : formater.budget(BUDGET_TYPE.CENTS, groupedTimeEntry.revenue || 0),
+        ].filter((v) => (typeof v !== 'undefined'));
+      });
 
-        const tableConfig = {
-          border: tableLib.getBorderCharacters('norc'),
-          columns: {}
-        };
-        tableConfig.columns[columnCount - 2] = tableConfig.columns[columnCount - 1] = {
-          alignment: 'right'
-        };
+      const columnCount = tableData[0].length;
 
-        console.log(table(tableData, tableConfig));
-        process.exit(0);
-      } // end grouped reports
-
-      const tableData = results.map((data) => {
-        const timeEntry = data.time_entry;
-        let minutes = timeEntry.minutes
-        // detect time entries that are tracked (running) and add an indicator
-        // to the table
-        if (timeEntry.tracking) {
-          minutes = timeEntry.tracking.minutes;
-        }
-        let duration = formater.minutesToDuration(minutes)
-        // add a lock symbol to the duration when the time entry cannot be edited
-        if (timeEntry.locked) {
-          duration = chalk.green('✔') + ' ' + duration;
-        }
-        if (timeEntry.tracking) {
-          duration = '▶ ' + duration;
-        }
-        let revenue = formater.budget(BUDGET_TYPE.CENTS, timeEntry.revenue || 0);
-        if (!timeEntry.revenue) {
-          revenue = '-';
-        }
-        let row = [
-          timeEntry.id,
-          timeEntry.date_at,
-          timeEntry.user_name,
-          timeEntry.project_name || '-',
-          duration,
-          revenue,
-          timeEntry.service_name || '-',
-          formater.note(timeEntry.note)
-        ]
-        if (timeEntry.tracking) {
-          row = row.map((v) => chalk.yellow(v))
-        }
-        if (timeEntry.locked) {
-          row = row.map((v) => chalk.grey(v))
-        }
-        return row;
-      })
-
-      const minutesTotal = results.reduce((sum, cur) => {
-        return sum + cur.time_entry.minutes;
-      }, 0)
-      const revenueTotal = results.reduce((sum, cur) => {
-        return sum + cur.time_entry.revenue;
-      }, 0)
-
-      tableData.unshift([
-        'id', 'date', 'user', 'project', 'duration', 'revenue', 'service', 'note'
-      ].map(function(v) { return chalk.bold(v); }))
-      // sum up everything as last row
-      tableData.push([
-        null,
-        null,
-        null,
-        null,
-        chalk.bold(formater.minutesToDuration(minutesTotal)),
-        chalk.bold(formater.budget(BUDGET_TYPE.CENTS, revenueTotal)),
-        null,
-        null,
-      ])
+      // add one last row which contains minutes & revenue sums
+      const footerRow = new Array(columnCount);
+      const revenueSum = timeEntryGroups.reduce((v, a) => {
+        return v + a.revenue || 0;
+      }, 0);
+      footerRow[columnCount - 1] = formater.budget(BUDGET_TYPE.CENTS, revenueSum || 0);
+      const minutesSum = timeEntryGroups.reduce((v, a) => {
+        return v + a.minutes || 0;
+      }, 0);
+      footerRow[columnCount - 2] = formater.minutesToDuration(minutesSum);
+      tableData.push(footerRow.map(v => chalk.yellow(v)));
 
       const tableConfig = {
         border: tableLib.getBorderCharacters('norc'),
-        columns: {
-          0: { // id
-            width: 10,
-            alignment: 'right',
-          },
-          1: { // date
-            width: 10,
-            alignment: 'right',
-          },
-          // user
-          // no-definition
-          3: { // project
-            width: 20,
-            alignment: 'right',
-            wrapWord: true,
-          },
-          4: { // duration
-            width: 10,
-            alignment: 'right',
-          },
-          5: { // revenue
-            width: 10,
-            alignment: 'right',
-          },
-          6: { // service
-            width: 20,
-            wrapWord: true,
-            alignment: 'right',
-          },
-          7: { // note
-            width: 70,
-            wrapWord: true,
-            alignment: 'left',
-          }
-        }
-      }
-      console.log(table(tableData, tableConfig))
-    }) // get time entries
+        columns: {}
+      };
+      tableConfig.columns[columnCount - 2] = tableConfig.columns[columnCount - 1] = {
+        alignment: 'right'
+      };
 
-  })
-  .parse(process.argv)
+      console.log(table(tableData, tableConfig));
+      process.exit(0);
+    } // end grouped reports
+
+    const tableData = timeEntries.map((timeEntry) => {
+      let row = columns.map(columnDefinition => {
+        const value = timeEntry[columnDefinition.attribute];
+        if (columnDefinition.format) {
+          return columnDefinition.format(value, timeEntry);
+        }
+        return value;
+      });
+
+      // colorize the whole row when it’s actively tracked or archived
+      if (timeEntry.tracking) {
+        row = row.map(v => chalk.yellow(v));
+      }
+      if (timeEntry.locked) {
+        row = row.map(v => chalk.grey(v));
+      }
+
+      return row;
+    })
+
+    // Table footer
+    // add table footer if any of the table columns has a reducer
+    if (columns.find(c => c.reducer)) {
+      tableData.push(
+        columns
+          .map(columnDefinition => {
+            let columnSum;
+            if (columnDefinition.reducer) {
+              columnSum = timeEntries.reduce(columnDefinition.reducer, null);
+            }
+            if (columnSum && columnDefinition.format) {
+              return columnDefinition.format(columnSum);
+            }
+            return columnSum || '';
+          })
+          .map(v => chalk.bold(v))
+      );
+    }
+
+    // Table header
+    tableData.unshift(
+      columns
+        .map(columnDefinition => columnDefinition.label)
+        .map(v => chalk.bold(v))
+    );
+
+    const tableConfig = {
+      border: tableLib.getBorderCharacters('norc'),
+      columns: columns
+    };
+
+    console.log(table(tableData, tableConfig))
+  }) // get time entries
+}
