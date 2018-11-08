@@ -4,12 +4,11 @@
 const program = require('commander');
 const miteApi = require('mite-api');
 const chalk = require('chalk');
-const tableLib = require('table')
-const table = tableLib.table;
 const async = require('async');
 
 const pkg = require('./../package.json');
 const config = require('./config.js');
+const DataOutput = require('./lib/data-output');
 
 const SORT_OPTIONS = [
   'id',
@@ -77,6 +76,11 @@ program
       return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
     }),
     null
+  )
+  .option(
+    '-f, --format <format>',
+    'defines the output format, valid options are ' + DataOutput.FORMATS.join(', '),
+    'table',
   )
   .parse(process.argv);
 
@@ -177,22 +181,19 @@ async.parallel([
     'note',
   ].map(v => chalk.bold(v)));
 
-  const tableConfig = {
-    border: tableLib.getBorderCharacters('norc'),
-    columns: {
-      0: {
-        alignment: 'right',
-      },
-      1: {
-        width: 10,
-        alignment: 'right',
-      },
-      5: {
-        width: 50,
-        alignment: 'left',
-      }
+  const columns = {
+    0: {
+      alignment: 'right',
+    },
+    1: {
+      width: 10,
+      alignment: 'right',
+    },
+    5: {
+      width: 50,
+      alignment: 'left',
     }
   };
-  console.log(table(tableData, tableConfig));
+  console.log(DataOutput.formatData(tableData, program.format, columns));
 
 });

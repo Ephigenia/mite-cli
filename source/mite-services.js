@@ -6,9 +6,9 @@ const miteApi = require('mite-api');
 const chalk = require('chalk');
 const async = require('async');
 
-const DataOutput = require('./lib/data-output');
 const pkg = require('./../package.json');
 const config = require('./config.js');
+const DataOutput = require('./lib/data-output');
 const formater = require('./lib/formater');
 const BUDGET_TYPE = formater.BUDGET_TYPE;
 const SORT_OPTIONS = [
