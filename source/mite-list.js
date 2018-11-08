@@ -232,7 +232,7 @@ program
       }
       return value;
     },
-    'name' // default sort
+    SORT_OPTIONS_DEFAULT // default sort
   )
   .option(
     '--billable <true|false>',
