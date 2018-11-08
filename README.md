@@ -13,7 +13,7 @@ Simple CLI tool for creating, listing, starting and stopping time tracking entri
 - Create and start new Entries with interactive survey-like cli interface
 - Edit the currently running entries text for fast updating the work log
 - Show, filter, group time entries to show reports for last month, current week etc.
-- List, sort, filter user accounts, customers, projects & services using variable columns and cli-tables
+- List, sort, filter user accounts, customers, projects & services using variable columns and cli-tables, csv or tsv data
 - Delete single entries by id
 - Highlight JIRA identifiers in time entry notes
 
@@ -158,6 +158,32 @@ The following example will only show the user and his durations from last week i
     ├────────────────┼────────────┤
     │                │       2:58 │
     └────────────────┴────────────┘
+
+## Alternate Output formats
+
+The program is designed to work well and look well in the cli and will show the results in tabular style using box drawing characters. This is not easy to use in further processing. That’s where the other output formats come in handy:
+
+    mite list last_week --format=csv --columns=user,id
+
+    Date,User,Duration
+    2018-11-02,Marcel Eichner,1:10
+    2018-11-01,Marcel Eichner,2:30
+    2018-10-31,Marcel Eichner,✔ 2:47
+    2018-10-30,Marcel Eichner,✔ 0:43
+    2018-10-30,Marcel Eichner,✔ 0:10
+    2018-10-30,Marcel Eichner,✔ 0:09
+    2018-10-29,Marcel Eichner,✔ 1:35
+    2018-10-29,Marcel Eichner,✔ 1:21
+    ,,10:25
+
+The following formats are supported:
+
+- table
+- csv
+- tsv
+
+This makes it very easy to further process the data, transform it into a HTML page or PDF.
+
 
 ## Grouped lists
 
