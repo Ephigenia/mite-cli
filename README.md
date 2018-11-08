@@ -136,6 +136,30 @@ Or search for specific entries in all time-entries from the current year
 
 There are also a bunch of other options available, just check `mite list --help`.
 
+### Columns
+
+The list command will by default list a set of default columns. You can specify which columns should be shown using the `--columns` option.
+
+The following example will only show the user and his durations from last week including the sum of the durations:
+
+    mite list last_week --billable false --columns=user,duration
+    
+    ┌────────────────┬────────────┐
+    │ User           │   Duration │
+    ├────────────────┼────────────┤
+    │ Marcel Eichner │       0:45 │
+    ├────────────────┼────────────┤
+    │ Marcel Eichner │       0:20 │
+    ├────────────────┼────────────┤
+    │ Marcel Eichner │     ✔ 0:13 │
+    ├────────────────┼────────────┤
+    │ Marcel Eichner │     ✔ 1:34 │
+    ├────────────────┼────────────┤
+    │ Marcel Eichner │     ✔ 0:06 │
+    ├────────────────┼────────────┤
+    │                │       2:58 │
+    └────────────────┴────────────┘
+
 ## Grouped lists
 
 For getting a rough overview of the monthly project or services distribution you can use the `--group_by` argument which will group the time entries. This could also be helpful for creating bills.

@@ -331,8 +331,8 @@ function main(period) {
       throw err;
     }
 
-    const timeEntries = results.map(data => data.time_entry);
-    const timeEntryGroups = results.map(data => data.time_entry_group);
+    const timeEntries = results.map(data => data.time_entry).filter(v => v);
+    const timeEntryGroups = results.map(data => data.time_entry_group).filter(v => v);
 
     // decide wheter to output grouped report or single entry report
     if (timeEntryGroups.length > 0) {
