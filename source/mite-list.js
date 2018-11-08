@@ -2,15 +2,14 @@
 'use strict'
 
 const program = require('commander')
+const assert = require('assert');
 const chalk = require('chalk')
-const tableLib = require('table')
-const bluebird = require('bluebird');
-const table = tableLib.table;
 const miteApi = require('mite-api')
 
 const pkg = require('./../package.json')
 const config = require('./config.js')
 const formater = require('./lib/formater');
+const DataOutput = require('./lib/data-output');
 
 const SORT_OPTIONS = [
   'date',
@@ -35,6 +34,8 @@ const GROUP_BY_OPTIONS = [
   'month',
   'year',
 ];
+
+const OUTPUT_FORMAT_OPTIONS = ['table', 'csv', 'tsv'];
 
 const COLUMNS_OPTIONS_DEFAULT = 'id,date,user,project,duration,revenue,service,note';
 const COLUMNS_OPTIONS = {
@@ -280,6 +281,11 @@ program
     100,
     ((val) => parseInt(val, 10))
   )
+  .option(
+    '-f, --format <format>',
+    'defines the output format, valid options are ' + OUTPUT_FORMAT_OPTIONS.join(', '),
+    'table',
+  )
   .action(main)
   .parse(process.argv)
 
@@ -314,6 +320,8 @@ function main(period) {
   if (typeof program.billable === 'boolean') {
     opts.billable = program.billable
   }
+
+
 
   const columns = program.columns
     .split(',')
@@ -365,15 +373,7 @@ function main(period) {
       footerRow[columnCount - 2] = formater.minutesToDuration(minutesSum);
       tableData.push(footerRow.map(v => chalk.yellow(v)));
 
-      const tableConfig = {
-        border: tableLib.getBorderCharacters('norc'),
-        columns: {}
-      };
-      tableConfig.columns[columnCount - 2] = tableConfig.columns[columnCount - 1] = {
-        alignment: 'right'
-      };
-
-      console.log(table(tableData, tableConfig));
+      console.log(DataOutput.formatData(tableData, program.format));
       process.exit(0);
     } // end grouped reports
 
@@ -423,11 +423,6 @@ function main(period) {
         .map(v => chalk.bold(v))
     );
 
-    const tableConfig = {
-      border: tableLib.getBorderCharacters('norc'),
-      columns: columns
-    };
-
-    console.log(table(tableData, tableConfig))
+    console.log(DataOutput.formatData(tableData, program.format, columns));
   }) // get time entries
 }

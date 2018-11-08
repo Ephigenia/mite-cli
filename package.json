@@ -65,6 +65,7 @@
     "bluebird": "^3.5.3",
     "chalk": "^2.4.1",
     "commander": "^2.19.0",
+    "csv-string": "^3.1.5",
     "external-editor": "^3.0.3",
     "inquirer": "^6.2.0",
     "mite-api": "marcel-devdude/mite-api#master",
