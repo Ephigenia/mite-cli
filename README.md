@@ -178,9 +178,10 @@ The program is designed to work well and look well in the cli and will show the 
 
 The following formats are supported:
 
-- table
-- csv
-- tsv
+- csv (comma-seperated)
+- md (markdown)
+- table (cli-table)
+- tsv (tab-separated)
 
 This makes it very easy to further process the data, transform it into a HTML page or PDF.
 

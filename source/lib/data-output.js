@@ -4,11 +4,13 @@ const assert = require('assert');
 const csvString = require('csv-string');
 const tableLib = require('table')
 const table = tableLib.table;
+const markdownTable = require('markdown-table');
 
 const FORMAT = {
   CSV: 'csv',
   TSV: 'tsv',
-  TABLE: 'table'
+  TABLE: 'table',
+  MD: 'md',
 };
 const FORMATS = Object.values(FORMAT);
 
@@ -20,10 +22,10 @@ function formatData(data, format, columns) {
   );
 
   switch(format) {
-    case 'tsv':
-      return csvString.stringify(data, "\t");
     case 'csv':
       return csvString.stringify(data);
+    case 'md':
+      return markdownTable(data);
     case 'table': {
       const tableConfig = {
         border: tableLib.getBorderCharacters('norc'),
@@ -31,6 +33,8 @@ function formatData(data, format, columns) {
       };
       return table(data, tableConfig);
     }
+    case 'tsv':
+      return csvString.stringify(data, "\t");
     default:
       throw new Error('Unknown Format');
   }
