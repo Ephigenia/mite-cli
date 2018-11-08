@@ -62,7 +62,7 @@
   },
   "dependencies": {
     "async": "^2.6.1",
-    "bluebird": "^3.5.2",
+    "bluebird": "^3.5.3",
     "chalk": "^2.4.1",
     "commander": "^2.19.0",
     "external-editor": "^3.0.3",
