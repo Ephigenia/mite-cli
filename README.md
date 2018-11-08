@@ -8,7 +8,18 @@ Simple CLI tool for creating, listing, starting and stopping time tracking entri
 [![Maintainability](https://api.codeclimate.com/v1/badges/791e0126615bcd34a0e5/maintainability)](https://codeclimate.com/github/Ephigenia/mite-cli/maintainability)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FEphigenia%2Fmite-cli.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FEphigenia%2Fmite-cli?ref=badge_shield)
 
-Help message
+# Features
+
+- Create and start new Entries with interactive survey-like cli interface
+- Edit the currently running entries text for fast updating the work log
+- Show, filter, group time entries to show reports for last month, current week etc.
+- List, sort, filter user accounts, customers, projects & services using variable columns and cli-tables
+- Delete single entries by id
+- Highlight JIRA identifiers in time entry notes
+
+Other ideas & planned features can be found in the [wiki](./wiki). If something doesn’t work please [create a new issue](https://github.com/Ephigenia/mite-cli/issues).
+
+# Help-Message
 
 ```
     Usage: mite [options] [command]
@@ -61,18 +72,6 @@ Before you can start you’ll have to setup your mite account and api key which 
 The configuration is stored in a file which is only writable and readable by you in your home directory: `~/.mite-cli.json`.
 
 In case you want to use multiple mite accounts please open up a [change request](https://github.com/Ephigenia/mite-cli/issues)
-
-
-# Features
-
-- Create and start new Entries with interactive survey-like cli interface
-- Edit the currently running entries text for fast updating the work log
-- Show, filter, group time entries to show reports for last month, current week etc.
-- List, sort, filter user accounts, customers, projects & services
-- Delete single entries by id
-- Highlight JIRA identifiers in time entry notes
-
-Other ideas & planned features can be found in the [wiki](./wiki). If something doesn’t work please [create a new issue](https://github.com/Ephigenia/mite-cli/issues).
 
 
 # Usage
@@ -143,7 +142,7 @@ The list command will by default list a set of default columns. You can specify 
 The following example will only show the user and his durations from last week including the sum of the durations:
 
     mite list last_week --billable false --columns=user,duration
-    
+
     ┌────────────────┬────────────┐
     │ User           │   Duration │
     ├────────────────┼────────────┤
