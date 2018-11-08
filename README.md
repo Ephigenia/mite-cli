@@ -185,6 +185,9 @@ The following formats are supported:
 
 This makes it very easy to further process the data, transform it into a HTML page or PDF.
 
+Creating a time-sheet for your clients can be done like this:
+
+    mite list last_month --format=csv --columns=date,service,note,duration
 
 ## Grouped lists
 
