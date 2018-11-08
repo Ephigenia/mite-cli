@@ -283,7 +283,7 @@ program
   )
   .option(
     '-f, --format <format>',
-    'defines the output format, valid options are ' + OUTPUT_FORMAT_OPTIONS.join(', '),
+    'defines the output format, valid options are ' + DataOutput.FORMATS.join(', '),
     'table',
   )
   .action(main)

@@ -4,8 +4,7 @@
 const program = require('commander')
 const chalk = require('chalk')
 const miteApi = require('mite-api')
-const tableLib = require('table')
-const table = tableLib.table;
+const DataOutput = require('./lib/data-output');
 
 const pkg = require('./../package.json')
 const config = require('./config.js')
@@ -27,6 +26,11 @@ program
   .option(
     '--customer_id <customer_id>',
     'customer id, can be either a single ID, or multiple comma-separated IDs.'
+  )
+  .option(
+    '-f, --format <format>',
+    'defines the output format, valid options are ' + DataOutput.FORMATS.join(', '),
+    'table',
   )
   .description('show amount of used monthly budgets with time and money')
   .action((period) => {
@@ -86,34 +90,31 @@ program
         formater.budget(BUDGET_TYPE.CENTS, revenueTotal)
       ].map(s => chalk.bold(s)));
 
-      const tableConfig = {
-        border: tableLib.getBorderCharacters('norc'),
-        columns: {
-          0: {
-            width: 10,
-            alignment: 'right',
-          },
-          1: { // project
-            width: 20,
-            wrapWord: true,
-            alignment: 'right',
-          },
-          2: { // duration
-            width: 10,
-            alignment: 'right',
-          },
-          3: { // days
-            width: 10,
-            alignment: 'right',
-          },
-          4: {
-            width: 10,
-            alignment: 'right',
-          },
+      const columns = {
+        0: {
+          width: 10,
+          alignment: 'right',
+        },
+        1: { // project
+          width: 20,
+          wrapWord: true,
+          alignment: 'right',
+        },
+        2: { // duration
+          width: 10,
+          alignment: 'right',
+        },
+        3: { // days
+          width: 10,
+          alignment: 'right',
+        },
+        4: {
+          width: 10,
+          alignment: 'right',
         }
       }
 
-      console.log(table(tableData, tableConfig))
+      console.log(DataOutput.formatData(tableData, program.format, columns));
     });
 
   })

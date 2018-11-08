@@ -180,5 +180,6 @@ async.parallel([
       }
     }
   };
+
   console.log(table(tableData, tableConfig));
 });
