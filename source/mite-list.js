@@ -143,7 +143,7 @@ const COLUMNS_OPTIONS = {
     },
     reducer: (sum, cur) => {
       if (!sum) sum = 0;
-      return sum + cur.minutes;
+      return sum + cur.revenue;
     }
   },
   service: {
@@ -285,7 +285,7 @@ program
   .option(
     '-f, --format <format>',
     'defines the output format, valid options are ' + DataOutput.FORMATS.join(', '),
-    'table',
+    'table'
   )
   .action(main)
   .parse(process.argv)
