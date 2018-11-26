@@ -2,7 +2,6 @@
 'use strict'
 
 const program = require('commander')
-const assert = require('assert');
 const chalk = require('chalk')
 const miteApi = require('mite-api')
 
@@ -34,8 +33,6 @@ const GROUP_BY_OPTIONS = [
   'month',
   'year',
 ];
-
-const OUTPUT_FORMAT_OPTIONS = ['table', 'csv', 'tsv'];
 
 const COLUMNS_OPTIONS_DEFAULT = 'id,date,user,project,duration,revenue,service,note';
 const COLUMNS_OPTIONS = {
