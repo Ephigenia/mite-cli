@@ -76,24 +76,6 @@ In case you want to use multiple mite accounts please open up a [change request]
 
 # Usage
 
-## Budgets
-
-By default this command will list the time entries duration and revenue sums grouped by the active projects during the current month (`this_month`). You can specify other time-frames as second parameter:
-
-    mite budgets last_month
-
-    ┌─────────┬──────────┬──────────┬──────┬─────────┐
-    │      id │ project  │ duration | days │ revenue │
-    ├─────────┼──────────┼──────────┼──────┼─────────┤
-    │ 1234567 │ abc      │     8:00 | 1.00 │    5.33 │
-    ├─────────┼──────────┼──────────┼──────┼─────────┤
-    │ 1234568 │ mite-cli │     1:27 | 0.18 │       - │
-    ├─────────┼──────────┼──────────┼──────┼─────────┤
-    │         │          │     8:27 │ 1.13 │    5.33 │
-    └─────────┴──────────┴──────────┴──────┴─────────┘
-
-The supported time-frames are documented in the [Time Entries API](https://mite.yo.lk/en/api/time-entries.html)
-
 ## List
 
 By default lists today’s time-entries including id, date, project name, revenue, service and the entries note.
@@ -228,6 +210,10 @@ Or even more groups which also allows splitting between customers:
     ├─────────────────┼───────────────────┼────────┼────────────┤
     │                 │                   │ 138:13 │  2635.15 € │
     └─────────────────┴───────────────────┴────────┴────────────┘
+
+## Budgets
+
+The budgets command was removed cause the same result can be archived by calling: `mite list this_month --group_by=project`
 
 ## New
 
