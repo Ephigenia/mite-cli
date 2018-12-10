@@ -73,7 +73,7 @@ program
   .option(
     '-f, --format <format>',
     'defines the output format, valid options are ' + DataOutput.FORMATS.join(', '),
-    'table',
+    'table'
   )
   .parse(process.argv);
 
