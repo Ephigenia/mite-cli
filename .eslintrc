@@ -5,13 +5,14 @@
     "es6": true
   },
   "parserOptions": {
-    "ecmaVersion": 6,
+    "ecmaVersion": 2018,
     "sourceType": "module"
   },
   "extends": [
     "eslint:recommended"
   ],
   "rules": {
-    "no-console": 0
+    "no-console": 0,
+    "semi": [2, "always"]
   }
 }

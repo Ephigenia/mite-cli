@@ -22,19 +22,19 @@ module.exports = {
   ) {
     let result = (note || '');
     if (stripNewLines) {
-      result = result.replace(/\r?\n/g, ' ')
+      result = result.replace(/\r?\n/g, ' ');
     }
     if (highlightJiraIdentifiers) {
       let matches = result.match(JIRA_IDENTIFIERS_REGEXP) || [];
       matches.forEach((str) => {
         result = result.replace(str, chalk.bold(chalk.blue(str)));
-      })
+      });
     }
     if (highlightNumeralHashtags) {
       let matches = result.match(HASHTAG_NUMERAL_REGEXP) || [];
       matches.forEach((str) => {
         result = result.replace(str, chalk.bold(chalk.blue(str)));
-      })
+      });
     }
     return result;
   },
@@ -51,10 +51,10 @@ module.exports = {
     } else if (!isFinite(minutes)) {
       throw new Error('Expecte minutes not to be a finite value.');
     }
-    let hours = Math.floor(minutes / 60)
+    let hours = Math.floor(minutes / 60);
     let remainingMinutes = Math.round(minutes - hours * 60);
     if (String(remainingMinutes).length === 1) {
-      return hours + ':0' + remainingMinutes
+      return hours + ':0' + remainingMinutes;
     }
     return hours + ':' + remainingMinutes;
   },
@@ -90,4 +90,4 @@ module.exports = {
         throw new Error('Unknown budget format type: "' + type + '"');
     }
   }
-}
+};

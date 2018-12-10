@@ -2,7 +2,7 @@
 
 const assert = require('assert');
 const csvString = require('csv-string');
-const tableLib = require('table')
+const tableLib = require('table');
 const table = tableLib.table;
 const markdownTable = require('markdown-table');
 

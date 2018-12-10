@@ -15,7 +15,7 @@ program
   .description('set a configuration variable')
   .action((key, value) => {
     config.set(key, value)
-    config.save(function(err) {
+    config.save((err) => {
       if (err) {
         console.error(err.message)
         process.exit(1)

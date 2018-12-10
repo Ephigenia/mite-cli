@@ -40,12 +40,12 @@ describe('formater', () => {
       expect(formater.number(2.128391, 4)).to.equal('2.1284');
     });
     it('throws an exception when the first argument is not a number', () => {
-      expect(() => { formater.number(null) }).to.throw(TypeError);
-      expect(() => { formater.number(8/0) }).to.throw(Error);
-      expect(() => { formater.number(parseInt('a')) }).to.throw(Error);
-      expect(() => { formater.number(Infinity) }).to.throw(Error);
+      expect(() => formater.number(null)).to.throw(TypeError);
+      expect(() => formater.number(8/0)).to.throw(Error);
+      expect(() => formater.number(parseInt('a'))).to.throw(Error);
+      expect(() => formater.number(Infinity)).to.throw(Error);
     });
-  }) // number
+  }); // number
 
   describe('minutesToWorkDays', () => {
     [
@@ -93,12 +93,12 @@ describe('formater', () => {
         expect(() => {
           formater.format('something', 1238);
         }).to.throw(Error);
-      })
+      });
     });
     describe('minutes & minutes_per_month', () => {
       it('returns durations', () => {
         expect(formater.budget(BUDGET_TYPE.MINUTES, 60)).to.equal('1:00 h');
-      })
+      });
     });
     describe('cents per month', () => {
       it('adds €/m', () => {
