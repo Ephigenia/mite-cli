@@ -1,3 +1,26 @@
+# [0.7.0](https://github.com/Ephigenia/mite-cli/compare/v0.6.4...v0.7.0) (2018-12-14)
+
+
+### Bug Fixes
+
+* **list:** correct revenue reduction for correct sum ([6f24c46](https://github.com/Ephigenia/mite-cli/commit/6f24c46))
+* **list:** default sort option using constant ([e833a2d](https://github.com/Ephigenia/mite-cli/commit/e833a2d))
+* wrongly increased version number ([106a152](https://github.com/Ephigenia/mite-cli/commit/106a152))
+
+
+### Features
+
+* **budgets:** adds format option ([831be4b](https://github.com/Ephigenia/mite-cli/commit/831be4b))
+* **list:** adds markdown table output ([cc7f93c](https://github.com/Ephigenia/mite-cli/commit/cc7f93c))
+* **list:** adds optional csv, tsv or table output format ([0c76b6f](https://github.com/Ephigenia/mite-cli/commit/0c76b6f))
+* **list:** highlight numeral hashtags (github) ([921bba3](https://github.com/Ephigenia/mite-cli/commit/921bba3))
+* **list:** option to define the columns shown ([c3e9085](https://github.com/Ephigenia/mite-cli/commit/c3e9085))
+* **projects:** adds format option ([85d4e81](https://github.com/Ephigenia/mite-cli/commit/85d4e81))
+* **services:** adds format option ([db474cd](https://github.com/Ephigenia/mite-cli/commit/db474cd))
+* **user:** adds format option ([f180ea7](https://github.com/Ephigenia/mite-cli/commit/f180ea7))
+
+
+
 ## [0.6.4](https://github.com/Ephigenia/mite-cli/compare/v0.6.3...v0.6.4) (2018-11-05)
 
 
