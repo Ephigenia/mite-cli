@@ -36,7 +36,6 @@ Other ideas & planned features can be found in the [wiki](./wiki). If something 
     Commands:
 
       amend|reword       edit the text for a specific time entry or the currently runnning entry
-      budgets            list money and time budgets for current month
       config             show or set configuration settings
       delete|rm          delete a specific time entry
       list|st            list time entries
