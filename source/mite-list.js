@@ -34,7 +34,9 @@ const GROUP_BY_OPTIONS = [
   'year',
 ];
 
-const COLUMNS_OPTIONS_DEFAULT = 'id,date,user,project,duration,revenue,service,note';
+const COLUMNS_DEFAULT = 'id,date,user,project,duration,revenue,service,note';
+const COLUMNS_CONFIG = config.get().listColumns
+const COLUMNS_OPTIONS_DEFAULT = !!COLUMNS_CONFIG ? COLUMNS_CONFIG : COLUMNS_DEFAULT;
 const COLUMNS_OPTIONS = {
   billable: {
     label: 'billable',
