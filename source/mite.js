@@ -18,6 +18,7 @@ program
   .alias('ls')
   .alias('status')
   .alias('st')
+  .command('book', 'create a new time entry from command line parameters')
   .command('new', 'create a new time entry')
   .alias('create')
   .command('open', 'open the given time entry in browser')

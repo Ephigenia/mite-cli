@@ -14,7 +14,7 @@ const miteTracker = require('./lib/mite-tracker')(config.get())
 
 program
   .version(pkg.version)
-  .description('interactively create a new time entry')
+  .description('book a new time entry via command line')
   .arguments('<note>')
   .action((note) => {
     main(note);
