@@ -14,15 +14,15 @@ const miteTracker = require('./lib/mite-tracker')(config.get())
 
 program
   .version(pkg.version)
-  .description('interactively create a new time entry')
-  .arguments('<note>')
-  .action((note) => {
-    main(note);
+  .description('Create a new time entry. If only [note] is given there will be an interactive mode. Otherwise all parameters except date must be given.')
+  .arguments('<note> [project] [service] [minutes] [date]')
+  .action((note, project, service, minutes, date) => {
+    main(note, project, service, minutes, date);
   })
   .parse(process.argv);
 
-if (process.argv.length <= 2) {
-  main(null);
+if (process.argv.length < 3 || (process.argv.length > 3 && process.argv.length < 6) || process.argv.length > 7)  {
+  program.help();
 }
 
 function getProjectChoices() {
@@ -66,44 +66,93 @@ function getServiceChoices() {
     });
 }
 
-function main(note) {
+function interactiveMode(note) {
+    return Promise.all([
+      getProjectChoices(),
+      getServiceChoices(),
+    ]).then(([projectChoices, serviceChoices]) => {
+      return [
+        {
+          type: 'list',
+          name: 'project_id',
+          message: 'Choose Project',
+          choices: projectChoices
+        },
+        {
+          type: 'input',
+          name: 'note',
+          message: 'What was done?',
+          when: !note,
+        },
+        {
+          type: 'input',
+          name: 'minutes',
+          message: 'How long did it take in minutes?'
+        },
+        {
+          type: 'list',
+          name: 'service_id',
+          message: 'What service?',
+          choices: serviceChoices,
+        },
+        {
+          type: 'input',
+          name: 'date_at',
+          message: 'Date?',
+          default: (new Date()).toISOString().slice(0,10)
+        }
+      ]
+    })
+    .then((questions) => inquirer.prompt(questions));
+}
+
+function dumpNames(objects, arg, name) {
+ console.log("Found multiple matches for "+name+" <"+arg+">:");
+ console.log("---------------------------------------------------------------");
+ objects.forEach(current => console.log(current.name));
+ console.log("---------------------------------------------------------------");
+ console.log("Please be more precise!\n");
+}
+
+function checkResults(objects, arg, name) {
+  if (objects.length > 1) {
+    console.log("Found multiple matches for "+name+" <"+arg+">:");  
+    console.log("---------------------------------------------------------------");
+	objects.forEach(current => console.log(current.name));
+	console.log("---------------------------------------------------------------");
+    console.log("Please be more precise!\n");
+    process.exit(1);
+  } else if (objects.length == 0) {
+	console.log("No match found for "+name+" <"+arg+">:");
+	process.exit(1);
+  }
+}
+
+function cliMode(note, project, service, minutes, date) {
   return Promise.all([
-    getProjectChoices(),
-    getServiceChoices(),
-  ]).then(([projectChoices, serviceChoices]) => {
-    return [
-      {
-        type: 'list',
-        name: 'project_id',
-        message: 'Choose Project',
-        choices: projectChoices
-      },
-      {
-        type: 'input',
-        name: 'note',
-        message: 'What was done?',
-        when: !note,
-      },
-      {
-        type: 'input',
-        name: 'minutes',
-        message: 'How long did it take in minutes?'
-      },
-      {
-        type: 'list',
-        name: 'service_id',
-        message: 'What service?',
-        choices: serviceChoices,
-      },
-      {
-        type: 'input',
-        name: 'date_at',
-        message: 'Date?',
-        default: (new Date()).toISOString().slice(0,10)
-      }
-    ]
-  })
-  .then((questions) => inquirer.prompt(questions))
+    getProjectChoices(project),
+    getServiceChoices(service),
+  ]).then(([projects, services]) => {
+	projects = projects.filter(p => {
+      return (p.name && (p.name.toUpperCase().indexOf(project.toUpperCase()) > -1));
+    });
+	
+	checkResults(projects, project, "project");
+	
+	services = services.filter(s => {
+	  return (s.name && (s.name.toUpperCase().indexOf(service.toUpperCase()) > -1));
+	 });
+
+ 	checkResults(services, service, "service");
+	
+    let entry = {project_id: projects[0].value, note: note, minutes: minutes, service_id: services[0].value};
+    entry.date_at = date || (new Date()).toISOString().slice(0,10); 
+    return entry;
+  });
+}
+
+function main(note, project, service, minutes, date) {
+  return (typeof project == 'undefined' ? interactiveMode(note) : cliMode(note, project, service, minutes, date))
   .then((entry) => {
     entry.note = entry.note || note;
 
