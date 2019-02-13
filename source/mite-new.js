@@ -106,26 +106,22 @@ function interactiveMode(note) {
     .then((questions) => inquirer.prompt(questions));
 }
 
-function dumpNames(objects, arg, name) {
- console.log("Found multiple matches for "+name+" <"+arg+">:");
- console.log("---------------------------------------------------------------");
- objects.forEach(current => console.log(current.name));
- console.log("---------------------------------------------------------------");
- console.log("Please be more precise!\n");
-}
-
-function checkResults(objects, arg, name) {
-  if (objects.length > 1) {
-    console.log("Found multiple matches for "+name+" <"+arg+">:");  
+function checkResults(results, searchString, type) {
+  let searchResults = results.filter(result => {
+      return (result.name && (result.name.toUpperCase().indexOf(searchString.toUpperCase()) > -1));
+  });
+  if (searchResults.length > 1) {
+    console.log("Found multiple matches for "+type+" <"+searchString+">:");  
     console.log("---------------------------------------------------------------");
-	objects.forEach(current => console.log(current.name));
+	searchResults.forEach(current => console.log(current.name));
 	console.log("---------------------------------------------------------------");
     console.log("Please be more precise!\n");
     process.exit(1);
-  } else if (objects.length == 0) {
-	console.log("No match found for "+name+" <"+arg+">:");
+  } else if (searchResults.length == 0) {
+	console.log("No match found for "+type+" <"+searchString+">:");
 	process.exit(1);
   }
+  return searchResults;
 }
 
 function cliMode(note, project, service, minutes, date) {
@@ -133,17 +129,9 @@ function cliMode(note, project, service, minutes, date) {
     getProjectChoices(project),
     getServiceChoices(service),
   ]).then(([projects, services]) => {
-	projects = projects.filter(p => {
-      return (p.name && (p.name.toUpperCase().indexOf(project.toUpperCase()) > -1));
-    });
+	projects = checkResults(projects, project, "project");
 	
-	checkResults(projects, project, "project");
-	
-	services = services.filter(s => {
-	  return (s.name && (s.name.toUpperCase().indexOf(service.toUpperCase()) > -1));
-	 });
-
- 	checkResults(services, service, "service");
+	services = checkResults(services, service, "service");
 	
     let entry = {project_id: projects[0].value, note: note, minutes: minutes, service_id: services[0].value};
     entry.date_at = date || (new Date()).toISOString().slice(0,10); 
