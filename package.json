@@ -61,26 +61,26 @@
     "version": "npm run changelog && git add CHANGELOG.md"
   },
   "dependencies": {
-    "async": "^2.6.2",
+    "async": "^2.6.1",
     "bluebird": "^3.5.3",
-    "chalk": "^2.4.2",
+    "chalk": "^2.4.1",
     "commander": "^2.19.0",
     "csv-string": "^3.1.5",
     "external-editor": "^3.0.3",
-    "inquirer": "^6.2.2",
+    "inquirer": "^6.2.1",
     "markdown-table": "^1.1.2",
     "mite-api": "marcel-devdude/mite-api#master",
     "nconf": "^0.10.0",
     "opn": "^5.4.0",
     "request": "^2.88.0",
     "shelljs": "^0.8.3",
-    "table": "^5.2.3"
+    "table": "^5.1.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "conventional-changelog-cli": "^2.0.12",
+    "conventional-changelog-cli": "^2.0.11",
     "conventional-recommended-bump": "^4.0.4",
-    "eslint": "^5.13.0",
+    "eslint": "^5.10.0",
     "mocha": "^5.2.0",
     "npm-check": "^5.9.0"
   }
