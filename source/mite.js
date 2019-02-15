@@ -2,8 +2,26 @@
 'use strict'
 
 const program = require('commander')
+const shell = require('shelljs')
+const path = require('path')
 
 const pkg = require('./../package.json')
+
+const INTERNAL_COMMANDS = [
+  'amend', 'reword', 'config', 'delete', 'rm', 'list', 'ls', 'status', 'st', 'new', 
+  'create', 'open', 'stop', 'start', 'users', 'projects', 'services', 'customers', 'clients',
+  'help', '--help', '-?', '-h'
+];
+
+const mainCommand = path.basename(process.argv[1]);
+const subCommand = process.argv[2];
+const subCommandIsInternal = !!INTERNAL_COMMANDS.find(cmd => cmd === subCommand);
+const couldBeExternalCommand = process.argv.length>2 && !subCommandIsInternal;
+if (couldBeExternalCommand) { 
+    const childCommand = mainCommand + '-' + subCommand;  
+    const childCommandExitCode = shell.exec(childCommand).code;
+    process.exit(childCommandExitCode)
+}
 
 program
   .version(pkg.version)
