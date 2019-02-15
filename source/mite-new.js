@@ -50,6 +50,9 @@ function getProjectChoices() {
 function getServiceChoices() {
   return bluebird.promisify(mite.getServices)()
     .then(response => response.map(d => d.service))
+    .then(services => config.get().whitelistedServices != null 
+        ? services.filter(service => config.get().whitelistedServices.includes(service.name))
+        : services)
     .then(services => services.map(service => {
       const nameParts = [service.name];
       if (service.billable) {

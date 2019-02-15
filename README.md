@@ -220,6 +220,12 @@ Interactive cli-based multi-step form for creating / starting new time entries. 
 
     mite new
 
+Services can be filtered with a whitelist in the configuration file:
+
+    {
+        "whitelistedServices": ["<service name>"]
+    }
+
 ## Open
 
 Opens a specific time entry in your browser
