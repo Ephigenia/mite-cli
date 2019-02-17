@@ -72,12 +72,18 @@ The configuration is stored in a file which is only writable and readable by you
 
 In case you want to use multiple mite accounts please open up a [change request](https://github.com/Ephigenia/mite-cli/issues)
 
+## Advanced Configuration Options
+
+- `listColumns`  
+  defines the default columns to be used when running `mite list`.
+
+Configuration options can always be resetted to their default by leaving out the value, like: `mite config listColumns`.
 
 # Usage
 
 ## List
 
-By default lists today’s time-entries including id, date, project name, revenue, service and the entries note.
+By default lists today’s time-entries including id, date, project name, revenue, service and the entries note. You can modify this by changing the `listColumns` in the config. (can be changed `mite config set listColumns id,user,project)`
 
 When an entry is currently active and tracked it will be yellow and indicated with a little play icon "▶". Also locked entries are greyed out and indicated with a green checkmark "✔" symbol.
 
