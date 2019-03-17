@@ -28,7 +28,16 @@ program
   .action((timeEntryId) => {
     main(timeEntryId);
   })
+  .on('--help', function() {
+    console.log(`
+Examples:
+
+  $ mite amend 123716
+  $ mite amend --editor 127361
+`);
+  })
   .parse(process.argv);
+
 
 if (!program.args.length) {
   main(null);

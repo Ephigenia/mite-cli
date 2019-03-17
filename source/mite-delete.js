@@ -13,6 +13,12 @@ program
     timeEntryId: 'The id of the time entry which should be deleted'
   })
   .arguments('<timeEntryId>')
+  .on('--help', function() {
+    console.log();
+    console.log('Examples:');
+    console.log();
+    console.log('  $ mite delete 1283761');
+  })
   .action((timeEntryId) => {
     const mite = miteApi(config.get());
     mite.deleteTimeEntry(timeEntryId, (err, response) => {

@@ -61,6 +61,14 @@ program
     },
     'name' // default sort
   )
+  .on('--help', function() {
+    console.log(`
+Examples:
+
+  $ mite customers --search company1
+  $ mite customers --sort hourly_rate
+`);
+  })
   .parse(process.argv);
 
 const opts = {
@@ -94,6 +102,7 @@ async.parallel([
       }
       var val1 = String(a[key]).toLowerCase();
       var val2 = String(b[key]).toLowerCase();
+
       if (val1 > val2) {
         return 1;
       } else if (val1 < val2) {

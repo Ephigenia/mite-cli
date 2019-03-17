@@ -75,6 +75,23 @@ program
     'defines the output format, valid options are ' + DataOutput.FORMATS.join(', '),
     'table'
   )
+  .on('--help', function() {
+    console.log(`
+Examples:
+
+  list all projects
+    $ mite projects
+
+  show all projects ordered by their budget while only showing their names and bugets
+    $ mite projects --sort=budget
+
+  show all projects by a specific customer
+    $ mite projects --customer Client1
+
+  export the resulting list as csv
+    $ mite projects --format=csv > my-projects.csv
+`);
+  })
   .parse(process.argv);
 
 const opts = {

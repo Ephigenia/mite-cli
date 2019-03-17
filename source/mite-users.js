@@ -82,6 +82,20 @@ program
     'defines the output format, valid options are ' + DataOutput.FORMATS.join(', '),
     'table',
   )
+  .on('--help', function() {
+    console.log(`
+Examples:
+
+  list all users
+    $ mite users
+
+  search for a specific user
+    $ mite users --search marc
+
+  show all time tracking users
+    $ mite users --role time_tracker
+`);
+  })
   .parse(process.argv);
 
 const mite = miteApi(config.get());

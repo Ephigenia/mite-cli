@@ -14,6 +14,13 @@ program
     timeEntryId: 'id of the entry which should be opened'
   })
   .arguments('<timeEntryId>')
+  .on('--help', function() {
+    console.log(`
+Examples:
+
+  $ mite open 128372
+`);
+  })
   .action((timeEntryId) => {
     main(timeEntryId);
   })

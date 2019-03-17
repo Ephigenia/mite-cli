@@ -16,6 +16,18 @@ program
     key: 'the configuration key which should be set',
     value: 'the value which should be used'
   })
+  .on('--help', function() {
+    console.log(`
+Examples:
+
+  set the subdomain and api key that should be used
+    $ mite config set account mycompanyname
+    $ mite config set apiKey bf817ba626
+
+  set the columns for the list command:
+    $ mite config set listColumns date,duration,note,service
+`);
+  })
   .action((key, value) => {
     config.set(key, value);
     config.save((err) => {
@@ -33,6 +45,12 @@ program
 
 program.command('get [key]')
   .description('get a configruation variable’s value')
+  .on('--help', function() {
+    console.log();
+    console.log('Examples:');
+    console.log();
+    console.log('  $ mite config get account');
+  })
   .action((key) => console.log(config.get(key)));
 
 program.command('list')

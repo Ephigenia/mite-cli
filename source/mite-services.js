@@ -76,6 +76,23 @@ program
     'defines the output format, valid options are ' + DataOutput.FORMATS.join(', '),
     'table',
   )
+  .on('--help', function() {
+    console.log(`
+Examples:
+
+  show all services
+    $ mite services
+
+  list all entries which note contains the given search query:
+    $ mite list this_year --search JIRA-123
+
+  show all users who tracked billable entries ordered by the amount of time they have tracked:
+    $ mite list this_year --billable true --columns=user,duration --group_by=user --sort=duration
+
+  export all time-entries from the current month as csv file:
+    $  mite list last_week --format=csv --columns=user,id
+`);
+  })
   .parse(process.argv);
 
 const opts = {

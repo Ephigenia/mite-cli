@@ -30,6 +30,20 @@ program
     }
   )
   .arguments('[note] [project] [service] [minutes] [date]')
+  .on('--help', function() {
+    console.log(`
+Examples:
+
+  Create a new time entry interactively:
+    $ mite new
+
+  Create a new time entry with a pre-composed note interactively:
+    $ mite new "created new designs for customer"
+
+  Create a complete time entry non-interactively that has 30 minutes and also starts the timer:
+    $ mite new "example entry note" project-name1 programming 30+
+`);
+  })
   .action((note, project, service, minutes, date) => {
     main(note, project, service, minutes, date);
   })

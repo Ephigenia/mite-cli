@@ -287,6 +287,26 @@ program
     'defines the output format, valid options are ' + DataOutput.FORMATS.join(', '),
     'table'
   )
+  .on('--help', function() {
+    console.log(`
+Examples:
+
+  list all entries from the current month:
+    $ mite list this_month
+
+  list all entries which note contains the given search query:
+    $ mite list this_year --search JIRA-123
+
+  show all users who tracked billable entries ordered by the amount of time they have tracked:
+    $ mite list this_year --billable true --columns=user,duration --group_by=user --sort=duration
+
+  export all time-entries from the current month as csv
+    $ mite list last_week --format=csv --columns=user,id
+
+  create a markdown report of all customer and their generated profits
+    $ mite list this_year --format=md --group_by=customer --sort=revenue
+`);
+  })
   .action(main)
   .parse(process.argv);
 
