@@ -14,14 +14,15 @@ const miteTracker = require('./lib/mite-tracker')(config.get())
 
 program
   .version(pkg.version)
-  .description('Create a new time entry. If only [note] is given there will be an interactive mode. Otherwise all parameters except date must be given.')
-  .arguments('<note> [project] [service] [minutes] [date]')
+  .description(`Create a new time entry. If only [note] is given there will be an interactive mode. Otherwise all parameters except date must be given.`)
+  .arguments('[note] [project] [service] [minutes] [date]')
   .action((note, project, service, minutes, date) => {
     main(note, project, service, minutes, date);
   })
   .parse(process.argv);
 
-if (process.argv.length < 3 || (process.argv.length > 3 && process.argv.length < 6) || process.argv.length > 7)  {
+// show help message when number of arguments is to much
+if (process.argv.length > 7)  {
   program.help();
 }
 
@@ -61,9 +62,31 @@ function getServiceChoices() {
       services.push({
         name: '– (no service)',
         value: null,
-      })
+      });
       return services;
     });
+}
+
+function checkResults(options, query, type) {
+  let searchResults = options.filter(result => {
+    return result.name && (result.name.toUpperCase().indexOf(query.toUpperCase()) > -1);
+  });
+  switch (searchResults.length) {
+    case 0:
+      console.log(`No ${type}s found that match "${query}".`);
+      break;
+    case 1:
+      return searchResults;
+    default:
+      console.log(`Found multiple ${type}s matching  "${query}":`);
+      searchResults.forEach(current => console.log(`- ${current.name}`));
+      break;
+  }
+  console.log(
+    `Use the exact name of an existing ${type}s. List available ${type}s `+
+    `using "mite ${type}s"`
+  );
+  process.exit(1);
 }
 
 function interactiveMode(note) {
@@ -106,42 +129,33 @@ function interactiveMode(note) {
     .then((questions) => inquirer.prompt(questions));
 }
 
-function checkResults(results, searchString, type) {
-  let searchResults = results.filter(result => {
-      return (result.name && (result.name.toUpperCase().indexOf(searchString.toUpperCase()) > -1));
-  });
-  if (searchResults.length > 1) {
-    console.log("Found multiple matches for "+type+" <"+searchString+">:");  
-    console.log("---------------------------------------------------------------");
-	searchResults.forEach(current => console.log(current.name));
-	console.log("---------------------------------------------------------------");
-    console.log("Please be more precise!\n");
-    process.exit(1);
-  } else if (searchResults.length == 0) {
-	console.log("No match found for "+type+" <"+searchString+">:");
-	process.exit(1);
-  }
-  return searchResults;
-}
-
 function cliMode(note, project, service, minutes, date) {
   return Promise.all([
     getProjectChoices(project),
     getServiceChoices(service),
   ]).then(([projects, services]) => {
-	projects = checkResults(projects, project, "project");
-	
-	services = checkResults(services, service, "service");
-	
-    let entry = {project_id: projects[0].value, note: note, minutes: minutes, service_id: services[0].value};
-    entry.date_at = date || (new Date()).toISOString().slice(0,10); 
+    projects = checkResults(projects, project, 'project');
+    services = checkResults(services, service, 'service');
+    let entry = {
+      project_id: projects[0].value,
+      note: note,
+      minutes: minutes,
+      service_id: services[0].value,
+      date_at: date || (new Date()).toISOString().slice(0, 10)
+    };
     return entry;
   });
 }
 
 function main(note, project, service, minutes, date) {
-  return (typeof project == 'undefined' ? interactiveMode(note) : cliMode(note, project, service, minutes, date))
-  .then((entry) => {
+  let promise;
+  if (!project) {
+    promise = interactiveMode(note);
+  } else {
+    promise = cliMode(note, project, service, minutes, date);
+  }
+
+  return promise.then((entry) => {
     entry.note = entry.note || note;
 
     // do not create an entry when minutes are invalid
@@ -152,19 +166,19 @@ function main(note, project, service, minutes, date) {
 
     // detect the "+" at the duration value and start a tracker for the time
     // entry
-    let startTracker = false
+    let startTracker = false;
     if (entry.minutes.substr(-1, 1) === '+') {
-      startTracker = true
-      entry.minutes = entry.minutes.substr(0, entry.minutes.length - 1)
+      startTracker = true;
+      entry.minutes = entry.minutes.substr(0, entry.minutes.length - 1);
     }
 
     // http://mite.yo.lk/en/api/time-entries.html#create
     mite.addTimeEntry({ time_entry: entry }, (response) => {
       var data = JSON.parse(response);
       if (data.error) {
-        console.error('Error while creating new time entry:', data.error)
-        process.exit(1)
-        return
+        console.error('Error while creating new time entry:', data.error);
+        process.exit(1);
+        return;
       }
       const timeEntryId = data.time_entry.id;
       console.log('Successfully created new time entry (id: %s)', timeEntryId);
@@ -176,8 +190,8 @@ function main(note, project, service, minutes, date) {
           .catch((err) => {
             console.log('Unable to start the time entry (id: %s): %s', timeEntryId, err.message);
             process.exit(1);
-          })
+          });
       }
     });
-  }) // inquirer
+  });
 }

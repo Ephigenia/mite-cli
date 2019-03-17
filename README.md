@@ -226,6 +226,10 @@ Interactive cli-based multi-step form for creating / starting new time entries. 
 
     mite new
 
+You can also start by passing over the content’s of the new time entry or even the project’s name, service, minutes or the date. The following example will create a 35 minutes entry for the Project "myProject1"
+
+    mite new "created some new nice code" myProject1 programming 35
+
 ## Open
 
 Opens a specific time entry in your browser
