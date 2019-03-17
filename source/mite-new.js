@@ -14,7 +14,21 @@ const miteTracker = require('./lib/mite-tracker')(config.get());
 
 program
   .version(pkg.version)
-  .description(`Create a new time entry. If only [note] is given there will be an interactive mode. Otherwise all parameters except date must be given.`)
+  .description(
+    `Creates a new time entry` + "\n" +
+    `When no note or just the note is given it will run in interactive mode ` +
+    `where every other required parameter can be chosen from displayed ` +
+    `options.` + "\n" +
+    `If there are also project name, service name, minutes and optional data ` +
+    `passed the time entry is created right away.`,
+    {
+      note: 'optional given pre-filled value for the time-entry content',
+      project: 'optional name of the project for which the time entry should be created, note that this must be a case-insensitive match',
+      service: 'optional name of the service which should be set for the new time entry, note that this must be a case-insensitive match',
+      minutes: 'optional number of minutes which should be set for the time entry, add a "+" at the end to start the time entry',
+      date: 'optional date for which the time entry should be created in the format YYYY-MM-DD'
+    }
+  )
   .arguments('[note] [project] [service] [minutes] [date]')
   .action((note, project, service, minutes, date) => {
     main(note, project, service, minutes, date);

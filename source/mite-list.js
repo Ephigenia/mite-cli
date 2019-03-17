@@ -173,7 +173,11 @@ if (!process.argv[2] || process.argv[2].substr(0, 1) === '-' && process.argv[2] 
 
 program
   .version(pkg.version)
-  .description('list time entries')
+  .description('list time entries', {
+    period:
+      'name of the period for which the time entries should be shown' +
+      'or a single date. F.e. "today" or "last_week or "2019-03-17"'
+  })
   .arguments('<period>')
   .option(
     '--group_by <value>',

@@ -10,7 +10,9 @@ const config = require('./config.js')
 
 program
   .version(pkg.version)
-  .description('opens the given time entry in the browser')
+  .description('opens the given time entry in the browser', {
+    timeEntryId: 'id of the entry which should be opened'
+  })
   .arguments('<timeEntryId>')
   .action((timeEntryId) => {
     main(timeEntryId)

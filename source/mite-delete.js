@@ -9,7 +9,9 @@ const config = require('./config.js')
 
 program
   .version(pkg.version)
-  .description('deletes a allready existing time entry')
+  .description('deletes a allready existing time entry', {
+    timeEntryId: 'The id of the time entry which should be deleted'
+  })
   .arguments('<timeEntryId>')
   .action((timeEntryId) => {
     const mite = miteApi(config.get())

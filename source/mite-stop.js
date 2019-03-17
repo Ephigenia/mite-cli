@@ -8,10 +8,10 @@ const config = require('./config.js')
 
 program
   .version(pkg.version)
-  .description('stop any running time entry')
-  .parse(process.argv)
+  .description('stops any running time entry')
+  .parse(process.argv);
 
-const miteTracker = require('./lib/mite-tracker')(config.get())
+const miteTracker = require('./lib/mite-tracker')(config.get());
 miteTracker.get()
   .then((response) => {
     if (!response.tracker || !response.tracker.tracking_time_entry) {
@@ -27,5 +27,5 @@ miteTracker.get()
   })
   .catch((err) => {
     console.log('Error while stopping time entry: %s', err.message);
-    process.exit(1)
-  })
+    process.exit(1);
+  });

@@ -15,7 +15,10 @@ program
   .version(pkg.version)
   .description(
     'Rewrite the note for the given time entry id or use the currently ' +
-    'running time entry and edit it’s note'
+    'running time entry and edit it’s note',
+    {
+      timeEntryId: 'Id of the time entry of which the note should be altered'
+    }
   )
   .option(
     '-e, --editor',
