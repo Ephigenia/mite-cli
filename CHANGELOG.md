@@ -1,3 +1,12 @@
+## [0.8.1](https://github.com/Ephigenia/mite-cli/compare/v0.8.0...v0.8.1) (2019-03-17)
+
+
+### Bug Fixes
+
+* use master of mite-api to fix package security warnings ([26bae84](https://github.com/Ephigenia/mite-cli/commit/26bae84))
+
+
+
 # [0.8.0](https://github.com/Ephigenia/mite-cli/compare/v0.7.0...v0.8.0) (2019-03-17)
 
 
