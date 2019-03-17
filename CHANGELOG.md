@@ -1,3 +1,15 @@
+# [0.8.0](https://github.com/Ephigenia/mite-cli/compare/v0.7.0...v0.8.0) (2019-03-17)
+
+
+### Features
+
+* **list:** adds capability to read display column names from config ([6d8f946](https://github.com/Ephigenia/mite-cli/commit/6d8f946))
+* **mite-new:** accept all inputs via optional arguments ([e1d549e](https://github.com/Ephigenia/mite-cli/commit/e1d549e))
+* adds descriptions for cli arguments ([4c28876](https://github.com/Ephigenia/mite-cli/commit/4c28876))
+* adds example to almost all help  messages ([7c5084d](https://github.com/Ephigenia/mite-cli/commit/7c5084d))
+
+
+
 # [0.7.0](https://github.com/Ephigenia/mite-cli/compare/v0.6.4...v0.7.0) (2018-12-14)
 
 
