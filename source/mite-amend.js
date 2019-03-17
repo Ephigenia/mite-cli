@@ -3,7 +3,7 @@
 
 const program = require('commander');
 const miteApi = require('mite-api');
-const bluebird = require('bluebird');
+const util = require('util');
 const inquirer = require('inquirer');
 const ExternalEditor = require('external-editor');
 
@@ -28,16 +28,16 @@ program
   .parse(process.argv);
 
 if (!program.args.length) {
-  main(null)
+  main(null);
 }
 
 
 function main(timeEntryId) {
   const mite = miteApi(config.get());
   const miteTracker = tracker(config.get());
-  const getTimeEntry = bluebird.promisify(mite.getTimeEntry);
-  const updateTimeEntry = bluebird.promisify(mite.updateTimeEntry);
-  const edit = bluebird.promisify(ExternalEditor.editAsync);
+  const getTimeEntry = util.promisify(mite.getTimeEntry);
+  const updateTimeEntry = util.promisify(mite.updateTimeEntry);
+  const edit = util.promisify(ExternalEditor.editAsync);
 
   let promise = null;
   if (!timeEntryId) {

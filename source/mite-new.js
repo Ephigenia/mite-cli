@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 'use strict'
 
-const program = require('commander')
-const inquirer = require('inquirer')
-const chalk = require('chalk')
-const miteApi = require('mite-api')
-const bluebird = require('bluebird');
+const program = require('commander');
+const inquirer = require('inquirer');
+const chalk = require('chalk');
+const miteApi = require('mite-api');
+const util = require('util');
 
-const pkg = require('./../package.json')
-const config = require('./config.js')
-const mite = miteApi(config.get())
-const miteTracker = require('./lib/mite-tracker')(config.get())
+const pkg = require('./../package.json');
+const config = require('./config.js');
+const mite = miteApi(config.get());
+const miteTracker = require('./lib/mite-tracker')(config.get());
 
 program
   .version(pkg.version)
@@ -27,7 +27,7 @@ if (process.argv.length > 7)  {
 }
 
 function getProjectChoices() {
-  return bluebird.promisify(mite.getProjects)()
+  return util.promisify(mite.getProjects)()
     .then(response => response.map(d => d.project))
     .then(projects => projects.map(project => {
       const nameParts = [project.name];
@@ -49,7 +49,7 @@ function getProjectChoices() {
 }
 
 function getServiceChoices() {
-  return bluebird.promisify(mite.getServices)()
+  return util.promisify(mite.getServices)()
     .then(response => response.map(d => d.service))
     .then(services => services.map(service => {
       const nameParts = [service.name];
