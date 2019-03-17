@@ -54,7 +54,7 @@
     "preversion": "npm test",
     "start": "node $npm_package_main",
     "tdd": "npm run test -- --watch",
-    "test": "mocha --check-leaks --throw-deprecation --use_strict source/**/*test.js --exit",
+    "test": "mocha --check-leaks source/**/*test.js --exit",
     "test:outdated": "npm-check --ignore $npm_package_npmCheck_ignore",
     "update": "npm-check --update",
     "version:recommend": "conventional-recommended-bump --preset angular",
