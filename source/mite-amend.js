@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-'use strict'
+'use strict';
 
 const program = require('commander');
 const miteApi = require('mite-api');
@@ -7,7 +7,7 @@ const util = require('util');
 const inquirer = require('inquirer');
 const ExternalEditor = require('external-editor');
 
-const pkg = require('./../package.json')
+const pkg = require('./../package.json');
 const config = require('./config.js');
 const tracker = require('./lib/mite-tracker');
 
@@ -54,7 +54,7 @@ function main(timeEntryId) {
       timeEntryId = timeEntry.id;
       if (program.editor) {
         return edit(timeEntry.note).then((editedText) => {
-          return { note: editedText }
+          return { note: editedText };
         });
       }
 

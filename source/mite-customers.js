@@ -1,11 +1,11 @@
 #!/usr/bin/env node
-'use strict'
+'use strict';
 
 const program = require('commander');
 const miteApi = require('mite-api');
 const chalk = require('chalk');
 const async = require('async');
-const tableLib = require('table')
+const tableLib = require('table');
 const table = tableLib.table;
 
 const pkg = require('./../package.json');
@@ -117,7 +117,7 @@ async.parallel([
           return chalk.grey(v);
         }
         return v;
-      })
+      });
     });
 
     tableData.unshift([

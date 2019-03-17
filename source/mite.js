@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-'use strict'
+'use strict';
 
-const program = require('commander')
+const program = require('commander');
 
-const pkg = require('./../package.json')
+const pkg = require('./../package.json');
 
 program
   .version(pkg.version)
@@ -29,4 +29,4 @@ program
   .command('customers', 'list, filter & search customers')
   .alias('clients')
   .description(pkg.description)
-  .parse(process.argv)
+  .parse(process.argv);

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-'use strict'
+'use strict';
 
 const program = require('commander');
 const miteApi = require('mite-api');
@@ -61,9 +61,9 @@ program
     'optional user role to filter, multiple arguments comma-separated',
     ((val) => {
       if (typeof val === 'string') {
-        return val.split(/\s*,\s*/)
+        return val.split(/\s*,\s*/);
       }
-      return val
+      return val;
     })
   )
   .option(

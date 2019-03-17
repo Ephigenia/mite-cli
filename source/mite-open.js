@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-'use strict'
+'use strict';
 
-const program = require('commander')
-const opn = require('opn')
-const miteApi = require('mite-api')
+const program = require('commander');
+const opn = require('opn');
+const miteApi = require('mite-api');
 
-const pkg = require('./../package.json')
-const config = require('./config.js')
+const pkg = require('./../package.json');
+const config = require('./config.js');
 
 program
   .version(pkg.version)
@@ -15,43 +15,43 @@ program
   })
   .arguments('<timeEntryId>')
   .action((timeEntryId) => {
-    main(timeEntryId)
+    main(timeEntryId);
   })
-  .parse(process.argv)
+  .parse(process.argv);
 
 if (!program.args.length) {
-  main(null)
+  main(null);
 }
 
 function main(timeEntryId) {
   return new Promise((resolve, reject) => {
     if (!timeEntryId) {
-      return resolve()
+      return resolve();
     }
     const mite = miteApi(config.get());
     mite.getTimeEntry(timeEntryId, (err, response) => {
       if (err) {
-        return reject(err)
+        return reject(err);
       }
       if (!response.time_entry) {
-        return reject(new Error(`Unable to find time entry with the id "${timeEntryId}"`))
+        return reject(new Error(`Unable to find time entry with the id "${timeEntryId}"`));
       }
-      return resolve(response.time_entry)
-    })
+      return resolve(response.time_entry);
+    });
   })
   .then((entry) => {
     let url = 'https://' + config.get('account') + '.mite.yo.lk/';
     console.log('No time entry id given, opening the organisation’s account');
     if (entry) {
-      url += 'daily/#' + (entry.date_at).replace('-', '/') + '?open=time_entry_' + entry.id
+      url += 'daily/#' + (entry.date_at).replace('-', '/') + '?open=time_entry_' + entry.id;
     }
     opn(url).then(() => {
-      process.exit(0)
-    })
+      process.exit(0);
+    });
   })
   .catch((err) => {
-    console.error(err.message)
-    console.error(err)
-    process.exit(1)
-  })
+    console.error(err.message);
+    console.error(err);
+    process.exit(1);
+  });
 }

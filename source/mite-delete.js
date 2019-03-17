@@ -1,11 +1,11 @@
 #!/usr/bin/env node
-'use strict'
+'use strict';
 
-const program = require('commander')
-const miteApi = require('mite-api')
+const program = require('commander');
+const miteApi = require('mite-api');
 
-const pkg = require('./../package.json')
-const config = require('./config.js')
+const pkg = require('./../package.json');
+const config = require('./config.js');
 
 program
   .version(pkg.version)
@@ -14,7 +14,7 @@ program
   })
   .arguments('<timeEntryId>')
   .action((timeEntryId) => {
-    const mite = miteApi(config.get())
+    const mite = miteApi(config.get());
     mite.deleteTimeEntry(timeEntryId, (err, response) => {
       if (!err) {
         console.log(
@@ -32,9 +32,9 @@ program
       }
     });
   })
-  .parse(process.argv)
+  .parse(process.argv);
 
 if (!program.args.length) {
-  program.help()
-  process.exit()
+  program.help();
+  process.exit();
 }

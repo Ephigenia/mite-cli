@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-'use strict'
+'use strict';
 
 const program = require('commander');
 const miteApi = require('mite-api');
@@ -134,7 +134,7 @@ async.parallel([
     .map((data) => {
       let budget = formater.budget(data.budget_type, data.budget);
       if (!data.budget) {
-        budget = '-'
+        budget = '-';
       }
       let rate = formater.budget(BUDGET_TYPE.CENTS, data.hourly_rate);
       if (!data.hourly_rate) {
@@ -156,7 +156,7 @@ async.parallel([
           return chalk.grey(v);
         }
         return v;
-      })
+      });
     });
   tableData.unshift([
     'id',

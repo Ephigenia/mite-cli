@@ -1,12 +1,12 @@
 #!/usr/bin/env node
-'use strict'
+'use strict';
 
-const program = require('commander')
-const chalk = require('chalk')
-const miteApi = require('mite-api')
+const program = require('commander');
+const chalk = require('chalk');
+const miteApi = require('mite-api');
 
-const pkg = require('./../package.json')
-const config = require('./config.js')
+const pkg = require('./../package.json');
+const config = require('./config.js');
 const formater = require('./lib/formater');
 const DataOutput = require('./lib/data-output');
 
@@ -39,7 +39,7 @@ const COLUMNS_OPTIONS = {
     label: 'billable',
     attribute: 'billable',
     format: (value) => {
-      return value ? 'yes' : 'no'
+      return value ? 'yes' : 'no';
     }
   },
   created: {
@@ -97,7 +97,7 @@ const COLUMNS_OPTIONS = {
     label: 'Locked',
     attribute: 'locked',
     format: (value) => {
-      return value ? 'yes' : 'no'
+      return value ? 'yes' : 'no';
     }
   },
   minutes: {
@@ -168,7 +168,7 @@ const COLUMNS_OPTIONS = {
 
 // set a default period argument if not set
 if (!process.argv[2] || process.argv[2].substr(0, 1) === '-' && process.argv[2] !== '--help') {
-  process.argv.splice(2, 0, 'today')
+  process.argv.splice(2, 0, 'today');
 }
 
 program
@@ -192,9 +192,9 @@ program
     'in an empty response',
     ((val) => {
       if (typeof val === 'string') {
-        return val.split(/\s*,\s*/)
+        return val.split(/\s*,\s*/);
       }
-      return val
+      return val;
     })
   )
   .option(
@@ -271,9 +271,9 @@ program
     'search within the notes, to filter by multiple criteria connected with OR use comma-separated query values',
     ((val) => {
       if (typeof val === 'string') {
-        return val.split(/\s*,\s*/)
+        return val.split(/\s*,\s*/);
       }
-      return val
+      return val;
     })
   )
   .option(
@@ -288,11 +288,11 @@ program
     'table'
   )
   .action(main)
-  .parse(process.argv)
+  .parse(process.argv);
 
 
 function main(period) {
-  const mite = miteApi(config.get())
+  const mite = miteApi(config.get());
 
   const opts = {
     at: period,
@@ -303,7 +303,7 @@ function main(period) {
     service_id: program.service_id,
     group_by: program.group_by,
     sort: program.sort,
-  }
+  };
 
   if (program.user_id) {
     opts.user_id = program.user_id;
@@ -319,7 +319,7 @@ function main(period) {
     opts.tracking = program.tracking;
   }
   if (typeof program.billable === 'boolean') {
-    opts.billable = program.billable
+    opts.billable = program.billable;
   }
 
 
@@ -396,7 +396,7 @@ function main(period) {
       }
 
       return row;
-    })
+    });
 
     // Table footer
     // add table footer if any of the table columns has a reducer
@@ -425,5 +425,5 @@ function main(period) {
     );
 
     console.log(DataOutput.formatData(tableData, program.format, columns));
-  }) // get time entries
+  }); // get time entries
 }

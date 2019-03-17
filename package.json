@@ -48,8 +48,8 @@
   "scripts": {
     "changelog:preview": "conventional-changelog --output-unreleased -p angular",
     "changelog": "conventional-changelog -s -i CHANGELOG.md -p angular -r 0",
-    "lint": "eslint source/**/*.js",
-    "lint:fix": "npm run lint --fix",
+    "lint": "eslint source",
+    "lint:fix": "npm run lint -- --fix",
     "postversion": "git push && git push --tags",
     "preversion": "npm test",
     "start": "node $npm_package_main",

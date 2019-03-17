@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-'use strict'
+'use strict';
 
 const program = require('commander');
 const inquirer = require('inquirer');
@@ -46,7 +46,7 @@ function getProjectChoices() {
     .then(projects => projects.map(project => {
       const nameParts = [project.name];
       if (project.customer_name) {
-        nameParts.push('(' + project.customer_name + ')')
+        nameParts.push('(' + project.customer_name + ')');
       }
       return {
         name: nameParts.join(' '),
@@ -57,7 +57,7 @@ function getProjectChoices() {
       projects.push({
         name: '– (no project)',
         value: null,
-      })
+      });
       return projects;
     });
 }
@@ -138,7 +138,7 @@ function interactiveMode(note) {
           message: 'Date?',
           default: (new Date()).toISOString().slice(0,10)
         }
-      ]
+      ];
     })
     .then((questions) => inquirer.prompt(questions));
 }
@@ -174,7 +174,7 @@ function main(note, project, service, minutes, date) {
 
     // do not create an entry when minutes are invalid
     if (!entry.minutes) {
-      console.log('no time entry created due to empty project id or empty minutes')
+      console.log('no time entry created due to empty project id or empty minutes');
       return;
     }
 

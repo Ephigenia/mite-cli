@@ -1,14 +1,14 @@
 #!/usr/bin/env node
-'use strict'
+'use strict';
 
-const fs = require('fs')
-const program = require('commander')
+const fs = require('fs');
+const program = require('commander');
 
-const pkg = require('./../package.json')
-const config = require('./config.js')
+const pkg = require('./../package.json');
+const config = require('./config.js');
 
 program
-  .version(pkg.version)
+  .version(pkg.version);
 
 program
   .command('set [key] [value]')
@@ -17,7 +17,7 @@ program
     value: 'the value which should be used'
   })
   .action((key, value) => {
-    config.set(key, value)
+    config.set(key, value);
     config.save((err) => {
       if (err) {
         console.error(err.message);
@@ -28,8 +28,8 @@ program
       // make sure file is only write- and readable by the user
       const configFilename = config.stores.file.file;
       fs.chmodSync(configFilename, 0o600);
-    })
-  })
+    });
+  });
 
 program.command('get [key]')
   .description('get a configruation variable’s value')
