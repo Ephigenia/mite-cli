@@ -71,7 +71,7 @@
     "markdown-table": "^1.1.2",
     "mite-api": "marcel-devdude/mite-api#master",
     "nconf": "^0.10.0",
-    "opn": "^5.4.0",
+    "opn": "^5.5.0",
     "request": "^2.88.0",
     "table": "^5.2.3"
   },
@@ -79,8 +79,8 @@
     "chai": "^4.2.0",
     "conventional-changelog-cli": "^2.0.12",
     "conventional-recommended-bump": "^4.0.4",
-    "eslint": "^5.14.0",
-    "mocha": "^5.2.0",
+    "eslint": "^5.15.2",
+    "mocha": "^6.0.2",
     "npm-check": "^5.9.0"
   }
 }
