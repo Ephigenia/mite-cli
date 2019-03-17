@@ -11,6 +11,7 @@ nconf.file(configFilename)
 
 nconf.defaults({
   applicationName: `mite-cli/${pkg.version}`,
+  listColumns: 'id,date,user,project,duration,revenue,service,note',
 })
 
 module.exports = nconf

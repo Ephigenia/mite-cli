@@ -34,7 +34,6 @@ const GROUP_BY_OPTIONS = [
   'year',
 ];
 
-const COLUMNS_OPTIONS_DEFAULT = 'id,date,user,project,duration,revenue,service,note';
 const COLUMNS_OPTIONS = {
   billable: {
     label: 'billable',
@@ -199,7 +198,7 @@ program
     'custom list of columns to use in the output, pass in a comma-separated ' +
     'list of attribute names: ' + Object.keys(COLUMNS_OPTIONS).join(', '),
     (str) => str.split(',').filter(v => v).join(','),
-    COLUMNS_OPTIONS_DEFAULT
+    config.get().listColumns
   )
   .option(
     '--project_id <project_id>',
