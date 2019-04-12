@@ -70,9 +70,11 @@
     "markdown-table": "^1.1.2",
     "mite-api": "github:marcel-devdude/mite-api#master",
     "nconf": "^0.10.0",
+    "omelette": "^0.4.12",
     "opn": "^5.5.0",
     "request": "^2.88.0",
-    "table": "^5.2.3"
+    "table": "^5.2.3",
+    "tabtab": "^3.0.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",

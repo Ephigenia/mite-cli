@@ -4,6 +4,7 @@
 const program = require('commander');
 
 const pkg = require('./../package.json');
+const autoComplete = require('./lib/auto-complete');
 
 program
   .version(pkg.version)
@@ -27,6 +28,16 @@ program
   .command('projects', 'list, filter & search projects')
   .command('services', 'list, filter & search services')
   .command('customers', 'list, filter & search customers')
+  .command('autocomplete', 'install/uninstall autocompletion')
   .alias('clients')
-  .description(pkg.description)
-  .parse(process.argv);
+  .description(pkg.description);
+
+// completion command is triggered by automatically installed autocompletion
+// lib and the appropriate shell, it’s not listed in the commands above as
+// it should be an invisible command
+if (process.argv.slice(2)[0] === 'completion') {
+  const env = autoComplete.parseEnv(process.env);
+  autoComplete.completion(env, program);
+} else {
+  program.parse(process.argv);
+}
