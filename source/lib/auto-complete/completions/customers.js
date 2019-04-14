@@ -13,15 +13,28 @@
  * @returns {Promise<Array<string>>}
  */
 module.exports = async ({ words, prev }) => {
-  switch(words) {
-    case 2: {
-      return ['2', '22'];
-    }
-    case 3: {
-      return ['33', '33'];
-    }
-    case 4: {
-      return ['44', '44'];
-    }
+  if (['--search'].indexOf(prev) !== -1) {
+    return ['query'];
   }
+  if (['--archived', '-a'].indexOf(prev) !== -1) {
+    return ['yes', 'no'];
+  }
+  if (prev === '--sort') {
+    // @TODO get sort options from actual command
+    return [
+      'id',
+      'name',
+      'updated_at',
+      'created_at',
+      'hourly_rate',
+      'rate'
+    ];
+  }
+
+  return [
+    '--search',
+    '--archived',
+    '--sort'
+  ];
 }
+

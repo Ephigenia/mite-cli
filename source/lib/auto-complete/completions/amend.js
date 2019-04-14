@@ -12,13 +12,8 @@
  * @param {string} env.line - the current complete input line in the cli
  * @returns {Promise<Array<string>>}
  */
-module.exports = async ({ last }) => {
-  // some option triggerd
-  if (last.substr(0, 1) === '-') {
-    return [
-      '--editor'
-    ];
+module.exports = async ({ words }) => {
+  if (words < 3) {
+    return ['--editor'];
   }
-
-  return [];
 }
