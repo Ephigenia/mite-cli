@@ -62,12 +62,30 @@ module.exports = async ({ words, prev }) => {
   }
 
   return [
-    '--archived',
-    '--format',
-    '--customer',
-    '--customer_id',
-    '--search',
-    '--sort'
+    {
+      name: '--archived',
+      description: 'defines wheter archived projects should be shown',
+    },
+    {
+      name: '--format',
+      description: 'defines the output format',
+    },
+    {
+      name: '--customer',
+      description: 'given a query will list only projects where the customers’s name matches',
+    },
+    {
+      name: '--customer_id',
+      description: 'given a customer id will list only projects for that customer',
+    },
+    {
+      name: '--search',
+      description: 'given a regular expression will show only projects where name or customer name match',
+    },
+    {
+      name: '--sort',
+      description: 'defines the order of projects',
+    }
   ];
 }
 

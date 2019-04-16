@@ -32,9 +32,18 @@ module.exports = async ({ words, prev }) => {
   }
 
   return [
-    '--search',
-    '--archived',
-    '--sort'
+    {
+      name: '--search',
+      description: 'given a query will list only customers that match the query',
+    },
+    {
+      name: '--archived',
+      description: 'defines wheter archived customers should be shown or not'
+    },
+    {
+      name: '--sort',
+      description: 'defines the order of customers shown',
+    }
   ];
 }
 

@@ -73,15 +73,6 @@ const opts = {
   name: program.search
 };
 
-return miteApi.getCustomers()
-      .then(
-        customers => customers.map(c => ({
-          name: 'A' + String(c.id),
-          description: c.name
-        }))
-      ).then(c => console.log(c));
-      return;
-
 miteApi.getCustomers(opts)
   .then((allCustomers) => {
     return allCustomers
