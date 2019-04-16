@@ -14,6 +14,11 @@
  */
 module.exports = async ({ words }) => {
   if (words < 3) {
-    return ['--editor'];
+    return [
+      {
+        name: '--editor',
+        description: 'open $EDITOR for editing the entry’s note'
+      }
+    ];
   }
 }

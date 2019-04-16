@@ -14,39 +14,59 @@ function miteApiWrapper(config) {
 
     mite: mite,
 
-    getProjects: async (options = {}) => {
-      const defaultOpts = {
-        limit: 1000
-      };
-      const opts = Object.assign({}, defaultOpts, options);
-      return Promise.all([
-        util.promisify(mite.getProjects)(opts),
-        util.promisify(mite.getArchivedProjects)(opts),
-      ]).then(results => {
-        // merge both results into one array
-        return [].concat(results[0], results[1]);
-      }).then(project => {
-        // unwrap the object.customers nesting
-        return project.map(c => c.project);
+    sort: function(items, attribute) {
+      // @TODO add assertions
+      return items.sort((a, b) => {
+        var val1 = String(a[attribute]).toLowerCase();
+        var val2 = String(b[attribute]).toLowerCase();
+        if (val1 > val2) {
+          return 1;
+        } else if (val1 < val2) {
+          return -1;
+        } else {
+          return 0;
+        }
       });
     },
 
-    getCustomers: async (options = {}) => {
+    getItemsAndArchived: async function(itemName, options = {}) {
       const defaultOpts = {
         limit: 1000
       };
+      const itemNamePluralCamelCased = itemName.substr(0, 1).toUpperCase() + itemName.substr(1) + 's';
       const opts = Object.assign({}, defaultOpts, options);
+
       return Promise.all([
-        util.promisify(mite.getCustomers)(opts),
-        util.promisify(mite.getArchivedCustomers)(opts),
-      ]).then(results => {
-        // merge both results into one array
-        return [].concat(results[0], results[1]);
-      }).then(customers => {
-        // unwrap the object.customers nesting
-        return customers.map(c => c.customer);
-      });
-    }
+        util.promisify(mite['get' + itemNamePluralCamelCased])(opts),
+        util.promisify(mite['getArchived' + itemNamePluralCamelCased])(opts),
+      ])
+      .then(results => [].concat(results[0], results[1]))
+      .then(items => items.map(c => c[itemName]))
+      .then(items => items.filter(item => {
+        if (typeof options.archived === 'boolean') {
+          return item.archived === options.archived;
+        }
+        return true;
+      }))
+      // always sort by name
+      .then(items => this.sort(items, 'name'));
+    },
+
+    getCustomers: async function (options = {}) {
+      return this.getItemsAndArchived('customer', options);
+    },
+
+    getProjects: async function (options = {}) {
+      return this.getItemsAndArchived('project', options);
+    },
+
+    getServices: async function(options = {}) {
+      return this.getItemsAndArchived('service', options);
+    },
+
+    getUsers: async function (options = {}) {
+      return this.getItemsAndArchived('user', options);
+    },
   };
 };
 

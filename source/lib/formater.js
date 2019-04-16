@@ -9,8 +9,10 @@ const BUDGET_TYPE = {
   CENTS_PER_MONTH: 'cents_per_month',
 };
 
+// @TODO make this a configurable thing
 const JIRA_IDENTIFIERS_REGEXP = /([A-Z]{1,10}-\d{1,10})/g;
 const HASHTAG_NUMERAL_REGEXP = /(#\d+)/g;
+// @TODO should that also be configurable?
 const DEFAULT_CURRENCY = '€';
 
 module.exports = {
