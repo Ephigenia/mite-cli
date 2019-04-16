@@ -7,4 +7,5 @@ module.exports = {
   new: require('./new'),
   projects: require('./projects'),
   services: require('./services'),
+  users: require('./users'),
 };

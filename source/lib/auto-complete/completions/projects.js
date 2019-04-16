@@ -72,7 +72,7 @@ module.exports = async ({ words, prev }) => {
     },
     {
       name: '--customer',
-      description: 'given a query will list only projects where the customers’s name matches',
+      description: 'given a regular expression will list only projects where the customers’s name matches',
     },
     {
       name: '--customer_id',
@@ -80,7 +80,7 @@ module.exports = async ({ words, prev }) => {
     },
     {
       name: '--search',
-      description: 'given a regular expression will show only projects where name or customer name match',
+      description: 'given a query will show only projects where name or customer name match',
     },
     {
       name: '--sort',

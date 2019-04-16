@@ -92,8 +92,8 @@ Examples:
   search for a specific user
     $ mite users --search marc
 
-  show all time tracking users
-    $ mite users --role time_tracker
+  show all time tracking users from a company (all have a ephigenia.de email address)
+    $ mite users --role time_tracker --email ephigenia.de
 `);
   })
   .parse(process.argv);
