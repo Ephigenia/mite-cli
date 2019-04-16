@@ -127,7 +127,7 @@ async.parallel([
         return true;
       }
       const regexp = new RegExp(program.customer, 'i');
-      return regexp.exec(p.customer_name) || regexp.exec(String(p.customer_id));
+      return p.customer_name === program.customer || regexp.exec(p.customer_name) || regexp.exec(String(p.customer_id));
     })
     .sort((a, b) => {
       if (!program.sort) return 0;
