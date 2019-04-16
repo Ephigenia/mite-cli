@@ -5,4 +5,6 @@ module.exports = {
   config: require('./config'),
   customers: require('./customers'),
   new: require('./new'),
+  projects: require('./projects'),
+  services: require('./services'),
 };

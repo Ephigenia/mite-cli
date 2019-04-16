@@ -21,6 +21,8 @@ module.exports = async ({ words, prev }) => {
     }
     case 3: {
       const configKeys = Object.keys(config.get());
+      // @TODO add name / description combinations for config variables
+      // for better explanation
       delete configKeys.type;
       return configKeys;
     }
