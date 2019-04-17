@@ -17,48 +17,40 @@ const DataOutput = require('./../../data-output');
  * @returns {Promise<Array<string>>}
  */
 module.exports = async ({ prev }) => {
-  if (['--archived', '-a'].indexOf(prev) !== -1) {
-    return ['yes', 'no'];
-  }
-  if (['--customer'].indexOf(prev) !== -1) {
-    // add completion for customer ids?
-    return miteApi.getCustomers()
-      .then(
-        customers => customers.map(c => ({
-          name: String(c.name)
-        }))
-      );
-  }
-  if (['--customer_id'].indexOf(prev) !== -1) {
-    // add completion for customer ids?
-    return miteApi.getCustomers()
-      .then(
-        customers => customers.map(c => ({
-          name: String(c.id),
-          description: c.name
-        }))
-      );
-  }
-  if (['--format', '-f'].indexOf(prev) !== -1) {
-    return DataOutput.FORMATS;
-  }
-  if (['--search'].indexOf(prev) !== -1) {
-    return ['query'];
-  }
-  if (prev === '--sort') {
-    // @TODO get sort options from actual command
-    return [
-      'id',
-      'name',
-      'customer',
-      'customer_name',
-      'customer_id',
-      'updated_at',
-      'created_at',
-      'hourly_rate',
-      'rate',
-      'budget',
-    ];
+  switch (prev) {
+    case '--archived':
+    case '-a':
+      return ['yes', 'no'];
+    case '--customer':
+      // add completion for customer ids?
+      return miteApi.getCustomers().then(customers => customers.map(c => ({
+        name: String(c.name)
+      })));
+    case '--customer_id':
+      // add completion for customer ids?
+      return miteApi.getCustomers().then(customers => customers.map(c => ({
+        name: String(c.id),
+        description: c.name
+      })));
+    case '--format':
+    case '-f':
+      return DataOutput.FORMATS;
+    case '--search':
+      return ['query'];
+    case '--sort':
+      // @TODO get sort options from actual command
+      return [
+        'id',
+        'name',
+        'customer',
+        'customer_name',
+        'customer_id',
+        'updated_at',
+        'created_at',
+        'hourly_rate',
+        'rate',
+        'budget',
+      ];
   }
 
   return [
@@ -77,6 +69,10 @@ module.exports = async ({ prev }) => {
     {
       name: '--customer_id',
       description: 'given a customer id will list only projects for that customer',
+    },
+    {
+      name: '--help',
+      description: 'show help message',
     },
     {
       name: '--search',

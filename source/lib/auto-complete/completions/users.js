@@ -3,6 +3,13 @@
 
 const DataOutput = require('./../../data-output');
 
+const USER_ROLES = [
+  'admin',
+  'owner',
+  'time_tracker',
+  'coworker'
+];
+
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
  *
@@ -15,48 +22,30 @@ const DataOutput = require('./../../data-output');
  * @returns {Promise<Array<string>>}
  */
 module.exports = async ({ prev }) => {
-  // binary options
-  if (
-    [
-      '--archived',
-      '-a',
-    ].indexOf(prev) !== -1
-  ) {
-    return ['yes', 'no'];
-  }
-  // query options
-  if ([
-    '--search',
-    '--eamil',
-    '--name',
-  ].indexOf(prev) !== -1
-  ) {
-    return ['query'];
-  }
-
-  // options with a set of values to choose from
-  if (['--format', '-f'].indexOf(prev) !== -1) {
-    return DataOutput.FORMATS;
-  }
-  if (['--role'].indexOf(prev) !== -1) {
-    return [
-      'admin',
-      'owner',
-      'time_tracker',
-      'coworker'
-    ];
-  }
-  if (prev === '--sort') {
-    // @TODO get sort options from actual command
-    return [
-      'id',
-      'name',
-      'email',
-      'role',
-      'note',
-      'updated_at',
-      'created_at',
-    ];
+  switch(prev) {
+    case '--archived':
+    case '-a':
+      return ['yes', 'no'];
+    case '--email':
+    case '--name':
+    case '--search':
+      return ['query'];
+    case '--format':
+    case '-f':
+      return DataOutput.FORMATS;
+    case '--role':
+      return USER_ROLES;
+    case '--sort':
+      // @TODO get sort options from actual command
+      return [
+        'id',
+        'name',
+        'email',
+        'role',
+        'note',
+        'updated_at',
+        'created_at',
+      ];
   }
 
   // list of options and short descriptions
@@ -72,6 +61,10 @@ module.exports = async ({ prev }) => {
     {
       name: '--format',
       description: 'defines the output format',
+    },
+    {
+      name: '--help',
+      description: 'show help message',
     },
     {
       name: '--name',

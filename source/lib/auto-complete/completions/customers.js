@@ -13,25 +13,29 @@
  * @returns {Promise<Array<string>>}
  */
 module.exports = async ({ prev }) => {
-  if (['--search'].indexOf(prev) !== -1) {
-    return ['query'];
-  }
-  if (['--archived', '-a'].indexOf(prev) !== -1) {
-    return ['yes', 'no'];
-  }
-  if (prev === '--sort') {
-    // @TODO get sort options from actual command
-    return [
-      'id',
-      'name',
-      'updated_at',
-      'created_at',
-      'hourly_rate',
-      'rate'
-    ];
+  switch (prev) {
+    case '--archived':
+    case '-a':
+      return ['yes', 'no'];
+    case '--search':
+      return ['query'];
+    case '--sort':
+      // @TODO get sort options from actual command
+      return [
+        'id',
+        'name',
+        'updated_at',
+        'created_at',
+        'hourly_rate',
+        'rate'
+      ];
   }
 
   return [
+    {
+      name: '--help',
+      description: 'show help message'
+    },
     {
       name: '--search',
       description: 'given a query will list only customers that match the query',

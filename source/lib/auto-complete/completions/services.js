@@ -15,32 +15,27 @@ const DataOutput = require('./../../data-output');
  * @returns {Promise<Array<string>>}
  */
 module.exports = async ({ prev }) => {
-  // binaray options
-  if (
-    [
-      '--archived',
-      '-a',
-      '--billable'
-    ].indexOf(prev) !== -1
-  ) {
-    return ['yes', 'no'];
-  }
-  if (['--format', '-f'].indexOf(prev) !== -1) {
-    return DataOutput.FORMATS;
-  }
-  if (['--search'].indexOf(prev) !== -1) {
-    return ['query'];
-  }
-  if (prev === '--sort') {
-    // @TODO get sort options from actual command
-    return [
-      'id',
-      'name',
-      'updated_at',
-      'created_at',
-      'hourly_rate',
-      'rate' // alias for hourly_rate
-    ];
+  switch(prev) {
+    case '--archived':
+    case '-a':
+      return ['yes', 'no'];
+    case '--billable':
+      return ['yes', 'no'];
+    case '--format':
+    case '-f':
+      return DataOutput.FORMATS;
+    case '--search':
+      return ['query'];
+    case '--sort':
+      // @TODO get sort options from actual command
+      return [
+        'id',
+        'name',
+        'updated_at',
+        'created_at',
+        'hourly_rate',
+        'rate' // alias for hourly_rate
+      ];
   }
 
   return [
@@ -55,6 +50,10 @@ module.exports = async ({ prev }) => {
     {
       name: '--format',
       description: 'defines the output format',
+    },
+    {
+      name: '--help',
+      description: 'show help message',
     },
     {
       name: '--search',

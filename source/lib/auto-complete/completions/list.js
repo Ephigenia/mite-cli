@@ -156,6 +156,10 @@ module.exports = async ({ words, prev, lastPartial }) => {
       description: 'optional name of a property or multiple properties that should be used to group the time-entries',
     },
     {
+      name: '--help',
+      description: 'show help message',
+    },
+    {
       name: '--project_id',
       description: 'list only time entries from the given project',
     },
