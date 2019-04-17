@@ -14,7 +14,7 @@ const DataOutput = require('./../../data-output');
  * @param {string} env.line - the current complete input line in the cli
  * @returns {Promise<Array<string>>}
  */
-module.exports = async ({ words, prev }) => {
+module.exports = async ({ prev }) => {
   // binary options
   if (
     [
@@ -90,5 +90,5 @@ module.exports = async ({ words, prev }) => {
       description: 'defines the order of results shown',
     },
   ];
-}
+};
 

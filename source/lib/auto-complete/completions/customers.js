@@ -12,7 +12,7 @@
  * @param {string} env.line - the current complete input line in the cli
  * @returns {Promise<Array<string>>}
  */
-module.exports = async ({ words, prev }) => {
+module.exports = async ({ prev }) => {
   if (['--search'].indexOf(prev) !== -1) {
     return ['query'];
   }
@@ -45,5 +45,5 @@ module.exports = async ({ words, prev }) => {
       description: 'defines the order of customers shown',
     }
   ];
-}
+};
 

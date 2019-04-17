@@ -59,7 +59,7 @@ const autoComplete = {
 
     return completer(env).then((r) => {
       if (r) tabtab.log(r);
-    })
+    });
   },
 
   /**
@@ -80,7 +80,7 @@ const autoComplete = {
   uninstall: async function() {
     return tabtab.uninstall({ name: this.name });
   },
-}
+};
 
 
 module.exports = autoComplete;

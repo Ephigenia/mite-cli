@@ -12,7 +12,7 @@
  * @param {string} env.line - the current complete input line in the cli
  * @returns {Promise<Array<string>>}
  */
-module.exports = async ({ words, prev }) => {
+module.exports = async ({ words }) => {
   switch(words) {
     case 2: {
       return ['2', '22'];
@@ -24,4 +24,4 @@ module.exports = async ({ words, prev }) => {
       return ['44', '44'];
     }
   }
-}
+};

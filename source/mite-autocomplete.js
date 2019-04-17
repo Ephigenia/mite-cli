@@ -19,7 +19,7 @@ program.command('install')
   .action(() => {
     autoComplete.install()
       .catch(err => {
-        console.error('error while installing autocompletion for mite', err)
+        console.error('error while installing autocompletion for mite', err);
         process.exit(2);
       });
   });
@@ -29,7 +29,7 @@ program.command('unintall')
   .action(() => {
     autoComplete.uninstall()
       .catch(err => {
-        console.error('error while un-installing autocompletion for mite', err)
+        console.error('error while un-installing autocompletion for mite', err);
         process.exit(2);
       });
   });

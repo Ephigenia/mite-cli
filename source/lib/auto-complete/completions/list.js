@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 'use strict';
 
-const chalk = require('chalk');
-
 const DataOutput = require('./../../data-output');
 const config = require('./../../../config.js');
 const miteApi = require('./../../mite-api')(config.get());
@@ -18,7 +16,7 @@ const miteApi = require('./../../mite-api')(config.get());
  * @param {string} env.line - the current complete input line in the cli
  * @returns {Promise<Array<string>>}
  */
-module.exports = async ({ words, prev }) => {
+module.exports = async ({ prev }) => {
   switch (prev) {
     case '--archived':
     case '-a':
@@ -29,7 +27,7 @@ module.exports = async ({ words, prev }) => {
       return miteApi.getCustomers({ archived: false }).then(
         customers => customers.map(c => ({
           name: String(c.id),
-          description: c.name + (c.archived ? ' (archived)' : '')
+          description: c.name
         }))
       );
     case '--group_by':
@@ -99,7 +97,7 @@ module.exports = async ({ words, prev }) => {
         return users.map(u => ({
           name: String(u.id),
           description: u.name + (me.id === u.id ? ' (you)' : '')
-        }))
+        }));
       });
   }
 
@@ -161,5 +159,5 @@ module.exports = async ({ words, prev }) => {
       description: 'when defined will list only time-entries from the given user',
     },
   ];
-}
+};
 

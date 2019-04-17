@@ -31,4 +31,4 @@ module.exports = async ({ words, prev }) => {
       return [value];
     }
   }
-}
+};

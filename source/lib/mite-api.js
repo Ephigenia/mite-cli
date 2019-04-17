@@ -71,6 +71,6 @@ function miteApiWrapper(config) {
       return this.getItemsAndArchived('user', options);
     },
   };
-};
+}
 
 module.exports = miteApiWrapper;
