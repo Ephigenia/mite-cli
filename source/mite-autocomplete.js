@@ -12,7 +12,7 @@ program
 program.command('install')
   .description(
     'Installs auto-completion for most of the mite subcommands, options and ' +
-    'arguments. Compatible with bash, zsh and fish shells.' + "\n\n" +
+    'arguments. Compatible with bash, fish and zsh. ' +
     'No support for windows systems. Also note that it will only work ' +
     'when mite is installed globally.'
   )

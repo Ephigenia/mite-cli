@@ -2,6 +2,7 @@
 
 module.exports = {
   amend: require('./amend'),
+  autocomplete: require('./autocomplete'),
   config: require('./config'),
   customers: require('./customers'),
   list: require('./list'),

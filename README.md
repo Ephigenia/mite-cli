@@ -16,6 +16,7 @@ Simple CLI tool for creating, listing, starting and stopping time tracking entri
 - List, sort, filter user accounts, customers, projects & services using variable columns and cli-tables, csv or tsv data
 - Delete single entries by id
 - Highlight JIRA identifiers and github numeral hashtags in time entry’s notes
+- optional installable auto-completions for most of the sub-commands, options and option values
 
 Other ideas & planned features can be found in the [wiki](./wiki). If something doesn’t work please [create a new issue](https://github.com/Ephigenia/mite-cli/issues).
 
@@ -80,6 +81,21 @@ In case you want to use multiple mite accounts please open up a [change request]
   defines the default columns to be used when running `mite list`.
 
 Configuration options can always be resetted to their default by leaving out the value, like: `mite config listColumns`.
+
+## Auto-Completion
+
+Since version 0.9.0 mite-cli supports auto-completions for most of the sub-commands arguments, options and option values which make it much easier to use the cli tool. No need to remember user ids or service names anymore as they are suggested when hitting TAB.
+
+- Right now auto-completion is only supported and tested on -nix-systems and with the following bash environments: bash, fish and zsh
+- mite-cli must be installed globally and must be in `$PATH`
+
+Before auto-completions can be used you need to install them using the `autocomplete` command:
+
+    mite autocomplete install
+
+When you think you had enough you can uninstall it with
+
+    mite autocomplete uninstall
 
 # Usage
 
