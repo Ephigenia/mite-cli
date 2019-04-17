@@ -17,7 +17,22 @@ const config = require('./../../../config.js');
 module.exports = async ({ words, prev }) => {
   switch(words) {
     case 2: {
-      return ['set', 'get', 'list'];
+      return [
+        {
+          name: 'set',
+          description: 'set a config variable'
+        },
+        { name: 'get',
+          description: 'get a config variable'
+        },
+        { name: 'list',
+          description: 'show all variables and their values'
+        },
+        {
+          name: '--help',
+          description: 'show help message'
+        }
+      ];
     }
     case 3: {
       const configKeys = Object.keys(config.get());
