@@ -1,6 +1,11 @@
 #!/usr/bin/env node
 'use strict';
 
+const config = require('./../../../config.js');
+const miteApi = require('./../../mite-api')(config.get());
+
+const formater = require('./../../formater');
+
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
  *
@@ -13,15 +18,39 @@
  * @returns {Promise<Array<string>>}
  */
 module.exports = async ({ words }) => {
+
   switch(words) {
     case 2: {
-      return ['2', '22'];
+      return ['note'];
     }
+    // project
     case 3: {
-      return ['33', '33'];
+      return miteApi.getProjects({ archived: false }).then(
+        projects => projects.map(p => (p.name))
+      );
     }
+    // service
     case 4: {
-      return ['44', '44'];
+      return miteApi.getServices({ archived: false }).then(
+        service => service.map(s => ({
+          name: s.name,
+          description: s.name + (s.billable ? ' $' : '')
+        }))
+      );
+    }
+    // minutes
+    case 5: {
+      const minutes = [1, 5, 15, 30, 45, 60, 90, 120, 150, 180, 210, 240, 300, 360, 420, 480];
+      return minutes.map(minutes => ({
+        description: String(minutes) + ' minute(s)',
+        name: formater.minutesToDuration(minutes),
+      }));
+    }
+    // date
+    case 6: {
+      return [
+        (new Date()).toISOString().substr(0, 10)
+      ];
     }
   }
 };

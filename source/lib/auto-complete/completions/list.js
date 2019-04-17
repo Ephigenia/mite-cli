@@ -34,7 +34,7 @@ module.exports = async ({ words, prev, lastPartial }) => {
   const now = new Date();
   const year = now.getFullYear();
   const month = (now.getMonth() < 10 ? '0' : '') + (now.getMonth() + 1);
-  const day = (now.getDate() < 10 ? '0' : '') + (now.getDate() + 1);
+  const day = (now.getDate() < 10 ? '0' : '') + now.getDate();
   if (lastPartial.match(/^\d{1,4}-\d{1,2}/)) {
     return [`${lastPartial}-${day}`]
   }
