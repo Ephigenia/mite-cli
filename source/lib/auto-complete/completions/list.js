@@ -92,14 +92,15 @@ module.exports = async ({ words, prev }) => {
     case '--tracking':
       return ['yes', 'no'];
     case '--user_id':
-      // add completion for customer ids?
-      // @TODO show archived users in grey
-      return miteApi.getUsers({ archived: false }).then(
-        users => users.map(c => ({
-          name: String(c.id),
-          description: c.name
+      return Promise.all([
+        miteApi.getUsers({ archived: false }),
+        miteApi.getMyself(),
+      ]).then(([users, me]) => {
+        return users.map(u => ({
+          name: String(u.id),
+          description: u.name + (me.id === u.id ? ' (you)' : '')
         }))
-      );
+      });
   }
 
   return [
