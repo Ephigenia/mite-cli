@@ -5,6 +5,18 @@ const DataOutput = require('./../../data-output');
 const config = require('./../../../config.js');
 const miteApi = require('./../../mite-api')(config.get());
 
+const timeFrameOptions = [
+  'today',
+  'yesterday',
+  'this_week',
+  'last_week',
+  'this_month',
+  'last_month',
+  'this_year',
+  'last_year',
+  'YYYY-MM-DD'
+];
+
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
  *
@@ -16,7 +28,23 @@ const miteApi = require('./../../mite-api')(config.get());
  * @param {string} env.line - the current complete input line in the cli
  * @returns {Promise<Array<string>>}
  */
-module.exports = async ({ prev }) => {
+module.exports = async ({ words, prev, lastPartial }) => {
+
+  // date completion
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = (now.getMonth() < 10 ? '0' : '') + (now.getMonth() + 1);
+  const day = (now.getDate() < 10 ? '0' : '') + (now.getDate() + 1);
+  if (lastPartial.match(/^\d{1,4}-\d{1,2}/)) {
+    return [`${lastPartial}-${day}`]
+  }
+  if (lastPartial.match(/^\d{1,4}-/)) {
+    return [`${lastPartial}${month}-${day}`]
+  }
+  if (lastPartial.match(/^\d{1,4}/)) {
+    return [`${year}-${month}-${day}`]
+  }
+
   switch (prev) {
     case '--archived':
     case '-a':
@@ -47,17 +75,7 @@ module.exports = async ({ prev }) => {
       return DataOutput.FORMATS;
     case '--from':
     case '--to':
-      return [
-        'today',
-        'yesterday',
-        'this_week',
-        'last_week',
-        'this_month',
-        'last_month',
-        'this_year',
-        'last_year',
-        'YYYY-MM-DD'
-      ];
+      return timeFrameOptions;
     case '--project_id':
       return miteApi.getProjects({ archived: false }).then(
         projects => projects.map(c => ({
@@ -99,6 +117,13 @@ module.exports = async ({ prev }) => {
           description: u.name + (me.id === u.id ? ' (you)' : '')
         }));
       });
+  }
+
+  // auto-completion for time-frame option argument
+
+
+  if (words === 2 && lastPartial.substr(0, 1) !== '-') {
+    return timeFrameOptions;
   }
 
   return [
