@@ -97,7 +97,11 @@ function getServiceChoices() {
 
 function checkResults(options, query, type) {
   let searchResults = options.filter(result => {
-    return result.name && (result.name.toUpperCase().indexOf(query.toUpperCase()) > -1);
+    return result.name &&
+      (
+        (result.name.toUpperCase().indexOf(query.toUpperCase()) > -1) ||
+        (result.value == query)
+      );
   });
   switch (searchResults.length) {
     case 0:
