@@ -114,7 +114,7 @@ function checkResults(options, query, type) {
   // then try to find partial matches
   if (searchResults.length === 0) {
     searchResults = options.filter(result => {
-      return result.name && (result.name.toUpperCase().indexOf(query.toUpperCase()) > -1)
+      return result.name && (result.name.toUpperCase().indexOf(query.toUpperCase()) > -1);
     });
   }
 

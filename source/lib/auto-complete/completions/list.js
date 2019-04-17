@@ -36,13 +36,13 @@ module.exports = async ({ words, prev, lastPartial }) => {
   const month = (now.getMonth() < 10 ? '0' : '') + (now.getMonth() + 1);
   const day = (now.getDate() < 10 ? '0' : '') + now.getDate();
   if (lastPartial.match(/^\d{1,4}-\d{1,2}/)) {
-    return [`${lastPartial}-${day}`]
+    return [`${lastPartial}-${day}`];
   }
   if (lastPartial.match(/^\d{1,4}-/)) {
-    return [`${lastPartial}${month}-${day}`]
+    return [`${lastPartial}${month}-${day}`];
   }
   if (lastPartial.match(/^\d{1,4}/)) {
-    return [`${year}-${month}-${day}`]
+    return [`${year}-${month}-${day}`];
   }
 
   switch (prev) {
