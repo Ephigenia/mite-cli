@@ -74,7 +74,7 @@ module.exports = async ({ words, prev }) => {
       return miteApi.getServices({ archived: false }).then(
         service => service.map(c => ({
           name: String(c.id),
-          description: c.name
+          description: c.name + (c.billable ? ' $' : '')
         }))
       );
     case '--sort':

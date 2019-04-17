@@ -13,6 +13,9 @@ function miteApiWrapper(config) {
   return {
 
     mite: mite,
+    getMyself: async function() {
+      return util.promisify(this.mite.getMyself)().then(data => data.user);
+    },
 
     sort: function(items, attribute) {
       // @TODO add assertions
@@ -40,7 +43,7 @@ function miteApiWrapper(config) {
         util.promisify(mite['get' + itemNamePluralCamelCased])(opts),
         util.promisify(mite['getArchived' + itemNamePluralCamelCased])(opts),
       ])
-      .then(results => [].concat(results[0], results[1]))
+      .then(results => Array.prototype.concat.apply([], results))
       .then(items => items.map(c => c[itemName]))
       .then(items => items.filter(item => {
         if (typeof options.archived === 'boolean') {
