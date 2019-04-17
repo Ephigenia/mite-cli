@@ -36,18 +36,20 @@ Other ideas & planned features can be found in the [wiki](./wiki). If something 
     Commands:
 
       amend|reword       edit the text for a specific time entry or the currently runnning entry
+      autocomplete       install/uninstall autocompletion
       config             show or set configuration settings
+      customers|clients  list, filter & search customers
       delete|rm          delete a specific time entry
-      list|st            list time entries
       new|create         create a new time entry
+      list|st            list time entries
       open               open the given time entry in browser
-      stop               stop any running counter
-      start              start the tracker for the given id, will also stop allready running entry
-      users              list, filter & search for users
       projects           list, filter & search projects
       services           list, filter & search services
-      customers|clients  list, filter & search customers
+      start              start the tracker for the given id, will also stop   allready running entry
+      stop               stop any running counter
+      users              list, filter & search for users
       help [cmd]         display help for [cmd]
+
 ```
 
 # Install
