@@ -45,6 +45,11 @@ module.exports = {
     return this.number(minutes / 8 / 60, 2);
   },
 
+  durationToMinutes(minutes) {
+    const parts = minutes.split(':');
+    return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+  },
+
   minutesToDuration(minutes) {
     if (typeof minutes !== 'number') {
       throw new TypeError('Expected minutes to be a of type Number');

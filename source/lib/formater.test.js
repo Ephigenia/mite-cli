@@ -64,6 +64,25 @@ describe('formater', () => {
     });
   }); // minutesToWorkDays
 
+  describe('durationToMinutes', () => {
+    [
+      ['0:00', 0],
+      ['0:01', 1],
+      ['0:10', 10],
+      ['0:20', 20],
+      ['1:00', 60],
+      ['1:01', 61],
+      ['1:02', 62],
+      ['2:00', 120],
+      ['2:61', 181],
+      ['38:20', 2300],
+    ].forEach((row) => {
+      it(`formats ${row[0]} to ${row[1]}`, () => {
+        expect(formater.durationToMinutes(row[0])).to.equal(row[1]);
+      });
+    });
+  });
+
   describe('minutesToDuration', () => {
     [
       [0, '0:00'],
