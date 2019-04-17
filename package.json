@@ -63,25 +63,24 @@
   "dependencies": {
     "async": "^2.6.2",
     "chalk": "^2.4.2",
-    "commander": "^2.19.0",
+    "commander": "^2.20.0",
     "csv-string": "^3.1.5",
     "external-editor": "^3.0.3",
-    "inquirer": "^6.2.2",
+    "inquirer": "^6.3.1",
     "markdown-table": "^1.1.2",
     "mite-api": "github:marcel-devdude/mite-api#master",
     "nconf": "^0.10.0",
-    "omelette": "^0.4.12",
-    "opn": "^5.5.0",
+    "opn": "^6.0.0",
     "request": "^2.88.0",
     "table": "^5.2.3",
     "tabtab": "^3.0.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "conventional-changelog-cli": "^2.0.12",
-    "conventional-recommended-bump": "^4.0.4",
-    "eslint": "^5.15.2",
-    "mocha": "^6.0.2",
+    "conventional-changelog-cli": "^2.0.16",
+    "conventional-recommended-bump": "^4.1.1",
+    "eslint": "^5.16.0",
+    "mocha": "^6.1.3",
     "npm-check": "^5.9.0"
   }
 }
