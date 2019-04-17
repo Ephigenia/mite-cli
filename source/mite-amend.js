@@ -54,11 +54,23 @@ function main(timeEntryId) {
   let promise = null;
   if (!timeEntryId) {
     promise = miteTracker.get()
-      .then(result => getTimeEntry(result.tracker.tracking_time_entry.id));
+      .then(result => {
+        if (!result || !result.tracker || !result.tracker.tracking_time_entry) {
+          throw new Error('Either there was no id given or no running time-tracker found.');
+        }
+        return getTimeEntry(result.tracker.tracking_time_entry.id)
+      });
   } else {
     promise = getTimeEntry(timeEntryId);
   }
-  promise.then(data => data.time_entry)
+  promise
+    .then(data => {
+      if (!data) {
+        throw new Error('Unable to find time entry with the given ID');
+      }
+      return data;
+    })
+    .then(data => data.time_entry)
     .then(timeEntry => {
       timeEntryId = timeEntry.id;
       if (program.editor) {
