@@ -28,8 +28,8 @@ program
   .command('projects', 'list, filter & search projects')
   .command('services', 'list, filter & search services')
   .command('customers', 'list, filter & search customers')
-  .command('autocomplete', 'install/uninstall autocompletion')
   .alias('clients')
+  .command('autocomplete', 'install/uninstall autocompletion')
   .description(pkg.description);
 
 // completion command is triggered by automatically installed autocompletion
