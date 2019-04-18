@@ -24,7 +24,7 @@ program.command('install')
       });
   });
 
-program.command('unintall')
+program.command('uninstall')
   .description('removes the auto-completion for mite')
   .action(() => {
     autoComplete.uninstall()
