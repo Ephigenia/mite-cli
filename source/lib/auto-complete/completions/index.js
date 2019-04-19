@@ -6,6 +6,7 @@ module.exports = {
   config: require('./config'),
   customers: require('./customers'),
   customer: require('./customer'),
+  delete: require('./delete'),
   list: require('./list'),
   lock: require('./lock'),
   new: require('./new'),
