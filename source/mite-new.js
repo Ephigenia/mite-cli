@@ -4,13 +4,12 @@
 const program = require('commander');
 const inquirer = require('inquirer');
 const chalk = require('chalk');
-const miteApi = require('mite-api');
-const util = require('util');
 
 const pkg = require('./../package.json');
 const config = require('./config.js');
-const mite = miteApi(config.get());
+const miteApi = require('./lib/mite-api')(config.get());
 const miteTracker = require('./lib/mite-tracker')(config.get());
+const formater = require('./lib/formater');
 
 program
   .version(pkg.version)
@@ -23,9 +22,9 @@ program
     `passed the time entry is created right away.`,
     {
       note: 'optional given pre-filled value for the time-entry content',
-      project: 'optional name of the project for which the time entry should be created, note that this must be a case-insensitive match',
-      service: 'optional name of the service which should be set for the new time entry, note that this must be a case-insensitive match',
-      minutes: 'optional number of minutes which should be set for the time entry, add a "+" at the end to start the time entry',
+      project: 'optional name or id of the project for which the time entry should be created, note that this must be a case-insensitive match',
+      service: 'optional name of id of the service which should be set for the new time entry, note that this must be a case-insensitive match',
+      minutes: 'optional number of minutes or a duration string in the format HH:MM which should be set for the time entry, add a "+" at the end to start the time entry',
       date: 'optional date for which the time entry should be created in the format YYYY-MM-DD'
     }
   )
@@ -42,6 +41,9 @@ Examples:
 
   Create a complete time entry non-interactively that has 30 minutes and also starts the timer:
     $ mite new "example entry note" project-name1 programming 30+
+
+  Create a complete time entry non-interactively that has 2 hours and 4 minutes
+    $ mite new "example entry note" project-name1 programming 2:04
 `);
   })
   .action((note, project, service, minutes, date) => {
@@ -54,13 +56,14 @@ if (process.argv.length > 7)  {
   program.help();
 }
 
-function getProjectChoices() {
-  return util.promisify(mite.getProjects)()
-    .then(response => response.map(d => d.project))
+function getProjectChoices(pretty = true) {
+  return miteApi.getProjects({archived: false})
     .then(projects => projects.map(project => {
       const nameParts = [project.name];
-      if (project.customer_name) {
-        nameParts.push('(' + project.customer_name + ')');
+      if (pretty) {
+        if (project.customer_name) {
+          nameParts.push('(' + project.customer_name + ')');
+        }
       }
       return {
         name: nameParts.join(' '),
@@ -76,13 +79,14 @@ function getProjectChoices() {
     });
 }
 
-function getServiceChoices() {
-  return util.promisify(mite.getServices)()
-    .then(response => response.map(d => d.service))
+function getServiceChoices(pretty = true) {
+  return miteApi.getServices({archived: false})
     .then(services => services.map(service => {
       const nameParts = [service.name];
-      if (service.billable) {
-        nameParts.push(chalk.yellow.bold('$'));
+      if (pretty) {
+        if (service.billable) {
+          nameParts.push(chalk.yellow.bold('$'));
+        }
       }
       return { name: nameParts.join(' '), value: service.id};
     }))
@@ -96,9 +100,24 @@ function getServiceChoices() {
 }
 
 function checkResults(options, query, type) {
+  // first try to find an exact match of id or name
   let searchResults = options.filter(result => {
-    return result.name && (result.name.toUpperCase().indexOf(query.toUpperCase()) > -1);
+    return result.name &&
+      (
+        // case-insensitive match or ID match
+        (result.name === query) ||
+        // exact id match
+        (result.value == query)
+      );
   });
+
+  // then try to find partial matches
+  if (searchResults.length === 0) {
+    searchResults = options.filter(result => {
+      return result.name && (result.name.toUpperCase().indexOf(query.toUpperCase()) > -1);
+    });
+  }
+
   switch (searchResults.length) {
     case 0:
       console.log(`No ${type}s found that match "${query}".`);
@@ -159,8 +178,8 @@ function interactiveMode(note) {
 
 function cliMode(note, project, service, minutes, date) {
   return Promise.all([
-    getProjectChoices(project),
-    getServiceChoices(service),
+    getProjectChoices(false),
+    getServiceChoices(false),
   ]).then(([projects, services]) => {
     projects = checkResults(projects, project, 'project');
     services = checkResults(services, service, 'service');
@@ -188,7 +207,8 @@ function main(note, project, service, minutes, date) {
 
     // do not create an entry when minutes are invalid
     if (!entry.minutes) {
-      console.log('no time entry created due to empty project id or empty minutes');
+      console.error('no time entry created due to empty project id or empty minutes');
+      process.exit(1);
       return;
     }
 
@@ -200,9 +220,23 @@ function main(note, project, service, minutes, date) {
       entry.minutes = entry.minutes.substr(0, entry.minutes.length - 1);
     }
 
+
+    // when minutes is given as duration string convert it to minutes
+    if (/^\d+:\d+?$/.test(entry.minutes)) {
+      entry.minutes = formater.durationToMinutes(entry.minutes);
+      if (isNaN(entry.minutes)) {
+        console.error(
+          'unable to convert the given duration to minutes, ' +
+          'please check that the format is HH:MM'
+        );
+        process.exit(1);
+        return;
+      }
+    }
+
     // http://mite.yo.lk/en/api/time-entries.html#create
-    mite.addTimeEntry({ time_entry: entry }, (response) => {
-      var data = JSON.parse(response);
+    miteApi.mite.addTimeEntry({ time_entry: entry }, (response) => {
+      const data = JSON.parse(response);
       if (data.error) {
         console.error('Error while creating new time entry:', data.error);
         process.exit(1);
