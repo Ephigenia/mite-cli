@@ -358,6 +358,14 @@ List, filter and search for projects. Example showing only archived projects ord
     │  827261 │ Deployment    │ Example ltd. (73625)     │  24000.00 € │       - │                                                                                  │
     └─────────┴───────────────┴──────────────────────────┴─────────────┴─────────┴──────────────────────────────────────────────────────────────────────────────────┘
 
+list projects while setting different columns and export to csv:
+
+    mite projects --columns=id,customer_id,customer_name --format=csv > projects_export.csv
+
+use the resulting projects in another command to archive the listed projects:
+
+    mite projects --columns=id --format=text | xargs -0 mite project update --archived false
+
 ### Update Project
 
 Archive a single project
@@ -384,6 +392,14 @@ List, filter and search for customers. Archived customers will be shown in grey.
     ├────────┼─────────────────┼─────────┼──────────────────────────────────────────────────────────────────────────────────┤
     │ 927361 │ Mite-Cli        │       - │ open source project                                                              │
     └────────┴─────────────────┴─────────┴──────────────────────────────────────────────────────────────────────────────────┘
+
+Use different columns
+
+    mite customers --colums=name,rate
+
+Export all archived customers
+
+    mite customers --archived=true --format=csv > archived_customers.json
 
 ### Update Customer
 

@@ -21,6 +21,7 @@ module.exports = async ({ prev }) => {
     case '--archived':
     case '-a':
       return ['yes', 'no'];
+    // @TODO add completion for --columns option
     case '--customer':
       // add completion for customer ids?
       return miteApi.getCustomers().then(customers => customers.map(c => ({
@@ -61,6 +62,10 @@ module.exports = async ({ prev }) => {
     {
       name: '--format',
       description: 'defines the output format',
+    },
+    {
+      name: '--columns',
+      description: 'define the columns that are shown',
     },
     {
       name: '--customer',
