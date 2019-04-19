@@ -11,6 +11,7 @@ Simple CLI tool for creating, listing, starting and stopping time tracking entri
 # Features
 
 - Create and start new Entries with interactive survey-like cli interface
+- Delete, lock, unlock single time entries
 - Edit the currently running entries text for fast updating the work log
 - Show, filter, group time entries to show reports for last month, current week etc.
 - List, sort, filter user accounts, customers, projects & services using variable columns and cli-tables, csv or tsv data
@@ -41,15 +42,17 @@ Other ideas & planned features can be found in the [wiki](./wiki). If something 
       config             show or set configuration settings
       customers|clients  list, filter & search customers
       delete|rm          delete a specific time entry
-      new|create         create a new time entry
+      help [cmd]         display help for [cmd]
       list|st            list time entries
+      lock               lock a single time entry
+      new|create         create a new time entry
       open               open the given time entry in browser
       projects           list, filter & search projects
       services           list, filter & search services
       start              start the tracker for the given id, will also stop   allready running entry
       stop               stop any running counter
+      unlock             unlock a single time entry
       users              list, filter & search for users
-      help [cmd]         display help for [cmd]
 
 ```
 
@@ -291,6 +294,20 @@ Delete a single entry
 Deleting a set of entries filtered using `mite list` and unix tools:
 
     mite list this_month --search="query" --columns id --format=text | xargs -0 mite delete
+
+## Un-/Lock Entry
+
+Lock a single time entry
+
+    mite lock 1289736
+
+Unlock a single time entry
+
+    mite lock 128721
+
+Locking a set of entries filtered using `mite list` and unix tools:
+
+    mite list this_month --customer_id 128171 --columns id --format=text | xargs -0 mite delete
 
 ## Users
 
