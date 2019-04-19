@@ -26,13 +26,13 @@ program
   )
   .on('--help', function() {
     console.log(`
-  Examples:
+Examples:
 
-    Lock a single entry identified by it’s id:
-      $ mite delete 1283761
+  Lock a single entry identified by it’s id:
+    $ mite delete 1283761
 
-    Lock multiple entries selected by using mite list:
-      $ mite list this_month --search="query" --columns id --format=text | xargs -0 mite lock
+  Lock multiple entries selected by using mite list:
+    $ mite list this_month --search="query" --columns id --format=text | xargs -0 mite lock
 `);
   })
   .action((timeEntryId) => {

@@ -26,13 +26,13 @@ program
   )
   .on('--help', function() {
     console.log(`
-  Examples:
+Examples:
 
-    Unlock a single entry identified by it’s id:
-      $ mite delete 1283761
+  Unlock a single entry identified by it’s id:
+    $ mite delete 1283761
 
-    Unlock multiple entries selected by using mite list:
-      $ mite list this_month --search="query" --columns id --format=text | xargs -0 mite unlock
+  Unlock multiple entries selected by using mite list:
+    $ mite list this_month --search="query" --columns id --format=text | xargs -0 mite unlock
 `);
   })
   .action((timeEntryId) => {
