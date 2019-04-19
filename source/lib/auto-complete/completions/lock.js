@@ -16,7 +16,7 @@ module.exports = async ({ words }) => {
   if (words < 3) {
     return [
       {
-        mame: 'timeEntryId',
+        name: 'timeEntryId',
         description: 'id of the time entry which should be locked',
       },
       {
