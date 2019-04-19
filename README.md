@@ -134,6 +134,10 @@ Or Specific dates:
 
     mite list 2017-01-02
 
+Or Custom periods of time
+
+    mite list --from=2018-04-01 --to=2018-04-15
+
 Or search for specific entries in all time-entries from the current year
 
     mite list this_year --search JIRA-123
@@ -302,9 +306,9 @@ Unlock a single time entry
 
     mite lock 128721
 
-Locking a set of entries filtered using `mite list` and unix tools:
+Locking all entries from the last month from a specific customer using `mite list` and `xargs`:
 
-    mite list this_month --customer_id 128171 --columns id --format=text | xargs -0 mite lock
+    mite list last_month --customer_id 128171 --columns id --format=text | xargs -0 mite lock
 
 ## Users
 
