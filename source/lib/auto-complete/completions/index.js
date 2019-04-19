@@ -5,6 +5,7 @@ module.exports = {
   autocomplete: require('./autocomplete'),
   config: require('./config'),
   customers: require('./customers'),
+  customer: require('./customer'),
   list: require('./list'),
   lock: require('./lock'),
   new: require('./new'),
