@@ -285,7 +285,7 @@ program
   .option(
     '-f, --format <format>',
     'defines the output format, valid options are ' + DataOutput.FORMATS.join(', '),
-    'table'
+    config.get('outputFormat')
   )
   .on('--help', function() {
     console.log(`
