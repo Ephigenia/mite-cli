@@ -37,10 +37,12 @@ const autoComplete = {
       return tabtab.log(subCommands);
     }
 
-    // find out which command was called
-    const subCommand = env.line.split(/\s/)[1];
+    // there might be a sub-command called, find out by checking the second
+    // argument and if it’s a sub-command
+    const secondArg = env.line.split(/\s/)[1];
+    const subCommand = program.commands.find(c => c._name === secondArg);
     if (subCommand) {
-      return this.completionForSubcommand(subCommand, env);
+      return this.completionForSubcommand(subCommand._name, env);
     }
   },
 
@@ -58,7 +60,8 @@ const autoComplete = {
     if (!completer) return [];
 
     return completer(env).then((r) => {
-      if (r) tabtab.log(r);
+      // filter out empty values
+      if (r) tabtab.log(r.filter(v => v));
     });
   },
 
