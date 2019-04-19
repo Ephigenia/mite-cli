@@ -58,7 +58,7 @@ function main(timeEntryId) {
         if (!result || !result.tracker || !result.tracker.tracking_time_entry) {
           throw new Error('Either there was no id given or no running time-tracker found.');
         }
-        return getTimeEntry(result.tracker.tracking_time_entry.id)
+        return getTimeEntry(result.tracker.tracking_time_entry.id);
       });
   } else {
     promise = getTimeEntry(timeEntryId);
