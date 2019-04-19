@@ -293,7 +293,7 @@ Delete a single entry
 
 Deleting a set of entries filtered using `mite list` and unix tools:
 
-    mite list this_month --search="query" --columns id --format=text | xargs -0 mite delete
+    mite list this_month --project_id 128717 --columns id --format=text | xargs -0 mite delete
 
 ## Un-/Lock Entry
 

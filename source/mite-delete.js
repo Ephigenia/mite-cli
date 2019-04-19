@@ -20,8 +20,8 @@ program
     Delete a single entry identified by it’s id:
       $ mite delete 1283761
 
-    Delete multiple entries selected by using mite list:
-      $ mite list this_month --search="query" --columns id --format=text | xargs -0 mite delete
+    Delete multiple entries from a project selected by using mite list:
+      $ mite list this_month --project_id=123128 --columns id --format=text | xargs -0 mite delete
 `)
   })
   .action((timeEntryId) => {
