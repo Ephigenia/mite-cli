@@ -8,6 +8,7 @@ module.exports = {
   list: require('./list'),
   lock: require('./lock'),
   new: require('./new'),
+  project: require('./project'),
   projects: require('./projects'),
   services: require('./services'),
   unlock: require('./unlock'),

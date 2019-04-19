@@ -11,6 +11,10 @@ const config = require('./config.js');
 program
   .version(pkg.version)
   .arguments('<projectId>')
+  // @TODO add edit "budget"
+  // @TODO add edit "hourly_rate"
+  // @TODO add edit "name"
+  // @TODO add edit "note"
   .option(
     '--archived <true|false>',
     'changes the archived state of the project',
