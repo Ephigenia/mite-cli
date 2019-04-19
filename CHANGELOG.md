@@ -1,3 +1,57 @@
+# [0.9.0](https://github.com/Ephigenia/mite-cli/compare/v0.8.1...v0.9.0) (2019-04-19)
+
+
+### Bug Fixes
+
+* mistakenly changed alias for customers ([7d02c0a](https://github.com/Ephigenia/mite-cli/commit/7d02c0a))
+* **amend:** more precise error message with no tracker or invalid id ([dd47fde](https://github.com/Ephigenia/mite-cli/commit/dd47fde))
+* **config:** prevent setting of undefined variable ([5eaa01d](https://github.com/Ephigenia/mite-cli/commit/5eaa01d))
+* typo in auto-completion name in lock and unlock ([8620b2e](https://github.com/Ephigenia/mite-cli/commit/8620b2e))
+* typo in mite autocomplete uninstall ([697b6ed](https://github.com/Ephigenia/mite-cli/commit/697b6ed))
+* **config:** re-enable resetting values to their default ([2248b48](https://github.com/Ephigenia/mite-cli/commit/2248b48))
+* **mite:** accidential dublicate parsing of argv ([93ad79e](https://github.com/Ephigenia/mite-cli/commit/93ad79e))
+* **projects:** customer_name exact matches ([45ef317](https://github.com/Ephigenia/mite-cli/commit/45ef317))
+
+
+### Features
+
+* adds --help to all the auto-completions ([ff40cf5](https://github.com/Ephigenia/mite-cli/commit/ff40cf5))
+* **unlock:** adds sub-command to unlock single time entries ([47db187](https://github.com/Ephigenia/mite-cli/commit/47db187))
+* adds base for auto-completion for all mite subcommands ([96e7f44](https://github.com/Ephigenia/mite-cli/commit/96e7f44))
+* **lock:** adds sub-command to lock single time entries ([38ec3e0](https://github.com/Ephigenia/mite-cli/commit/38ec3e0))
+* adds outputFormat to config to define global output format ([c95eac4](https://github.com/Ephigenia/mite-cli/commit/c95eac4))
+* **amend:** auto-completed provides list of 5 last entries of the user ([87309f4](https://github.com/Ephigenia/mite-cli/commit/87309f4))
+* **customer-update:** adds auto-completion for customer list and archived state ([eefb1b9](https://github.com/Ephigenia/mite-cli/commit/eefb1b9))
+* **customer-update:** adds command for updating single customer ([8733b12](https://github.com/Ephigenia/mite-cli/commit/8733b12))
+* **customer-update:** auto-comple list depends on archived option ([c44e29e](https://github.com/Ephigenia/mite-cli/commit/c44e29e))
+* **customer-update:** change name and note of a customer ([42f4090](https://github.com/Ephigenia/mite-cli/commit/42f4090))
+* **customers:** adds --column option ([33df7a5](https://github.com/Ephigenia/mite-cli/commit/33df7a5))
+* **customers:** adds --columns option to define which colums are shown ([bd734c8](https://github.com/Ephigenia/mite-cli/commit/bd734c8))
+* **customers:** adds auto-completion for options and option values ([60bff36](https://github.com/Ephigenia/mite-cli/commit/60bff36))
+* **delete:** adds autocompletion which shows last 5 entries ([26edb09](https://github.com/Ephigenia/mite-cli/commit/26edb09))
+* **formater:** adds durationToMinutes helper function ([1f249d9](https://github.com/Ephigenia/mite-cli/commit/1f249d9))
+* **list:** --user_id auto-completion shows you at the current user ([d527e06](https://github.com/Ephigenia/mite-cli/commit/d527e06))
+* **list:** adds auto-completion for options and option values ([a3906bd](https://github.com/Ephigenia/mite-cli/commit/a3906bd))
+* **list:** adds text as output format ([31be856](https://github.com/Ephigenia/mite-cli/commit/31be856))
+* **list:** adds time period completion when date is started to enter ([6b4ddee](https://github.com/Ephigenia/mite-cli/commit/6b4ddee))
+* **list:** services auto-completion shows billable services with dollar sign ([8ab0340](https://github.com/Ephigenia/mite-cli/commit/8ab0340))
+* **lock:** adds auto-completion for options ([9d6469e](https://github.com/Ephigenia/mite-cli/commit/9d6469e))
+* **lock:** adds auto-completion for options ([c410ab2](https://github.com/Ephigenia/mite-cli/commit/c410ab2))
+* **new:** accepts minutes in duration format HH:MM ([2b14588](https://github.com/Ephigenia/mite-cli/commit/2b14588))
+* **new:** adds auto-completion for project, services, minutes and date ([4e8ac36](https://github.com/Ephigenia/mite-cli/commit/4e8ac36))
+* **new:** create new time entries using project or service ids ([afa2830](https://github.com/Ephigenia/mite-cli/commit/afa2830))
+* **project:** update a project f.e. archive/unarchive it ([d5342c6](https://github.com/Ephigenia/mite-cli/commit/d5342c6))
+* **project-update:** adds auto-completion for argument and project ids ([a36923d](https://github.com/Ephigenia/mite-cli/commit/a36923d))
+* **project-update:** auto-comple list depends on archived option ([cb37578](https://github.com/Ephigenia/mite-cli/commit/cb37578))
+* **project-update:** change name and note of a project ([1a8a76a](https://github.com/Ephigenia/mite-cli/commit/1a8a76a))
+* **projects:** adds auto-completion for options and option values ([06e4c4b](https://github.com/Ephigenia/mite-cli/commit/06e4c4b))
+* **services:** adds --columns option ([0736812](https://github.com/Ephigenia/mite-cli/commit/0736812))
+* **services:** adds auto-completion for options and option values ([29f44bb](https://github.com/Ephigenia/mite-cli/commit/29f44bb))
+* **start:** adds auto-completion which shows latest 5 entries ([25201d0](https://github.com/Ephigenia/mite-cli/commit/25201d0))
+* **users:** adds auto-completion options and option values ([12b325f](https://github.com/Ephigenia/mite-cli/commit/12b325f))
+
+
+
 ## [0.8.1](https://github.com/Ephigenia/mite-cli/compare/v0.8.0...v0.8.1) (2019-03-17)
 
 
