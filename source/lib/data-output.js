@@ -11,6 +11,7 @@ const FORMAT = {
   TSV: 'tsv',
   TABLE: 'table',
   MD: 'md',
+  TEXT: 'text',
 };
 const FORMATS = Object.values(FORMAT);
 
@@ -33,6 +34,9 @@ function formatData(data, format, columns) {
       };
       return table(data, tableConfig);
     }
+    case 'text':
+      // first data item contains the column names
+      return data.splice(1).join("\n");
     case 'tsv':
       return csvString.stringify(data, "\t");
     default:
