@@ -361,6 +361,16 @@ List, filter and search for projects. Example showing only archived projects ord
     │  827261 │ Deployment    │ Example ltd. (73625)     │  24000.00 € │       - │                                                                                  │
     └─────────┴───────────────┴──────────────────────────┴─────────────┴─────────┴──────────────────────────────────────────────────────────────────────────────────┘
 
+### Update Project
+
+Archive a single project
+
+    mite project update --archived false 1238127
+
+Archive multiple projects using xargs:
+
+    mite projects --columns id --format text --customer_id=123445 | xargs -0 mite project update --archived false
+
 ## Customers
 
 List, filter and search for customers. Archived customers will be shown in grey.
