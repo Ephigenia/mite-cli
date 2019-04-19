@@ -220,7 +220,7 @@ miteApi.getProjects(opts).then(allProjects => {
       } else {
         return 0;
       }
-    })
+    });
   }).then(items => {
     // validate columns options
     const columns = program.columns
