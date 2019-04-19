@@ -3,13 +3,12 @@
 
 const program = require('commander');
 const chalk = require('chalk');
-const tableLib = require('table');
-const table = tableLib.table;
 
 const pkg = require('./../package.json');
 const config = require('./config.js');
 const miteApi = require('./lib/mite-api')(config.get());
 const formater = require('./lib/formater');
+const DataOutput = require('./lib/data-output');
 const BUDGET_TYPE = formater.BUDGET_TYPE;
 const SORT_OPTIONS = [
   'id',
@@ -20,6 +19,47 @@ const SORT_OPTIONS = [
   'rate',
 ];
 const SORT_OPTIONS_DEFAULT = 'name';
+
+const COLUMNS_OPTIONS = {
+  created_at: {
+    label: 'created at',
+    attribute: 'created_at',
+  },
+  id: {
+    label: 'id',
+    attribute: 'id',
+    width: 10,
+    alignment: 'right'
+  },
+  name: {
+    label: 'name',
+    attribute: 'name',
+  },
+  note: {
+    label: 'Note',
+    attribute: 'note',
+    width: 50,
+    wrapWord: true,
+    alignment: 'left',
+    format: formater.note,
+  },
+  rate: {
+    label: 'rate',
+    attribute: 'hourly_rate',
+    width: 10,
+    alignment: 'right',
+    format: (value) => {
+      if (!value) {
+        return '-';
+      }
+      return formater.budget(BUDGET_TYPE.CENTS, value || 0);
+    },
+  },
+  updated_at: {
+    label: 'updated at',
+    attribute: 'updated_at',
+  }
+};
 
 program
   .version(pkg.version)
@@ -40,6 +80,18 @@ program
       return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
     }),
     null
+  )
+  .option(
+    '--columns <columns>',
+    'custom list of columns to use in the output, pass in a comma-separated ' +
+    'list of attribute names: ' + Object.keys(COLUMNS_OPTIONS).join(', '),
+    (str) => str.split(',').filter(v => v).join(','),
+    'id,name,rate,note'
+  )
+  .option(
+    '-f, --format <format>',
+    'defines the output format, valid options are ' + DataOutput.FORMATS.join(', '),
+    'table'
   )
   .option(
     '--sort <column>',
@@ -100,42 +152,41 @@ miteApi.getCustomers(opts)
         } else {
           return 0;
         }
-      })
-      .map((customer) => {
-        let rate = formater.budget(BUDGET_TYPE.CENTS, customer.hourly_rate);
-        if (!customer.hourly_rate) {
-          rate = '-';
-        }
-        return [
-          customer.id,
-          customer.name,
-          rate,
-          customer.note.replace(/\r?\n/g, ' '),
-        ].map((v) => {
-          if (customer.archived) {
-            return chalk.grey(v);
-          }
-          return v;
-        });
       });
-  }).then(tableData => {
-    tableData.unshift([
-      'id',
-      'name',
-      'rate',
-      'note'
-    ].map(v=> chalk.bold(v)));
-    const tableConfig = {
-      border: tableLib.getBorderCharacters('norc'),
-      columns: {
-        2: {
-          alignment: 'right',
-        },
-        3: {
-          width: 50,
-          wrapWord: true,
+  }).then(items => {
+    // validate columns options
+    const columns = program.columns
+      .split(',')
+      .map(attrName => {
+        const columnDefinition = COLUMNS_OPTIONS[attrName];
+        if (!columnDefinition) {
+          console.error(`Invalid column name "${attrName}"`);
+          process.exit(2);
         }
+        return columnDefinition;
+      });
+
+    // create final array of table data
+    const tableData = items.map((item) => {
+      let row = columns.map(columnDefinition => {
+        const value = item[columnDefinition.attribute];
+        if (columnDefinition.format) {
+          return columnDefinition.format(value, item);
+        }
+        return value;
+      });
+      if (item.archived) {
+        row = row.map(v => chalk.grey(v));
       }
-    };
-    console.log(table(tableData, tableConfig));
+      return row;
+    });
+
+    // Table header
+    tableData.unshift(
+      columns
+        .map(columnDefinition => columnDefinition.label)
+        .map(v => chalk.bold(v))
+    );
+
+    console.log(DataOutput.formatData(tableData, program.format, columns));
   });

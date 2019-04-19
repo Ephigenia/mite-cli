@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 'use strict';
 
+const DataOutput = require('./../../data-output');
+
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
  *
@@ -17,6 +19,10 @@ module.exports = async ({ prev }) => {
     case '--archived':
     case '-a':
       return ['yes', 'no'];
+    // @TODO add completion for --columns option
+    case '--format':
+    case '-f':
+      return DataOutput.FORMATS;
     case '--search':
       return ['query'];
     case '--sort':
@@ -33,16 +39,24 @@ module.exports = async ({ prev }) => {
 
   return [
     {
+      name: '--archived',
+      description: 'defines wheter archived customers should be shown or not'
+    },
+    {
+      name: '--columns',
+      description: 'define the columns that are shown',
+    },
+    {
+      name: '--format',
+      description: 'defines the output format',
+    },
+    {
       name: '--help',
       description: 'show help message'
     },
     {
       name: '--search',
       description: 'given a query will list only customers that match the query',
-    },
-    {
-      name: '--archived',
-      description: 'defines wheter archived customers should be shown or not'
     },
     {
       name: '--sort',
