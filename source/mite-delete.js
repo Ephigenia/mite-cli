@@ -22,7 +22,7 @@ program
 
     Delete multiple entries from a project selected by using mite list:
       $ mite list this_month --project_id=123128 --columns id --format=text | xargs -0 mite delete
-`)
+`);
   })
   .action((timeEntryId) => {
     const mite = miteApi(config.get());

@@ -1,8 +1,6 @@
 #!/usr/bin/env node
 'use strict';
 
-const util = require('util');
-
 const config = require('./../../../config.js');
 const miteApi = require('./../../mite-api')(config.get());
 
