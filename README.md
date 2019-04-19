@@ -270,6 +270,10 @@ Delete a single entry
 
     mite delete 18472721
 
+Deleting a set of entries filtered using `mite list` and unix tools:
+
+    mite list this_month --search="query" --columns id --format=text | xargs -0 mite delete
+
 ## Users
 
 List user accounts while client-side search in name, email & note, sort by email and list only time_trackers and admins. Archived users will be grey.

@@ -14,10 +14,15 @@ program
   })
   .arguments('<timeEntryId>')
   .on('--help', function() {
-    console.log();
-    console.log('Examples:');
-    console.log();
-    console.log('  $ mite delete 1283761');
+    console.log(`
+  Examples:
+
+    Delete a single entry identified by it’s id:
+      $ mite delete 1283761
+
+    Delete multiple entries selected by using mite list:
+      $ mite list this_month --search="query" --columns id --format=text | xargs -0 mite delete
+`)
   })
   .action((timeEntryId) => {
     const mite = miteApi(config.get());
