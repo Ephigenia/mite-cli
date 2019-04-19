@@ -2,9 +2,7 @@
 'use strict';
 
 const program = require('commander');
-const miteApi = require('mite-api');
 const chalk = require('chalk');
-const async = require('async');
 
 const DataOutput = require('./lib/data-output');
 const pkg = require('./../package.json');
@@ -100,21 +98,11 @@ const opts = {
   customer_id: program.customer_id
 };
 
-const mite = miteApi(config.get());
+const miteApi = require('./lib/mite-api')(config.get());
 
-async.parallel([
-  async.apply(mite.getProjects, opts),
-  async.apply(mite.getArchivedProjects, opts)
-], (err, results) => {
-
-  if (err) {
-    throw err;
-  }
-  // merge archived and not archived projects together in one array
-  const allProjects = [].concat(results[0], results[1]);
+miteApi.getProjects(opts).then(allProjects => {
   // proclaim an array of tabular data by mapping and filtering the data
   const tableData = allProjects
-    .map((e) => e.project)
     .filter((p) => {
       if (program.archived === null) {
         return true;
@@ -127,7 +115,7 @@ async.parallel([
         return true;
       }
       const regexp = new RegExp(program.customer, 'i');
-      return regexp.exec(p.customer_name) || regexp.exec(String(p.customer_id));
+      return p.customer_name === program.customer || regexp.exec(p.customer_name) || regexp.exec(String(p.customer_id));
     })
     .sort((a, b) => {
       if (!program.sort) return 0;

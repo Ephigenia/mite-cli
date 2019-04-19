@@ -29,6 +29,10 @@ Examples:
 `);
   })
   .action((key, value) => {
+    if (!key) {
+      console.error('No configuration key given, unable to set a variable');
+      process.exit(1);
+    }
     config.set(key, value);
     config.save((err) => {
       if (err) {

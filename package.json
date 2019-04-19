@@ -72,7 +72,8 @@
     "nconf": "^0.10.0",
     "opn": "^6.0.0",
     "request": "^2.88.0",
-    "table": "^5.2.3"
+    "table": "^5.2.3",
+    "tabtab": "^3.0.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
