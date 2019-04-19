@@ -1,4 +1,4 @@
-Simple CLI tool for creating, listing, starting and stopping time tracking entries in [Mite](https://mite.yo.lk) using the [mite-api](https://www.npmjs.com/package/mite-api) npm package which is using the [official mite api](https://mite.yo.lk/api/index.html)
+Ease to use CLI tool for creating, listing, starting and stopping time tracking entries in [Mite](https://mite.yo.lk) and other things using the [mite-api](https://www.npmjs.com/package/mite-api) npm package which is using the [official mite api](https://mite.yo.lk/api/index.html)
 
 [![MIT License](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 [![NPM Package](https://badge.fury.io/js/mite-cli.svg)](https://www.npmjs.com/package/mite-cli)
@@ -46,7 +46,7 @@ Other ideas & planned features can be found in the [wiki](./wiki). If something 
       project            update a single project
       projects           list, filter, archive/unarchive & search projects
       services           list, filter & search services
-    start              start the tracker for the given id, will also stop   allready running entry
+      start              start the tracker for the given id, will also stop   allready running entry
       stop               stop any running counter
       unlock             unlock single time entry
       users              list, filter & search for users
