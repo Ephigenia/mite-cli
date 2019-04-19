@@ -40,7 +40,11 @@ Examples:
         process.exit(1);
         return;
       }
-      console.log(`successfully set "${key}" to "${value}"`);
+      if (value === undefined) {
+        console.log(`successfully set "${key}" to the default value`);
+      } else {
+        console.log(`successfully set "${key}" to "${value}"`);
+      }
       // make sure file is only write- and readable by the user
       const configFilename = config.stores.file.file;
       fs.chmodSync(configFilename, 0o600);

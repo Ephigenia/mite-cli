@@ -80,7 +80,7 @@ In case you want to use multiple mite accounts please open up a [change request]
 - `listColumns`  
   defines the default columns to be used when running `mite list`.
 
-Configuration options can always be resetted to their default by leaving out the value, like: `mite config listColumns`.
+Configuration options can always be resetted to their default by leaving out the value, like: `mite config set listColumns`.
 
 ## Auto-Completion
 
