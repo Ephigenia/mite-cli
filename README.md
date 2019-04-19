@@ -11,6 +11,7 @@ Simple CLI tool for creating, listing, starting and stopping time tracking entri
 # Features
 
 - Create and start new Entries with interactive survey-like cli interface
+- Delete, lock, unlock single time entries
 - Edit the currently running entries text for fast updating the work log
 - Show, filter, group time entries to show reports for last month, current week etc.
 - List, sort, filter user accounts, customers, projects & services using variable columns and cli-tables, csv or tsv data
@@ -48,6 +49,8 @@ Other ideas & planned features can be found in the [wiki](./wiki). If something 
       services           list, filter & search services
       customers|clients  list, filter & search customers
       help [cmd]         display help for [cmd]
+      lock               lock a single time entry
+      unlock             unlock a single time entry
 ```
 
 # Install
@@ -273,6 +276,20 @@ Delete a single entry
 Deleting a set of entries filtered using `mite list` and unix tools:
 
     mite list this_month --search="query" --columns id --format=text | xargs -0 mite delete
+
+## Un-/Lock Entry
+
+Lock a single time entry
+
+    mite lock 1289736
+
+Unlock a single time entry
+
+    mite lock 128721
+
+Locking a set of entries filtered using `mite list` and unix tools:
+
+    mite list this_month --customer_id 128171 --columns id --format=text | xargs -0 mite delete
 
 ## Users
 
