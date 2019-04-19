@@ -65,11 +65,6 @@ program
   .version(pkg.version)
   .description('list, filter & search for servuces')
   .option(
-    '--search <query>',
-    'optional search string which must be somewhere in the services’ name ' +
-    '(case insensitive)'
-  )
-  .option(
     '-a, --archived <value>',
     'When used will only show either archived customers or not archived ' +
     'customers',
@@ -92,6 +87,11 @@ program
     '-f, --format <format>',
     'defines the output format, valid options are ' + DataOutput.FORMATS.join(', '),
     'table'
+  )
+  .option(
+    '--search <query>',
+    'optional search string which must be somewhere in the services’ name ' +
+    '(case insensitive)'
   )
   .option(
     '--sort <column>',

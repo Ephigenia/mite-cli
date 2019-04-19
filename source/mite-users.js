@@ -25,6 +25,46 @@ program
   .version(pkg.version)
   .description('list, filter & search for users')
   .option(
+    '-a, --archived <true|false>',
+    'When used will only show either archived users or not archived users',
+    ((val) => {
+      if (typeof val !== 'string') {
+        return val;
+      }
+      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
+    }),
+    null
+  )
+  .option(
+    '-f, --format <format>',
+    'defines the output format, valid options are ' + DataOutput.FORMATS.join(', '),
+    'table',
+  )
+  .option(
+    '--name <query>',
+    'optional search for users who’s name contains the given query string ' +
+    'while beeing not case-sensivite. No support multiple values.'
+    )
+    .option(
+      '--email <query>',
+      'optional search for users who’s email contains the given query string ' +
+      'while beeing not case-sensivite. No support multiple values.'
+  )
+  .option(
+    '--role <role>',
+    'optional user role to filter, multiple arguments comma-separated',
+    ((val) => {
+      if (typeof val === 'string') {
+        return val.split(/\s*,\s*/);
+      }
+      return val;
+    })
+  )
+  .option(
+    '--search <regexp>',
+    'optional cient-side case-insensitive search in user name, email and note.'
+  )
+  .option(
     '--sort <column>',
     `optional column the results should be case-insensitive ordered by `+
     `(default: "${SORT_OPTIONS_DEFAULT}"), ` +
@@ -41,46 +81,6 @@ program
       return value;
     },
     'name' // default sor
-  )
-  .option(
-    '--search <regexp>',
-    'optional cient-side case-insensitive search in user name, email and note.'
-  )
-  .option(
-    '--name <query>',
-    'optional search for users who’s name contains the given query string ' +
-    'while beeing not case-sensivite. No support multiple values.'
-  )
-  .option(
-    '--email <query>',
-    'optional search for users who’s email contains the given query string ' +
-    'while beeing not case-sensivite. No support multiple values.'
-  )
-  .option(
-    '--role <role>',
-    'optional user role to filter, multiple arguments comma-separated',
-    ((val) => {
-      if (typeof val === 'string') {
-        return val.split(/\s*,\s*/);
-      }
-      return val;
-    })
-  )
-  .option(
-    '-a, --archived <true|false>',
-    'When used will only show either archived users or not archived users',
-    ((val) => {
-      if (typeof val !== 'string') {
-        return val;
-      }
-      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
-    }),
-    null
-  )
-  .option(
-    '-f, --format <format>',
-    'defines the output format, valid options are ' + DataOutput.FORMATS.join(', '),
-    'table',
   )
   .on('--help', function() {
     console.log(`

@@ -304,7 +304,7 @@ Unlock a single time entry
 
 Locking a set of entries filtered using `mite list` and unix tools:
 
-    mite list this_month --customer_id 128171 --columns id --format=text | xargs -0 mite delete
+    mite list this_month --customer_id 128171 --columns id --format=text | xargs -0 mite lock
 
 ## Users
 
@@ -371,6 +371,10 @@ use the resulting projects in another command to archive the listed projects:
 Archive a single project
 
     mite project update --archived false 1238127
+
+Set the note and name of a project 
+    
+    mite project update --name="js prototype" --note="prototype development" 12344567
 
 Archive multiple projects using xargs:
 

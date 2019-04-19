@@ -16,10 +16,36 @@ const miteApi = require('./../../mite-api')(config.get());
  * @returns {Promise<Array<string>>}
  */
 module.exports = async ({ prev, line, word }) => {
+  const defaults = [
+    // do not includ --archived when it’s allready been set
+    line.indexOf('--archived') === -1 ? {
+      name: '--archived',
+      description: 'archive or unarchive a project',
+    } : undefined,
+    line.indexOf('--name') === -1 ? {
+      name: '--name',
+      description: 'change the name of the project',
+    } : undefined,
+    line.indexOf('--note') === -1 ? {
+      name: '--note',
+      description: 'change the note of the project',
+    } : undefined,
+    // include --help only when no other arguments or options are provided
+    word < 4 ? {
+      name: '--help',
+      description: 'show help message',
+    } : undefined,
+  ];
+
   switch(prev) {
     case '--archived':
       return ['yes', 'no'];
+    case '--name':
+      return ['name'];
+    case '--note':
+      return ['note'];
   }
+
   // show list of archived or unarchived projects depending on the --archived
   // flag wich is allready been given
   const options = {};
@@ -32,19 +58,6 @@ module.exports = async ({ prev, line, word }) => {
       name: String(c.id),
       description: c.name
     })))
-    .then(projects => {
-      return projects.concat([
-        // do not includ --archived when it’s allready been set
-        line.indexOf('--archived') === -1 ? {
-          name: '--archived',
-          description: 'archive or unarchive a project',
-        } : undefined,
-        // include --help only when no other arguments or options are provided
-        word < 4 ? {
-          name: '--help',
-          description: 'show help message',
-        } : undefined,
-      ]);
-    });
+    .then(options => [].concat(options, defaults));
 };
 
