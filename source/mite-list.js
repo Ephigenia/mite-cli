@@ -305,6 +305,10 @@ Examples:
 
   create a markdown report of all customer and their generated profits
     $ mite list this_year --format=md --group_by=customer --sort=revenue
+
+  The output of mite list can be forwarded to other commands using xargs. The
+  following example will delete all matchin entries:
+    $ mite list this_month --search="query" --columns id --format=text | xargs -0 mite delete
 `);
   })
   .action(main)
