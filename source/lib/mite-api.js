@@ -17,6 +17,20 @@ function miteApiWrapper(config) {
       return util.promisify(this.mite.getMyself)().then(data => data.user);
     },
 
+    getMyRecentTimeEntries: async function() {
+      return this.getMyself()
+        .then(me => {
+          const options = {
+            user_id: me ? me.id : undefined,
+            limit: 5,
+            sort: 'date_at',
+            direction: 'desc',
+          };
+          return util.promisify(this.mite.getTimeEntries)(options);
+        })
+        .then(items => items.map(item => item.time_entry));
+    },
+
     sort: function(items, attribute) {
       // @TODO add assertions
       return items.sort((a, b) => {
