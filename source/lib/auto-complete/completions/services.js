@@ -21,6 +21,7 @@ module.exports = async ({ prev }) => {
       return ['yes', 'no'];
     case '--billable':
       return ['yes', 'no'];
+      // @TODO add completion for --columns option
     case '--format':
     case '-f':
       return DataOutput.FORMATS;
@@ -46,6 +47,10 @@ module.exports = async ({ prev }) => {
     {
       name: '--billable',
       description: 'defines wheter billable services should be shown or not',
+    },
+    {
+      name: '--columns',
+      description: 'define the columns that are shown',
     },
     {
       name: '--format',

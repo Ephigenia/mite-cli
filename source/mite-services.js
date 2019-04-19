@@ -2,9 +2,7 @@
 'use strict';
 
 const program = require('commander');
-const miteApi = require('mite-api');
 const chalk = require('chalk');
-const async = require('async');
 
 const pkg = require('./../package.json');
 const config = require('./config.js');
@@ -21,14 +19,59 @@ const SORT_OPTIONS = [
 ];
 const SORT_OPTIONS_DEFAULT = 'name';
 
+const COLUMNS_OPTIONS = {
+  billable: {
+    label: 'billable',
+    attribute: 'billable',
+    width: 10,
+    alignment: 'right',
+    format: (value) => {
+      return value ? 'yes' : 'no';
+    },
+  },
+  created_at: {
+    label: 'created at',
+    attribute: 'created_at',
+  },
+  id: {
+    label: 'id',
+    attribute: 'id',
+    width: 10,
+    alignment: 'right'
+  },
+  name: {
+    label: 'name',
+    attribute: 'name',
+  },
+  note: {
+    label: 'Note',
+    attribute: 'note',
+    width: 50,
+    wrapWord: true,
+    alignment: 'left',
+    format: formater.note,
+  },
+  rate: {
+    label: 'rate',
+    attribute: 'hourly_rate',
+    width: 10,
+    alignment: 'right',
+    format: (value) => {
+      if (!value) {
+        return '-';
+      }
+      return formater.budget(BUDGET_TYPE.CENTS, value || 0);
+    },
+  },
+  updated_at: {
+    label: 'updated at',
+    attribute: 'updated_at',
+  }
+};
+
 program
   .version(pkg.version)
   .description('list, filter & search for servuces')
-  .option(
-    '--search <query>',
-    'optional search string which must be somewhere in the services’ name ' +
-    '(case insensitive)'
-  )
   .option(
     '-a, --archived <true|false>',
     'When used will only show either archived services or not archived ' +
@@ -40,6 +83,35 @@ program
       return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
     }),
     null
+  )
+  .option(
+    '--billable <true|false>',
+    'wheter to show only billable or not-billable entries, no filter is used ' +
+    'when argument is not used',
+    ((val) => {
+      if (typeof val !== 'string') {
+        return val;
+      }
+      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
+    }),
+    null
+  )
+  .option(
+    '-f, --format <format>',
+    'defines the output format, valid options are ' + DataOutput.FORMATS.join(', '),
+    'table',
+  )
+  .option(
+    '--columns <columns>',
+    'custom list of columns to use in the output, pass in a comma-separated ' +
+    'list of attribute names: ' + Object.keys(COLUMNS_OPTIONS).join(', '),
+    (str) => str.split(',').filter(v => v).join(','),
+    'id,name,billable,rate,note'
+  )
+  .option(
+    '--search <query>',
+    'optional search string which must be somewhere in the services’ name ' +
+    '(case insensitive)'
   )
   .option(
     '--sort <column>',
@@ -59,38 +131,18 @@ program
     },
     SORT_OPTIONS_DEFAULT // default sort
   )
-  .option(
-    '--billable <true|false>',
-    'wheter to show only billable or not-billable entries, no filter is used ' +
-    'when argument is not used',
-    ((val) => {
-      if (typeof val !== 'string') {
-        return val;
-      }
-      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
-    }),
-    null
-  )
-  .option(
-    '-f, --format <format>',
-    'defines the output format, valid options are ' + DataOutput.FORMATS.join(', '),
-    'table',
-  )
   .on('--help', function() {
     console.log(`
 Examples:
 
   show all services
-    $ mite services
+    mite services
 
-  list all entries which note contains the given search query:
-    $ mite list this_year --search JIRA-123
+  show archived services with custom columns
+    mite services --columns=name,hourly_rate,created_at
 
-  show all users who tracked billable entries ordered by the amount of time they have tracked:
-    $ mite list this_year --billable true --columns=user,duration --group_by=user --sort=duration
-
-  export all time-entries from the current month as csv file:
-    $  mite list last_week --format=csv --columns=user,id
+  export all archived services as csv
+    mite services --format=csv --columns=id,name,rate,billable > all_services.csv
 `);
   })
   .parse(process.argv);
@@ -101,20 +153,12 @@ const opts = {
   name: program.search
 };
 
-const mite = miteApi(config.get());
+const miteApi = require('./lib/mite-api')(config.get());
 
-async.parallel([
-  async.apply(mite.getServices, opts),
-  async.apply(mite.getArchivedServices, opts)
-], (err, results) => {
-  if (err) {
-    throw err;
-  }
-
-  const allServices = [].concat(results[0], results[1]);
-  const tableData = allServices.map((v) => v.service)
+miteApi.getServices(opts)
+  .then(allServices => {
     // filter archived services?
-    .filter((a) => {
+    return allServices.filter((a) => {
       if (program.archived === null) {
         return true;
       }
@@ -144,41 +188,41 @@ async.parallel([
       } else {
         return 0;
       }
-    })
-    .map((service) => {
-      let rate = formater.budget(BUDGET_TYPE.CENTS, service.hourly_rate);
-      if (!service.hourly_rate) {
-        rate = '-';
-      }
-      return [
-        service.id,
-        service.name,
-        service.billable ? 'yes' : 'no',
-        rate,
-        service.note.replace(/\r?\n/g, ' '),
-      ].map(v => {
-        if (service.archived) {
-          return chalk.grey(v);
-        }
-        return v;
-      });
     });
-  tableData.unshift([
-    'id',
-    'name',
-    'billable',
-    'rate',
-    'note',
-  ].map(v=> chalk.bold(v)));
-  const columns = {
-    3: {
-      alignment: 'right',
-    },
-    4: {
-      width: 50,
-      wrapWord: true,
-    }
-  };
+  }).then(items => {
+    // validate columns options
+    const columns = program.columns
+      .split(',')
+      .map(attrName => {
+        const columnDefinition = COLUMNS_OPTIONS[attrName];
+        if (!columnDefinition) {
+          console.error(`Invalid column name "${attrName}"`);
+          process.exit(2);
+        }
+        return columnDefinition;
+      });
 
-  console.log(DataOutput.formatData(tableData, program.format, columns));
-});
+    // create final array of table data
+    const tableData = items.map((item) => {
+      let row = columns.map(columnDefinition => {
+        const value = item[columnDefinition.attribute];
+        if (columnDefinition.format) {
+          return columnDefinition.format(value, item);
+        }
+        return value;
+      });
+      if (item.archived) {
+        row = row.map(v => chalk.grey(v));
+      }
+      return row;
+    });
+
+    // Table header
+    tableData.unshift(
+      columns
+        .map(columnDefinition => columnDefinition.label)
+        .map(v => chalk.bold(v))
+    );
+
+    console.log(DataOutput.formatData(tableData, program.format, columns));
+  });

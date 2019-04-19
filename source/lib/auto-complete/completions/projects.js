@@ -23,12 +23,10 @@ module.exports = async ({ prev }) => {
       return ['yes', 'no'];
     // @TODO add completion for --columns option
     case '--customer':
-      // add completion for customer ids?
       return miteApi.getCustomers().then(customers => customers.map(c => ({
         name: String(c.name)
       })));
     case '--customer_id':
-      // add completion for customer ids?
       return miteApi.getCustomers().then(customers => customers.map(c => ({
         name: String(c.id),
         description: c.name
