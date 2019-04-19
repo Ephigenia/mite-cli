@@ -10,5 +10,6 @@ module.exports = {
   new: require('./new'),
   projects: require('./projects'),
   services: require('./services'),
+  unlock: require('./unlock'),
   users: require('./users'),
 };
