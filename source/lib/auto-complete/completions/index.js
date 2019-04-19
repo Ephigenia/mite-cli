@@ -13,6 +13,7 @@ module.exports = {
   project: require('./project'),
   projects: require('./projects'),
   services: require('./services'),
+  start: require('./start'),
   unlock: require('./unlock'),
   users: require('./users'),
 };
