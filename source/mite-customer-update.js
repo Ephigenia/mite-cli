@@ -24,6 +24,14 @@ program
       return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
     })
   )
+  .option(
+    '--name <name>',
+    'changes the name of the customer to the given value',
+  )
+  .option(
+    '--note <note>',
+    'changes the note of the customer to the given value',
+  )
   .description(
     'Updates a specific customer',
     // arguments description
@@ -41,6 +49,9 @@ Examples:
   Unarchive a single customer
     mite customer update --archived false 123456
 
+  Change the name of a customer
+    mite customer update --name "" 123456
+
   Unarchive all archived customers
     mite customers --columns id --archived false --format=text | xargs -0 mite customer update --archived false
 `);
@@ -49,7 +60,13 @@ Examples:
     const mite = miteApi(config.get());
     const data = {};
     if (typeof program.archived === 'boolean') {
-      // data.archived = program.archived;
+      data.archived = program.archived;
+    }
+    if (program.name) {
+      data.name = program.name;
+    }
+    if (program.note) {
+      data.note = program.note;
     }
     return util.promisify(mite.updateCustomer)(customerId, data)
       .then(() => {

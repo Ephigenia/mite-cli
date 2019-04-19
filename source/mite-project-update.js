@@ -13,8 +13,14 @@ program
   .arguments('<projectId>')
   // @TODO add edit "budget"
   // @TODO add edit "hourly_rate"
-  // @TODO add edit "name"
-  // @TODO add edit "note"
+  .option(
+    '--name <name>',
+    'changes the name of the project to the given value',
+  )
+  .option(
+    '--note <note>',
+    'changes the note of the project to the given value',
+  )
   .option(
     '--archived <true|false>',
     'changes the archived state of the project',
@@ -42,6 +48,9 @@ Examples:
   Unarchive a single project
     mite project update --archived false 123456
 
+  Change the name of a project
+    mite project update --name "new name" 123456
+
   Unarchive all archived projects
     mite projects --archived false --columns id --format=text | xargs -0 mite project update --archived false
 `);
@@ -51,6 +60,12 @@ Examples:
     const data = {};
     if (typeof program.archived === 'boolean') {
       data.archived = program.archived;
+    }
+    if (program.name) {
+      data.name = program.name;
+    }
+    if (program.note) {
+      data.note = program.note;
     }
     return util.promisify(mite.updateProject)(projectId, data)
       .then(() => {
