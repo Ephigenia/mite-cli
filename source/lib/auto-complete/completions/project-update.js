@@ -20,19 +20,26 @@ module.exports = async ({ prev, line, word }) => {
     case '--archived':
       return ['yes', 'no'];
   }
-  // return a list of project ids
-  // @TODO use archived: true | false as parameter depending on the àrchived flag
-  return miteApi.getProjects()
+  // show list of archived or unarchived projects depending on the --archived
+  // flag wich is allready been given
+  const options = {};
+  if (line.match(/--archived/)) {
+    options.archived = !/--archived[ =](yes|true|1|ja)/.test(line);
+  }
+  // return a list of project ids and default options
+  return miteApi.getProjects(options)
     .then(projects => projects.map(c => ({
       name: String(c.id),
       description: c.name
     })))
     .then(projects => {
       return projects.concat([
+        // do not includ --archived when it’s allready been set
         line.indexOf('--archived') === -1 ? {
           name: '--archived',
           description: 'archive or unarchive a project',
         } : undefined,
+        // include --help only when no other arguments or options are provided
         word < 4 ? {
           name: '--help',
           description: 'show help message',
