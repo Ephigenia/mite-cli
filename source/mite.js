@@ -18,6 +18,7 @@ program
   .alias('ls')
   .alias('status')
   .alias('st')
+  .command('lock', 'lock a single time entry')
   .command('new', 'create a new time entry')
   .alias('create')
   .command('open', 'open the given time entry in browser')
