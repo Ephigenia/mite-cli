@@ -29,5 +29,6 @@ program
   .command('services', 'list, filter & search services')
   .command('customers', 'list, filter & search customers')
   .alias('clients')
+  .command('unlock', 'unlock a single time entry')
   .description(pkg.description)
   .parse(process.argv);
