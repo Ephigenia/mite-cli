@@ -11,6 +11,7 @@ program
   .command('amend', 'edit the text for a specific time entry or the currently runnning entry').alias('reword')
   .command('autocomplete', 'install/uninstall autocompletion')
   .command('config', 'show or set configuration settings')
+  .command('customer', 'update single customer')
   .command('customers', 'list, filter & search customers').alias('clients')
   .command('delete', 'delete a specific time entry').alias('rm')
   .command('list', 'list time entries', { isDefault: true }).alias('ls').alias('status').alias('st')

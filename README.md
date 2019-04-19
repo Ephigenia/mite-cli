@@ -14,7 +14,7 @@ Simple CLI tool for creating, listing, starting and stopping time tracking entri
 - Delete, lock, unlock single time entries
 - Edit the currently running entries text for fast updating the work log
 - Show, filter, group time entries to show reports for last month, current week etc.
-- List, sort, filter user accounts, customers, projects & services using variable columns and cli-tables, csv or tsv data
+- List, sort, filter and update user accounts, customers, projects & services using variable columns and cli-tables, csv or tsv data
 - Delete single entries by id
 - Highlight JIRA identifiers and github numeral hashtags in time entry’s notes
 - optional installable auto-completions for most of the sub-commands, options and option values
@@ -28,32 +28,29 @@ Other ideas & planned features can be found in the [wiki](./wiki). If something 
 
     command line tool for time tracking service mite.yo.lk
 
-
     Options:
-
-      -V, --version  output the version number
-      -h, --help     output usage information
-
+      -V, --version      output the version number
+      -h, --help         output usage information
 
     Commands:
-
-      amend|reword       edit the text for a specific time entry or the currently runnning entry
+      amend|reword       edit the text for a specific time entry or the currently   runnning entry
       autocomplete       install/uninstall autocompletion
       config             show or set configuration settings
+      customer           update single customer
       customers|clients  list, filter & search customers
       delete|rm          delete a specific time entry
-      help [cmd]         display help for [cmd]
       list|st            list time entries
-      lock               lock a single time entry
+      lock               lock single time entry
       new|create         create a new time entry
       open               open the given time entry in browser
-      projects           list, filter & search projects
+      project            update a single project
+      projects           list, filter, archive/unarchive & search projects
       services           list, filter & search services
-      start              start the tracker for the given id, will also stop   allready running entry
+    start              start the tracker for the given id, will also stop   allready running entry
       stop               stop any running counter
-      unlock             unlock a single time entry
+      unlock             unlock single time entry
       users              list, filter & search for users
-
+      help [cmd]         display help for [cmd]
 ```
 
 # Install
@@ -369,13 +366,13 @@ Archive a single project
 
 Archive multiple projects using xargs:
 
-    mite projects --columns id --format text --customer_id=123445 | xargs -0 mite project update --archived false
+    mite projects --columns id --format text | xargs -0 mite project update --archived false
 
 ## Customers
 
 List, filter and search for customers. Archived customers will be shown in grey.
 
-    mite customers --search web --sort=id
+    mite customers list --search web --sort=id
 
     ┌────────┬─────────────────┬─────────┬──────────────────────────────────────────────────────────────────────────────────┐
     │ id     │ name            │    rate │ note                                                                             │
@@ -387,6 +384,16 @@ List, filter and search for customers. Archived customers will be shown in grey.
     ├────────┼─────────────────┼─────────┼──────────────────────────────────────────────────────────────────────────────────┤
     │ 927361 │ Mite-Cli        │       - │ open source project                                                              │
     └────────┴─────────────────┴─────────┴──────────────────────────────────────────────────────────────────────────────────┘
+
+### Update Customer
+
+Archive a single customer
+
+    mite project update --archived false 1238127
+
+Archive multiple customers using xargs:
+
+    mite customers --columns id --format text | xargs -0 mite customer update --archived false
 
 ## Services
 

@@ -7,7 +7,7 @@ const pkg = require('./../package.json');
 
 program
   .version(pkg.version)
-  .command('update', 'update a single project', { isDefault: true })
+  .command('update', 'update a single customer', { isDefault: true })
   // @TODO add delete
   .parse(process.argv);
 

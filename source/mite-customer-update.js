@@ -10,8 +10,7 @@ const config = require('./config.js');
 
 program
   .version(pkg.version)
-  .arguments('<projectId>')
-  // @TODO add edit "budget"
+  .arguments('<customerId>')
   // @TODO add edit "hourly_rate"
   // @TODO add edit "name"
   // @TODO add edit "note"
@@ -26,38 +25,38 @@ program
     })
   )
   .description(
-    'Updates a specific project',
+    'Updates a specific customer',
     // arguments description
     {
-      projectId: 'Id of the project of which the note should be altered'
+      customerId: 'Id of the customer of which the note should be altered'
     }
   )
   .on('--help', () => {
     console.log(`
 Examples:
 
-  Put a project into the archive:
-    mite project update --archived true 123456
+  Put a customer into the archive:
+    mite customer update --archived true 123456
 
-  Unarchive a single project
-    mite project update --archived false 123456
+  Unarchive a single customer
+    mite customer update --archived false 123456
 
-  Unarchive all archived projects
-    mite projects --archived false --columns id --format=text | xargs -0 mite project update --archived false
+  Unarchive all archived customers
+    mite customers --columns id --archived false --format=text | xargs -0 mite customer update --archived false
 `);
   })
-  .action((projectId) => {
+  .action((customerId) => {
     const mite = miteApi(config.get());
     const data = {};
     if (typeof program.archived === 'boolean') {
-      data.archived = program.archived;
+      // data.archived = program.archived;
     }
-    return util.promisify(mite.updateProject)(projectId, data)
+    return util.promisify(mite.updateCustomer)(customerId, data)
       .then(() => {
-        console.log('Successfully updated project (id: %s)', projectId);
+        console.log('Successfully updated customer (id: %s)', customerId);
       })
       .catch(err => {
-        console.error('Error while updateing project (id: %s)', projectId, err);
+        console.error('Error while updateing customer (id: %s)', customerId, err);
         process.exit(1);
       });
   })

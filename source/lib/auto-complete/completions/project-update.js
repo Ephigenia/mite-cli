@@ -21,7 +21,8 @@ module.exports = async ({ prev, line, word }) => {
       return ['yes', 'no'];
   }
   // return a list of project ids
-  return miteApi.getProjects({ archived: false })
+  // @TODO use archived: true | false as parameter depending on the àrchived flag
+  return miteApi.getProjects()
     .then(projects => projects.map(c => ({
       name: String(c.id),
       description: c.name
