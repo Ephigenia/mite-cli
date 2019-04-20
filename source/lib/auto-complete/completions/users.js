@@ -55,6 +55,10 @@ module.exports = async ({ prev }) => {
       description: 'defines wheter services which are archived should be listed',
     },
     {
+      name: '--columns',
+      description: 'defines which columns should be shown'
+    },
+    {
       name: '--email',
       description: 'given a email will list only users with that email',
     },

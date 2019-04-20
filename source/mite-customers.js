@@ -138,8 +138,8 @@ const opts = {
 };
 
 miteApi.getCustomers(opts)
-  .then((allCustomers) => {
-    return allCustomers
+  .then((customers) => {
+    return customers
       .filter((customer) => {
         if (program.archived === null) {
           return true;

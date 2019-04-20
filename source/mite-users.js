@@ -7,6 +7,7 @@ const chalk = require('chalk');
 const pkg = require('./../package.json');
 const config = require('./config.js');
 const DataOutput = require('./lib/data-output');
+const formater = require('./lib/formater');
 
 const SORT_OPTIONS = [
   'id',
@@ -18,6 +19,68 @@ const SORT_OPTIONS = [
   'created_at',
 ];
 const SORT_OPTIONS_DEFAULT = 'name';
+
+
+const COLUMNS_OPTIONS = {
+  archived: {
+    label: 'Archived',
+    attribute: 'archived',
+    format: (value) => {
+      return value ? 'yes' : 'no';
+    },
+  },
+  created_at: {
+    label: 'Created At',
+    attribute: 'created_at',
+  },
+  id: {
+    label: 'ID',
+    attribute: 'id',
+    width: 10,
+    alignment: 'right'
+  },
+  email: {
+    label: 'Email',
+    attribute: 'email'
+  },
+  language: {
+    label: 'Language',
+    attribute: 'language',
+  },
+  name: {
+    label: 'name',
+    attribute: 'name',
+    format: (value, item) => {
+      switch(item.role) {
+        case 'admin':
+          return chalk.yellow(value);
+        case 'owner':
+          return chalk.red(value);
+        default:
+          return value;
+      }
+    }
+  },
+  note: {
+    label: 'Note',
+    attribute: 'note',
+    width: 50,
+    wrapWord: true,
+    alignment: 'left',
+    format: formater.note,
+  },
+  role: {
+    width: 10,
+    align: 'right',
+    label: 'Role',
+    attribute: 'role',
+  },
+  updated_at: {
+    label: 'Updated At',
+    attribute: 'updated_at',
+  }
+};
+const COLUMNS_OPTIONS_DEFAULT_VALUE = 'id,role,name,email,note';
 
 program
   .version(pkg.version)
@@ -32,6 +95,13 @@ program
       return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
     }),
     null
+  )
+  .option(
+    '--columns <columns>',
+    'custom list of columns to use in the output, pass in a comma-separated ' +
+    'list of attribute names: ' + Object.keys(COLUMNS_OPTIONS).join(', '),
+    (str) => str.split(',').filter(v => v).join(','),
+    COLUMNS_OPTIONS_DEFAULT_VALUE
   )
   .option(
     '-f, --format <format>',
@@ -92,6 +162,9 @@ Examples:
 
   show all time tracking users from a company (all have a ephigenia.de email address)
     mite users --role time_tracker --email ephigenia.de
+
+  export all users to a csv file
+    mite users --columns=id,role,name,email,archived,language --format=csv > users.csv
 `);
   })
   .parse(process.argv);
@@ -99,105 +172,85 @@ Examples:
 const miteApi = require('./lib/mite-api')(config.get());
 const opts = {
   limit: 1000,
-  offset: 0
+  offset: 0,
+  ...(program.email && { email: program.email }),
+  ...(program.name && { name: program.name }),
 };
-if (program.email) {
-  opts.email = program.email;
-}
-if (program.name) {
-  opts.name = program.name;
-}
 
 miteApi.getUsers(opts)
-  .then(allUsers => {
-    const tableData = allUsers
+  .then((users) => users
+    .filter((user) => {
       // filter by archived or not
-      .filter((user) => {
-        if (program.archived === null) {
-          return true;
-        }
-        return user.archived === program.archived;
-      })
+      if (program.archived === null) {
+        return true;
+      }
+      return user.archived === program.archived;
+    })
+    .filter((user) => {
       // filter by user roles
-      .filter((user) => {
-        if (!program.role) {
-          return user;
-        }
-        return program.role.indexOf(user.role) > -1;
-      })
-      // filter users when "search" was used
-      .filter((user) => {
-        if (!program.search) {
-          return user;
-        }
-        const regexp = new RegExp(program.search, 'i');
-        const target = [user.name, user.email, user.note].join('');
-        return target.match(regexp);
-      })
-      // optional sort
-      .sort((u1, u2) => {
-        if (!program.sort) return 0;
-        const sortByAttributeName = program.sort;
-        var val1 = String(u1[sortByAttributeName]).toLowerCase();
-        var val2 = String(u2[sortByAttributeName]).toLowerCase();
-        if (val1 > val2) {
-          return 1;
-        } else if (val1 < val2) {
-          return -1;
-        } else {
-          return 0;
-        }
-      })
-      // colorize the user name depending on his role
-      .map((user) => {
-        switch(user.role) {
-          case 'admin':
-            user.name = chalk.yellow(user.name);
-            break;
-          case 'owner':
-            user.name = chalk.red(user.name);
-            break;
-        }
+      if (!program.role) {
         return user;
-      })
-      .map((user) => {
-        return [
-          user.id,
-          user.role,
-          user.name,
-          user.email,
-          user.note.replace(/\r?\n/g, ' ')
-        ].map((v) => {
-          // make archived users grey
-          if (user.archived) {
-            return chalk.grey(v);
-          }
-          return v;
-        });
+      }
+      return program.role.indexOf(user.role) > -1;
+    })
+    .filter((user) => {
+      // filter users when "search" was used
+      if (!program.search) {
+        return user;
+      }
+      const regexp = new RegExp(program.search, 'i');
+      const target = [user.name, user.email, user.note].join('');
+      return target.match(regexp);
+    })
+    // optional sort
+    .sort((u1, u2) => {
+      if (!program.sort) return 0;
+      const sortByAttributeName = program.sort;
+      var val1 = String(u1[sortByAttributeName]).toLowerCase();
+      var val2 = String(u2[sortByAttributeName]).toLowerCase();
+      if (val1 > val2) {
+        return 1;
+      } else if (val1 < val2) {
+        return -1;
+      } else {
+        return 0;
+      }
+    })
+  ).then((items) => {
+    // validate columns options
+    const columns = program.columns
+      .split(',')
+      .map(attrName => {
+        const columnDefinition = COLUMNS_OPTIONS[attrName];
+        if (!columnDefinition) {
+          console.error(`Invalid column name "${attrName}"`);
+          process.exit(2);
+        }
+        return columnDefinition;
       });
 
-    // table header
-    tableData.unshift([
-      'id',
-      'role',
-      'name',
-      'email',
-      'note',
-    ].map(v => chalk.bold(v)));
-
-    const columns = {
-      0: {
-        alignment: 'right',
-      },
-      1: {
-        width: 10,
-        alignment: 'right',
-      },
-      5: {
-        width: 50,
-        alignment: 'left',
+    // create final array of table data
+    const tableData = items.map((item) => {
+      let row = columns.map(columnDefinition => {
+        const value = item[columnDefinition.attribute];
+        if (columnDefinition.format) {
+          return columnDefinition.format(value, item);
+        }
+        return value;
+      });
+      // grey out archived items
+      if (item.archived) {
+        row = row.map(v => chalk.grey(v));
       }
-    };
+      return row;
+    });
+
+    // Table header
+    tableData.unshift(
+      columns
+        .map(columnDefinition => columnDefinition.label)
+        .map(v => chalk.bold(v))
+    );
 
     console.log(DataOutput.formatData(tableData, program.format, columns));
   });

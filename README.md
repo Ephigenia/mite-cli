@@ -344,6 +344,14 @@ List archived user accounts
     │       1234 │ time_tracker │ James Howlett   │ email3@host.com             │                                                    │
     └────────────┴──────────────┴─────────────────┴─────────────────────────────┴────────────────────────────────────────────────────┘
 
+show all time tracking users from a company (all have a ephigenia.de email address)
+
+    mite users --role time_tracker --email ephigenia.de
+
+export all users to a csv file
+
+    mite users --columns=id,role,name,email,archived,language --format=csv > users.csv
+
 
 ## Projects
 
