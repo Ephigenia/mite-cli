@@ -246,9 +246,16 @@ The budgets command was removed cause the same result can be archived by calling
 
 ## New
 
-Interactive cli-based multi-step form for creating / starting new time entries. It will read and show a list of projects, services.
+Interactive multi-step form for creating / starting new time entries. It will read and show a list of projects, services and finally create the time entry.
 
     mite new
+
+You can also start by providing a precomposed note
+
+Start new time entry from the last git commit
+
+    git log -1 --pretty=%B | xargs mite new 
+
 
 You can also start by passing over the content’s of the new time entry or even the project’s name, service, minutes or the date. The following example will create a 35 minutes entry for the Project "myProject1"
 

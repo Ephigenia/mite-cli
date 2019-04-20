@@ -137,43 +137,43 @@ function checkResults(options, query, type) {
 }
 
 function interactiveMode(note) {
-    return Promise.all([
-      getProjectChoices(),
-      getServiceChoices(),
-    ]).then(([projectChoices, serviceChoices]) => {
-      return [
-        {
-          type: 'list',
-          name: 'project_id',
-          message: 'Choose Project',
-          choices: projectChoices
-        },
-        {
-          type: 'input',
-          name: 'note',
-          message: 'What was done?',
-          when: !note,
-        },
-        {
-          type: 'input',
-          name: 'minutes',
-          message: 'How long did it take in minutes?'
-        },
-        {
-          type: 'list',
-          name: 'service_id',
-          message: 'What service?',
-          choices: serviceChoices,
-        },
-        {
-          type: 'input',
-          name: 'date_at',
-          message: 'Date?',
-          default: (new Date()).toISOString().slice(0,10)
-        }
-      ];
-    })
-    .then((questions) => inquirer.prompt(questions));
+  return Promise.all([
+    getProjectChoices(),
+    getServiceChoices(),
+  ]).then(([projectChoices, serviceChoices]) => {
+    return [
+      {
+        type: 'list',
+        name: 'project_id',
+        message: 'Choose Project',
+        choices: projectChoices
+      },
+      {
+        type: 'input',
+        name: 'note',
+        message: 'What was done?',
+        when: !note,
+      },
+      {
+        type: 'input',
+        name: 'minutes',
+        message: 'How long did it take in minutes?'
+      },
+      {
+        type: 'list',
+        name: 'service_id',
+        message: 'What service?',
+        choices: serviceChoices,
+      },
+      {
+        type: 'input',
+        name: 'date_at',
+        message: 'Date?',
+        default: (new Date()).toISOString().slice(0,10)
+      }
+    ];
+  })
+  .then((questions) => inquirer.prompt(questions));
 }
 
 function cliMode(note, project, service, minutes, date) {
