@@ -52,7 +52,7 @@ Examples:
     mite project update --name "new name" 123456
 
   Unarchive all archived projects
-    mite projects --archived false --columns id --format=text | xargs -0 mite project update --archived false
+    mite projects --archived false --columns id --format=text | xargs -n1 mite project update --archived false
 `);
   })
   .action((projectId) => {

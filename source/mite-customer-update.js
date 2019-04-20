@@ -54,7 +54,7 @@ Examples:
     mite customer update --name "" 123456
 
   Unarchive all archived customers
-    mite customers --columns id --archived false --format=text | xargs -0 mite customer update --archived false
+    mite customers --columns id --archived false --format=text | xargs -n1 mite customer update --archived false
 `);
   })
   .action((customerId) => {

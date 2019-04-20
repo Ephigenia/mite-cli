@@ -312,7 +312,7 @@ Delete a single entry
 
 Deleting a set of entries filtered using `mite list` and unix tools:
 
-    mite list this_month --project_id 128717 --columns id --format=text | xargs -0 mite delete
+    mite list this_month --project_id 128717 --columns id --format=text | xargs -n1 mite delete
 
 ## Un-/Lock Entry
 
@@ -326,7 +326,7 @@ Unlock a single time entry
 
 Locking all entries from the last month from a specific customer using `mite list` and `xargs`:
 
-    mite list last_month --customer_id 128171 --columns id --format=text | xargs -0 mite lock
+    mite list last_month --customer_id 128171 --columns id --format=text | xargs -n1 mite lock
 
 ## Users
 
@@ -394,7 +394,7 @@ list projects while setting different columns and export to csv:
 
 use the resulting projects in another command to archive the listed projects:
 
-    mite projects --columns=id --format=text | xargs -0 mite project update --archived false
+    mite projects --columns=id --format=text | xargs -n1 mite project update --archived false
 
 ### Update Project
 
@@ -408,7 +408,7 @@ Set the note and name of a project
 
 Archive multiple projects using xargs:
 
-    mite projects --columns id --format text | xargs -0 mite project update --archived false
+    mite projects --columns id --format text | xargs -n1 mite project update --archived false
 
 ## Customers
 
@@ -443,7 +443,7 @@ Archive a single customer
 
 Archive multiple customers using xargs:
 
-    mite customers --columns id --format text | xargs -0 mite customer update --archived false
+    mite customers --columns id --format text | xargs -n1 mite customer update --archived false
 
 ## Services
 

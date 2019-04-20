@@ -172,7 +172,7 @@ Examples:
     mite projects --format=csv > my-projects.csv
 
   use the resulting projects in another command to archive the listed projects
-    mite projects --columns=id --format=text | xargs -0 mite project update --archived false
+    mite projects --columns=id --format=text | xargs -n1 mite project update --archived false
 `);
   })
   .parse(process.argv);

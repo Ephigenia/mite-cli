@@ -128,7 +128,7 @@ Examples:
     mite customers --columns=name,rate
 
   Use resulting customers to update their archived state
-    mite customers --search company 1 --colums=id --format=text | xargs -0 mite customer update --archived=false
+    mite customers --search company 1 --colums=id --format=text | xargs -n1 mite customer update --archived=false
 `);
   })
   .parse(process.argv);
