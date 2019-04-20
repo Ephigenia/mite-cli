@@ -219,6 +219,9 @@ let startTracker = false;
 async function main(note, project, service, minutes, date) {
   let promise;
   if (!project) {
+    if (process.stdin.isTTY === undefined) {
+      throw new Error('Unable to start interactive mode as there’s not TTY');
+    }
     promise = interactiveMode(note);
   } else {
     promise = cliMode(note, project, service, minutes, date);
