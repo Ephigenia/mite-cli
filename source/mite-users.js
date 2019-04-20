@@ -2,9 +2,7 @@
 'use strict';
 
 const program = require('commander');
-const miteApi = require('mite-api');
 const chalk = require('chalk');
-const async = require('async');
 
 const pkg = require('./../package.json');
 const config = require('./config.js');
@@ -87,18 +85,18 @@ program
 Examples:
 
   list all users
-    $ mite users
+    mite users
 
   search for a specific user
-    $ mite users --search marc
+    mite users --search marc
 
   show all time tracking users from a company (all have a ephigenia.de email address)
-    $ mite users --role time_tracker --email ephigenia.de
+    mite users --role time_tracker --email ephigenia.de
 `);
   })
   .parse(process.argv);
 
-const mite = miteApi(config.get());
+const miteApi = require('./lib/mite-api')(config.get());
 const opts = {
   limit: 1000,
   offset: 0
@@ -110,104 +108,96 @@ if (program.name) {
   opts.name = program.name;
 }
 
-async.parallel([
-  async.apply(mite.getUsers, opts),
-  async.apply(mite.getArchivedUsers, opts),
-], (err, results) => {
-  if (err) {
-    throw err;
-  }
-
-  const allUsers = [].concat(results[0], results[1]);
-  const tableData = allUsers
-    .map((row) => row.user)
-    // filter by archived or not
-    .filter((user) => {
-      if (program.archived === null) {
-        return true;
-      }
-      return user.archived === program.archived;
-    })
-    // filter by user roles
-    .filter((user) => {
-      if (!program.role) {
-        return user;
-      }
-      return program.role.indexOf(user.role) > -1;
-    })
-    // filter users when "search" was used
-    .filter((user) => {
-      if (!program.search) {
-        return user;
-      }
-      const regexp = new RegExp(program.search, 'i');
-      const target = [user.name, user.email, user.note].join('');
-      return target.match(regexp);
-    })
-    // optional sort
-    .sort((u1, u2) => {
-      if (!program.sort) return 0;
-      const sortByAttributeName = program.sort;
-      var val1 = String(u1[sortByAttributeName]).toLowerCase();
-      var val2 = String(u2[sortByAttributeName]).toLowerCase();
-      if (val1 > val2) {
-        return 1;
-      } else if (val1 < val2) {
-        return -1;
-      } else {
-        return 0;
-      }
-    })
-    // colorize the user name depending on his role
-    .map((user) => {
-      switch(user.role) {
-        case 'admin':
-          user.name = chalk.yellow(user.name);
-          break;
-        case 'owner':
-          user.name = chalk.red(user.name);
-          break;
-      }
-      return user;
-    })
-    .map((user) => {
-      return [
-        user.id,
-        user.role,
-        user.name,
-        user.email,
-        user.note.replace(/\r?\n/g, ' ')
-      ].map((v) => {
-        // make archived users grey
-        if (user.archived) {
-          return chalk.grey(v);
+miteApi.getUsers(opts)
+  .then(allUsers => {
+    const tableData = allUsers
+      // filter by archived or not
+      .filter((user) => {
+        if (program.archived === null) {
+          return true;
         }
-        return v;
+        return user.archived === program.archived;
+      })
+      // filter by user roles
+      .filter((user) => {
+        if (!program.role) {
+          return user;
+        }
+        return program.role.indexOf(user.role) > -1;
+      })
+      // filter users when "search" was used
+      .filter((user) => {
+        if (!program.search) {
+          return user;
+        }
+        const regexp = new RegExp(program.search, 'i');
+        const target = [user.name, user.email, user.note].join('');
+        return target.match(regexp);
+      })
+      // optional sort
+      .sort((u1, u2) => {
+        if (!program.sort) return 0;
+        const sortByAttributeName = program.sort;
+        var val1 = String(u1[sortByAttributeName]).toLowerCase();
+        var val2 = String(u2[sortByAttributeName]).toLowerCase();
+        if (val1 > val2) {
+          return 1;
+        } else if (val1 < val2) {
+          return -1;
+        } else {
+          return 0;
+        }
+      })
+      // colorize the user name depending on his role
+      .map((user) => {
+        switch(user.role) {
+          case 'admin':
+            user.name = chalk.yellow(user.name);
+            break;
+          case 'owner':
+            user.name = chalk.red(user.name);
+            break;
+        }
+        return user;
+      })
+      .map((user) => {
+        return [
+          user.id,
+          user.role,
+          user.name,
+          user.email,
+          user.note.replace(/\r?\n/g, ' ')
+        ].map((v) => {
+          // make archived users grey
+          if (user.archived) {
+            return chalk.grey(v);
+          }
+          return v;
+        });
       });
-    });
 
-  // table header
-  tableData.unshift([
-    'id',
-    'role',
-    'name',
-    'email',
-    'note',
-  ].map(v => chalk.bold(v)));
+    // table header
+    tableData.unshift([
+      'id',
+      'role',
+      'name',
+      'email',
+      'note',
+    ].map(v => chalk.bold(v)));
 
-  const columns = {
-    0: {
-      alignment: 'right',
-    },
-    1: {
-      width: 10,
-      alignment: 'right',
-    },
-    5: {
-      width: 50,
-      alignment: 'left',
-    }
-  };
-  console.log(DataOutput.formatData(tableData, program.format, columns));
+    const columns = {
+      0: {
+        alignment: 'right',
+      },
+      1: {
+        width: 10,
+        alignment: 'right',
+      },
+      5: {
+        width: 50,
+        alignment: 'left',
+      }
+    };
 
-});
+    console.log(DataOutput.formatData(tableData, program.format, columns));
+  });
