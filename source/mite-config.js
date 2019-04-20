@@ -21,11 +21,11 @@ program
 Examples:
 
   set the subdomain and api key that should be used
-    $ mite config set account mycompanyname
-    $ mite config set apiKey bf817ba626
+    mite config set account mycompanyname;
+    mite config set apiKey bf817ba626;
 
   set the columns for the list command:
-    $ mite config set listColumns date,duration,note,service
+    mite config set listColumns date,duration,note,service
 `);
   })
   .action((key, value) => {

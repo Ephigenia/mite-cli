@@ -57,16 +57,11 @@ Examples:
   })
   .action((projectId) => {
     const mite = miteApi(config.get());
-    const data = {};
-    if (typeof program.archived === 'boolean') {
-      data.archived = program.archived;
-    }
-    if (program.name) {
-      data.name = program.name;
-    }
-    if (program.note) {
-      data.note = program.note;
-    }
+    const data = {
+      ...(typeof program.archived === 'boolean' && { archived: program.archived }),
+      ...(typeof program.name === 'string' && { name: program.name }),
+      ...(typeof program.note === 'string' && { note: program.note }),
+    };
     return util.promisify(mite.updateProject)(projectId, data)
       .then(() => {
         console.log('Successfully updated project (id: %s)', projectId);

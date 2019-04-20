@@ -185,9 +185,9 @@ const opts = {
 
 const miteApi = require('./lib/mite-api')(config.get());
 
-miteApi.getProjects(opts).then(allProjects => {
+miteApi.getProjects(opts).then(projects => {
   // proclaim an array of tabular data by mapping and filtering the data
-  return allProjects
+  return projects
     .filter((p) => {
       if (typeof program.archived !== 'boolean') {
         return true;

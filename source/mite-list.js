@@ -327,26 +327,16 @@ function main(period) {
     service_id: program.service_id,
     group_by: program.group_by,
     sort: program.sort,
+    ...(program.user_id && { user_id: program.user_id}),
+    ...(typeof program.tracking === 'boolean' && { tracking: program.tracking }),
+    ...(typeof program.billable === 'boolean' && { billable: program.billable }),
   };
-
-  if (program.user_id) {
-    opts.user_id = program.user_id;
-  }
 
   if (program.from && program.to) {
     opts.from = program.from;
     opts.to = program.to;
     delete opts.at;
   }
-
-  if (typeof program.tracking === 'boolean') {
-    opts.tracking = program.tracking;
-  }
-  if (typeof program.billable === 'boolean') {
-    opts.billable = program.billable;
-  }
-
-
 
   const columns = program.columns
     .split(',')

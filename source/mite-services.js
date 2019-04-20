@@ -156,9 +156,9 @@ const opts = {
 const miteApi = require('./lib/mite-api')(config.get());
 
 miteApi.getServices(opts)
-  .then(allServices => {
+  .then(services => {
     // filter archived services?
-    return allServices.filter((a) => {
+    return services.filter((a) => {
       if (program.archived === null) {
         return true;
       }

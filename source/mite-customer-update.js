@@ -27,6 +27,7 @@ program
   .option(
     '--name <name>',
     'changes the name of the customer to the given value',
+    undefined
   )
   .option(
     '--note <note>',
@@ -58,16 +59,11 @@ Examples:
   })
   .action((customerId) => {
     const mite = miteApi(config.get());
-    const data = {};
-    if (typeof program.archived === 'boolean') {
-      data.archived = program.archived;
-    }
-    if (program.name) {
-      data.name = program.name;
-    }
-    if (program.note) {
-      data.note = program.note;
-    }
+    const data = {
+      ...(typeof program.archived === 'boolean' && { archived: program.archived }),
+      ...(typeof program.name === 'string' && { name: program.name }),
+      ...(typeof program.note === 'string' && { note: program.note }),
+    };
     return util.promisify(mite.updateCustomer)(customerId, data)
       .then(() => {
         console.log('Successfully updated customer (id: %s)', customerId);
