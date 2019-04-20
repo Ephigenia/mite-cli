@@ -1,3 +1,20 @@
+# [0.10.0](https://github.com/Ephigenia/mite-cli/compare/v0.9.0...v0.10.0) (2019-04-20)
+
+
+### Bug Fixes
+
+* **new:** showing error message when is no TTY ([5afa795](https://github.com/Ephigenia/mite-cli/commit/5afa795))
+* adds -n1 argument to each example that contains xargs ([cb9c728](https://github.com/Ephigenia/mite-cli/commit/cb9c728))
+
+
+### Features
+
+* **list:** adds locked filter ([6c9511b](https://github.com/Ephigenia/mite-cli/commit/6c9511b))
+* **new:** accepting content for node through tsdin ([ee41af7](https://github.com/Ephigenia/mite-cli/commit/ee41af7))
+* **users:** adds columns option ([b6152b7](https://github.com/Ephigenia/mite-cli/commit/b6152b7))
+
+
+
 # [0.9.0](https://github.com/Ephigenia/mite-cli/compare/v0.8.1...v0.9.0) (2019-04-19)
 
 
