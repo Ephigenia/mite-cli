@@ -31,6 +31,34 @@ function miteApiWrapper(config) {
     },
 
     /**
+     * @typedef MiteTimeEntry
+     * @property {Number} customer_id
+     * @property {Number} minutes
+     * @property {Number} project_id
+     * @property {Number} service_id
+     * @property {String} date_at
+     * @property {String} note
+     *
+     * @param {@MiteTimeEntry} timeEntry
+     * @returns {Promise<object>}
+     */
+    addTimeEntry: async function(timeEntry) {
+      const mite = this.mite;
+      return new Promise(function(resolve, reject) {
+        // addTimeEntry cannot use util.promisify as it doesn't match the
+        // standard callback
+        mite.addTimeEntry({ time_entry: timeEntry }, (response) => {
+          // response contains the created time entry as a string
+          const data = JSON.parse(response);
+          if (data.error) {
+            return reject(new Error(data.error));
+          }
+          return resolve(data);
+        });
+      });
+    },
+
+    /**
      * Returns an array containing the most recent time-entries from the
      * current user.
      *

@@ -47,7 +47,10 @@ Examples:
 `);
   })
   .action((note, project, service, minutes, date) => {
-    main(note, project, service, minutes, date);
+    main(note, project, service, minutes, date).catch(err => {
+      console.error('Error while creating time entry:', err.message || err);
+      process.exit(1);
+    });
   })
   .parse(process.argv);
 
@@ -194,7 +197,9 @@ function cliMode(note, project, service, minutes, date) {
   });
 }
 
-function main(note, project, service, minutes, date) {
+let startTracker = false;
+
+async function main(note, project, service, minutes, date) {
   let promise;
   if (!project) {
     promise = interactiveMode(note);
@@ -207,53 +212,36 @@ function main(note, project, service, minutes, date) {
 
     // do not create an entry when minutes are invalid
     if (!entry.minutes) {
-      console.error('no time entry created due to empty project id or empty minutes');
-      process.exit(1);
-      return;
-    }
-
-    // detect the "+" at the duration value and start a tracker for the time
-    // entry
-    let startTracker = false;
-    if (entry.minutes.substr(-1, 1) === '+') {
+      throw new Error('no time entry created due to empty minutes');
+    } else if (entry.minutes.substr(-1, 1) === '+') {
+      // detect the "+" at the duration value and start a tracker for the time
+      // entry
       startTracker = true;
+      // remove the + sign
       entry.minutes = entry.minutes.substr(0, entry.minutes.length - 1);
     }
 
-
-    // when minutes is given as duration string convert it to minutes
+    // convert duraion notation from HH:MM to minutes value
     if (/^\d+:\d+?$/.test(entry.minutes)) {
       entry.minutes = formater.durationToMinutes(entry.minutes);
       if (isNaN(entry.minutes)) {
-        console.error(
-          'unable to convert the given duration to minutes, ' +
-          'please check that the format is HH:MM'
+        throw new Error(
+          'unable to convert the given duration to minutes, please check the ' +
+          'correct format is "HH:MM"'
         );
-        process.exit(1);
-        return;
       }
     }
+    return miteApi.addTimeEntry(entry);
 
-    // http://mite.yo.lk/en/api/time-entries.html#create
-    miteApi.mite.addTimeEntry({ time_entry: entry }, (response) => {
-      const data = JSON.parse(response);
-      if (data.error) {
-        console.error('Error while creating new time entry:', data.error);
-        process.exit(1);
-        return;
-      }
-      const timeEntryId = data.time_entry.id;
-      console.log('Successfully created new time entry (id: %s)', timeEntryId);
-      if (startTracker) {
-        miteTracker.start(timeEntryId)
-          .then(() => {
-            console.log('Successfully started the time entry (id: %s)', timeEntryId);
-          })
-          .catch((err) => {
-            console.log('Unable to start the time entry (id: %s): %s', timeEntryId, err.message);
-            process.exit(1);
-          });
-      }
-    });
+  }).then((data) => {
+    return data.time_entry.id;
+  }).then((timeEntryId) => {
+    console.log('Successfully created time entry (id: %s)', timeEntryId);
+    if (startTracker) {
+      return miteTracker.start(timeEntryId)
+        .then(() => {
+          console.log('Successfully started time entry (id: %s)', timeEntryId);
+        });
+    }
   });
 }
