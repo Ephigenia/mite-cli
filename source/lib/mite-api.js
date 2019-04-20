@@ -1,6 +1,8 @@
 'use strict';
 
 const util = require('util');
+const assert = require('assert');
+
 const miteApi = require('mite-api');
 
 /**
@@ -13,16 +15,39 @@ function miteApiWrapper(config) {
   return {
 
     mite: mite,
+
+    /**
+     * Returns the user object for the current requesting user (identified
+     * by the API key)
+     *
+     * @typedef MiteUser
+     * @property {Number} id
+     * @property {String} name full name of the user
+     *
+     * @returns {Promise<MiteUser>} user object
+     */
     getMyself: async function() {
       return util.promisify(this.mite.getMyself)().then(data => data.user);
     },
 
-    getMyRecentTimeEntries: async function() {
+    /**
+     * Returns an array containing the most recent time-entries from the
+     * current user.
+     *
+     * @typedef MiteTimeEntry
+     * @property {Number} id
+     * @property {String} note note of the entry
+     *
+     * @param {Number} limit
+     * @returns {Promise<MiteTimeEntry>}
+     */
+    getMyRecentTimeEntries: async function(limit = 5) {
+      assert.strictEqual(typeof limit, 'number', 'expected limit to be number');
       return this.getMyself()
         .then(me => {
           const options = {
             user_id: me ? me.id : undefined,
-            limit: 5,
+            limit: limit,
             sort: 'date_at',
             direction: 'desc',
           };
