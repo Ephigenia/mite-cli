@@ -252,14 +252,23 @@ Interactive multi-step form for creating / starting new time entries. It will re
 
 You can also start by providing a precomposed note
 
-Start new time entry from the last git commit
-
-    git log -1 --pretty=%B | xargs mite new 
-
+    mite new "started working on new features"
 
 You can also start by passing over the content’s of the new time entry or even the project’s name, service, minutes or the date. The following example will create a 35 minutes entry for the Project "myProject1"
 
     mite new "created some new nice code" myProject1 programming 35
+
+The duration values can be the number of minutes or a duration string. When you add a plus sign at the end "+", f.e. "3:12+" the time entry is created and emidiently started.
+
+    mite new "researching colors for project" myProject1 programming 0:05+
+
+Create a note from the last git commit message
+
+    git log -1 --pretty=%B | xargs echo -n | mite new projectx communication 30
+
+Pipe in content for the note
+
+    echo "my new note" | mite new projectx programming 60+
 
 ## Open
 

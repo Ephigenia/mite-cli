@@ -44,13 +44,30 @@ Examples:
 
   Create a complete time entry non-interactively that has 2 hours and 4 minutes
     mite new "example entry note" project-name1 programming 2:04
+
+  You can also pipe in the value for the note
+    echo "created a new service class" | mite new project1 servicename 0:02
+
+  Create a note from the last git commit message
+    git log -1 --pretty=%B | xargs echo -n | mite new projectx communication 30
 `);
   })
-  .action((note, project, service, minutes, date) => {
-    main(note, project, service, minutes, date).catch(err => {
-      console.error('Error while creating time entry:', err.message || err);
-      process.exit(1);
-    });
+  .action(function(note) {
+    let args = Array.prototype.slice.call(arguments);
+    args = args.slice(0, -1);
+
+    // get not from stdin when piping note into the command
+    if (process.stdin.isTTY === undefined) {
+      // shift the other arguments one to the left so that the order is correct
+      const fs = require("fs");
+      note = fs.readFileSync("/dev/stdin", "utf-8");
+      args.unshift(note);
+    }
+    main.apply(main, args)
+      .catch(err => {
+        console.error('Error while creating time entry:', err.message || err);
+        process.exit(1);
+      });
   })
   .parse(process.argv);
 
@@ -232,10 +249,9 @@ async function main(note, project, service, minutes, date) {
       }
     }
     return miteApi.addTimeEntry(entry);
-
-  }).then((data) => {
-    return data.time_entry.id;
-  }).then((timeEntryId) => {
+  })
+  .then((data) => data.time_entry.id)
+  .then((timeEntryId) => {
     console.log('Successfully created time entry (id: %s)', timeEntryId);
     if (startTracker) {
       return miteTracker.start(timeEntryId)
