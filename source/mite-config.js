@@ -21,8 +21,8 @@ program
 Examples:
 
   set the subdomain and api key that should be used
-    mite config set account mycompanyname;
-    mite config set apiKey bf817ba626;
+    mite config set account mycompanyname
+    mite config set apiKey bf817ba626
 
   set the columns for the list command:
     mite config set listColumns date,duration,note,service
@@ -57,7 +57,7 @@ program.command('get [key]')
     console.log();
     console.log('Examples:');
     console.log();
-    console.log('  $ mite config get account');
+    console.log('  mite config get account');
   })
   .action((key) => console.log(config.get(key)));
 

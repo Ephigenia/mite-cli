@@ -18,7 +18,8 @@ program
     console.log(`
 Examples:
 
-  $ mite open 128372
+  Open the given time entry detail page in the default browser:
+    mite open 128372
 `);
   })
   .action((timeEntryId) => {

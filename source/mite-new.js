@@ -34,16 +34,16 @@ program
 Examples:
 
   Create a new time entry interactively:
-    $ mite new
+    mite new
 
   Create a new time entry with a pre-composed note interactively:
-    $ mite new "created new designs for customer"
+    mite new "created new designs for customer"
 
   Create a complete time entry non-interactively that has 30 minutes and also starts the timer:
-    $ mite new "example entry note" project-name1 programming 30+
+    mite new "example entry note" project-name1 programming 30+
 
   Create a complete time entry non-interactively that has 2 hours and 4 minutes
-    $ mite new "example entry note" project-name1 programming 2:04
+    mite new "example entry note" project-name1 programming 2:04
 `);
   })
   .action((note, project, service, minutes, date) => {

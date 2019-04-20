@@ -18,10 +18,10 @@ program
   Examples:
 
     Delete a single entry identified by it’s id:
-      $ mite delete 1283761
+      mite delete 1283761
 
     Delete multiple entries from a project selected by using mite list:
-      $ mite list this_month --project_id=123128 --columns id --format=text | xargs -0 mite delete
+      mite list this_month --project_id=123128 --columns id --format=text | xargs -0 mite delete
 `);
   })
   .action((timeEntryId) => {

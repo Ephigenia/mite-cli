@@ -302,23 +302,23 @@ program
 Examples:
 
   list all entries from the current month:
-    $ mite list this_month
+    mite list this_month
 
   list all entries which note contains the given search query:
-    $ mite list this_year --search JIRA-123
+    mite list this_year --search JIRA-123
 
   show all users who tracked billable entries ordered by the amount of time they have tracked:
-    $ mite list this_year --billable true --columns=user,duration --group_by=user --sort=duration
+    mite list this_year --billable true --columns=user,duration --group_by=user --sort=duration
 
   export all time-entries from the current month as csv
-    $ mite list last_week --format=csv --columns=user,id
+    mite list last_week --format=csv --columns=user,id
 
   create a markdown report of all customer and their generated profits
-    $ mite list this_year --format=md --group_by=customer --sort=revenue
+    mite list this_year --format=md --group_by=customer --sort=revenue
 
   The output of mite list can be forwarded to other commands using xargs. The
   following example will delete all matchin entries:
-    $ mite list this_month --search="query" --columns id --format=text | xargs -0 mite delete
+    mite list this_month --search="query" --columns id --format=text | xargs -0 mite delete
 `);
   })
   .action(main)

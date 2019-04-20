@@ -32,17 +32,18 @@ program
     console.log(`
 Examples:
 
-  $ mite amend 123716
-  $ mite amend --editor 127361
+  Interactively change the note of the given entry:
+    mite amend 123716
+
+  Open the $EDITOR or $VISUAL to edit the note, as soon as the editor is closed the note will be saved
+    mite amend --editor 127361
 `);
   })
   .parse(process.argv);
 
-
 if (!program.args.length) {
   main(null);
 }
-
 
 function main(timeEntryId) {
   const mite = miteApi(config.get());
