@@ -76,6 +76,8 @@ module.exports = async ({ words, prev, lastPartial }) => {
     case '--from':
     case '--to':
       return timeFrameOptions;
+    case '--locked':
+      return ['yes', 'no'];
     // @TODO add columns options
     case '--project_id':
       return miteApi.getProjects({ archived: false }).then(

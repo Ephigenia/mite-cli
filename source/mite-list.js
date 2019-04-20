@@ -180,6 +180,33 @@ program
   })
   .arguments('<period>')
   .option(
+    '--billable <true|false>',
+    'wheter to show only billable or not-billable entries, all kinds of entries are returned by default',
+    ((val) => {
+      if (typeof val !== 'string') {
+        return val;
+      }
+      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
+    })
+  )
+  .option(
+    '--columns <columns>',
+    'custom list of columns to use in the output, pass in a comma-separated ' +
+    'list of attribute names: ' + Object.keys(COLUMNS_OPTIONS).join(', '),
+    (str) => str.split(',').filter(v => v).join(','),
+    config.get().listColumns
+  )
+  .option(
+    '--locked <true|false>',
+    'filter entries by their locked status',
+    ((val) => {
+      if (typeof val !== 'string') {
+        return val;
+      }
+      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
+    })
+  )
+  .option(
     '--group_by <value>',
     'optional group_by parameter which should be used. Valid values are ' +
     GROUP_BY_OPTIONS.join(', ')
@@ -196,13 +223,6 @@ program
       }
       return val;
     })
-  )
-  .option(
-    '--columns <columns>',
-    'custom list of columns to use in the output, pass in a comma-separated ' +
-    'list of attribute names: ' + Object.keys(COLUMNS_OPTIONS).join(', '),
-    (str) => str.split(',').filter(v => v).join(','),
-    config.get().listColumns
   )
   .option(
     '--project_id <project_id>',
@@ -233,16 +253,6 @@ program
       return value;
     },
     SORT_OPTIONS_DEFAULT // default sort
-  )
-  .option(
-    '--billable <true|false>',
-    'wheter to show only billable or not-billable entries, all kinds of entries are returned by default',
-    ((val) => {
-      if (typeof val !== 'string') {
-        return val;
-      }
-      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
-    })
   )
   .option(
     '--tracking <true|false>',
@@ -320,16 +330,17 @@ function main(period) {
 
   const opts = {
     at: period,
+    ...(typeof program.billable === 'boolean' && { billable: program.billable }),
     customer_id: program.customer_id,
+    group_by: program.group_by,
     limit: program.limit,
+    ...(typeof program.locked === 'boolean' && { locked: program.locked }),
     note: program.search,
     project_id: program.project_id,
     service_id: program.service_id,
-    group_by: program.group_by,
     sort: program.sort,
-    ...(program.user_id && { user_id: program.user_id}),
     ...(typeof program.tracking === 'boolean' && { tracking: program.tracking }),
-    ...(typeof program.billable === 'boolean' && { billable: program.billable }),
+    ...(program.user_id && { user_id: program.user_id}),
   };
 
   if (program.from && program.to) {
