@@ -9,162 +9,7 @@ const pkg = require('./../package.json');
 const config = require('./config.js');
 const formater = require('./lib/formater');
 const DataOutput = require('./lib/data-output');
-
-const SORT_OPTIONS = [
-  'date',
-  'user',
-  'customer',
-  'project',
-  'service',
-  'note',
-  'minutes',
-  'revenue',
-];
-const SORT_OPTIONS_DEFAULT = 'date';
-const BUDGET_TYPE = formater.BUDGET_TYPE;
-
-const GROUP_BY_OPTIONS = [
-  'user',
-  'customer',
-  'project',
-  'service',
-  'day',
-  'week',
-  'month',
-  'year',
-];
-
-const COLUMNS_OPTIONS = {
-  billable: {
-    label: 'billable',
-    attribute: 'billable',
-    format: (value) => {
-      return value ? 'yes' : 'no';
-    }
-  },
-  created: {
-    label: 'Created',
-    attribute: 'created_at',
-  },
-  customer: {
-    label: 'Customer',
-    attribute: 'customer_name',
-  },
-  customer_id: {
-    label: 'Customer ID',
-    attribute: 'customer_id',
-  },
-  date: {
-    label: 'Date',
-    attribute: 'date_at',
-    width: 10,
-    alignment: 'right'
-  },
-  duration: {
-    label: 'Duration',
-    attribute: 'minutes',
-    width: 10,
-    alignment: 'right',
-    format: (value, timeEntry) => {
-      if (timeEntry && timeEntry.tracking) {
-        value = timeEntry.tracking.minutes;
-      }
-      let duration = formater.minutesToDuration(value);
-      if (timeEntry && timeEntry.locked) {
-        duration = chalk.green('✔') + ' ' + duration;
-      }
-      if (timeEntry && timeEntry.tracking) {
-        duration = '▶ ' + duration;
-      }
-      return duration;
-    },
-    reducer: (sum, cur) => {
-      if (!sum) sum = 0;
-      return sum + cur.minutes;
-    }
-  },
-  hourly_rate: {
-    label: 'Rate',
-    attribute: 'hourly_rate',
-  },
-  id: {
-    label: 'ID',
-    attribute: 'id',
-    width: 10,
-    alignment: 'right',
-  },
-  locked: {
-    label: 'Locked',
-    attribute: 'locked',
-    format: (value) => {
-      return value ? 'yes' : 'no';
-    }
-  },
-  minutes: {
-    label: 'Minutes',
-    attribute: 'minutes',
-    reducer: (sum, cur) => {
-      return sum + cur.minutes;
-    }
-  },
-  note: {
-    label: 'Note',
-    attribute: 'note',
-    width: 70,
-    wrapWord: true,
-    alignment: 'left',
-    format: formater.note,
-  },
-  project: {
-    label: 'Project',
-    attribute: 'project_name',
-    width: 20,
-    alignment: 'right',
-    wrapWord: true,
-  },
-  project_id: {
-    label: 'Project ID',
-    attribute: 'project_id',
-  },
-  revenue: {
-    label: 'Revenue',
-    attribute: 'revenue',
-    width: 10,
-    alignment: 'right',
-    format: (value) => {
-      if (!value) {
-        return '-';
-      }
-      return formater.budget(BUDGET_TYPE.CENTS, value || 0);
-    },
-    reducer: (sum, cur) => {
-      if (!sum) sum = 0;
-      return sum + cur.revenue;
-    }
-  },
-  service: {
-    label: 'Service',
-    attribute: 'service_name',
-    width: 20,
-    alignment: 'right',
-  },
-  service_id: {
-    label: 'Service ID',
-    attribute: 'service_id',
-  },
-  updated: {
-    label: 'Updated',
-    attribute: 'updated',
-  },
-  user: {
-    attribute: 'user_name',
-    label: 'User',
-  },
-  user_id: {
-    label: 'User ID',
-    attribute: 'user_id',
-  },
-};
+const listCommand = require('./lib/commands/list');
 
 // set a default period argument if not set
 if (!process.argv[2] || process.argv[2].substr(0, 1) === '-' && process.argv[2] !== '--help') {
@@ -192,9 +37,35 @@ program
   .option(
     '--columns <columns>',
     'custom list of columns to use in the output, pass in a comma-separated ' +
-    'list of attribute names: ' + Object.keys(COLUMNS_OPTIONS).join(', '),
+    'list of attribute names: ' + Object.keys(listCommand.columns.options).join(', '),
     (str) => str.split(',').filter(v => v).join(','),
     config.get().listColumns
+  )
+  .option(
+    '--customer_id <customer_id>',
+    'customer id, can be either a single ID, or multiple comma-separated IDs.'
+  )
+  .option(
+    '-f, --format <format>',
+    'defines the output format, valid options are ' + DataOutput.FORMATS.join(', '),
+    config.get('outputFormat')
+  )
+  .option(
+    '--from <period|YYYY-MM-DD>',
+    'in combination with "to" used for selecting a specific time frame of ' +
+    'time entries to return, same as "period" argument or a specific date in ' +
+    'the format "YYYY-MM-DD". The period argument is ignored.'
+  )
+  .option(
+    '--group_by <value>',
+    'optional group_by parameter which should be used. Valid values are ' +
+    listCommand.groupBy.options.join(', ')
+  )
+  .option(
+    '-l, --limit <limit>',
+    'numeric number of items to return (default 100)',
+    100,
+    ((val) => parseInt(val, 10))
   )
   .option(
     '--locked <true|false>',
@@ -207,9 +78,56 @@ program
     })
   )
   .option(
-    '--group_by <value>',
-    'optional group_by parameter which should be used. Valid values are ' +
-    GROUP_BY_OPTIONS.join(', ')
+    '--project_id <project_id>',
+    'project id, can be either a single ID, or multiple comma-separated IDs.'
+  )
+  .option(
+    '--to <period|YYYY-MM-DD>',
+    'in combination with "from" used for selecting a specific time frame of ' +
+    'time entries to return, same as "period" argument or a specific date in ' +
+    'the format "YYYY-MM-DD". The period argument is ignored.'
+  )
+  .option(
+    '--tracking <true|false>',
+    'wheter to show only currently running entries or not running entries',
+    ((val) => {
+      if (typeof val !== 'string') {
+        return val;
+      }
+      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
+    })
+  )
+  .option(
+    '-s --search <query>',
+    'search within the notes, to filter by multiple criteria connected with OR use comma-separated query values',
+    ((val) => {
+      if (typeof val === 'string') {
+        return val.split(/\s*,\s*/);
+      }
+      return val;
+    })
+  )
+  .option(
+    '--service_id <service_id>',
+    'service id, can be either a single ID, or multiple comma-separated IDs.'
+  )
+  .option(
+    '--sort <column>',
+    `optional column the results should be sorted `+
+    `(default: "${listCommand.sort.default}"), ` +
+    `valid values: ${listCommand.sort.options.join(', ')}`,
+    (value) => {
+      if (listCommand.sort.options.indexOf(value) === -1) {
+        console.error(
+          'Invalid value for sort option: "%s", valid values are: ',
+          value,
+          listCommand.sort.options.join(', ')
+        );
+        process.exit(2);
+      }
+      return value;
+    },
+    listCommand.sort.default
   )
   .option(
     '--user_id <user_id>',
@@ -223,79 +141,6 @@ program
       }
       return val;
     })
-  )
-  .option(
-    '--project_id <project_id>',
-    'project id, can be either a single ID, or multiple comma-separated IDs.'
-  )
-  .option(
-    '--customer_id <customer_id>',
-    'customer id, can be either a single ID, or multiple comma-separated IDs.'
-  )
-  .option(
-    '--service_id <service_id>',
-    'service id, can be either a single ID, or multiple comma-separated IDs.'
-  )
-  .option(
-    '--sort <column>',
-    `optional column the results should be sorted `+
-    `(default: "${SORT_OPTIONS_DEFAULT}"), ` +
-    `valid values: ${SORT_OPTIONS.join(', ')}`,
-    (value) => {
-      if (SORT_OPTIONS.indexOf(value) === -1) {
-        console.error(
-          'Invalid value for sort option: "%s", valid values are: ',
-          value,
-          SORT_OPTIONS.join(', ')
-        );
-        process.exit(2);
-      }
-      return value;
-    },
-    SORT_OPTIONS_DEFAULT // default sort
-  )
-  .option(
-    '--tracking <true|false>',
-    'wheter to show only currently running entries or not running entries',
-    ((val) => {
-      if (typeof val !== 'string') {
-        return val;
-      }
-      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
-    })
-  )
-  .option(
-    '--from <period|YYYY-MM-DD>',
-    'in combination with "to" used for selecting a specific time frame of ' +
-    'time entries to return, same as "period" argument or a specific date in ' +
-    'the format "YYYY-MM-DD". The period argument is ignored.'
-  )
-  .option(
-    '--to <period|YYYY-MM-DD>',
-    'in combination with "from" used for selecting a specific time frame of ' +
-    'time entries to return, same as "period" argument or a specific date in ' +
-    'the format "YYYY-MM-DD". The period argument is ignored.'
-  )
-  .option(
-    '-s --search <query>',
-    'search within the notes, to filter by multiple criteria connected with OR use comma-separated query values',
-    ((val) => {
-      if (typeof val === 'string') {
-        return val.split(/\s*,\s*/);
-      }
-      return val;
-    })
-  )
-  .option(
-    '-l, --limit <limit>',
-    'numeric number of items to return (default 100)',
-    100,
-    ((val) => parseInt(val, 10))
-  )
-  .option(
-    '-f, --format <format>',
-    'defines the output format, valid options are ' + DataOutput.FORMATS.join(', '),
-    config.get('outputFormat')
   )
   .on('--help', function() {
     console.log(`
@@ -352,7 +197,7 @@ function main(period) {
   const columns = program.columns
     .split(',')
     .map(attrName => {
-      const columnDefinition = COLUMNS_OPTIONS[attrName];
+      const columnDefinition = listCommand.columns.options[attrName];
       if (!columnDefinition) {
         console.error('Invalid column name "' + attrName + '"');
         process.exit(2);
@@ -381,7 +226,7 @@ function main(period) {
           groupedTimeEntry.project_name || groupedTimeEntry.project_id,
           groupedTimeEntry.service_name || groupedTimeEntry.service_id,
           formater.minutesToDuration(groupedTimeEntry.minutes || 0),
-          groupedTimeEntry.revenue === null ? '-' : formater.budget(BUDGET_TYPE.CENTS, groupedTimeEntry.revenue || 0),
+          groupedTimeEntry.revenue === null ? '-' : formater.budget(formater.BUDGET_TYPE.CENTS, groupedTimeEntry.revenue || 0),
         ].filter((v) => (typeof v !== 'undefined'));
       });
 
@@ -392,7 +237,7 @@ function main(period) {
       const revenueSum = timeEntryGroups.reduce((v, a) => {
         return v + a.revenue || 0;
       }, 0);
-      footerRow[columnCount - 1] = formater.budget(BUDGET_TYPE.CENTS, revenueSum || 0);
+      footerRow[columnCount - 1] = formater.budget(formater.BUDGET_TYPE.CENTS, revenueSum || 0);
       const minutesSum = timeEntryGroups.reduce((v, a) => {
         return v + a.minutes || 0;
       }, 0);
@@ -451,8 +296,4 @@ function main(period) {
 
     console.log(DataOutput.formatData(tableData, program.format, columns));
   })
-  .catch(err => {
-    console.log(err && err.message || err);
-    process.exit(1);
-  }); // get time entries
 } // main

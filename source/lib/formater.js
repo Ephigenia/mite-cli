@@ -41,6 +41,10 @@ module.exports = {
     return result;
   },
 
+  booleanToHumanvalue(value) {
+    return value ? 'yes' : 'no';
+  },
+
   minutesToWorkDays(minutes) {
     return this.number(minutes / 8 / 60, 2);
   },

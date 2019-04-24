@@ -46,7 +46,8 @@ program
     'custom list of columns to use in the output, pass in a comma-separated ' +
     'list of attribute names: ' + Object.keys(servicesCommand.columns.options).join(', '),
     (str) => str.split(',').filter(v => v).join(','),
-    servicesCommand.columns.options
+    // @TOOO make this configurable
+    servicesCommand.columns.default
   )
   .option(
     '--search <query>',
@@ -69,7 +70,8 @@ program
       }
       return value;
     },
-    servicesCommand.sort.default // default sort
+    // @TODO make configurable
+    servicesCommand.sort.default
   )
   .on('--help', function() {
     console.log(`

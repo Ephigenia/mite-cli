@@ -7,93 +7,7 @@ const chalk = require('chalk');
 const DataOutput = require('./lib/data-output');
 const pkg = require('./../package.json');
 const config = require('./config.js');
-const formater = require('./lib/formater');
-const BUDGET_TYPE = formater.BUDGET_TYPE;
-const SORT_OPTIONS = [
-  'id',
-  'name',
-  'customer',
-  'customer_name',
-  'customer_id',
-  'updated_at',
-  'created_at',
-  'hourly_rate',
-  'rate',
-  'budget',
-];
-const SORT_OPTIONS_DEFAULT = 'name';
-
-const COLUMNS_OPTIONS = {
-  budget: {
-    label: 'budget',
-    attribute: 'budget',
-    width: 10,
-    alignment: 'right',
-    format: (value, item) => {
-      if (!value) {
-        return '-';
-      }
-      return formater.budget(item.budget_type, value);
-    },
-  },
-  budget_type: {
-    label: 'budget_type',
-    attribute: 'budget_type',
-  },
-  created_at: {
-    label: 'created at',
-    attribute: 'created_at',
-  },
-  customer_id: {
-    label: 'customer id',
-    attribute: 'customer_id'
-  },
-  customer_name: {
-    label: 'customer name',
-    attribute: 'customer_name'
-  },
-  customer: {
-    label: 'customer',
-    attribute: 'customer_name',
-    format: (value, item) => {
-      return `${item.customer_name} (${item.customer_id})`;
-    }
-  },
-  id: {
-    label: 'id',
-    attribute: 'id',
-    width: 10,
-    alignment: 'right'
-  },
-  name: {
-    label: 'name',
-    attribute: 'name',
-  },
-  note: {
-    label: 'Note',
-    attribute: 'note',
-    width: 50,
-    wrapWord: true,
-    alignment: 'left',
-    format: formater.note,
-  },
-  rate: {
-    label: 'rate',
-    attribute: 'hourly_rate',
-    width: 10,
-    alignment: 'right',
-    format: (value) => {
-      if (!value) {
-        return '-';
-      }
-      return formater.budget(BUDGET_TYPE.CENTS, value || 0);
-    },
-  },
-  updated_at: {
-    label: 'updated at',
-    attribute: 'updated_at',
-  }
-};
+const projectsCommand = require('./lib/commands/projects');
 
 program
   .version(pkg.version)
@@ -120,9 +34,10 @@ program
   .option(
     '--columns <columns>',
     'custom list of columns to use in the output, pass in a comma-separated ' +
-    'list of attribute names: ' + Object.keys(COLUMNS_OPTIONS).join(', '),
+    'list of attribute names: ' + Object.keys(projectsCommand.columns.options).join(', '),
     (str) => str.split(',').filter(v => v).join(','),
-    'id,name,customer,budget,rate,note'
+    // @TOOO make this configurable
+    projectsCommand.columns.default
   )
   .option(
     '-f, --format <format>',
@@ -137,20 +52,21 @@ program
   .option(
     '--sort <column>',
     `optional column the results should be case-insensitive ordered by `+
-    `(default: "${SORT_OPTIONS_DEFAULT}"), ` +
-    `valid values: ${SORT_OPTIONS.join(', ')}`,
+    `(default: "${projectsCommand.sort.default}"), ` +
+    `valid values: ${projectsCommand.sort.options.join(', ')}`,
     (value) => {
-      if (SORT_OPTIONS.indexOf(value) === -1) {
+      if (projectsCommand.sort.options.indexOf(value) === -1) {
         console.error(
           'Invalid value for sort option: "%s", valid values are: ',
           value,
-          SORT_OPTIONS.join(', ')
+          projectsCommand.sort.options.join(', ')
         );
         process.exit(2);
       }
       return value;
     },
-    SORT_OPTIONS_DEFAULT // default sor
+    // @TODO make configurable
+    projectsCommand.sort.default
   )
   .on('--help', function() {
     console.log(`
@@ -226,7 +142,7 @@ miteApi.getProjects(opts).then(projects => {
     const columns = program.columns
       .split(',')
       .map(attrName => {
-        const columnDefinition = COLUMNS_OPTIONS[attrName];
+        const columnDefinition = projectsCommand.columns.options[attrName];
         if (!columnDefinition) {
           console.error(`Invalid column name "${attrName}"`);
           process.exit(2);

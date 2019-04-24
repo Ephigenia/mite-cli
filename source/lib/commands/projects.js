@@ -3,30 +3,58 @@
 const formater = require('./../formater');
 
 module.exports.sort = {
-  default: 'name',
+  default: '',
   options: [
     'id',
     'name',
+    'customer',
+    'customer_name',
+    'customer_id',
     'updated_at',
     'created_at',
     'hourly_rate',
-    'rate' // alias for hourly_rate
-  ],
+    'rate',
+    'budget',
+  ]
 };
 
 module.exports.columns = {
-  default: 'id,name,billable,rate,note',
+  default: 'id,name,customer,budget,rate,note',
   options: {
-    billable: {
-      label: 'Billable',
-      attribute: 'billable',
+    budget: {
+      label: 'Budget',
+      attribute: 'budget',
       width: 10,
       alignment: 'right',
-      format: formater.booleanToHumanvalue,
+      format: (value, item) => {
+        if (!value) {
+          return '-';
+        }
+        return formater.budget(item.budget_type, value);
+      },
+    },
+    budget_type: {
+      label: 'Budget Type',
+      attribute: 'budget_type',
     },
     created_at: {
       label: 'Created At',
       attribute: 'created_at',
+    },
+    customer_id: {
+      label: 'Customer ID',
+      attribute: 'customer_id'
+    },
+    customer_name: {
+      label: 'Customer Name',
+      attribute: 'customer_name'
+    },
+    customer: {
+      label: 'Customer',
+      attribute: 'customer_name',
+      format: (value, item) => {
+        return `${item.customer_name} (${item.customer_id})`;
+      }
     },
     id: {
       label: 'ID',
@@ -62,5 +90,5 @@ module.exports.columns = {
       label: 'Updated At',
       attribute: 'updated_at',
     }
-  },
+  }
 };

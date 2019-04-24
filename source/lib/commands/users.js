@@ -29,9 +29,7 @@ module.exports.columns = {
     archived: {
       label: 'Archived',
       attribute: 'archived',
-      format: (value) => {
-        return value ? 'yes' : 'no';
-      },
+      format: formater.booleanToHumanvalue,
     },
     created_at: {
       label: 'Created At',
@@ -52,9 +50,10 @@ module.exports.columns = {
       attribute: 'language',
     },
     name: {
-      label: 'name',
+      label: 'Name',
       attribute: 'name',
       format: (value, item) => {
+        // @TODO create formate for this
         switch(item.role) {
           case 'admin':
             return chalk.yellow(value);
