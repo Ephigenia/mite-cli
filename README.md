@@ -79,6 +79,8 @@ In case you want to use multiple mite accounts please open up a [change request]
 
 - `listColumns`  
   defines the default columns to be used when running `mite list`.
+- `noteHighlightRegexp`
+  defines a single regular expression which can contain a single capturing group which will get hightlighted. By default this is set to highlight github hashtag notation (f.e. #218) and jira story identifiers (f.e. CRYO-1281). When you change this note that the beginning and trailing slashes must be omitted and the regexp is case-sensitive and modfieres cannot be changed.
 - `outputFormat`  
   defines the default output format for the list commands, defaults to `table`
 

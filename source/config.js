@@ -13,6 +13,7 @@ nconf.file(configFilename);
 nconf.defaults({
   applicationName: `mite-cli/${pkg.version}`,
   listColumns: 'id,date,user,project,duration,revenue,service,note',
+  noteHighlightRegexp: '([A-Z]{1,10}-\\d{1,10})|(#\\d+)',
   outputFormat: DataOutput.FORMAT.TABLE,
 });
 
