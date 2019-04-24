@@ -7,80 +7,7 @@ const chalk = require('chalk');
 const pkg = require('./../package.json');
 const config = require('./config.js');
 const DataOutput = require('./lib/data-output');
-const formater = require('./lib/formater');
-
-const SORT_OPTIONS = [
-  'id',
-  'name',
-  'email',
-  'role',
-  'note',
-  'updated_at',
-  'created_at',
-];
-const SORT_OPTIONS_DEFAULT = 'name';
-
-
-const COLUMNS_OPTIONS = {
-  archived: {
-    label: 'Archived',
-    attribute: 'archived',
-    format: (value) => {
-      return value ? 'yes' : 'no';
-    },
-  },
-  created_at: {
-    label: 'Created At',
-    attribute: 'created_at',
-  },
-  id: {
-    label: 'ID',
-    attribute: 'id',
-    width: 10,
-    alignment: 'right'
-  },
-  email: {
-    label: 'Email',
-    attribute: 'email'
-  },
-  language: {
-    label: 'Language',
-    attribute: 'language',
-  },
-  name: {
-    label: 'name',
-    attribute: 'name',
-    format: (value, item) => {
-      switch(item.role) {
-        case 'admin':
-          return chalk.yellow(value);
-        case 'owner':
-          return chalk.red(value);
-        default:
-          return value;
-      }
-    }
-  },
-  note: {
-    label: 'Note',
-    attribute: 'note',
-    width: 50,
-    wrapWord: true,
-    alignment: 'left',
-    format: formater.note,
-  },
-  role: {
-    width: 10,
-    align: 'right',
-    label: 'Role',
-    attribute: 'role',
-  },
-  updated_at: {
-    label: 'Updated At',
-    attribute: 'updated_at',
-  }
-};
-const COLUMNS_OPTIONS_DEFAULT_VALUE = 'id,role,name,email,note';
+const usersCommand = require('./lib/commands/users');
 
 program
   .version(pkg.version)
@@ -99,9 +26,9 @@ program
   .option(
     '--columns <columns>',
     'custom list of columns to use in the output, pass in a comma-separated ' +
-    'list of attribute names: ' + Object.keys(COLUMNS_OPTIONS).join(', '),
+    'list of attribute names: ' + Object.keys(usersCommand.columns.options).join(', '),
     (str) => str.split(',').filter(v => v).join(','),
-    COLUMNS_OPTIONS_DEFAULT_VALUE
+    usersCommand.columns.default
   )
   .option(
     '-f, --format <format>',
@@ -135,14 +62,14 @@ program
   .option(
     '--sort <column>',
     `optional column the results should be case-insensitive ordered by `+
-    `(default: "${SORT_OPTIONS_DEFAULT}"), ` +
-    `valid values: ${SORT_OPTIONS.join(', ')}`,
+    `(default: "${usersCommand.sort.default}"), ` +
+    `valid values: ${usersCommand.sort.options.join(', ')}`,
     (value) => {
-      if (SORT_OPTIONS.indexOf(value) === -1) {
+      if (usersCommand.sort.options.indexOf(value) === -1) {
         console.error(
           'Invalid value for sort option: "%s", valid values are: ',
           value,
-          SORT_OPTIONS.join(', ')
+          usersCommand.sort.options.join(', ')
         );
         process.exit(2);
       }
@@ -221,7 +148,7 @@ miteApi.getUsers(opts)
     const columns = program.columns
       .split(',')
       .map(attrName => {
-        const columnDefinition = COLUMNS_OPTIONS[attrName];
+        const columnDefinition = usersCommand.columns.options[attrName];
         if (!columnDefinition) {
           console.error(`Invalid column name "${attrName}"`);
           process.exit(2);

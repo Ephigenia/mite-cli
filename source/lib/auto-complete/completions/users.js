@@ -2,13 +2,7 @@
 'use strict';
 
 const DataOutput = require('./../../data-output');
-
-const USER_ROLES = [
-  'admin',
-  'owner',
-  'time_tracker',
-  'coworker'
-];
+const usersCommand = require('./../../commands/users');
 
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
@@ -26,6 +20,8 @@ module.exports = async ({ prev }) => {
     case '--archived':
     case '-a':
       return ['yes', 'no'];
+    case '--columns':
+      return Object.keys(usersCommand.columns.options);
     case '--email':
     case '--name':
     case '--search':
@@ -34,18 +30,9 @@ module.exports = async ({ prev }) => {
     case '-f':
       return DataOutput.FORMATS;
     case '--role':
-      return USER_ROLES;
+      return usersCommand.USER_ROLES;
     case '--sort':
-      // @TODO get sort options from actual command
-      return [
-        'id',
-        'name',
-        'email',
-        'role',
-        'note',
-        'updated_at',
-        'created_at',
-      ];
+      return usersCommand.sort.options;
   }
 
   // list of options and short descriptions
