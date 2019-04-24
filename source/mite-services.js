@@ -46,8 +46,7 @@ program
     'custom list of columns to use in the output, pass in a comma-separated ' +
     'list of attribute names: ' + Object.keys(servicesCommand.columns.options).join(', '),
     (str) => str.split(',').filter(v => v).join(','),
-    // TOOO make this configurable
-    servicesCommand.columns.default
+    config.get().servicesColumns
   )
   .option(
     '--search <query>',

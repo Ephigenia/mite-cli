@@ -28,8 +28,7 @@ program
     'custom list of columns to use in the output, pass in a comma-separated ' +
     'list of attribute names: ' + Object.keys(usersCommand.columns.options).join(', '),
     (str) => str.split(',').filter(v => v).join(','),
-    // @TOOO make this configurable
-    usersCommand.columns.default
+    config.get().usersColumns
   )
   .option(
     '-f, --format <format>',
