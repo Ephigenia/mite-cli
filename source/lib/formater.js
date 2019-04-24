@@ -1,7 +1,6 @@
 'use strict';
 
 const chalk = require('chalk');
-const config = require('./../config');
 
 const { USER_ROLES, BUDGET_TYPE } = require('./constants');
 
@@ -10,6 +9,7 @@ const DEFAULT_CURRENCY = '€';
 
 module.exports = {
   BUDGET_TYPE: BUDGET_TYPE,
+  CURRENCY: DEFAULT_CURRENCY,
 
   note(
     note,
@@ -21,7 +21,9 @@ module.exports = {
       result = result.replace(/\r?\n/g, ' ');
     }
     if (highlight) {
-      const highlightRegexp = new RegExp(config.get('noteHighlightRegexp'), 'g');
+      // @TODO resolve circular dependency
+      const config = require('./../config');
+      const highlightRegexp = new RegExp(config.get().noteHighlightRegexp, 'g');
       const matches = result.match(highlightRegexp) || [];
       matches.forEach((str) => {
         result = result.replace(str, chalk.bold(chalk.blue(str)));
@@ -94,11 +96,11 @@ module.exports = {
       case BUDGET_TYPE.MINUTES:
         return this.minutesToDuration(value) + ' h';
       case BUDGET_TYPE.CENTS:
-        return this.price(value / 100) + ' ' + DEFAULT_CURRENCY;
+        return this.price(value / 100) + ' ' + this.CURRENCY;
       case BUDGET_TYPE.CENTS_PER_MONTH:
-        return this.price(value / 100) + ' ' + DEFAULT_CURRENCY + '/m';
+        return this.price(value / 100) + ' ' + this.CURRENCY + '/m';
       default:
-        throw new Error('Unknown budget format type: "' + type + '"');
+        throw new Error(`Unknown budget format type: "${type}"`);
     }
   }
 };
