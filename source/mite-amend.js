@@ -94,8 +94,8 @@ function main(timeEntryId) {
     .then(() => {
       console.log('Successfully modified note of time entry (id: %s)', timeEntryId);
     })
-    .catch((err) => {
-      console.error(err.message);
+    .catch(err => {
+      console.log(err && err.message || err);
       process.exit(1);
     });
 }

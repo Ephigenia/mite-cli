@@ -450,5 +450,9 @@ function main(period) {
     );
 
     console.log(DataOutput.formatData(tableData, program.format, columns));
+  })
+  .catch(err => {
+    console.log(err && err.message || err);
+    process.exit(1);
   }); // get time entries
-}
+} // main

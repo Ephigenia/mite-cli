@@ -57,9 +57,9 @@ function main(timeEntryId) {
       process.exit(0);
     });
   })
-  .catch((err) => {
-    console.error(err.message);
-    console.error(err);
+
+  .catch(err => {
+    console.log(err && err.message || err);
     process.exit(1);
   });
 }

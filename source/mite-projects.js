@@ -257,4 +257,8 @@ miteApi.getProjects(opts).then(projects => {
     );
 
     console.log(DataOutput.formatData(tableData, program.format, columns));
-  });
+  })
+  .catch(err => {
+    console.log(err && err.message || err);
+    process.exit(1);
+  });;

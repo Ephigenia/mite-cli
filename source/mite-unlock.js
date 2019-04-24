@@ -47,8 +47,8 @@ Examples:
         console.log('Successfully unlocked time entry (id: %s)', timeEntryId);
       })
       .catch(err => {
-        console.error(err);
-        process.exit(0);
+        console.log(err && err.message || err);
+        process.exit(1);
       });
   })
   .parse(process.argv);
