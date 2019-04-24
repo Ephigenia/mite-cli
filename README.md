@@ -77,10 +77,18 @@ In case you want to use multiple mite accounts please open up a [change request]
 
 ## Advanced Configuration Options
 
+- `customersColumns`  
+  defines the default columns to be used when running `mite customers list`.
 - `listColumns`  
   defines the default columns to be used when running `mite list`.
 - `outputFormat`  
   defines the default output format for the list commands, defaults to `table`
+- `projectsColumns`  
+  defines the default columns to be used when running `mite projects list`.
+- `servicesColumns`  
+  defines the default columns to be used when running `mite services list`.
+- `usersColumns`  
+  defines the default columns to be used when running `mite users`.
 
 Configuration options can always be resetted to their default by leaving out the value, like: `mite config set listColumns`.
 

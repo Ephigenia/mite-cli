@@ -30,8 +30,7 @@ program
     'custom list of columns to use in the output, pass in a comma-separated ' +
     'list of attribute names: ' + Object.keys(customersCommand.columns.options).join(', '),
     (str) => str.split(',').filter(v => v).join(','),
-    // @TODO make configurable
-    customersCommand.columns.default
+    config.get().customersColumns
   )
   .option(
     '-f, --format <format>',
