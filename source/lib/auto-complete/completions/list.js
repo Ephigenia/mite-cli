@@ -43,7 +43,7 @@ module.exports = async ({ words, prev, lastPartial }) => {
     case '--billable':
       return ['yes', 'no'];
     case '--columns':
-      return Object.keys(listCommand.columns.options);
+      return Object.keys(listCommand.columns.options).concat(['all']);
     case '--customer_id':
       return miteApi.getCustomers({ archived: false }).then(
         customers => customers.map(c => ({

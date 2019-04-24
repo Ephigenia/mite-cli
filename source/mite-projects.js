@@ -8,6 +8,7 @@ const DataOutput = require('./lib/data-output');
 const pkg = require('./../package.json');
 const config = require('./config');
 const projectsCommand = require('./lib/commands/projects');
+const columnOptions = require('./lib/options/columns');
 
 program
   .version(pkg.version)
@@ -31,9 +32,8 @@ program
   )
   .option(
     '--columns <columns>',
-    'custom list of columns to use in the output, pass in a comma-separated ' +
-    'list of attribute names: ' + Object.keys(projectsCommand.columns.options).join(', '),
-    (str) => str.split(',').filter(v => v).join(','),
+    columnOptions.description(projectsCommand.columns.options),
+    columnOptions.parse,
     config.get().projectsColumns
   )
   .option(
@@ -102,33 +102,23 @@ const miteApi = require('./lib/mite-api')(config.get());
 
 miteApi.getProjects(opts)
   .then(projects => projects
-    .filter((p) => program.archived === 'all' && true || p.archived === program.archived)
-    .filter((p) => {
+    .filter(({ archived }) => program.archived === 'all' ? true : archived === program.archived)
+    .filter(({ customer_name, customer_id }) => {
       // filter by customer regexp, skip if no cli argument was given
       if (!program.customer) {
         return true;
       }
       const regexp = new RegExp(program.customer, 'i');
       return (
-        p.customer_name === program.customer ||
-        regexp.exec(p.customer_name) ||
-        regexp.exec(String(p.customer_id)
+        customer_name === program.customer ||
+        regexp.exec(customer_name) ||
+        regexp.exec(String(customer_id)
       ));
     })
   )
   .then(items => miteApi.sort(items, program.sort, { customer: 'customer_name' }))
   .then(items => {
-    // validate columns options
-    const columns = program.columns
-      .split(',')
-      .map(attrName => {
-        const columnDefinition = projectsCommand.columns.options[attrName];
-        if (!columnDefinition) {
-          console.error(`Invalid column name "${attrName}"`);
-          process.exit(2);
-        }
-        return columnDefinition;
-      });
+    const columns = columnOptions.resolve(program.columns, projectsCommand.columns.options);
 
     // create final array of table data
     const tableData = items.map((item) => {

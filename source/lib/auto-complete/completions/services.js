@@ -23,7 +23,7 @@ module.exports = async ({ prev }) => {
     case '--billable':
       return ['yes', 'no'];
     case '--columns':
-      return Object.keys(servicesCommand.columns.options);
+      return Object.keys(servicesCommand.columns.options).concat(['all']);
     case '--format':
     case '-f':
       return DataOutput.FORMATS;

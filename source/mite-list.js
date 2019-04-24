@@ -10,6 +10,7 @@ const config = require('./config');
 const formater = require('./lib/formater');
 const DataOutput = require('./lib/data-output');
 const listCommand = require('./lib/commands/list');
+const columnOptions = require('./lib/options/columns');
 
 // set a default period argument if not set
 if (!process.argv[2] || process.argv[2].substr(0, 1) === '-' && process.argv[2] !== '--help') {
@@ -32,9 +33,8 @@ program
   )
   .option(
     '--columns <columns>',
-    'custom list of columns to use in the output, pass in a comma-separated ' +
-    'list of attribute names: ' + Object.keys(listCommand.columns.options).join(', '),
-    (str) => str.split(',').filter(v => v).join(','),
+    columnOptions.description(listCommand.columns.options),
+    columnOptions.parse,
     config.get().listColumns
   )
   .option(
@@ -182,16 +182,7 @@ function main(period) {
     delete opts.at;
   }
 
-  const columns = program.columns
-    .split(',')
-    .map(attrName => {
-      const columnDefinition = listCommand.columns.options[attrName];
-      if (!columnDefinition) {
-        console.error('Invalid column name "' + attrName + '"');
-        process.exit(2);
-      }
-      return columnDefinition;
-    });
+  const columns = columnOptions.resolve(program.columns, listCommand.columns.options);
 
   mite.getTimeEntries(opts, (err, results) => {
     if (err) {

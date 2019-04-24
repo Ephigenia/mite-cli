@@ -21,7 +21,7 @@ module.exports = async ({ prev }) => {
     case '-a':
       return ['yes', 'no', 'all'];
     case '--columns':
-      return Object.keys(customersCommand.columns.options);
+      return Object.keys(customersCommand.columns.options).concat(['all']);
     case '--format':
     case '-f':
       return DataOutput.FORMATS;

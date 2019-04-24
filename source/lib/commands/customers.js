@@ -16,6 +16,13 @@ module.exports.sort = {
 module.exports.columns = {
   default: 'id,name,hourly_rate,note',
   options: {
+    archived: {
+      label: 'Archived',
+      attribute: 'archived',
+      width: 10,
+      alignment: 'right',
+      format: formater.booleanToHumanvalue
+    },
     created_at: {
       label: 'Created At',
       attribute: 'created_at',

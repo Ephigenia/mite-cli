@@ -180,6 +180,8 @@ The following example will only show the user and his durations from last week i
     │                │       2:58 │
     └────────────────┴────────────┘
 
+You can always get all available columns by setting `columns=all`.
+
 ## Alternate Output formats
 
 The program is designed to work well and look well in the cli and will show the results in tabular style using box drawing characters. This is not easy to use in further processing. That’s where the other output formats come in handy:

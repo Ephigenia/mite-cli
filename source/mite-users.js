@@ -8,6 +8,7 @@ const pkg = require('./../package.json');
 const config = require('./config');
 const DataOutput = require('./lib/data-output');
 const usersCommand = require('./lib/commands/users');
+const columnOptions = require('./lib/options/columns');
 
 program
   .version(pkg.version)
@@ -23,10 +24,9 @@ program
   )
   .option(
     '--columns <columns>',
-    'custom list of columns to use in the output, pass in a comma-separated ' +
-    'list of attribute names: ' + Object.keys(usersCommand.columns.options).join(', '),
-    (str) => str.split(',').filter(v => v).join(','),
-    config.get().usersColumns
+    columnOptions.description(usersCommand.columns.options),
+    columnOptions.parse,
+    config.get().usersColumns,
   )
   .option(
     '-f, --format <format>',
@@ -88,6 +88,9 @@ Examples:
   show all time tracking users from a company (all have a ephigenia.de email address)
     mite users --role time_tracker --email ephigenia.de
 
+  show all users while using all columns
+    mite users --columns=all
+
   export all users to a csv file
     mite users --columns=id,role,name,email,archived,language --format=csv > users.csv
 `);
@@ -101,6 +104,7 @@ const opts = {
   ...(program.email && { email: program.email }),
   ...(program.name && { name: program.name }),
 };
+
 
 miteApi.getUsers(opts)
   .then((users) => users
@@ -117,17 +121,7 @@ miteApi.getUsers(opts)
   )
   .then(items => miteApi.sort(items, program.sort))
   .then((items) => {
-    // validate columns options
-    const columns = program.columns
-      .split(',')
-      .map(attrName => {
-        const columnDefinition = usersCommand.columns.options[attrName];
-        if (!columnDefinition) {
-          console.error(`Invalid column name "${attrName}"`);
-          process.exit(2);
-        }
-        return columnDefinition;
-      });
+    const columns = columnOptions.resolve(program.columns, usersCommand.columns.options);
 
     // create final array of table data
     const tableData = items.map((item) => {

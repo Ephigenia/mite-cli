@@ -5,6 +5,7 @@ const formater = require('./../formater');
 module.exports.sort = {
   default: 'name',
   options: [
+    'billable',
     'id',
     'name',
     'updated_at',
@@ -16,6 +17,13 @@ module.exports.sort = {
 module.exports.columns = {
   default: 'id,name,billable,hourly_rate,note',
   options: {
+    archived: {
+      label: 'Archived',
+      attribute: 'archived',
+      width: 10,
+      alignment: 'right',
+      format: formater.booleanToHumanvalue
+    },
     billable: {
       label: 'Billable',
       attribute: 'billable',

@@ -22,7 +22,7 @@ module.exports = async ({ prev }) => {
     case '-a':
       return ['yes', 'no', 'all'];
     case '--columns':
-      return Object.keys(usersCommand.columns.options);
+      return Object.keys(usersCommand.columns.options).concat(['all']);
     case '--email':
     case '--name':
     case '--search':

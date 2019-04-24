@@ -23,7 +23,7 @@ module.exports = async ({ prev }) => {
     case '-a':
       return ['yes', 'no', 'all'];
     case '--columns':
-      return Object.keys(projectsCommand.columns.options);
+      return Object.keys(projectsCommand.columns.options).concat(['all']);
     case '--customer':
       return miteApi.getCustomers().then(customers => customers.map(c => ({
         name: String(c.name)

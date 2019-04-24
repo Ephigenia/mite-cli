@@ -9,6 +9,7 @@ const config = require('./config');
 const miteApi = require('./lib/mite-api')(config.get());
 const DataOutput = require('./lib/data-output');
 const customersCommand = require('./lib/commands/customers');
+const columnOptions = require('./lib/options/columns');
 
 program
   .version(pkg.version)
@@ -25,10 +26,9 @@ program
   )
   .option(
     '--columns <columns>',
-    'custom list of columns to use in the output, pass in a comma-separated ' +
-    'list of attribute names: ' + Object.keys(customersCommand.columns.options).join(', '),
-    (str) => str.split(',').filter(v => v).join(','),
-    config.get().customersColumns
+    columnOptions.description(customersCommand.columns.options),
+    columnOptions.parse,
+    config.get().usersColumns,
   )
   .option(
     '-f, --format <format>',
@@ -85,23 +85,12 @@ const opts = {
 };
 
 miteApi.getCustomers(opts)
-  .then((customers) => {
-    return customers
-      .filter((c) => program.archived === 'all' && true || c.archived === program.archived);
-  })
+  .then((customers) => customers
+    .filter(({ archived }) => program.archived === 'all' ? true : program.archived === archived)
+  )
   .then(items => miteApi.sort(items, program.sort))
   .then(items => {
-    // validate columns options
-    const columns = program.columns
-      .split(',')
-      .map(attrName => {
-        const columnDefinition = customersCommand.columns.options[attrName];
-        if (!columnDefinition) {
-          console.error(`Invalid column name "${attrName}"`);
-          process.exit(2);
-        }
-        return columnDefinition;
-      });
+    const columns = columnOptions.resolve(program.columns, customersCommand.columns.options);
 
     // create final array of table data
     const tableData = items.map((item) => {

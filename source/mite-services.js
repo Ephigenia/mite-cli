@@ -8,6 +8,7 @@ const DataOutput = require('./lib/data-output');
 const pkg = require('./../package.json');
 const config = require('./config');
 const servicesCommand = require('./lib/commands/services');
+const columnOptions = require('./lib/options/columns');
 
 program
   .version(pkg.version)
@@ -20,7 +21,7 @@ program
       if (val === 'all') return 'all';
       return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1
     }),
-    all
+    'all'
   )
   .option(
     '--billable <true|false|all>',
@@ -30,6 +31,7 @@ program
       if (val === 'all') return 'all';
       return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1
     }),
+    'all'
   )
   .option(
     '-f, --format <format>',
@@ -38,9 +40,8 @@ program
   )
   .option(
     '--columns <columns>',
-    'custom list of columns to use in the output, pass in a comma-separated ' +
-    'list of attribute names: ' + Object.keys(servicesCommand.columns.options).join(', '),
-    (str) => str.split(',').filter(v => v).join(','),
+    columnOptions.description(servicesCommand.columns.options),
+    columnOptions.parse,
     config.get().servicesColumns
   )
   .option(
@@ -95,22 +96,12 @@ const miteApi = require('./lib/mite-api')(config.get());
 
 miteApi.getServices(opts)
   .then(services => services
-    .filter((s) => program.archived === 'all' && true || s.archived === program.archived)
-    .filter((s) => program.billable === 'all' && true || program.billable === s.billable)
+    .filter(({ archived }) => program.archived === 'all' ? true : archived === program.archived)
+    .filter(({ billable }) => program.billable === 'all' ? true : billable === program.billable)
   )
   .then(items => miteApi.sort(items, program.sort))
   .then(items => {
-    // validate columns options
-    const columns = program.columns
-      .split(',')
-      .map(attrName => {
-        const columnDefinition = servicesCommand.columns.options[attrName];
-        if (!columnDefinition) {
-          console.error(`Invalid column name "${attrName}"`);
-          process.exit(2);
-        }
-        return columnDefinition;
-      });
+    const columns = columnOptions.resolve(program.columns, servicesCommand.columns.options);
 
     // create final array of table data
     const tableData = items.map((item) => {
