@@ -6,7 +6,7 @@ const chalk = require('chalk');
 
 const DataOutput = require('./lib/data-output');
 const pkg = require('./../package.json');
-const config = require('./config.js');
+const config = require('./config');
 const projectsCommand = require('./lib/commands/projects');
 
 program

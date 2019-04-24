@@ -6,7 +6,7 @@ const inquirer = require('inquirer');
 const chalk = require('chalk');
 
 const pkg = require('./../package.json');
-const config = require('./config.js');
+const config = require('./config');
 const miteApi = require('./lib/mite-api')(config.get());
 const miteTracker = require('./lib/mite-tracker')(config.get());
 const formater = require('./lib/formater');

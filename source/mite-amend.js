@@ -8,7 +8,7 @@ const inquirer = require('inquirer');
 const ExternalEditor = require('external-editor');
 
 const pkg = require('./../package.json');
-const config = require('./config.js');
+const config = require('./config');
 const tracker = require('./lib/mite-tracker');
 
 program

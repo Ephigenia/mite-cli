@@ -6,7 +6,7 @@ const chalk = require('chalk');
 const miteApi = require('mite-api');
 
 const pkg = require('./../package.json');
-const config = require('./config.js');
+const config = require('./config');
 const formater = require('./lib/formater');
 const DataOutput = require('./lib/data-output');
 const listCommand = require('./lib/commands/list');

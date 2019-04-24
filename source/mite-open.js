@@ -6,7 +6,7 @@ const opn = require('opn');
 const miteApi = require('mite-api');
 
 const pkg = require('./../package.json');
-const config = require('./config.js');
+const config = require('./config');
 
 program
   .version(pkg.version)

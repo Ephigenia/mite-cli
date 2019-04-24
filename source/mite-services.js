@@ -4,9 +4,9 @@
 const program = require('commander');
 const chalk = require('chalk');
 
-const pkg = require('./../package.json');
-const config = require('./config.js');
 const DataOutput = require('./lib/data-output');
+const pkg = require('./../package.json');
+const config = require('./config');
 const servicesCommand = require('./lib/commands/services');
 
 program

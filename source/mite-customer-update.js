@@ -6,7 +6,7 @@ const util = require('util');
 
 const pkg = require('./../package.json');
 const miteApi = require('mite-api');
-const config = require('./config.js');
+const config = require('./config');
 
 program
   .version(pkg.version)

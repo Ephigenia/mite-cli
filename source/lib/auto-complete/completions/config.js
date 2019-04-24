@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-const config = require('./../../../config.js');
+const config = require('./../../../config');
 
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env

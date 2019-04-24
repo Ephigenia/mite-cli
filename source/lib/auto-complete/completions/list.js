@@ -2,7 +2,7 @@
 'use strict';
 
 const DataOutput = require('./../../data-output');
-const config = require('./../../../config.js');
+const config = require('./../../../config');
 const miteApi = require('./../../mite-api')(config.get());
 const listCommand = require('./../../commands/list');
 

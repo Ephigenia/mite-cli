@@ -5,7 +5,7 @@ const program = require('commander');
 const chalk = require('chalk');
 
 const pkg = require('./../package.json');
-const config = require('./config.js');
+const config = require('./config');
 const miteApi = require('./lib/mite-api')(config.get());
 const DataOutput = require('./lib/data-output');
 const customersCommand = require('./lib/commands/customers');
