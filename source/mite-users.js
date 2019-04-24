@@ -40,11 +40,11 @@ program
     '--name <query>',
     'optional search for users who’s name contains the given query string ' +
     'while beeing not case-sensivite. No support multiple values.'
-    )
-    .option(
-      '--email <query>',
-      'optional search for users who’s email contains the given query string ' +
-      'while beeing not case-sensivite. No support multiple values.'
+  )
+  .option(
+    '--email <query>',
+    'optional search for users who’s email contains the given query string ' +
+    'while beeing not case-sensivite. No support multiple values.'
   )
   .option(
     '--role <role>',
@@ -76,7 +76,7 @@ program
       }
       return value;
     },
-    'name' // default sor
+    usersCommand.sort.default
   )
   .on('--help', function() {
     console.log(`

@@ -1,14 +1,6 @@
 'use strict';
 
 const formater = require('./../formater');
-const chalk = require('chalk');
-
-module.exports.USER_ROLES = [
-  'admin',
-  'owner',
-  'time_tracker',
-  'coworker'
-];
 
 module.exports.sort = {
   default: 'name',
@@ -52,17 +44,7 @@ module.exports.columns = {
     name: {
       label: 'Name',
       attribute: 'name',
-      format: (value, item) => {
-        // @TODO create formate for this
-        switch(item.role) {
-          case 'admin':
-            return chalk.yellow(value);
-          case 'owner':
-            return chalk.red(value);
-          default:
-            return value;
-        }
-      }
+      format: formater.username,
     },
     note: {
       label: 'Note',

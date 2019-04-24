@@ -65,7 +65,6 @@ program
       }
       return value;
     },
-    // @TODO make configurable
     projectsCommand.sort.default
   )
   .on('--help', function() {

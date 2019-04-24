@@ -3,6 +3,7 @@
 
 const DataOutput = require('./../../data-output');
 const usersCommand = require('./../../commands/users');
+const { USER_ROLES } = require('./../../constants');
 
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
@@ -30,7 +31,7 @@ module.exports = async ({ prev }) => {
     case '-f':
       return DataOutput.FORMATS;
     case '--role':
-      return usersCommand.USER_ROLES;
+      return Object.values(USER_ROLES);
     case '--sort':
       return usersCommand.sort.options;
   }

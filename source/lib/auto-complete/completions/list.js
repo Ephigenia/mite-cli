@@ -6,17 +6,7 @@ const config = require('./../../../config.js');
 const miteApi = require('./../../mite-api')(config.get());
 const listCommand = require('./../../commands/list');
 
-const timeFrameOptions = [
-  'today',
-  'yesterday',
-  'this_week',
-  'last_week',
-  'this_month',
-  'last_month',
-  'this_year',
-  'last_year',
-  'YYYY-MM-DD'
-];
+const { TIME_FRAMES } = require('./../../constants');
 
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
@@ -68,7 +58,7 @@ module.exports = async ({ words, prev, lastPartial }) => {
       return DataOutput.FORMATS;
     case '--from':
     case '--to':
-      return timeFrameOptions;
+      return TIME_FRAMES;
     case '--locked':
       return ['yes', 'no'];
     case '--project_id':
@@ -106,7 +96,7 @@ module.exports = async ({ words, prev, lastPartial }) => {
 
   // auto-completion for time-frame option argument
   if (words === 2 && lastPartial.substr(0, 1) !== '-') {
-    return timeFrameOptions;
+    return TIME_FRAMES;
   }
 
   return [
