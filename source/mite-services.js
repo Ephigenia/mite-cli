@@ -7,67 +7,7 @@ const chalk = require('chalk');
 const pkg = require('./../package.json');
 const config = require('./config.js');
 const DataOutput = require('./lib/data-output');
-const formater = require('./lib/formater');
-const BUDGET_TYPE = formater.BUDGET_TYPE;
-const SORT_OPTIONS = [
-  'id',
-  'name',
-  'updated_at',
-  'created_at',
-  'hourly_rate',
-  'rate' // alias for hourly_rate
-];
-const SORT_OPTIONS_DEFAULT = 'name';
-
-const COLUMNS_OPTIONS = {
-  billable: {
-    label: 'billable',
-    attribute: 'billable',
-    width: 10,
-    alignment: 'right',
-    format: (value) => {
-      return value ? 'yes' : 'no';
-    },
-  },
-  created_at: {
-    label: 'created at',
-    attribute: 'created_at',
-  },
-  id: {
-    label: 'id',
-    attribute: 'id',
-    width: 10,
-    alignment: 'right'
-  },
-  name: {
-    label: 'name',
-    attribute: 'name',
-  },
-  note: {
-    label: 'Note',
-    attribute: 'note',
-    width: 50,
-    wrapWord: true,
-    alignment: 'left',
-    format: formater.note,
-  },
-  rate: {
-    label: 'rate',
-    attribute: 'hourly_rate',
-    width: 10,
-    alignment: 'right',
-    format: (value) => {
-      if (!value) {
-        return '-';
-      }
-      return formater.budget(BUDGET_TYPE.CENTS, value || 0);
-    },
-  },
-  updated_at: {
-    label: 'updated at',
-    attribute: 'updated_at',
-  }
-};
+const servicesCommand = require('./lib/commands/services');
 
 program
   .version(pkg.version)
@@ -104,9 +44,9 @@ program
   .option(
     '--columns <columns>',
     'custom list of columns to use in the output, pass in a comma-separated ' +
-    'list of attribute names: ' + Object.keys(COLUMNS_OPTIONS).join(', '),
+    'list of attribute names: ' + Object.keys(servicesCommand.columns.options).join(', '),
     (str) => str.split(',').filter(v => v).join(','),
-    'id,name,billable,rate,note'
+    servicesCommand.columns.options
   )
   .option(
     '--search <query>',
@@ -116,20 +56,20 @@ program
   .option(
     '--sort <column>',
     `optional column the results should be case-insensitive ordered by `+
-    `(default: "${SORT_OPTIONS_DEFAULT}"), ` +
-    `valid values: ${SORT_OPTIONS.join(', ')}`,
+    `(default: "${servicesCommand.sort.default}"), ` +
+    `valid values: ${servicesCommand.sort.options.join(', ')}`,
     (value) => {
-      if (SORT_OPTIONS.indexOf(value) === -1) {
+      if (servicesCommand.sort.indexOf(value) === -1) {
         console.error(
           'Invalid value for sort option: "%s", valid values are: ',
           value,
-          SORT_OPTIONS.join(', ')
+          servicesCommand.sort.join(', ')
         );
         process.exit(2);
       }
       return value;
     },
-    SORT_OPTIONS_DEFAULT // default sort
+    servicesCommand.sort.default // default sort
   )
   .on('--help', function() {
     console.log(`
@@ -194,7 +134,7 @@ miteApi.getServices(opts)
     const columns = program.columns
       .split(',')
       .map(attrName => {
-        const columnDefinition = COLUMNS_OPTIONS[attrName];
+        const columnDefinition = servicesCommand.columns[attrName];
         if (!columnDefinition) {
           console.error(`Invalid column name "${attrName}"`);
           process.exit(2);
