@@ -21,7 +21,7 @@ module.exports = async ({ prev }) => {
   switch (prev) {
     case '--archived':
     case '-a':
-      return ['yes', 'no'];
+      return ['yes', 'no', 'all'];
     case '--columns':
       return Object.keys(projectsCommand.columns.options);
     case '--customer':

@@ -34,7 +34,7 @@ module.exports.columns = {
   default: 'id,date,user,project,duration,revenue,service,note',
   options: {
     billable: {
-      label: 'billable',
+      label: 'Billable',
       attribute: 'billable',
       format: formater.booleanToHumanvalue,
     },
@@ -159,4 +159,4 @@ module.exports.columns = {
       attribute: 'user_id',
     },
   }
-};
+}; // list
