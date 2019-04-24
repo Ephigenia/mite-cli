@@ -18,7 +18,7 @@ program
     'When used will only show either archived users or not archived users',
     ((val) => {
       if (val === 'all') return 'all';
-      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1
+      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
     }),
     'all'
   )

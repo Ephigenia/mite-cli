@@ -274,5 +274,5 @@ function main(period) {
     );
 
     console.log(DataOutput.formatData(tableData, program.format, columns));
-  })
+  });
 } // main

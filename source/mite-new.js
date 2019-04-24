@@ -266,5 +266,5 @@ async function main(note, project, service, minutes, date) {
   .catch(err => {
     console.log(err && err.message || err);
     process.exit(1);
-  });;
+  });
 }

@@ -19,7 +19,7 @@ program
     'services',
     ((val) => {
       if (val === 'all') return 'all';
-      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1
+      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
     }),
     'all'
   )
@@ -29,7 +29,7 @@ program
     'when argument is not used',
     ((val) => {
       if (val === 'all') return 'all';
-      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1
+      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
     }),
     'all'
   )

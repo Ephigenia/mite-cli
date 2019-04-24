@@ -20,7 +20,7 @@ program
     'customers',
     ((val) => {
       if (val === 'all') return 'all';
-      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1
+      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
     }),
     'all'
   )
@@ -119,4 +119,4 @@ miteApi.getCustomers(opts)
   .catch(err => {
     console.log(err && err.message || err);
     process.exit(1);
-  });;
+  });

@@ -28,7 +28,7 @@ module.exports.groupBy = {
     'month',
     'year',
   ]
-}
+};
 
 module.exports.columns = {
   default: 'id,date,user,project,duration,revenue,service,note',

@@ -65,4 +65,4 @@ module.exports.columns = {
       attribute: 'updated_at',
     }
   }
-}
+};

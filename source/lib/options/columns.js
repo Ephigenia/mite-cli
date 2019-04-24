@@ -11,7 +11,7 @@ module.exports = {
     return str.split(',')
       .map(v => v.trim().toLowerCase())
       .filter(v => v)
-      .join(',')
+      .join(',');
   },
   resolve: function (csvList, columns) {
     if (csvList === 'all') {
@@ -27,4 +27,4 @@ module.exports = {
         });
     }
   }
-}
+};
