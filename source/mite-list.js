@@ -27,12 +27,8 @@ program
   .option(
     '--billable <true|false>',
     'wheter to show only billable or not-billable entries, all kinds of entries are returned by default',
-    ((val) => {
-      if (typeof val !== 'string') {
-        return val;
-      }
-      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
-    })
+    (val => ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1),
+    null
   )
   .option(
     '--columns <columns>',
@@ -70,12 +66,8 @@ program
   .option(
     '--locked <true|false>',
     'filter entries by their locked status',
-    ((val) => {
-      if (typeof val !== 'string') {
-        return val;
-      }
-      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
-    })
+    (val => ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1),
+    null
   )
   .option(
     '--project_id <project_id>',
@@ -90,12 +82,8 @@ program
   .option(
     '--tracking <true|false>',
     'wheter to show only currently running entries or not running entries',
-    ((val) => {
-      if (typeof val !== 'string') {
-        return val;
-      }
-      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
-    })
+    (val => ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1),
+    null
   )
   .option(
     '-s --search <query>',

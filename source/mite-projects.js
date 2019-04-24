@@ -13,15 +13,13 @@ program
   .version(pkg.version)
   .description('list, filter & search for projects')
   .option(
-    '-a, --archived <true|false>',
-    'When used will only show either archived users or not archived users',
+    '-a, --archived <true|false|all>',
+    'When used will filter the users using their archived state',
     ((val) => {
-      if (typeof val !== 'string') {
-        return val;
-      }
-      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
+      if (val === 'all') return 'all';
+      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1
     }),
-    false // default option of archived
+    false
   )
   .option(
     '--customer_id <id>',
@@ -29,7 +27,7 @@ program
   )
   .option(
     '--customer <regexp>',
-    'optional client-side filter for customer names, case-insensitive'
+    'optional regular expression which matches on id and customer_name, case-insensitive'
   )
   .option(
     '--columns <columns>',
@@ -73,6 +71,9 @@ Examples:
   list all projects
     mite projects
 
+  list all projects (including archived)
+    mite projects --archived all
+
   list projects while setting different columns and export to csv
     mite projects --columns=id,customer_id,customer_name --format=csv > projects_export.csv
 
@@ -99,43 +100,24 @@ const opts = {
 
 const miteApi = require('./lib/mite-api')(config.get());
 
-miteApi.getProjects(opts).then(projects => {
-  // proclaim an array of tabular data by mapping and filtering the data
-  return projects
-    .filter((p) => {
-      if (typeof program.archived !== 'boolean') {
-        return true;
-      }
-      return program.archived === p.archived;
-    })
+miteApi.getProjects(opts)
+  .then(projects => projects
+    .filter((p) => program.archived === 'all' && true || p.archived === program.archived)
     .filter((p) => {
       // filter by customer regexp, skip if no cli argument was given
       if (!program.customer) {
         return true;
       }
       const regexp = new RegExp(program.customer, 'i');
-      return p.customer_name === program.customer || regexp.exec(p.customer_name) || regexp.exec(String(p.customer_id));
+      return (
+        p.customer_name === program.customer ||
+        regexp.exec(p.customer_name) ||
+        regexp.exec(String(p.customer_id)
+      ));
     })
-    .sort((a, b) => {
-      if (!program.sort) return 0;
-      let sortByAttributeName = program.sort;
-      if (sortByAttributeName === 'customer') {
-        sortByAttributeName = 'customer_name';
-      }
-      if (sortByAttributeName === 'rate') {
-        sortByAttributeName = 'hourly_rate';
-      }
-      var val1 = String(a[sortByAttributeName]).toLowerCase();
-      var val2 = String(b[sortByAttributeName]).toLowerCase();
-      if (val1 > val2) {
-        return 1;
-      } else if (val1 < val2) {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
-  }).then(items => {
+  )
+  .then(items => miteApi.sort(items, program.sort, { customer: 'customer_name' }))
+  .then(items => {
     // validate columns options
     const columns = program.columns
       .split(',')
@@ -152,11 +134,12 @@ miteApi.getProjects(opts).then(projects => {
     const tableData = items.map((item) => {
       let row = columns.map(columnDefinition => {
         const value = item[columnDefinition.attribute];
-        if (columnDefinition.format) {
+        if (typeof columnDefinition.format === 'function') {
           return columnDefinition.format(value, item);
         }
         return value;
       });
+      // show archived items in grey
       if (item.archived) {
         row = row.map(v => chalk.grey(v));
       }

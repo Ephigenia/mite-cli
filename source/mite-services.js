@@ -13,28 +13,23 @@ program
   .version(pkg.version)
   .description('list, filter & search for servuces')
   .option(
-    '-a, --archived <true|false>',
+    '-a, --archived <true|false|all>',
     'When used will only show either archived services or not archived ' +
     'services',
     ((val) => {
-      if (typeof val !== 'string') {
-        return val;
-      }
-      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
+      if (val === 'all') return 'all';
+      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1
     }),
-    null
+    all
   )
   .option(
-    '--billable <true|false>',
+    '--billable <true|false|all>',
     'wheter to show only billable or not-billable entries, no filter is used ' +
     'when argument is not used',
     ((val) => {
-      if (typeof val !== 'string') {
-        return val;
-      }
-      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
+      if (val === 'all') return 'all';
+      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1
     }),
-    null
   )
   .option(
     '-f, --format <format>',
@@ -78,6 +73,9 @@ Examples:
   show all services
     mite services
 
+  show all archived services
+    mite service --archived=true
+
   show archived services with custom columns
     mite services --columns=name,hourly_rate,created_at
 
@@ -96,45 +94,17 @@ const opts = {
 const miteApi = require('./lib/mite-api')(config.get());
 
 miteApi.getServices(opts)
-  .then(services => {
-    // filter archived services?
-    return services.filter((a) => {
-      if (program.archived === null) {
-        return true;
-      }
-      return a.archived === program.archived;
-    })
-    // filter billable services?
-    .filter((a) => {
-      if (program.billable === null) {
-        return true;
-      }
-      return program.billable === a.billable;
-    })
-    .sort((a, b) => {
-      if (!program.sort) {
-        return 0;
-      }
-      let sortByAttributeName = program.sort;
-      if (sortByAttributeName === 'rate') {
-        sortByAttributeName = 'hourly_rate';
-      }
-      var val1 = String(a[sortByAttributeName]).toLowerCase();
-      var val2 = String(b[sortByAttributeName]).toLowerCase();
-      if (val1 > val2) {
-        return 1;
-      } else if (val1 < val2) {
-        return -1;
-      } else {
-        return 0;
-      }
-    });
-  }).then(items => {
+  .then(services => services
+    .filter((s) => program.archived === 'all' && true || s.archived === program.archived)
+    .filter((s) => program.billable === 'all' && true || program.billable === s.billable)
+  )
+  .then(items => miteApi.sort(items, program.sort))
+  .then(items => {
     // validate columns options
     const columns = program.columns
       .split(',')
       .map(attrName => {
-        const columnDefinition = servicesCommand.columns[attrName];
+        const columnDefinition = servicesCommand.columns.options[attrName];
         if (!columnDefinition) {
           console.error(`Invalid column name "${attrName}"`);
           process.exit(2);
@@ -146,11 +116,12 @@ miteApi.getServices(opts)
     const tableData = items.map((item) => {
       let row = columns.map(columnDefinition => {
         const value = item[columnDefinition.attribute];
-        if (columnDefinition.format) {
+        if (typeof columnDefinition.format === 'function') {
           return columnDefinition.format(value, item);
         }
         return value;
       });
+      // show archived items in grey
       if (item.archived) {
         row = row.map(v => chalk.grey(v));
       }

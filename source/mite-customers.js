@@ -14,16 +14,14 @@ program
   .version(pkg.version)
   .description('list, filter & search for servuces')
   .option(
-    '-a, --archived <value>',
+    '-a, --archived <true|false|all>',
     'When used will only show either archived customers or not archived ' +
     'customers',
     ((val) => {
-      if (typeof val !== 'string') {
-        return val;
-      }
-      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
+      if (val === 'all') return 'all';
+      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1
     }),
-    null
+    'all'
   )
   .option(
     '--columns <columns>',
@@ -89,32 +87,10 @@ const opts = {
 miteApi.getCustomers(opts)
   .then((customers) => {
     return customers
-      .filter((customer) => {
-        if (program.archived === null) {
-          return true;
-        }
-        return customer.archived === program.archived;
-      })
-      .sort((a, b) => {
-        if (!program.sort) {
-          return 0;
-        }
-        let key = program.sort;
-        if (key === 'rate') {
-          key = 'hourly_rate';
-        }
-        var val1 = String(a[key]).toLowerCase();
-        var val2 = String(b[key]).toLowerCase();
-
-        if (val1 > val2) {
-          return 1;
-        } else if (val1 < val2) {
-          return -1;
-        } else {
-          return 0;
-        }
-      });
-  }).then(items => {
+      .filter((c) => program.archived === 'all' && true || c.archived === program.archived);
+  })
+  .then(items => miteApi.sort(items, program.sort))
+  .then(items => {
     // validate columns options
     const columns = program.columns
       .split(',')
@@ -131,7 +107,7 @@ miteApi.getCustomers(opts)
     const tableData = items.map((item) => {
       let row = columns.map(columnDefinition => {
         const value = item[columnDefinition.attribute];
-        if (columnDefinition.format) {
+        if (typeof columnDefinition.format === 'function') {
           return columnDefinition.format(value, item);
         }
         return value;

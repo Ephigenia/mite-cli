@@ -90,16 +90,22 @@ function miteApiWrapper(config) {
      *
      * @param {Array<Object>} items
      * @param {String} attribute
-     * @throws {Error} when item or attribute are not valied
+     * @param {Object<String>} aliases hashmap containing attribute aliases
+     * @throws {Error} when item or attribute are not valid
      * @return {Array<Object>}
      */
-    sort: function(items, attribute) {
+    sort: function(items, attribute = false, aliases = {}) {
+      if (!attribute) return items;
       assert.strictEqual(true, Array.isArray(items),
         'expected items to be an array'
       );
       assert.strictEqual(typeof attribute, 'string',
         'expected attribute to be a valid string'
       );
+      // check if alias defined
+      if (aliases && aliases[attribute]) {
+        attribute = aliases[attribute];
+      }
       return items.sort((a, b) => {
         let val1 = a[attribute];
         let val2 = b[attribute];

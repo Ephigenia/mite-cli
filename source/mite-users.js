@@ -13,15 +13,13 @@ program
   .version(pkg.version)
   .description('list, filter & search for users')
   .option(
-    '-a, --archived <true|false>',
+    '-a, --archived <true|false|all>',
     'When used will only show either archived users or not archived users',
     ((val) => {
-      if (typeof val !== 'string') {
-        return val;
-      }
-      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
+      if (val === 'all') return 'all';
+      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1
     }),
-    null
+    'all'
   )
   .option(
     '--columns <columns>',
@@ -106,22 +104,9 @@ const opts = {
 
 miteApi.getUsers(opts)
   .then((users) => users
+    .filter(({ archived }) => program.archived === 'all' && true || archived === program.archived)
+    .filter(({ role }) => !program.role && true || program.role.indexOf(role) > -1)
     .filter((user) => {
-      // filter by archived or not
-      if (program.archived === null) {
-        return true;
-      }
-      return user.archived === program.archived;
-    })
-    .filter((user) => {
-      // filter by user roles
-      if (!program.role) {
-        return user;
-      }
-      return program.role.indexOf(user.role) > -1;
-    })
-    .filter((user) => {
-      // filter users when "search" was used
       if (!program.search) {
         return user;
       }
@@ -129,21 +114,9 @@ miteApi.getUsers(opts)
       const target = [user.name, user.email, user.note].join('');
       return target.match(regexp);
     })
-    // optional sort
-    .sort((u1, u2) => {
-      if (!program.sort) return 0;
-      const sortByAttributeName = program.sort;
-      var val1 = String(u1[sortByAttributeName]).toLowerCase();
-      var val2 = String(u2[sortByAttributeName]).toLowerCase();
-      if (val1 > val2) {
-        return 1;
-      } else if (val1 < val2) {
-        return -1;
-      } else {
-        return 0;
-      }
-    })
-  ).then((items) => {
+  )
+  .then(items => miteApi.sort(items, program.sort))
+  .then((items) => {
     // validate columns options
     const columns = program.columns
       .split(',')
@@ -160,7 +133,7 @@ miteApi.getUsers(opts)
     const tableData = items.map((item) => {
       let row = columns.map(columnDefinition => {
         const value = item[columnDefinition.attribute];
-        if (columnDefinition.format) {
+        if (typeof columnDefinition.format === 'function') {
           return columnDefinition.format(value, item);
         }
         return value;
