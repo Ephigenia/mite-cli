@@ -67,7 +67,7 @@ Examples:
         console.log('Successfully updated project (id: %s)', projectId);
       })
       .catch(err => {
-        console.error('Error while updateing project (id: %s)', projectId, err);
+        console.error('Error while updating project (id: %s)', projectId, err);
         process.exit(1);
       });
   })

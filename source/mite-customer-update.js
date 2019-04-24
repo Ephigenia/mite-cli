@@ -12,8 +12,6 @@ program
   .version(pkg.version)
   .arguments('<customerId>')
   // @TODO add edit "hourly_rate"
-  // @TODO add edit "name"
-  // @TODO add edit "note"
   .option(
     '--archived <true|false>',
     'changes the archived state of the project',
