@@ -10,12 +10,11 @@ module.exports.sort = {
     'updated_at',
     'created_at',
     'hourly_rate',
-    'rate' // alias for hourly_rate
   ],
 };
 
 module.exports.columns = {
-  default: 'id,name,billable,rate,note',
+  default: 'id,name,billable,hourly_rate,note',
   options: {
     billable: {
       label: 'Billable',
@@ -46,7 +45,7 @@ module.exports.columns = {
       alignment: 'left',
       format: formater.note,
     },
-    rate: {
+    hourly_rate: {
       label: 'Rate',
       attribute: 'hourly_rate',
       width: 10,

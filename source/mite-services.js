@@ -82,7 +82,7 @@ Examples:
     mite services --columns=name,hourly_rate,created_at
 
   export all archived services as csv
-    mite services --format=csv --columns=id,name,rate,billable > all_services.csv
+    mite services --format=csv --columns=id,name,hourly_rate,billable > all_services.csv
 `);
   })
   .parse(process.argv);

@@ -74,7 +74,7 @@ Examples:
     mite customers --archived=true --format=csv > archived_customers.json
 
   Use different columns
-    mite customers --columns=name,rate
+    mite customers --columns=name,hourly_rate
 
   Use resulting customers to update their archived state
     mite customers --search company 1 --colums=id --format=text | xargs -n1 mite customer update --archived=false

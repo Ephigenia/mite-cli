@@ -5,21 +5,21 @@ const formater = require('./../formater');
 module.exports.sort = {
   default: '',
   options: [
+    'budget',
+    'created_at',
+    'customer_id',
+    'customer_name',
+    'customer',
+    'hourly_rate',
     'id',
     'name',
-    'customer',
-    'customer_name',
-    'customer_id',
     'updated_at',
-    'created_at',
-    'hourly_rate',
-    'rate',
-    'budget',
   ]
 };
 
 module.exports.columns = {
   default: 'id,name,customer,budget,rate,note',
+  default: 'id,name,customer,budget,hourly_rate,note',
   options: {
     budget: {
       label: 'Budget',
@@ -74,7 +74,7 @@ module.exports.columns = {
       alignment: 'left',
       format: formater.note,
     },
-    rate: {
+    hourly_rate: {
       label: 'Rate',
       attribute: 'hourly_rate',
       width: 10,
