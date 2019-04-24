@@ -5,6 +5,7 @@ const formater = require('./../formater');
 module.exports.sort = {
   default: '',
   options: [
+    'archived',
     'budget',
     'created_at',
     'customer_id',
@@ -18,9 +19,13 @@ module.exports.sort = {
 };
 
 module.exports.columns = {
-  default: 'id,name,customer,budget,rate,note',
   default: 'id,name,customer,budget,hourly_rate,note',
   options: {
+    archived: {
+      label: 'Archived',
+      attribute: 'archived',
+      format: formater.booleanToHumanvalue,
+    },
     budget: {
       label: 'Budget',
       attribute: 'budget',
