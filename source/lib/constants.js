@@ -18,3 +18,10 @@ module.exports.TIME_FRAMES = [
   'last_year',
   'YYYY-MM-DD'
 ];
+
+module.exports.BUDGET_TYPE = {
+  MINUTES_PER_MONTH: 'minutes_per_month',
+  MINUTES: 'minutes',
+  CENTS: 'cents',
+  CENTS_PER_MONTH: 'cents_per_month',
+};
