@@ -4,18 +4,9 @@
 const DataOutput = require('./../../data-output');
 const config = require('./../../../config.js');
 const miteApi = require('./../../mite-api')(config.get());
+const listCommand = require('./../../commands/list');
 
-const timeFrameOptions = [
-  'today',
-  'yesterday',
-  'this_week',
-  'last_week',
-  'this_month',
-  'last_month',
-  'this_year',
-  'last_year',
-  'YYYY-MM-DD'
-];
+const { TIME_FRAMES } = require('./../../constants');
 
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
@@ -51,6 +42,8 @@ module.exports = async ({ words, prev, lastPartial }) => {
       return ['yes', 'no'];
     case '--billable':
       return ['yes', 'no'];
+    case '--columns':
+      return Object.keys(listCommand.columns.options);
     case '--customer_id':
       return miteApi.getCustomers({ archived: false }).then(
         customers => customers.map(c => ({
@@ -59,26 +52,15 @@ module.exports = async ({ words, prev, lastPartial }) => {
         }))
       );
     case '--group_by':
-      // @TODO use options from command
-      return [
-        'user',
-        'customer',
-        'project',
-        'service',
-        'day',
-        'week',
-        'month',
-        'year',
-      ];
+      return listCommand.groupBy.options;
     case '--format':
     case '-f':
       return DataOutput.FORMATS;
     case '--from':
     case '--to':
-      return timeFrameOptions;
+      return TIME_FRAMES;
     case '--locked':
       return ['yes', 'no'];
-    // @TODO add columns options
     case '--project_id':
       return miteApi.getProjects({ archived: false }).then(
         projects => projects.map(c => ({
@@ -97,17 +79,7 @@ module.exports = async ({ words, prev, lastPartial }) => {
         }))
       );
     case '--sort':
-      // @TODO get sort options from actual command
-      return [
-        'date',
-        'user',
-        'customer',
-        'project',
-        'service',
-        'note',
-        'minutes',
-        'revenue',
-      ];
+      return listCommand.sort.options;
     case '--tracking':
       return ['yes', 'no'];
     case '--user_id':
@@ -123,10 +95,8 @@ module.exports = async ({ words, prev, lastPartial }) => {
   }
 
   // auto-completion for time-frame option argument
-
-
   if (words === 2 && lastPartial.substr(0, 1) !== '-') {
-    return timeFrameOptions;
+    return TIME_FRAMES;
   }
 
   return [

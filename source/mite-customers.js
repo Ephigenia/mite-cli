@@ -7,59 +7,8 @@ const chalk = require('chalk');
 const pkg = require('./../package.json');
 const config = require('./config.js');
 const miteApi = require('./lib/mite-api')(config.get());
-const formater = require('./lib/formater');
 const DataOutput = require('./lib/data-output');
-const BUDGET_TYPE = formater.BUDGET_TYPE;
-const SORT_OPTIONS = [
-  'id',
-  'name',
-  'updated_at',
-  'created_at',
-  'hourly_rate',
-  'rate',
-];
-const SORT_OPTIONS_DEFAULT = 'name';
-
-const COLUMNS_OPTIONS = {
-  created_at: {
-    label: 'created at',
-    attribute: 'created_at',
-  },
-  id: {
-    label: 'id',
-    attribute: 'id',
-    width: 10,
-    alignment: 'right'
-  },
-  name: {
-    label: 'name',
-    attribute: 'name',
-  },
-  note: {
-    label: 'Note',
-    attribute: 'note',
-    width: 50,
-    wrapWord: true,
-    alignment: 'left',
-    format: formater.note,
-  },
-  rate: {
-    label: 'rate',
-    attribute: 'hourly_rate',
-    width: 10,
-    alignment: 'right',
-    format: (value) => {
-      if (!value) {
-        return '-';
-      }
-      return formater.budget(BUDGET_TYPE.CENTS, value || 0);
-    },
-  },
-  updated_at: {
-    label: 'updated at',
-    attribute: 'updated_at',
-  }
-};
+const customersCommand = require('./lib/commands/customers');
 
 program
   .version(pkg.version)
@@ -79,9 +28,9 @@ program
   .option(
     '--columns <columns>',
     'custom list of columns to use in the output, pass in a comma-separated ' +
-    'list of attribute names: ' + Object.keys(COLUMNS_OPTIONS).join(', '),
+    'list of attribute names: ' + Object.keys(customersCommand.columns.options).join(', '),
     (str) => str.split(',').filter(v => v).join(','),
-    'id,name,rate,note'
+    config.get().customersColumns
   )
   .option(
     '-f, --format <format>',
@@ -96,20 +45,20 @@ program
   .option(
     '--sort <column>',
     `optional column the results should be case-insensitive ordered by `+
-    `(default: "${SORT_OPTIONS_DEFAULT}"), ` +
-    `valid values: ${SORT_OPTIONS.join(', ')}`,
+    `(default: "${customersCommand.sort.default}"), ` +
+    `valid values: ${customersCommand.sort.options.join(', ')}`,
     (value) => {
-      if (SORT_OPTIONS.indexOf(value) === -1) {
+      if (customersCommand.sort.options.indexOf(value) === -1) {
         console.error(
           'Invalid value for sort option: "%s", valid values are: ',
           value,
-          SORT_OPTIONS.join(', ')
+          customersCommand.sort.options.join(', ')
         );
         process.exit(2);
       }
       return value;
     },
-    'name' // default sort
+    customersCommand.sort.default // default sort
   )
   .on('--help', function() {
     console.log(`
@@ -170,7 +119,7 @@ miteApi.getCustomers(opts)
     const columns = program.columns
       .split(',')
       .map(attrName => {
-        const columnDefinition = COLUMNS_OPTIONS[attrName];
+        const columnDefinition = customersCommand.columns.options[attrName];
         if (!columnDefinition) {
           console.error(`Invalid column name "${attrName}"`);
           process.exit(2);
@@ -201,4 +150,8 @@ miteApi.getCustomers(opts)
     );
 
     console.log(DataOutput.formatData(tableData, program.format, columns));
-  });
+  })
+  .catch(err => {
+    console.log(err && err.message || err);
+    process.exit(1);
+  });;

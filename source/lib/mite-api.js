@@ -84,18 +84,36 @@ function miteApiWrapper(config) {
         .then(items => items.map(item => item.time_entry));
     },
 
+    /**
+     * Returns an ordered copy of the given items where the given attribute
+     * is used for comparison. String comparison is case-insensitive.
+     *
+     * @param {Array<Object>} items
+     * @param {String} attribute
+     * @throws {Error} when item or attribute are not valied
+     * @return {Array<Object>}
+     */
     sort: function(items, attribute) {
-      // @TODO add assertions
+      assert.strictEqual(true, Array.isArray(items),
+        'expected items to be an array'
+      );
+      assert.strictEqual(typeof attribute, 'string',
+        'expected attribute to be a valid string'
+      );
       return items.sort((a, b) => {
-        var val1 = String(a[attribute]).toLowerCase();
-        var val2 = String(b[attribute]).toLowerCase();
-        if (val1 > val2) {
-          return 1;
-        } else if (val1 < val2) {
-          return -1;
-        } else {
+        let val1 = a[attribute];
+        let val2 = b[attribute];
+        // type conversion for accurate comparison
+        if (typeof val1 === 'string') val1 = val1.toLowerCase();
+        if (typeof val2 === 'string') val2 = val2.toLowerCase();
+        if (typeof val1 === 'boolean' && typeof val2 === 'boolean') {
+          if (val1 > val2) return -1;
+          if (val1 < val2) return 1;
           return 0;
         }
+        if (val1 > val2) return 1;
+        if (val1 < val2) return -1;
+        return 0;
       });
     },
 

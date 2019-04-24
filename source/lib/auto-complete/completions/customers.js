@@ -2,6 +2,7 @@
 'use strict';
 
 const DataOutput = require('./../../data-output');
+const customersCommand = require('./../../commands/customers');
 
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
@@ -19,22 +20,15 @@ module.exports = async ({ prev }) => {
     case '--archived':
     case '-a':
       return ['yes', 'no'];
-    // @TODO add completion for --columns option
+    case '--columns':
+      return Object.keys(customersCommand.columns.options);
     case '--format':
     case '-f':
       return DataOutput.FORMATS;
     case '--search':
       return ['query'];
     case '--sort':
-      // @TODO get sort options from actual command
-      return [
-        'id',
-        'name',
-        'updated_at',
-        'created_at',
-        'hourly_rate',
-        'rate'
-      ];
+      return customersCommand.sort.options;
   }
 
   return [

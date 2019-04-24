@@ -4,6 +4,7 @@
 const config = require('./../../../config.js');
 const miteApi = require('./../../mite-api')(config.get());
 const DataOutput = require('./../../data-output');
+const projectsCommand = require('./../../commands/projects');
 
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
@@ -21,7 +22,8 @@ module.exports = async ({ prev }) => {
     case '--archived':
     case '-a':
       return ['yes', 'no'];
-    // @TODO add completion for --columns option
+    case '--columns':
+      return Object.keys(projectsCommand.columns.options);
     case '--customer':
       return miteApi.getCustomers().then(customers => customers.map(c => ({
         name: String(c.name)
@@ -37,22 +39,11 @@ module.exports = async ({ prev }) => {
     case '--search':
       return ['query'];
     case '--sort':
-      // @TODO get sort options from actual command
-      return [
-        'id',
-        'name',
-        'customer',
-        'customer_name',
-        'customer_id',
-        'updated_at',
-        'created_at',
-        'hourly_rate',
-        'rate',
-        'budget',
-      ];
+      return projectsCommand.sort.options;
   }
 
   return [
+    // @TODO do not add completions if they have been already adde
     {
       name: '--archived',
       description: 'defines wheter archived projects should be shown',

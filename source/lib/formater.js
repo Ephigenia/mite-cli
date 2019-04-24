@@ -3,6 +3,8 @@
 const chalk = require('chalk');
 const config = require('./../config');
 
+const { USER_ROLES } = require('./constants');
+
 const BUDGET_TYPE = {
   MINUTES_PER_MONTH: 'minutes_per_month',
   MINUTES: 'minutes',
@@ -33,6 +35,21 @@ module.exports = {
       });
     }
     return result;
+  },
+
+  username: (username, item) => {
+    switch(item.role) {
+      case USER_ROLES.ADMIN:
+        return chalk.yellow(username);
+      case USER_ROLES.OWNER:
+        return chalk.red(username);
+      default:
+        return username;
+    }
+  },
+
+  booleanToHumanvalue(value) {
+    return value ? 'yes' : 'no';
   },
 
   minutesToWorkDays(minutes) {

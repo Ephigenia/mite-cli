@@ -262,5 +262,9 @@ async function main(note, project, service, minutes, date) {
           console.log('Successfully started time entry (id: %s)', timeEntryId);
         });
     }
-  });
+  })
+  .catch(err => {
+    console.log(err && err.message || err);
+    process.exit(1);
+  });;
 }

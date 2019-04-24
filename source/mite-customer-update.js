@@ -11,9 +11,14 @@ const config = require('./config.js');
 program
   .version(pkg.version)
   .arguments('<customerId>')
+  .description(
+    'Updates a specific customer',
+    // arguments description
+    {
+      customerId: 'Id of the customer of which the note should be altered'
+    }
+    )
   // @TODO add edit "hourly_rate"
-  // @TODO add edit "name"
-  // @TODO add edit "note"
   .option(
     '--archived <true|false>',
     'changes the archived state of the project',
@@ -32,13 +37,6 @@ program
   .option(
     '--note <note>',
     'changes the note of the customer to the given value',
-  )
-  .description(
-    'Updates a specific customer',
-    // arguments description
-    {
-      customerId: 'Id of the customer of which the note should be altered'
-    }
   )
   .on('--help', () => {
     console.log(`
