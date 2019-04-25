@@ -5,13 +5,15 @@ const formater = require('./../formater');
 module.exports.sort = {
   default: 'name',
   options: [
-    'id',
-    'name',
-    'email',
-    'role',
-    'note',
-    'updated_at',
+    'archived',
     'created_at',
+    'email',
+    'id',
+    'language',
+    'name',
+    'note',
+    'role',
+    'updated_at',
   ],
 };
 
@@ -27,15 +29,15 @@ module.exports.columns = {
       label: 'Created At',
       attribute: 'created_at',
     },
+    email: {
+      label: 'Email',
+      attribute: 'email'
+    },
     id: {
       label: 'ID',
       attribute: 'id',
       width: 10,
       alignment: 'right'
-    },
-    email: {
-      label: 'Email',
-      attribute: 'email'
     },
     language: {
       label: 'Language',

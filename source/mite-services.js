@@ -2,13 +2,13 @@
 'use strict';
 
 const program = require('commander');
-const chalk = require('chalk');
 
 const DataOutput = require('./lib/data-output');
 const pkg = require('./../package.json');
 const config = require('./config');
 const servicesCommand = require('./lib/commands/services');
 const columnOptions = require('./lib/options/columns');
+const sortOption = require('./lib/options/sort');
 
 program
   .version(pkg.version)
@@ -51,20 +51,8 @@ program
   )
   .option(
     '--sort <column>',
-    `optional column the results should be case-insensitive ordered by `+
-    `(default: "${servicesCommand.sort.default}"), ` +
-    `valid values: ${servicesCommand.sort.options.join(', ')}`,
-    (value) => {
-      if (servicesCommand.sort.indexOf(value) === -1) {
-        console.error(
-          'Invalid value for sort option: "%s", valid values are: ',
-          value,
-          servicesCommand.sort.join(', ')
-        );
-        process.exit(2);
-      }
-      return value;
-    },
+    sortOption.description(servicesCommand.sort.options),
+    sortOption.parse,
     servicesCommand.sort.default
   )
   .on('--help', function() {
@@ -100,12 +88,16 @@ async function main() {
     offset: 0,
     ...(program.search && { name: program.search }),
   };
+
   return miteApi.getServices(opts)
     .then(services => services
       .filter(({ archived }) => program.archived === 'all' ? true : archived === program.archived)
       .filter(({ billable }) => program.billable === 'all' ? true : billable === program.billable)
     )
-    .then(items => miteApi.sort(items, program.sort))
+    .then(items => miteApi.sort(
+      items,
+      sortOption.resolve(program.sort, servicesCommand.sort.options),
+    ))
     .then(items => {
       const columns = columnOptions.resolve(program.columns, servicesCommand.columns.options);
       const tableData = DataOutput.compileTableData(items, columns);

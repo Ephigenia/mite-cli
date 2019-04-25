@@ -8,6 +8,7 @@ const pkg = require('./../package.json');
 const config = require('./config');
 const projectsCommand = require('./lib/commands/projects');
 const columnOptions = require('./lib/options/columns');
+const sortOption = require('./lib/options/sort');
 
 program
   .version(pkg.version)
@@ -47,21 +48,8 @@ program
   )
   .option(
     '--sort <column>',
-    `optional column the results should be case-insensitive ordered by `+
-    `(default: "${projectsCommand.sort.default}"), ` +
-    `valid values: ${projectsCommand.sort.options.join(', ')}`,
-    (value) => {
-      if (projectsCommand.sort.options.indexOf(value) === -1) {
-        console.error(
-          'Invalid value for sort option: "%s", valid values are: ',
-          value,
-          projectsCommand.sort.options.join(', ')
-        );
-        process.exit(2);
-      }
-      return value;
-    },
-    projectsCommand.sort.default
+    sortOption.description(projectsCommand.sort.options),
+    sortOption.parse,
   )
   .on('--help', function() {
     console.log(`
@@ -78,6 +66,9 @@ Examples:
 
   show all projects ordered by their budget while only showing their names and bugets
     mite projects --sort=budget
+
+  show all projects while not archived on top and ordered by their highes budget
+    mite projects --archived all --sort=-archived,-budget
 
   show all projects by a specific customer
     mite projects --customer Client1
@@ -121,7 +112,11 @@ async function main() {
         ));
       })
     )
-    .then(items => miteApi.sort(items, program.sort, { customer: 'customer_name' }))
+    .then(items => miteApi.sort(
+      items,
+      sortOption.resolve(program.sort, projectsCommand.sort.options),
+      { customer: 'customer_name' }
+    ))
     .then(items => {
       const columns = columnOptions.resolve(program.columns, projectsCommand.columns.options);
       const tableData = DataOutput.compileTableData(items, columns);

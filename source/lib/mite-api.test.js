@@ -20,6 +20,42 @@ describe('mite-api wrapper', () => {
       }).to.throw(Error);
     });
 
+    describe('multiple attributes', () => {
+      const items = [
+        { archived: true, name: 'Beta' },
+        { archived: false, name: 'xanibe' },
+        { archived: true, name: 'Alpha' },
+        { archived: true, name: 'Ceta' },
+        { archived: false, name: 'Ceta' },
+        { archived: false, name: 'Custom' },
+        { archived: false, name: 'Freebie' },
+      ];
+      it('can handle multiple also descending attribute', () => {
+        const result = mite.sort(items, ['archived', 'name']);
+        expect(result).to.deep.equal([
+          { archived: true, name: 'Alpha' },
+          { archived: true, name: 'Beta' },
+          { archived: true, name: 'Ceta' },
+          { archived: false, name: 'Ceta' },
+          { archived: false, name: 'Custom' },
+          { archived: false, name: 'Freebie' },
+          { archived: false, name: 'xanibe' },
+        ]);
+      })
+      it('returns the items ordered correctly', () => {
+        const result = mite.sort(items, ['-archived', 'name']);
+        expect(result).to.deep.equal([
+          { archived: false, name: 'Ceta' },
+          { archived: false, name: 'Custom' },
+          { archived: false, name: 'Freebie' },
+          { archived: false, name: 'xanibe' },
+          { archived: true, name: 'Alpha' },
+          { archived: true, name: 'Beta' },
+          { archived: true, name: 'Ceta' },
+        ]);
+      });
+    });
+
     describe('string values', () => {
       it('returns the array sorted case-insensitive by the given attribute using string comparison', () => {
         const items = [
@@ -44,7 +80,7 @@ describe('mite-api wrapper', () => {
       });
     }); // string comparison
 
-    describe('bboolean comparison', () => {
+    describe('boolean comparison', () => {
       it('returns the array ordered by numeric value in ascending order', () => {
         const items = [
           { value: false },

@@ -8,6 +8,7 @@ const config = require('./config');
 const DataOutput = require('./lib/data-output');
 const customersCommand = require('./lib/commands/customers');
 const columnOptions = require('./lib/options/columns');
+const sortOption = require('./lib/options/sort');
 
 program
   .version(pkg.version)
@@ -39,22 +40,10 @@ program
     '(case insensitive)'
   )
   .option(
-    '--sort <column>',
-    `optional column the results should be case-insensitive ordered by `+
-    `(default: "${customersCommand.sort.default}"), ` +
-    `valid values: ${customersCommand.sort.options.join(', ')}`,
-    (value) => {
-      if (customersCommand.sort.options.indexOf(value) === -1) {
-        console.error(
-          'Invalid value for sort option: "%s", valid values are: ',
-          value,
-          customersCommand.sort.options.join(', ')
-        );
-        process.exit(2);
-      }
-      return value;
-    },
-    customersCommand.sort.default // default sort
+    '--sort <sort>',
+    sortOption.description(customersCommand.sort.options),
+    sortOption.parse,
+    customersCommand.sort.default
   )
   .on('--help', function() {
     console.log(`
@@ -90,12 +79,14 @@ async function main() {
     limit: 1000,
     ...(program.search && { name: program.search })
   };
-
   return miteApi.getCustomers(opts)
     .then((customers) => customers
       .filter(({ archived }) => program.archived === 'all' ? true : program.archived === archived)
     )
-    .then(items => miteApi.sort(items, program.sort))
+    .then(items => miteApi.sort(
+      items,
+      sortOption.resolve(program.sort, customersCommand.sort.options),
+    ))
     .then(items => {
       const columns = columnOptions.resolve(program.columns, customersCommand.columns.options);
       const tableData = DataOutput.compileTableData(items, columns);
