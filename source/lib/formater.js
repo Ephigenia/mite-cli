@@ -4,7 +4,7 @@ const chalk = require('chalk');
 
 const { USER_ROLES, BUDGET_TYPE } = require('./constants');
 
-// @TODO should that also be configurable?
+// @TODO use currency from getAccount endpoint
 const DEFAULT_CURRENCY = '€';
 
 module.exports = {

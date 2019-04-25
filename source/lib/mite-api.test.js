@@ -41,7 +41,7 @@ describe('mite-api wrapper', () => {
           { archived: false, name: 'Freebie' },
           { archived: false, name: 'xanibe' },
         ]);
-      })
+      });
       it('returns the items ordered correctly', () => {
         const result = mite.sort(items, ['-archived', 'name']);
         expect(result).to.deep.equal([

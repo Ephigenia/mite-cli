@@ -121,7 +121,7 @@ function miteApiWrapper(config) {
 
         let scores = [];
         for (let i = 0; i < val1.length; i++) {
-          const score = that.sortCompare(val1[i], val2[i], directions[i])
+          const score = that.sortCompare(val1[i], val2[i], directions[i]);
           if (scores.length === 0) {
             scores.push(score);
           } else if (scores[i-1] === 0) {
