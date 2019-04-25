@@ -26,6 +26,10 @@ module.exports = async ({ prev, line, word }) => {
       name: '--billable',
       description: 'make a service billable or unbillable',
     } : undefined,
+    line.indexOf('--hourly-rate') === -1 ? {
+      name: '--hourly-rate',
+      description: 'change the hourly-rate',
+    } : undefined,
     line.indexOf('--name') === -1 ? {
       name: '--name',
       description: 'change the name of the service',
@@ -33,6 +37,10 @@ module.exports = async ({ prev, line, word }) => {
     line.indexOf('--note') === -1 ? {
       name: '--note',
       description: 'change the note of the service',
+    } : undefined,
+    line.indexOf('--update-entries') === -1 ? {
+      name: '--update-entries',
+      description: 'update time entries when hourly_rate was changed',
     } : undefined,
     // include --help only when no other arguments or options are provided
     word < 4 ? {
@@ -49,6 +57,8 @@ module.exports = async ({ prev, line, word }) => {
       return ['name'];
     case '--note':
       return ['note'];
+    case '--hourly-rate':
+      return ['0.00'];
   }
 
   // show list of archived or unarchived services depending on the --archived
@@ -60,6 +70,7 @@ module.exports = async ({ prev, line, word }) => {
   if (line.match(/--billable/)) {
     options.billable = !/--billable[ =](yes|true|1|ja)/.test(line);
   }
+
   // return a list of service ids and default options
   return miteApi.getServices(options)
     .then(items => items.map(c => ({

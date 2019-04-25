@@ -7,20 +7,11 @@ const util = require('util');
 const pkg = require('./../package.json');
 const miteApi = require('mite-api');
 const config = require('./config');
+const hourlyRateOption = require('./lib/options/hourly-rate');
 
 program
   .version(pkg.version)
   .arguments('<serviceId>')
-  // @TODO add update_hourly_rate_on_time_entries flag
-  // @TODO add edit "hourly_rate"
-  .option(
-    '--name <name>',
-    'changes the name of the project to the given value',
-  )
-  .option(
-    '--note <note>',
-    'changes the note of the project to the given value',
-  )
   .option(
     '--archived <true|false>',
     'changes the archived state of the project',
@@ -40,6 +31,24 @@ program
       }
       return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
     })
+  )
+  .option(
+    '--hourly-rate <hourlyRate>',
+    hourlyRateOption.description,
+    hourlyRateOption.parse
+  )
+  .option(
+    '--name <name>',
+    'changes the name of the project to the given value',
+  )
+  .option(
+    '--note <note>',
+    'changes the note of the project to the given value',
+  )
+  .option(
+    '--update-entries',
+    'Works only in compbination with hourly-rate. When used also updates all ' +
+    ' already created time entries with the new hourly-rate',
   )
   .description(
     'Updates a specific service',
@@ -69,13 +78,17 @@ Examples:
 `);
   })
   .action((serviceId) => {
+
     const mite = miteApi(config.get());
     const data = {
       ...(typeof program.archived === 'boolean' && { archived: program.archived }),
       ...(typeof program.billable === 'boolean' && { billable: program.billable }),
       ...(typeof program.name === 'string' && { name: program.name }),
       ...(typeof program.note === 'string' && { note: program.note }),
+      ...(typeof program.hourlyRate === 'number' && { hourly_rate: program.hourlyRate }),
+      ...(typeof program['update-entries'] && { update_hourly_rate_on_time_entries: true }),
     };
+
     return util.promisify(mite.updateProject)(serviceId, data)
       .then(() => {
         console.log('Successfully updated project (id: %s)', serviceId);

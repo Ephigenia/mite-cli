@@ -22,6 +22,10 @@ module.exports = async ({ prev, line, word }) => {
       name: '--archived',
       description: 'archive or unarchive a project',
     } : undefined,
+    line.indexOf('--hourly-rate') === -1 ? {
+      name: '--hourly-rate',
+      description: 'change the hourly-rate',
+    } : undefined,
     line.indexOf('--name') === -1 ? {
       name: '--name',
       description: 'change the name of the project',
@@ -29,6 +33,10 @@ module.exports = async ({ prev, line, word }) => {
     line.indexOf('--note') === -1 ? {
       name: '--note',
       description: 'change the note of the project',
+    } : undefined,
+    line.indexOf('--update-entries') === -1 ? {
+      name: '--update-entries',
+      description: 'update time entries when hourly_rate was changed',
     } : undefined,
     // include --help only when no other arguments or options are provided
     word < 4 ? {
@@ -44,6 +52,8 @@ module.exports = async ({ prev, line, word }) => {
       return ['name'];
     case '--note':
       return ['note'];
+    case '--hourly-rate':
+      return ['0.00'];
   }
 
   // show list of archived or unarchived projects depending on the --archived
