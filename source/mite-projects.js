@@ -20,7 +20,7 @@ program
       if (val === 'all') return 'all';
       return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
     }),
-    false
+    false // default list only not-archived projects
   )
   .option(
     '--customer_id <id>',
@@ -90,62 +90,58 @@ Examples:
     mite projects --columns=id --format=text | xargs -n1 mite project update --archived false
 `);
   })
+  .action(() => {
+    return main().catch(err => {
+      console.log(err && err.message || err);
+      process.exit(1);
+    });
+  })
   .parse(process.argv);
 
-const opts = {
-  limit: 10000,
-  name: program.search,
-  customer_id: program.customer_id
-};
+async function main() {
+  const miteApi = require('./lib/mite-api')(config.get());
+  const opts = {
+    limit: 10000,
+    ...(program.search && { name: program.search }),
+    ...(program.customer_id && { customer_id: program.customer_id }),
+  };
 
-const miteApi = require('./lib/mite-api')(config.get());
-
-miteApi.getProjects(opts)
-  .then(projects => projects
-    .filter(({ archived }) => program.archived === 'all' ? true : archived === program.archived)
-    .filter(({ customer_name, customer_id }) => {
-      // filter by customer regexp, skip if no cli argument was given
-      if (!program.customer) {
-        return true;
-      }
-      const regexp = new RegExp(program.customer, 'i');
-      return (
-        customer_name === program.customer ||
-        regexp.exec(customer_name) ||
-        regexp.exec(String(customer_id)
-      ));
-    })
-  )
-  .then(items => miteApi.sort(items, program.sort, { customer: 'customer_name' }))
-  .then(items => {
-    const columns = columnOptions.resolve(program.columns, projectsCommand.columns.options);
-
-    // create final array of table data
-    const tableData = items.map((item) => {
-      let row = columns.map(columnDefinition => {
-        const value = item[columnDefinition.attribute];
-        if (typeof columnDefinition.format === 'function') {
-          return columnDefinition.format(value, item);
+  return miteApi.getProjects(opts)
+    .then(projects => projects
+      .filter(({ archived }) => program.archived === 'all' ? true : archived === program.archived)
+      .filter(({ customer_name, customer_id }) => {
+        // filter by customer regexp, skip if no cli argument was given
+        if (!program.customer) {
+          return true;
         }
-        return value;
+        const regexp = new RegExp(program.customer, 'i');
+        return (
+          customer_name === program.customer ||
+          regexp.exec(customer_name) ||
+          regexp.exec(String(customer_id)
+        ));
+      })
+    )
+    .then(items => miteApi.sort(items, program.sort, { customer: 'customer_name' }))
+    .then(items => {
+      const columns = columnOptions.resolve(program.columns, projectsCommand.columns.options);
+
+      // create final array of table data
+      const tableData = items.map((item) => {
+        let row = columns.map(columnDefinition => {
+          const value = item[columnDefinition.attribute];
+          if (typeof columnDefinition.format === 'function') {
+            return columnDefinition.format(value, item);
+          }
+          return value;
+        });
+        // show archived items in grey
+        if (item.archived) {
+          row = row.map(v => chalk.grey(v));
+        }
+        return row;
       });
-      // show archived items in grey
-      if (item.archived) {
-        row = row.map(v => chalk.grey(v));
-      }
-      return row;
+
+      console.log(DataOutput.formatData(tableData, program.format, columns));
     });
-
-    // Table header
-    tableData.unshift(
-      columns
-        .map(columnDefinition => columnDefinition.label)
-        .map(v => chalk.bold(v))
-    );
-
-    console.log(DataOutput.formatData(tableData, program.format, columns));
-  })
-  .catch(err => {
-    console.log(err && err.message || err);
-    process.exit(1);
-  });
+} // main

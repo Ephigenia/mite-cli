@@ -107,13 +107,6 @@ miteApi.getCustomers(opts)
       return row;
     });
 
-    // Table header
-    tableData.unshift(
-      columns
-        .map(columnDefinition => columnDefinition.label)
-        .map(v => chalk.bold(v))
-    );
-
     console.log(DataOutput.formatData(tableData, program.format, columns));
   })
   .catch(err => {

@@ -15,13 +15,13 @@ program
   .arguments('<timeEntryId>')
   .on('--help', function() {
     console.log(`
-  Examples:
+Examples:
 
-    Delete a single entry identified by it’s id:
-      mite delete 1283761
+  Delete a single entry identified by it’s id:
+    mite delete 1283761
 
-    Delete multiple entries from a project selected by using mite list:
-      mite list this_month --project_id=123128 --columns id --format=text | xargs -n1 mite delete
+  Delete multiple entries from a project selected by using mite list:
+    mite list this_month --project_id=123128 --columns id --format=text | xargs -n1 mite delete
 `);
   })
   .action((timeEntryId) => {

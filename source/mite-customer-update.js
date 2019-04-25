@@ -17,7 +17,7 @@ program
     {
       customerId: 'Id of the customer of which the note should be altered'
     }
-    )
+  )
   // @TODO add edit "hourly_rate"
   .option(
     '--archived <true|false>',

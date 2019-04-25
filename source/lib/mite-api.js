@@ -6,6 +6,16 @@ const assert = require('assert');
 const miteApi = require('mite-api');
 
 /**
+ * @typedef MiteTimeEntry
+ * @property {Number} customer_id
+ * @property {Number} minutes
+ * @property {Number} project_id
+ * @property {Number} service_id
+ * @property {String} date_at
+ * @property {String} note
+ */
+
+/**
  * Simple wrapper for some of the mite api methods
  */
 function miteApiWrapper(config) {
@@ -31,14 +41,6 @@ function miteApiWrapper(config) {
     },
 
     /**
-     * @typedef MiteTimeEntry
-     * @property {Number} customer_id
-     * @property {Number} minutes
-     * @property {Number} project_id
-     * @property {Number} service_id
-     * @property {String} date_at
-     * @property {String} note
-     *
      * @param {@MiteTimeEntry} timeEntry
      * @returns {Promise<object>}
      */
@@ -61,10 +63,6 @@ function miteApiWrapper(config) {
     /**
      * Returns an array containing the most recent time-entries from the
      * current user.
-     *
-     * @typedef MiteTimeEntry
-     * @property {Number} id
-     * @property {String} note note of the entry
      *
      * @param {Number} limit
      * @returns {Promise<MiteTimeEntry>}

@@ -230,7 +230,7 @@ function main(period) {
     const tableData = timeEntries.map((timeEntry) => {
       let row = columns.map(columnDefinition => {
         const value = timeEntry[columnDefinition.attribute];
-        if (columnDefinition.format) {
+        if (typeof columnDefinition.format === 'function') {
           return columnDefinition.format(value, timeEntry);
         }
         return value;
@@ -265,13 +265,6 @@ function main(period) {
           .map(v => chalk.bold(v))
       );
     }
-
-    // Table header
-    tableData.unshift(
-      columns
-        .map(columnDefinition => columnDefinition.label)
-        .map(v => chalk.bold(v))
-    );
 
     console.log(DataOutput.formatData(tableData, program.format, columns));
   });
