@@ -137,6 +137,10 @@ module.exports = async ({ words, prev, lastPartial }) => {
       description: 'list only time entries from the given project',
     },
     {
+      name: '--reversed',
+      description: 'sort in reversed direction',
+    },
+    {
       name: '--search',
       description: 'given a search query will list time-entries where the note matches the given query',
     },

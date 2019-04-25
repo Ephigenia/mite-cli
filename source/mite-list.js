@@ -86,6 +86,10 @@ program
     null
   )
   .option(
+    '--reversed',
+    'reverse the sorting direction',
+  )
+  .option(
     '-s --search <query>',
     'search within the notes, to filter by multiple criteria connected with OR use comma-separated query values',
     ((val) => {
@@ -165,6 +169,7 @@ function main(period) {
     at: period,
     ...(typeof program.billable === 'boolean' && { billable: program.billable }),
     customer_id: program.customer_id,
+    ...(program.reversed && { direction: 'desc' }),
     group_by: program.group_by,
     limit: program.limit,
     ...(typeof program.locked === 'boolean' && { locked: program.locked }),
