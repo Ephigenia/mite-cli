@@ -19,7 +19,7 @@ program
         console.log('Successfully started the time entry (id: %s)', timeEntryId);
       })
       .catch((err) => {
-        console.log('Unable to start the time entry (id: %s): %s', timeEntryId, err.message);
+        console.log('Unable to start the time entry (id: %s): %s', timeEntryId, err && err.message || err);
         process.exit(1);
       });
   })

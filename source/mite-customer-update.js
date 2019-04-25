@@ -52,7 +52,7 @@ Examples:
     mite customer update --name "" 123456
 
   Unarchive all archived customers
-    mite customers --columns id --archived false --format=text | xargs -n1 mite customer update --archived false
+    mite customers --columns id --archived true --format=text | xargs -n1 mite customer update --archived false
 `);
   })
   .action((customerId) => {
@@ -67,7 +67,7 @@ Examples:
         console.log('Successfully updated customer (id: %s)', customerId);
       })
       .catch(err => {
-        console.error('Error while updateing customer (id: %s)', customerId, err);
+        console.error('Error while updating customer (id: %s)', customerId, err && err.message || err);
         process.exit(1);
       });
   })

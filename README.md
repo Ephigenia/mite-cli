@@ -14,9 +14,9 @@ Ease to use CLI tool for creating, listing, starting and stopping time tracking 
 - Delete, lock, unlock single time entries
 - Edit the currently running entries text for fast updating the work log
 - Show, filter, group time entries to show reports for last month, current week etc.
-- List, sort, filter and update user accounts, customers, projects & services using variable columns and cli-tables, csv or tsv data
 - Delete single entries by id
-- Highlight JIRA identifiers and github numeral hashtags in time entry’s notes
+- List, sort, filter, update & delete user accounts, customers, projects & services using variable columns and cli-tables, csv or tsv data
+- Highlight JIRA identifiers and github numeral hashtags in time entry’s notes (can be customized)
 - optional installable auto-completions for most of the sub-commands, options and option values
 
 Other ideas & planned features can be found in the [wiki](./wiki). If something doesn’t work please [create a new issue](https://github.com/Ephigenia/mite-cli/issues).
@@ -461,6 +461,16 @@ Archive a single customer
 Archive multiple customers using xargs:
 
     mite customers --columns id --format text | xargs -n1 mite customer update --archived false
+
+## Delete Customer
+
+Delete a single customer
+
+    mite customer delete 123456
+
+Delete a whole set of customers
+
+    mite customers --columns id --archived yes --format=text | xargs -n1 mite customer delete
 
 ## Services
 

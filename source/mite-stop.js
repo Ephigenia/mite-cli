@@ -26,6 +26,6 @@ miteTracker.get()
     });
   })
   .catch((err) => {
-    console.log('Error while stopping time entry: %s', err.message);
+    console.log('Error while stopping time entry: %s', err && err.message || err);
     process.exit(1);
   });
