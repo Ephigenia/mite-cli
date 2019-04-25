@@ -146,6 +146,11 @@ module.exports.columns = {
       label: 'Service ID',
       attribute: 'service_id',
     },
+    tracking: {
+      label: 'Tracked',
+      attribute: 'tracking',
+      format: formater.booleanToHumanvalue,
+    },
     updated: {
       label: 'Updated',
       attribute: 'updated',
