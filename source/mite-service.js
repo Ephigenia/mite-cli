@@ -7,8 +7,8 @@ const pkg = require('./../package.json');
 
 program
   .version(pkg.version)
-  .command('update', 'update a single project')
-  .command('delete', 'delete a single project')
+  .command('update', 'update a single service')
+  .command('delete', 'delete a single service')
   .parse(process.argv);
 
 // show help message when the required first argument is not given

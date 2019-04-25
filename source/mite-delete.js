@@ -21,7 +21,7 @@ Examples:
     mite delete 1283761
 
   Delete multiple entries from a project selected by using mite list:
-    mite list this_month --project_id=123128 --columns id --format=text | xargs -n1 mite delete
+    mite list this_month --project_id=123128 --columns=id --format=text | xargs -n1 mite delete
 `);
   })
   .action((timeEntryId) => {

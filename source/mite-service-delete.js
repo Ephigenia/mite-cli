@@ -10,33 +10,33 @@ const config = require('./config');
 
 program
   .version(pkg.version)
-  .arguments('<customerId>')
+  .arguments('<serviceId>')
   .description(
-    'Deletes a specific customer',
+    'Deletes a specific service',
     // arguments description
     {
-      customerId: 'Id of the customer that should get deleted'
+      serviceId: 'Id of the service which should get delete'
     }
   )
   .on('--help', () => {
     console.log(`
 Examples:
 
-  Delete a single customer
-    mite customer delete 123456
+  Delete a single service
+    mite service delete 123456
 
-  Delete a whole set of customers
-    mite customers --columns id --archived yes --format=text | xargs -n1 mite customer delete
+  Delete all archived services
+    mite services --columns id --archived yes --format=text | xargs -n1 mite service delete
 `);
   })
-  .action((customerId) => {
+  .action((serviceId) => {
     const mite = miteApi(config.get());
-    return util.promisify(mite.deleteCustomer)(customerId)
+    return util.promisify(mite.deleteService)(serviceId)
       .then(() => {
-        console.log('Successfully deleted customer (id: %s)', customerId);
+        console.log('Successfully deleted service (id: %s)', serviceId);
       })
       .catch(err => {
-        console.error('Error while deleting customer (id: %s)', customerId, err && err.message || err);
+        console.error('Error while deleting service (id: %s)', serviceId, err && err.message || err);
         process.exit(1);
       });
   })

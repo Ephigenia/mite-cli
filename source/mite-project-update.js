@@ -48,11 +48,11 @@ Examples:
   Unarchive a single project
     mite project update --archived false 123456
 
-  Change the name of a project
-    mite project update --name "new name" 123456
+  Change the name and note of a project
+    mite project update --name "new name" --note="my new note" 123456
 
   Unarchive all archived projects
-    mite projects --archived false --columns id --format=text | xargs -n1 mite project update --archived false
+    mite projects --archived false --columns id --format=text | xargs -n1 mite project update --archived true
 `);
   })
   .action((projectId) => {

@@ -36,15 +36,16 @@ Other ideas & planned features can be found in the [wiki](./wiki). If something 
       amend|reword       edit the text for a specific time entry or the currently   runnning entry
       autocomplete       install/uninstall autocompletion
       config             show or set configuration settings
-      customer           update single customer
+      customer           update/delete single customer
       customers|clients  list, filter & search customers
       delete|rm          delete a specific time entry
       list|st            list time entries
       lock               lock single time entry
       new|create         create a new time entry
       open               open the given time entry in browser
-      project            update a single project
+      project            update/delete a single project
       projects           list, filter, archive/unarchive & search projects
+      service            update/delete single service
       services           list, filter & search services
       start              start the tracker for the given id, will also stop   allready running entry
       stop               stop any running counter
@@ -426,6 +427,16 @@ Set the note and name of a project
 Archive multiple projects using xargs:
 
     mite projects --columns id --format text | xargs -n1 mite project update --archived false
+
+## Delete Project
+
+Delete a single project
+
+    mite project delete 123456
+
+Delete all archived projects
+
+    mite projects --columns id --archived yes --format=text | xargs -n1 mite project delete
 
 ## Customers
 
