@@ -2,11 +2,9 @@
 'use strict';
 
 const program = require('commander');
-const chalk = require('chalk');
 
 const pkg = require('./../package.json');
 const config = require('./config');
-const miteApi = require('./lib/mite-api')(config.get());
 const DataOutput = require('./lib/data-output');
 const customersCommand = require('./lib/commands/customers');
 const columnOptions = require('./lib/options/columns');
@@ -28,7 +26,7 @@ program
     '--columns <columns>',
     columnOptions.description(customersCommand.columns.options),
     columnOptions.parse,
-    config.get().usersColumns,
+    config.get().customersColumns,
   )
   .option(
     '-f, --format <format>',
@@ -37,7 +35,7 @@ program
   )
   .option(
     '--search <query>',
-    'optional search string which must be somewhere in the services’ name ' +
+    'optional search string which must be somewhere in the service’s name ' +
     '(case insensitive)'
   )
   .option(
@@ -78,38 +76,29 @@ Examples:
     mite customers --search company 1 --colums=id --format=text | xargs -n1 mite customer update --archived=false
 `);
   })
+  .action(() => {
+    return main().catch(err => {
+      console.log(err && err.message || err);
+      process.exit(1);
+    });
+  })
   .parse(process.argv);
 
-const opts = {
-  name: program.search
-};
+async function main() {
+  const miteApi = require('./lib/mite-api')(config.get());
+  const opts = {
+    limit: 1000,
+    ...(program.search && { name: program.search })
+  };
 
-miteApi.getCustomers(opts)
-  .then((customers) => customers
-    .filter(({ archived }) => program.archived === 'all' ? true : program.archived === archived)
-  )
-  .then(items => miteApi.sort(items, program.sort))
-  .then(items => {
-    const columns = columnOptions.resolve(program.columns, customersCommand.columns.options);
-
-    // create final array of table data
-    const tableData = items.map((item) => {
-      let row = columns.map(columnDefinition => {
-        const value = item[columnDefinition.attribute];
-        if (typeof columnDefinition.format === 'function') {
-          return columnDefinition.format(value, item);
-        }
-        return value;
-      });
-      if (item.archived) {
-        row = row.map(v => chalk.grey(v));
-      }
-      return row;
+  return miteApi.getCustomers(opts)
+    .then((customers) => customers
+      .filter(({ archived }) => program.archived === 'all' ? true : program.archived === archived)
+    )
+    .then(items => miteApi.sort(items, program.sort))
+    .then(items => {
+      const columns = columnOptions.resolve(program.columns, customersCommand.columns.options);
+      const tableData = DataOutput.compileTableData(items, columns);
+      console.log(DataOutput.formatData(tableData, program.format, columns));
     });
-
-    console.log(DataOutput.formatData(tableData, program.format, columns));
-  })
-  .catch(err => {
-    console.log(err && err.message || err);
-    process.exit(1);
-  });
+  } // main

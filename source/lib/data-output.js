@@ -27,9 +27,42 @@ const FORMATS = Object.values(FORMAT);
  */
 
 /**
+ * @param {Array<Object>} items
+ * @param {Array<ColumnDefinition} columns
+ * @return {Array<Array<String>>}
+ */
+function compileTableData(items, columns) {
+  assert(Array.isArray(items), 'expeceted data to be an array');
+  assert(Array.isArray(columns), 'expeceted columns to be an array');
+
+  return items.map(item => {
+    let row = columns.map(columnDefinition => {
+      const value = item[columnDefinition.attribute];
+      if (typeof columnDefinition.format === 'function') {
+        return columnDefinition.format(value, item);
+      }
+      return value;
+    });
+    // show archived items in grey
+    if (item.archived) {
+      row = row.map(v => chalk.grey(v));
+    }
+    // colorize the whole row when it’s actively tracked or archived
+    if (item.tracking) {
+      row = row.map(v => chalk.yellow(v));
+    }
+    if (item.locked) {
+      row = row.map(v => chalk.grey(v));
+    }
+    return row;
+  });
+}
+
+/**
  * @param {Array<Object>} data
  * @param {String} format
  * @param {Array<ColumnDefinition>} columns
+ * @return {String}
  */
 function formatData(data, format, columns) {
   assert(Array.isArray(data), 'expeceted data to be an array');
@@ -69,4 +102,5 @@ module.exports = {
   FORMAT,
   FORMATS,
   formatData,
+  compileTableData,
 };

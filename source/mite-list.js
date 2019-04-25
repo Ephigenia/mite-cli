@@ -227,25 +227,7 @@ function main(period) {
       process.exit(0);
     } // end grouped reports
 
-    const tableData = timeEntries.map((timeEntry) => {
-      let row = columns.map(columnDefinition => {
-        const value = timeEntry[columnDefinition.attribute];
-        if (typeof columnDefinition.format === 'function') {
-          return columnDefinition.format(value, timeEntry);
-        }
-        return value;
-      });
-
-      // colorize the whole row when it’s actively tracked or archived
-      if (timeEntry.tracking) {
-        row = row.map(v => chalk.yellow(v));
-      }
-      if (timeEntry.locked) {
-        row = row.map(v => chalk.grey(v));
-      }
-
-      return row;
-    });
+    const tableData = DataOutput.compileTableData(timeEntries, columns);
 
     // Table footer
     // add table footer if any of the table columns has a reducer

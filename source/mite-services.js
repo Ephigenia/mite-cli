@@ -84,44 +84,31 @@ Examples:
     mite services --format=csv --columns=id,name,hourly_rate,billable > all_services.csv
 `);
   })
+  .action(() => {
+    return main().catch(err => {
+      console.log(err && err.message || err);
+      process.exit(1);
+    });
+  })
   .parse(process.argv);
 
-const opts = {
-  limit: 1000,
-  offset: 0,
-  name: program.search
-};
+async function main() {
+  const miteApi = require('./lib/mite-api')(config.get());
 
-const miteApi = require('./lib/mite-api')(config.get());
-
-miteApi.getServices(opts)
-  .then(services => services
-    .filter(({ archived }) => program.archived === 'all' ? true : archived === program.archived)
-    .filter(({ billable }) => program.billable === 'all' ? true : billable === program.billable)
-  )
-  .then(items => miteApi.sort(items, program.sort))
-  .then(items => {
-    const columns = columnOptions.resolve(program.columns, servicesCommand.columns.options);
-
-    // create final array of table data
-    const tableData = items.map((item) => {
-      let row = columns.map(columnDefinition => {
-        const value = item[columnDefinition.attribute];
-        if (typeof columnDefinition.format === 'function') {
-          return columnDefinition.format(value, item);
-        }
-        return value;
-      });
-      // show archived items in grey
-      if (item.archived) {
-        row = row.map(v => chalk.grey(v));
-      }
-      return row;
+  const opts = {
+    limit: 1000,
+    offset: 0,
+    ...(program.search && { name: program.search }),
+  };
+  return miteApi.getServices(opts)
+    .then(services => services
+      .filter(({ archived }) => program.archived === 'all' ? true : archived === program.archived)
+      .filter(({ billable }) => program.billable === 'all' ? true : billable === program.billable)
+    )
+    .then(items => miteApi.sort(items, program.sort))
+    .then(items => {
+      const columns = columnOptions.resolve(program.columns, servicesCommand.columns.options);
+      const tableData = DataOutput.compileTableData(items, columns);
+      console.log(DataOutput.formatData(tableData, program.format, columns));
     });
-
-    console.log(DataOutput.formatData(tableData, program.format, columns));
-  })
-  .catch(err => {
-    console.log(err && err.message || err);
-    process.exit(1);
-  });
+} // main

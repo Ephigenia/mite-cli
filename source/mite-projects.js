@@ -2,7 +2,6 @@
 'use strict';
 
 const program = require('commander');
-const chalk = require('chalk');
 
 const DataOutput = require('./lib/data-output');
 const pkg = require('./../package.json');
@@ -125,23 +124,7 @@ async function main() {
     .then(items => miteApi.sort(items, program.sort, { customer: 'customer_name' }))
     .then(items => {
       const columns = columnOptions.resolve(program.columns, projectsCommand.columns.options);
-
-      // create final array of table data
-      const tableData = items.map((item) => {
-        let row = columns.map(columnDefinition => {
-          const value = item[columnDefinition.attribute];
-          if (typeof columnDefinition.format === 'function') {
-            return columnDefinition.format(value, item);
-          }
-          return value;
-        });
-        // show archived items in grey
-        if (item.archived) {
-          row = row.map(v => chalk.grey(v));
-        }
-        return row;
-      });
-
+      const tableData = DataOutput.compileTableData(items, columns);
       console.log(DataOutput.formatData(tableData, program.format, columns));
     });
 } // main
