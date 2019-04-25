@@ -2,13 +2,13 @@
 'use strict';
 
 const program = require('commander');
-const chalk = require('chalk');
 
 const pkg = require('./../package.json');
 const config = require('./config');
 const DataOutput = require('./lib/data-output');
 const usersCommand = require('./lib/commands/users');
 const columnOptions = require('./lib/options/columns');
+const sortOption = require('./lib/options/sort');
 
 program
   .version(pkg.version)
@@ -59,20 +59,8 @@ program
   )
   .option(
     '--sort <column>',
-    `optional column the results should be case-insensitive ordered by `+
-    `(default: "${usersCommand.sort.default}"), ` +
-    `valid values: ${usersCommand.sort.options.join(', ')}`,
-    (value) => {
-      if (usersCommand.sort.options.indexOf(value) === -1) {
-        console.error(
-          'Invalid value for sort option: "%s", valid values are: ',
-          value,
-          usersCommand.sort.options.join(', ')
-        );
-        process.exit(2);
-      }
-      return value;
-    },
+    sortOption.description(usersCommand.sort.options),
+    sortOption.parse,
     usersCommand.sort.default
   )
   .on('--help', function() {
@@ -126,7 +114,10 @@ async function main() {
         return target.match(regexp);
       })
     )
-    .then(items => miteApi.sort(items, program.sort))
+    .then(items => miteApi.sort(
+      items,
+      sortOption.resolve(program.sort, usersCommand.sort.options),
+    ))
     .then((items) => {
       const columns = columnOptions.resolve(program.columns, usersCommand.columns.options);
       const tableData = DataOutput.compileTableData(items, columns);

@@ -87,38 +87,63 @@ function miteApiWrapper(config) {
      * is used for comparison. String comparison is case-insensitive.
      *
      * @param {Array<Object>} items
-     * @param {String} attribute
+     * @param {Array<String>} attributes
      * @param {Object<String>} aliases hashmap containing attribute aliases
      * @throws {Error} when item or attribute are not valid
      * @return {Array<Object>}
      */
-    sort: function(items, attribute = false, aliases = {}) {
-      if (!attribute) return items;
+    sort: function(items, attributes = [], aliases = {}) {
       assert.strictEqual(true, Array.isArray(items),
         'expected items to be an array'
       );
-      assert.strictEqual(typeof attribute, 'string',
-        'expected attribute to be a valid string'
+      assert.strictEqual(true, Array.isArray(attributes),
+        'expected attributes to be a an array of strings'
       );
-      // check if alias defined
-      if (aliases && aliases[attribute]) {
-        attribute = aliases[attribute];
-      }
-      return items.sort((a, b) => {
-        let val1 = a[attribute];
-        let val2 = b[attribute];
-        // type conversion for accurate comparison
-        if (typeof val1 === 'string') val1 = val1.toLowerCase();
-        if (typeof val2 === 'string') val2 = val2.toLowerCase();
-        if (typeof val1 === 'boolean' && typeof val2 === 'boolean') {
-          if (val1 > val2) return -1;
-          if (val1 < val2) return 1;
-          return 0;
-        }
-        if (val1 > val2) return 1;
-        if (val1 < val2) return -1;
-        return 0;
+
+      // store directions for the attributes using the index of the attribute
+      const directions = attributes.map(attribute => {
+        return (attribute.substr(0, 1) === '-') ? 'desc' : 'asc';
       });
+      // remove "-" from the attribute’s name
+      attributes = attributes.map(attribute => {
+        return (attribute.substr(0, 1) === '-') ? attribute.substr(1) : attribute;
+      });
+      // replace aliases with their actual attribute
+      attributes = attributes.map(attribute => {
+        if (aliases[attribute]) return aliases[attribute];
+        return attribute;
+      });
+
+      const that = this;
+      return items.sort(function(a, b) {
+        let val1 = attributes.map(attribute => a[attribute]);
+        let val2 = attributes.map(attribute => b[attribute]);
+
+        let scores = [];
+        for (let i = 0; i < val1.length; i++) {
+          const score = that.sortCompare(val1[i], val2[i], directions[i])
+          if (scores.length === 0) {
+            scores.push(score);
+          } else if (scores[i-1] === 0) {
+            scores.push(score);
+          }
+        }
+
+        return scores.reduce((acc, cur) => acc + cur, 0);
+      });
+    },
+
+    sortCompare: (a, b, direction = 'asc') => {
+      if (typeof a === 'string') a = a.toLowerCase();
+      if (typeof b === 'string') b = b.toLowerCase();
+      if (typeof a === 'boolean' && typeof b === 'boolean') {
+        if (a > b) return direction === 'asc' ? -1 : 1;
+        if (a < b) return direction === 'asc' ? 1 : -1;
+        return 0;
+      }
+      if (a > b) return direction === 'asc' ? 1 : -1;
+      if (a < b) return direction === 'asc' ? -1 : 1;
+      return 0;
     },
 
     getItemsAndArchived: async function(itemName, options = {}) {
