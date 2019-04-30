@@ -4,8 +4,6 @@
 const config = require('./../../../config');
 const miteApi = require('./../../mite-api')(config.get());
 
-const NOTE_MAX_LENGTH = (process.stdout.columns || 80) - 20;
-
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
  *
