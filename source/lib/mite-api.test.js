@@ -63,7 +63,7 @@ describe('mite-api wrapper', () => {
           { name: 'Magneto' },
           { name: 'MYstique' },
         ];
-        const result = mite.sort(items, 'name');
+        const result = mite.sort(items, ['name']);
         expect(result.map(v => v.name)).to.deep.equal(['Magneto', 'MYstique', 'Xavier']);
       });
     }); // string comparison
@@ -75,7 +75,7 @@ describe('mite-api wrapper', () => {
           { value: -1.21 },
           { value: 2 }
         ];
-        const result = mite.sort(items, 'value');
+        const result = mite.sort(items, ['value']);
         expect(result.map(v => v.value)).to.deep.equal([-1.21, 2, 198.18]);
       });
     }); // string comparison
@@ -87,7 +87,7 @@ describe('mite-api wrapper', () => {
           { value: true },
           { value: false }
         ];
-        const result = mite.sort(items, 'value');
+        const result = mite.sort(items, ['value']);
         expect(result.map(v => v.value)).to.deep.equal([true, false, false]);
       });
     }); // string comparison
