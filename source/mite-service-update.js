@@ -86,7 +86,7 @@ Examples:
       ...(typeof program.name === 'string' && { name: program.name }),
       ...(typeof program.note === 'string' && { note: program.note }),
       ...(typeof program.hourlyRate === 'number' && { hourly_rate: program.hourlyRate }),
-      ...(typeof program['update-entries'] && { update_hourly_rate_on_time_entries: true }),
+      ...(typeof program['update-entries'] === 'boolean' && { update_hourly_rate_on_time_entries: true }),
     };
 
     return util.promisify(mite.updateProject)(serviceId, data)
