@@ -69,15 +69,15 @@
     "markdown-table": "^1.1.2",
     "mite-api": "github:marcel-devdude/mite-api#master",
     "nconf": "^0.10.0",
-    "node-fetch": "^2.3.0",
+    "node-fetch": "^2.5.0",
     "opn": "^6.0.0",
     "table": "^5.2.3",
     "tabtab": "^3.0.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "conventional-changelog-cli": "^2.0.16",
-    "conventional-recommended-bump": "^4.1.1",
+    "conventional-changelog-cli": "^2.0.21",
+    "conventional-recommended-bump": "^5.0.0",
     "eslint": "^5.16.0",
     "mocha": "^6.1.4",
     "npm-check": "^5.9.0"
