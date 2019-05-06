@@ -31,7 +31,7 @@ program
   )
   .option(
     '--hourly-rate <hourlyRate>',
-    hourlyRateOption.description,
+    hourlyRateOption.description(),
     hourlyRateOption.parse
   )
   .option(
