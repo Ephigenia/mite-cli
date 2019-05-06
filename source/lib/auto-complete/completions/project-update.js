@@ -22,8 +22,8 @@ module.exports = async ({ prev, line, word }) => {
       name: '--archived',
       description: 'archive or unarchive a project',
     } : undefined,
-    line.indexOf('--budget_type') === -1 ? {
-      name: '--budget_type',
+    line.indexOf('--budget-type') === -1 ? {
+      name: '--budget-type',
       description: 'change the budget_type',
     } : undefined,
     line.indexOf('--hourly-rate') === -1 ? {
@@ -52,7 +52,7 @@ module.exports = async ({ prev, line, word }) => {
   switch(prev) {
     case '--archived':
       return ['yes', 'no'];
-    case '--budget_type':
+    case '--budget-type':
       return BUDGET_TYPES;
     case '--name':
       return ['name'];
@@ -77,4 +77,3 @@ module.exports = async ({ prev, line, word }) => {
     })))
     .then(options => [].concat(options, defaults));
 };
-

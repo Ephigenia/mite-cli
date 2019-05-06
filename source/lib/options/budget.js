@@ -1,7 +1,11 @@
 'use strict';
 
-const EXIT_CODES = require('./../exit-codes');
 const formater = require('./../formater');
+
+const {
+  MissingRequiredOptionError,
+  InvalidOptionValue
+} = require('./../errors');
 
 const option = {
   definition: '--budget <budget>',
@@ -11,8 +15,7 @@ const option = {
   ),
   parse: function(input) {
     if (!input) {
-      console.error(`Invalid value for budget`);
-      process.exit(EXIT_CODES.INVALID_OPTION_VALUE);
+      throw new InvalidOptionValue('Invalid value for budget option');
     }
 
     let result;
@@ -24,8 +27,7 @@ const option = {
     }
 
     if (!result || isNaN(result)) {
-      console.error(`Invalid value for budget: "${input}"`);
-      process.exit(EXIT_CODES.INVALID_OPTION_VALUE);
+      throw new MissingRequiredOptionError(`Invalid value for budget: "${input}"`);
     }
 
     return result;

@@ -30,7 +30,7 @@ program
     })
   )
   .option(
-    '--hourly-rate <hourlyRate>',
+    hourlyRateOption.definition,
     hourlyRateOption.description(),
     hourlyRateOption.parse
   )
