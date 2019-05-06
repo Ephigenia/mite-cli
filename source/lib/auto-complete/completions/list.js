@@ -8,6 +8,26 @@ const listCommand = require('./../../commands/list');
 
 const { TIME_FRAMES } = require('./../../constants');
 
+function dateCompletion(lastPartial) {
+  const now = new Date();
+  let options = [
+    now.toISOString(0, 10)
+  ];
+  // YYYY-MM- completion
+  if (lastPartial.match(/^\d{1,4}-\d{1,2}-?$/)) {
+    options = options.concat([...Array(31).keys()].map(i => {
+      return `${lastPartial.replace(/-$/, '')}-` + (++i < 10 ? '0' : '') + i;
+    }))
+  }
+  // YYYY- completion
+  if (lastPartial.match(/^\d{1,4}-?$/)) {
+    options = options.concat([...Array(12).keys()].map(i => {
+      return `${lastPartial.replace(/-$/, '')}-` + (++i < 10 ? '0' : '') + i + '-DD';
+    }))
+  }
+  return options;
+}
+
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
  *
@@ -20,21 +40,6 @@ const { TIME_FRAMES } = require('./../../constants');
  * @returns {Promise<Array<string>>}
  */
 module.exports = async ({ words, prev, lastPartial }) => {
-
-  // date completion
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = (now.getMonth() < 10 ? '0' : '') + (now.getMonth() + 1);
-  const day = (now.getDate() < 10 ? '0' : '') + now.getDate();
-  if (lastPartial.match(/^\d{1,4}-\d{1,2}/)) {
-    return [`${lastPartial}-${day}`];
-  }
-  if (lastPartial.match(/^\d{1,4}-/)) {
-    return [`${lastPartial}${month}-${day}`];
-  }
-  if (lastPartial.match(/^\d{1,4}/)) {
-    return [`${year}-${month}-${day}`];
-  }
 
   switch (prev) {
     case '--archived':
@@ -58,7 +63,7 @@ module.exports = async ({ words, prev, lastPartial }) => {
       return DataOutput.FORMATS;
     case '--from':
     case '--to':
-      return TIME_FRAMES;
+      return TIME_FRAMES.concat(dateCompletion(lastPartial));
     case '--locked':
       return ['yes', 'no'];
     case '--project_id':
@@ -94,9 +99,17 @@ module.exports = async ({ words, prev, lastPartial }) => {
       });
   }
 
+  // date completion
+  if (lastPartial) {
+    const r = dateCompletion(lastPartial);
+    if (r) {
+      return r;
+    }
+  }
+
   // auto-completion for time-frame option argument
   if (words === 2 && lastPartial.substr(0, 1) !== '-') {
-    return TIME_FRAMES;
+    return TIME_FRAMES.concat(dateCompletion(lastPartial));
   }
 
   return [
