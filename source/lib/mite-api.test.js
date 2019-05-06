@@ -63,7 +63,7 @@ describe('mite-api wrapper', () => {
           { name: 'Magneto' },
           { name: 'MYstique' },
         ];
-        const result = mite.sort(items, ['name']);
+        const result = mite.sort(items, 'name');
         expect(result.map(v => v.name)).to.deep.equal(['Magneto', 'MYstique', 'Xavier']);
       });
     }); // string comparison

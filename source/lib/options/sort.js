@@ -13,6 +13,7 @@ module.exports = {
     return str.split(/,/).map(v => v.trim()).filter(v => v);
   },
   resolve: function (sortOptions, columns) {
+    if (!sortOptions) return [];
     if (typeof sortOptions === 'string') {
       sortOptions = this.parse(sortOptions);
     }

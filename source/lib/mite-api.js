@@ -87,12 +87,16 @@ function miteApiWrapper(config) {
      * is used for comparison. String comparison is case-insensitive.
      *
      * @param {Array<Object>} items
-     * @param {Array<String>} attributes
+     * @param {Array<String>|string} attributes either a single attribute name
+     *   which should be used for ordering the items or a list of attributes
      * @param {Object<String>} aliases hashmap containing attribute aliases
      * @throws {Error} when item or attribute are not valid
      * @return {Array<Object>}
      */
     sort: function(items, attributes = [], aliases = {}) {
+      if (typeof attributes === 'string') {
+        attributes = [attributes];
+      }
       assert.strictEqual(true, Array.isArray(items),
         'expected items to be an array'
       );
