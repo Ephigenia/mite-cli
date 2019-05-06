@@ -17,13 +17,13 @@ function dateCompletion(lastPartial) {
   if (lastPartial.match(/^\d{1,4}-\d{1,2}-?$/)) {
     options = options.concat([...Array(31).keys()].map(i => {
       return `${lastPartial.replace(/-$/, '')}-` + (++i < 10 ? '0' : '') + i;
-    }))
+    }));
   }
   // YYYY- completion
   if (lastPartial.match(/^\d{1,4}-?$/)) {
     options = options.concat([...Array(12).keys()].map(i => {
       return `${lastPartial.replace(/-$/, '')}-` + (++i < 10 ? '0' : '') + i + '-DD';
-    }))
+    }));
   }
   return options;
 }
