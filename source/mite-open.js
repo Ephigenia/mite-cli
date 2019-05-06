@@ -10,13 +10,21 @@ const config = require('./config');
 
 program
   .version(pkg.version)
-  .description('opens the given time entry in the browser', {
-    timeEntryId: 'id of the entry which should be opened'
-  })
+  .description(
+    'opens the system’s default browser on the mite organization’s homepage ' +
+    'while optionally open up the given time entry.',
+    // argument descriptions
+    {
+      timeEntryId: 'optional time-entry id which should be opened in the browser'
+    }
+  )
   .arguments('<timeEntryId>')
   .on('--help', function() {
     console.log(`
 Examples:
+
+  Open the organizations mite homepage in the system’s default browser:
+    mite open
 
   Open the given time entry detail page in the default browser:
     mite open 128372

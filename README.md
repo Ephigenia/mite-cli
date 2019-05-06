@@ -290,7 +290,7 @@ Pipe in content for the note
 
 ## Open
 
-Opens a specific time entry in your browser
+Opens the system’s default browser on the mite organization’s homepage while optionally open up the given time entry:
 
     mite open 1234567
 
