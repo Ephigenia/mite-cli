@@ -64,16 +64,18 @@ function compileTableData(items, columns) {
  * @param {Array<ColumnDefinition>} columns
  * @return {String}
  */
-function formatData(data, format, columns) {
+function formatData(data, format, columns = []) {
   assert(Array.isArray(data), 'expeceted data to be an array');
   assert(Array.isArray(columns), 'expeceted columns to be an array');
   assert.strictEqual(typeof format, 'string', 'expected format to be a string');
 
-  // adds table header
-  data.unshift(columns
-    .map(columnDefinition => columnDefinition.label)
-    .map(v => chalk.bold(v))
-  );
+  // adds table header when there are columns defined
+  if (columns && columns.length > 0) {
+    data.unshift(columns
+      .map(columnDefinition => columnDefinition.label)
+      .map(v => chalk.bold(v))
+    );
+  }
 
   // format the output according to the given format
   switch(format) {
@@ -84,7 +86,7 @@ function formatData(data, format, columns) {
     case 'table': {
       const tableConfig = {
         border: tableLib.getBorderCharacters('norc'),
-        columns: columns
+        columns
       };
       return table(data, tableConfig);
     }

@@ -16,15 +16,14 @@ module.exports = {
   resolve: function (csvList, columns) {
     if (csvList === 'all') {
       return Object.values(columns);
-    } else {
-      return this.parse(csvList).split(',')
-        .map(attrName => {
-          const columnDefinition = columns[attrName];
-          if (!columnDefinition) {
-            throw new Error(`Invalid column name "${attrName}"`);
-          }
-          return columnDefinition;
-        });
     }
+    return this.parse(csvList).split(',')
+      .map(attrName => {
+        const columnDefinition = columns[attrName];
+        if (!columnDefinition) {
+          throw new Error(`Invalid column name "${attrName}"`);
+        }
+        return columnDefinition;
+      });
   }
 };
