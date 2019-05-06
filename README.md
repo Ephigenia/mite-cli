@@ -78,6 +78,8 @@ In case you want to use multiple mite accounts please open up a [change request]
 
 ## Advanced Configuration Options
 
+- `currency`  
+  defines the currency used for displaying money values
 - `customersColumns`  
   defines the default columns to be used when running `mite customers list`.
 - `listColumns`  

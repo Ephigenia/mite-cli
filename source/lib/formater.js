@@ -4,12 +4,8 @@ const chalk = require('chalk');
 
 const { USER_ROLES, BUDGET_TYPE } = require('./constants');
 
-// @TODO use currency from getAccount endpoint
-const DEFAULT_CURRENCY = '€';
-
 module.exports = {
   BUDGET_TYPE: BUDGET_TYPE,
-  CURRENCY: DEFAULT_CURRENCY,
 
   note(
     note,
@@ -90,15 +86,18 @@ module.exports = {
   },
 
   budget(type, value) {
+    // @TODO resolve circular dependency
+    const config = require('./../config');
+    const CURRENCY = config.get().currency;
     switch(type) {
       case BUDGET_TYPE.MINUTES_PER_MONTH:
         return this.minutesToDuration(value) + ' h/m';
       case BUDGET_TYPE.MINUTES:
         return this.minutesToDuration(value) + ' h';
       case BUDGET_TYPE.CENTS:
-        return this.price(value / 100) + ' ' + this.CURRENCY;
+        return this.price(value / 100) + ' ' + CURRENCY;
       case BUDGET_TYPE.CENTS_PER_MONTH:
-        return this.price(value / 100) + ' ' + this.CURRENCY + '/m';
+        return this.price(value / 100) + ' ' + CURRENCY + '/m';
       default:
         throw new Error(`Unknown budget format type: "${type}"`);
     }

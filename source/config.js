@@ -19,6 +19,7 @@ const usersCommand = require('./lib/commands/users');
 nconf.file(configFilename);
 
 nconf.defaults({
+  currency: '€',
   applicationName: `mite-cli/${pkg.version}`,
   customersColumns: customersCommand.columns.default,
   listColumns: listCommand.columns.default,
