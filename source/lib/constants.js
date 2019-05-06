@@ -25,3 +25,5 @@ module.exports.BUDGET_TYPE = {
   CENTS: 'cents',
   CENTS_PER_MONTH: 'cents_per_month',
 };
+
+module.exports.BUDGET_TYPES = Object.values(module.exports.BUDGET_TYPE);

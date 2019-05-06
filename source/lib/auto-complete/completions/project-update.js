@@ -3,6 +3,7 @@
 
 const config = require('./../../../config');
 const miteApi = require('./../../mite-api')(config.get());
+const { BUDGET_TYPES } = require('./../../constants');
 
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
@@ -17,10 +18,13 @@ const miteApi = require('./../../mite-api')(config.get());
  */
 module.exports = async ({ prev, line, word }) => {
   const defaults = [
-    // do not includ --archived when it’s allready been set
     line.indexOf('--archived') === -1 ? {
       name: '--archived',
       description: 'archive or unarchive a project',
+    } : undefined,
+    line.indexOf('--budget_type') === -1 ? {
+      name: '--budget_type',
+      description: 'change the budget_type',
     } : undefined,
     line.indexOf('--hourly-rate') === -1 ? {
       name: '--hourly-rate',
@@ -48,6 +52,8 @@ module.exports = async ({ prev, line, word }) => {
   switch(prev) {
     case '--archived':
       return ['yes', 'no'];
+    case '--budget_type':
+      return BUDGET_TYPES;
     case '--name':
       return ['name'];
     case '--note':
