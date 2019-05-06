@@ -59,8 +59,8 @@ program
   )
   .option(
     '-l, --limit <limit>',
-    'numeric number of items to return (default 100)',
-    100,
+    'optional number of items to show, default is infinite',
+    undefined,
     ((val) => parseInt(val, 10))
   )
   .option(
@@ -168,15 +168,15 @@ function main(period) {
   const opts = {
     at: period,
     ...(typeof program.billable === 'boolean' && { billable: program.billable }),
-    customer_id: program.customer_id,
+    ...(program.customer_id && { customer_id: program.customer_id }),
     ...(program.reversed && { direction: 'desc' }),
-    group_by: program.group_by,
-    limit: program.limit,
+    ...(program.group_by && { group_by: program.group_by }),
+    ...(program.limit && { limit: program.limit }),
     ...(typeof program.locked === 'boolean' && { locked: program.locked }),
-    note: program.search,
-    project_id: program.project_id,
-    service_id: program.service_id,
-    sort: program.sort,
+    ...(program.search && { note: program.search }),
+    ...(program.project_id && { project_id: program.project_id }),
+    ...(program.service_id && { service_id: program.service_id }),
+    ...(program.sort && { sort: program.sort }),
     ...(typeof program.tracking === 'boolean' && { tracking: program.tracking }),
     ...(program.user_id && { user_id: program.user_id}),
   };
