@@ -8,6 +8,39 @@ Ease to use CLI tool for creating, listing, starting and stopping time tracking 
 [![Maintainability](https://api.codeclimate.com/v1/badges/791e0126615bcd34a0e5/maintainability)](https://codeclimate.com/github/Ephigenia/mite-cli/maintainability)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FEphigenia%2Fmite-cli.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FEphigenia%2Fmite-cli?ref=badge_shield)
 
+- [Features](#features)
+- [Install](#install)
+- [Configuration](#configuration)
+  - [Advanced Configuration Options](#advanced-configuration-options)
+  - [Auto-Completion](#auto-completion)
+- [Usage](#usage)
+  - [List](#list)
+    - [Filter by time](#filter-by-time)
+    - [Other Filters](#other-filters)
+    - [Grouping](#grouping)
+    - [Advanced Examples:](#advanced-examples)
+  - [Budgets](#budgets)
+  - [New](#new)
+  - [Open](#open)
+  - [Tracker](#tracker)
+  - [Stop Tracker](#stop-tracker)
+  - [Edit Currently Tracked Note](#edit-currently-tracked-note)
+  - [Delete entry](#delete-entry)
+  - [Un-/Lock Entry](#un-lock-entry)
+  - [Users](#users)
+  - [Projects](#projects)
+    - [Update Project](#update-project)
+  - [Delete Project](#delete-project)
+  - [Customers](#customers)
+    - [Update Customer](#update-customer)
+  - [Delete Customer](#delete-customer)
+  - [Services](#services)
+- [Advanced Topics](#advanced-topics)
+  - [Columns](#columns)
+  - [Alternate Output formats](#alternate-output-formats)
+- [Other Projects](#other-projects)
+- [License](#license)
+
 # Features
 
 - Create and start new Entries with interactive survey-like cli interface
@@ -20,8 +53,6 @@ Ease to use CLI tool for creating, listing, starting and stopping time tracking 
 - optional installable auto-completions for most of the sub-commands, options and option values
 
 Other ideas & planned features can be found in the [wiki](./wiki). If something doesn’t work please [create a new issue](https://github.com/Ephigenia/mite-cli/issues).
-
-# Help-Message
 
 ```
     Usage: mite [options] [command]
@@ -139,11 +170,11 @@ When an entry is currently active and tracked it will be yellow and indicated wi
     │          │            │                 │            │    00:21 │   27.50 │                                                                      │
     └──────────┴────────────┴─────────────────┴────────────┴──────────┴─────────┴──────────────────────────────────────────────────────────────────────┘
 
+### Filter by time
+
 You also can request longer time frames by using the first argument which is bascially the [`at` parameter](https://mite.yo.lk/en/api/time-entries.html#list-all) of the time entries api:
 
     mite list this_month
-
-    mite list last_month
 
 Or Specific dates:
 
@@ -157,10 +188,11 @@ Or search for specific entries in all time-entries from the current year
 
     mite list this_year --search JIRA-123
 
+### Other Filters
+
 There are also a bunch of other options available, just check `mite list --help`.
 
-
-### Grouped lists
+### Grouping
 
 For getting a rough overview of the monthly project or services distribution you can use the `--group_by` argument which will group the time entries. This could also be helpful for creating bills.
 
@@ -219,67 +251,6 @@ When creating a bill for a project create a list of all services worked on in a 
 In order to fill the details of the services you’ll need all the notes from that specific service. Get the notes for one specific service, project for the last month to put them on a bill or similar:
 
     mite list last_month --project_id 2681601 --service_id 325329 --columns=note --format=text | sort -u
-
-## Columns
-
-The list command will by default list a set of default columns. You can specify which columns should be shown using the `--columns` option.
-
-The following example will only show the user and his durations from last week including the sum of the durations:
-
-    mite list last_week --billable false --columns=user,duration
-
-    ┌────────────────┬────────────┐
-    │ User           │   Duration │
-    ├────────────────┼────────────┤
-    │ Marcel Eichner │       0:45 │
-    ├────────────────┼────────────┤
-    │ Marcel Eichner │       0:20 │
-    ├────────────────┼────────────┤
-    │ Marcel Eichner │     ✔ 0:13 │
-    ├────────────────┼────────────┤
-    │ Marcel Eichner │     ✔ 1:34 │
-    ├────────────────┼────────────┤
-    │ Marcel Eichner │     ✔ 0:06 │
-    ├────────────────┼────────────┤
-    │                │       2:58 │
-    └────────────────┴────────────┘
-
-You can always get all available columns by setting `columns=all`.
-
-## Alternate Output formats
-
-The program is designed to work well and look well in the cli and will show the results in tabular style using box drawing characters. This is not easy to use in further processing. That’s where the other output formats come in handy:
-
-    mite list last_week --format=csv --columns=user,id
-
-    Date,User,Duration
-    2018-11-02,Marcel Eichner,1:10
-    2018-11-01,Marcel Eichner,2:30
-    2018-10-31,Marcel Eichner,✔ 2:47
-    2018-10-30,Marcel Eichner,✔ 0:43
-    2018-10-30,Marcel Eichner,✔ 0:10
-    2018-10-30,Marcel Eichner,✔ 0:09
-    2018-10-29,Marcel Eichner,✔ 1:35
-    2018-10-29,Marcel Eichner,✔ 1:21
-    ,,10:25
-
-The following formats are supported:
-
-- csv (comma-seperated)
-- md (markdown)
-- table (cli-table)
-- tsv (tab-separated)
-- text (line-seperated)
-
-This makes it very easy to further process the data, transform it into a HTML page or PDF.
-
-Creating a time-sheet for your clients can be done like this:
-
-    mite list last_month --format=csv --columns=date,service,note,duration
-
-Using Ids from the output for further processing using `xargs`:
-
-    mite list --columns=id --format=text | xargs -n1 mite lock
 
 ## Budgets
 
@@ -522,7 +493,76 @@ List, filter and search for services. Archived services will be grey.
     │ 736251 │ Accounting        │        - │       no │ Accounting, invoices etc.                                                    │
     └────────┴───────────────────┴──────────┴──────────┴──────────────────────────────────────────────────────────────────────────────┘
 
+# Advanced Topics
 
+## Columns
+
+Every command that produces a tabular output uses a default set of columns per command. You can specify which columns should be shown using the `--columns` option or use `--columns=all` to show all available columns.
+
+The default column set can be changed per command using the config options that end with `*Columns`.
+
+The following example will only show the user and his durations from last week including the sum of the durations:
+
+    mite list last_week --billable false --columns=user,duration
+
+    ┌────────────────┬────────────┐
+    │ User           │   Duration │
+    ├────────────────┼────────────┤
+    │ Marcel Eichner │       0:45 │
+    ├────────────────┼────────────┤
+    │ Marcel Eichner │       0:20 │
+    ├────────────────┼────────────┤
+    │ Marcel Eichner │     ✔ 0:13 │
+    ├────────────────┼────────────┤
+    │ Marcel Eichner │     ✔ 1:34 │
+    ├────────────────┼────────────┤
+    │ Marcel Eichner │     ✔ 0:06 │
+    ├────────────────┼────────────┤
+    │                │       2:58 │
+    └────────────────┴────────────┘
+
+Specifying the columns is important when you want to use the ids of items in other commands with xargs.
+
+The following example uses the ids of all time entries to lock them:
+
+    mite list last_month --columns=id --format=text | xargs -n1 mite lock
+
+## Alternate Output formats
+
+The output of program is designed to look good to a human and shows the results in tabular style using box drawing characters.
+
+The following formats are supported:
+
+- csv (comma-seperated)
+- md (markdown)
+- table (cli-table)
+- tsv (tab-separated)
+- text (line-seperated)
+- 
+There are alternative output formats which may be useful when you automatically process the results such as `csv` or `text`
+
+    mite list last_week --format=csv --columns=user,id
+
+    Date,User,Duration
+    2018-11-02,Marcel Eichner,1:10
+    2018-11-01,Marcel Eichner,2:30
+    2018-10-31,Marcel Eichner,✔ 2:47
+    2018-10-30,Marcel Eichner,✔ 0:43
+    2018-10-30,Marcel Eichner,✔ 0:10
+    2018-10-30,Marcel Eichner,✔ 0:09
+    2018-10-29,Marcel Eichner,✔ 1:35
+    2018-10-29,Marcel Eichner,✔ 1:21
+    ,,10:25
+
+This makes it very easy to further process the data, transform it into a HTML page or PDF.
+
+Creating a time-sheet for your clients can be done like this:
+
+    mite list last_month --format=csv --columns=date,service,note,duration
+
+Using Ids from the output for further processing using `xargs`:
+
+    mite list --columns=id --format=text | xargs -n1 mite lock
 
 # Other Projects
 
@@ -530,5 +570,5 @@ List, filter and search for services. Archived services will be grey.
 - [mite.cmd](https://github.com/Overbryd/mite.cmd/tree/master)
 - [mite-go](https://github.com/leanovate/mite-go)
 
-## License
+# License
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FEphigenia%2Fmite-cli.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FEphigenia%2Fmite-cli?ref=badge_large)
