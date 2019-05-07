@@ -156,6 +156,10 @@ Examples:
   The output of mite list can be forwarded to other commands using xargs. The
   following example will delete all matchin entries:
     mite list this_month --search="query" --columns id --format=text | xargs -n1 mite delete
+
+  Get the notes for one specific service, project for the last month to put
+  them on a bill or similar
+    mite list last_month --project_id 2681601 --service_id 325329 --columns=note --format=text | sort -u
 `);
   })
   .action(main)

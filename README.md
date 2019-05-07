@@ -159,7 +159,68 @@ Or search for specific entries in all time-entries from the current year
 
 There are also a bunch of other options available, just check `mite list --help`.
 
-### Columns
+
+### Grouped lists
+
+For getting a rough overview of the monthly project or services distribution you can use the `--group_by` argument which will group the time entries. This could also be helpful for creating bills.
+
+    mite list last_month --group_by=service
+
+    ┌────────────────────┬────────┬────────────┐
+    │ Communication      │  13:03 │   994.98 € │
+    ├────────────────────┼────────┼────────────┤
+    │ Programming        │ 109:27 │  9387.11 € │
+    ├────────────────────┼────────┼────────────┤
+    │ Project Management │  15:43 │  1484.48 € │
+    ├────────────────────┼────────┼────────────┤
+    │                    │ 138:13 │ 11866.57 € │
+    └────────────────────┴────────┴────────────┘
+
+Or even more groups which also allows splitting between customers:
+
+    mite list last_month --group_by=customer,service
+
+    ┌─────────────────┬───────────────────┬────────┬────────────┐
+    │ Soup Inc.       │ Communication     │   3:48 │   361.00 € │
+    ├─────────────────┼───────────────────┼────────┼────────────┤
+    │ Soup Inc.       │ Programming       │  88:15 │  1383.75 € │
+    ├─────────────────┼───────────────────┼────────┼────────────┤
+    │ Soup Inc.       │ ProjectManagement │  15:20 │   456.67 € │
+    ├─────────────────┼───────────────────┼────────┼────────────┤
+    │ Musterman Corp. │ Communication     │   0:47 │          - │
+    ├─────────────────┼───────────────────┼────────┼────────────┤
+    │ Musterman Corp. │ Programming       │   7:35 │          - │
+    ├─────────────────┼───────────────────┼────────┼────────────┤
+    │ Beans Gmbh      │ Communication     │   8:28 │   133.98 € │
+    ├─────────────────┼───────────────────┼────────┼────────────┤
+    │ Beans Gmbh      │ Programming       │  13:37 │   203.36 € │
+    ├─────────────────┼───────────────────┼────────┼────────────┤
+    │ Beans Gmbh      │ ProjectManagement │   0:23 │    97.81 € │
+    ├─────────────────┼───────────────────┼────────┼────────────┤
+    │                 │                   │ 138:13 │  2635.15 € │
+    └─────────────────┴───────────────────┴────────┴────────────┘
+
+### Advanced Examples:
+
+When creating a bill for a project create a list of all services worked on in a month on a specific project:
+
+    mite list last_month --project_id 2681601 --group_by service
+
+    ┌────────────────────┬────────┬────────────┐
+    │ Communication      │  13:03 │   994.98 € │
+    ├────────────────────┼────────┼────────────┤
+    │ Programming        │ 109:27 │  9387.11 € │
+    ├────────────────────┼────────┼────────────┤
+    │ Project Management │  15:43 │  1484.48 € │
+    ├────────────────────┼────────┼────────────┤
+    │                    │ 138:13 │ 11866.57 € │
+    └────────────────────┴────────┴────────────┘
+
+In order to fill the details of the services you’ll need all the notes from that specific service. Get the notes for one specific service, project for the last month to put them on a bill or similar:
+
+    mite list last_month --project_id 2681601 --service_id 325329 --columns=note --format=text | sort -u
+
+## Columns
 
 The list command will by default list a set of default columns. You can specify which columns should be shown using the `--columns` option.
 
@@ -219,46 +280,6 @@ Creating a time-sheet for your clients can be done like this:
 Using Ids from the output for further processing using `xargs`:
 
     mite list --columns=id --format=text | xargs -n1 mite lock
-
-## Grouped lists
-
-For getting a rough overview of the monthly project or services distribution you can use the `--group_by` argument which will group the time entries. This could also be helpful for creating bills.
-
-    mite list last_month --group_by=service
-
-    ┌────────────────────┬────────┬────────────┐
-    │ Communication      │  13:03 │   994.98 € │
-    ├────────────────────┼────────┼────────────┤
-    │ Programming        │ 109:27 │  9387.11 € │
-    ├────────────────────┼────────┼────────────┤
-    │ Project Management │  15:43 │  1484.48 € │
-    ├────────────────────┼────────┼────────────┤
-    │                    │ 138:13 │ 11866.57 € │
-    └────────────────────┴────────┴────────────┘
-
-Or even more groups which also allows splitting between customers:
-
-    mite list last_month --group_by=customer,service
-
-    ┌─────────────────┬───────────────────┬────────┬────────────┐
-    │ Soup Inc.       │ Communication     │   3:48 │   361.00 € │
-    ├─────────────────┼───────────────────┼────────┼────────────┤
-    │ Soup Inc.       │ Programming       │  88:15 │  1383.75 € │
-    ├─────────────────┼───────────────────┼────────┼────────────┤
-    │ Soup Inc.       │ ProjectManagement │  15:20 │   456.67 € │
-    ├─────────────────┼───────────────────┼────────┼────────────┤
-    │ Musterman Corp. │ Communication     │   0:47 │          - │
-    ├─────────────────┼───────────────────┼────────┼────────────┤
-    │ Musterman Corp. │ Programming       │   7:35 │          - │
-    ├─────────────────┼───────────────────┼────────┼────────────┤
-    │ Beans Gmbh      │ Communication     │   8:28 │   133.98 € │
-    ├─────────────────┼───────────────────┼────────┼────────────┤
-    │ Beans Gmbh      │ Programming       │  13:37 │   203.36 € │
-    ├─────────────────┼───────────────────┼────────┼────────────┤
-    │ Beans Gmbh      │ ProjectManagement │   0:23 │    97.81 € │
-    ├─────────────────┼───────────────────┼────────┼────────────┤
-    │                 │                   │ 138:13 │  2635.15 € │
-    └─────────────────┴───────────────────┴────────┴────────────┘
 
 ## Budgets
 
