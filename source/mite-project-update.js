@@ -81,7 +81,7 @@ function main(projectId) {
 
 try {
   program
-    .action((id) => main(id))
+    .action(main)
     .parse(process.argv);
 } catch (err) {
   handleError(err);

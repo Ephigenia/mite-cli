@@ -33,6 +33,6 @@ module.exports = {
       commandOption.definition,
       alternateDescription ? alternateDescription : commandOption.description(),
       commandOption.parse
-    ]
+    ];
   }
-}
+};

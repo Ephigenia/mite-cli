@@ -12,7 +12,7 @@ let option = {
     return (
       'Defines the budget type that should be used. Only accepts one of the ' +
       'following options: ' + BUDGET_TYPES.join(', ')
-    )
+    );
   },
   validate: function(v) {
     return BUDGET_TYPES.indexOf(v) > -1;
