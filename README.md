@@ -534,11 +534,12 @@ The output of program is designed to look good to a human and shows the results 
 The following formats are supported:
 
 - csv (comma-seperated)
+- json
 - md (markdown)
 - table (cli-table)
-- tsv (tab-separated)
 - text (line-seperated)
-- 
+- tsv (tab-separated)
+
 There are alternative output formats which may be useful when you automatically process the results such as `csv` or `text`
 
     mite list last_week --format=csv --columns=user,id

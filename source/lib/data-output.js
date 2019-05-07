@@ -9,10 +9,11 @@ const markdownTable = require('markdown-table');
 
 const FORMAT = {
   CSV: 'csv',
-  TSV: 'tsv',
-  TABLE: 'table',
+  JSON: 'json',
   MD: 'md',
+  TABLE: 'table',
   TEXT: 'text',
+  TSV: 'tsv',
 };
 const FORMATS = Object.values(FORMAT);
 
@@ -81,6 +82,8 @@ function formatData(data, format, columns = []) {
   switch(format) {
     case 'csv':
       return csvString.stringify(data);
+    case 'json':
+      return JSON.stringify(data);
     case 'md':
       return markdownTable(data);
     case 'table': {
