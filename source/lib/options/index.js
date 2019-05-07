@@ -2,6 +2,7 @@
 
 const options = {
   archived: require('./archived'),
+  billable: require('./billable'),
   budget: require('./budget'),
   budgetType: require('./budget-type'),
   columns: require('./columns'),

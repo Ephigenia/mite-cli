@@ -7,19 +7,18 @@ const util = require('util');
 const pkg = require('./../package.json');
 const miteApi = require('mite-api');
 const config = require('./config');
+const { handleError, MissingRequiredArgumentError } = require('./lib/errors');
 
 program
   .version(pkg.version)
-  .arguments('<customerId>')
+  .arguments('[customerId]')
   .description(
-    'Deletes a specific customer',
-    // arguments description
+    'Delete a specific customer',
     {
       customerId: 'Id of the customer that should get deleted'
     }
   )
-  .on('--help', () => {
-    console.log(`
+  .on('--help', () => console.log(`
 Examples:
 
   Delete a single customer
@@ -27,23 +26,23 @@ Examples:
 
   Delete a whole set of customers
     mite customers --columns id --archived yes --format=text | xargs -n1 mite customer delete
-`);
-  })
-  .action((customerId) => {
-    const mite = miteApi(config.get());
-    return util.promisify(mite.deleteCustomer)(customerId)
-      .then(() => {
-        console.log('Successfully deleted customer (id: %s)', customerId);
-      })
-      .catch(err => {
-        console.error('Error while deleting customer (id: %s)', customerId, err && err.message || err);
-        process.exit(1);
-      });
-  })
-  .parse(process.argv);
+`));
 
-// show help message when the required first argument is not given
-if (!program.args.length) {
-  program.help();
-  process.exit();
+function main(customerId) {
+  if (!customerId) {
+    throw new MissingRequiredArgumentError('Missing required <customerId>');
+  }
+  const mite = miteApi(config.get());
+  return util.promisify(mite.deleteCustomer)(customerId)
+    .then(() => console.log(`Successfully deleted customer (id: ${customerId})`))
+    .catch(err => {
+      throw new Error(`Error while deleting customer (id: ${customerId}): ` + err && err.message || err);
+    })
+    .catch(handleError);
+}
+
+try {
+  program.action(main).parse(process.argv);
+} catch (err) {
+  handleError(err);
 }

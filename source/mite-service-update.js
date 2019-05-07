@@ -20,17 +20,8 @@ program
       serviceId: 'Id of the service which should get updated'
     }
   )
-  .option.apply(program, commandOptions.toArgs(commandOptions.archived, 'define the new archived state of the project'))
-  .option(
-    '--billable <true|false>',
-    'changes the archived state of the project',
-    ((val) => {
-      if (typeof val !== 'string') {
-        return val;
-      }
-      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
-    })
-  )
+  .option.apply(program, commandOptions.toArgs(commandOptions.archived, 'define the new archived state of the service'))
+  .option.apply(program, commandOptions.toArgs(commandOptions.archived, 'defines wheter the service is billable or not'))
   .option.apply(program, commandOptions.toArgs(commandOptions.hourlyRate))
   .option(
     '--name <name>',
@@ -42,7 +33,7 @@ program
   )
   .option(
     '--update-entries',
-    'Works only in compbination with hourly-rate. When used also updates all ' +
+    'Works only in combination with hourly-rate. When used also updates all ' +
     'already created time entries with the new hourly-rate',
   )
   .on('--help', () => console.log(`

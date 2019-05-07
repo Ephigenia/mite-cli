@@ -17,7 +17,7 @@ program
     'Updates a specific project',
     // arguments description
     {
-      projectId: 'Id of the project of which the note should be altered'
+      projectId: 'Id of the project of which the note should be altered Cupidatat enim dolore anim culpa ullamco laborum. Ut do quis aliqua et in sit ex irure in elit aliquip in. Anim exercitation ut commodo deserunt non aute et ad occaecat ut magna laborum mollit.'
     }
   )
   .option.apply(program, commandOptions.toArgs(commandOptions.archived, 'define the new archived state of the project'))
@@ -34,7 +34,7 @@ program
   )
   .option(
     '--update-entries',
-    'Works only in compbination with hourly-rate. When used also updates all ' +
+    'Works only in combination with hourly-rate. When used also updates all ' +
     'already created time entries of the project with the new hourly-rate',
   )
   .on('--help', () => console.log(`
