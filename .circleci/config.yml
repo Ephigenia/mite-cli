@@ -41,6 +41,16 @@ jobs:
           at: ~/project
       - run: npm run -s lint
 
+  test:security:
+    working_directory: ~/project
+    docker:
+      - image: circleci/node:10.15.1
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: if [ -z "$SNYK_TOKEN" ]; then echo "missing SNYK_TOKEN env variable"; exit 1; fi;
+      - run: npm run -s test:security
+
   outdated:
     working_directory: ~/project
     docker:
