@@ -11,7 +11,7 @@ const { TIME_FRAMES } = require('./../../constants');
 function dateCompletion(lastPartial) {
   const now = new Date();
   let options = [
-    now.toISOString(0, 10)
+    now.toISOString().substr(0, 10)
   ];
   // YYYY-MM- completion
   if (lastPartial.match(/^\d{1,4}-\d{1,2}-?$/)) {
@@ -49,14 +49,14 @@ module.exports = async ({ words, prev, lastPartial }) => {
       return ['yes', 'no'];
     case '--columns':
       return Object.keys(listCommand.columns.options).concat(['all']);
-    case '--customer_id':
+    case '--customer-id':
       return miteApi.getCustomers({ archived: false }).then(
         customers => customers.map(c => ({
           name: String(c.id),
           description: c.name
         }))
       );
-    case '--group_by':
+    case '--group-by':
       return listCommand.groupBy.options;
     case '--format':
     case '-f':
@@ -66,7 +66,7 @@ module.exports = async ({ words, prev, lastPartial }) => {
       return TIME_FRAMES.concat(dateCompletion(lastPartial));
     case '--locked':
       return ['yes', 'no'];
-    case '--project_id':
+    case '--project-id':
       return miteApi.getProjects({ archived: false }).then(
         projects => projects.map(c => ({
           name: String(c.id),
@@ -76,7 +76,7 @@ module.exports = async ({ words, prev, lastPartial }) => {
     case '--search':
     case '-s':
       return ['note'];
-    case '--service_id':
+    case '--service-id':
       return miteApi.getServices({ archived: false }).then(
         service => service.map(c => ({
           name: String(c.id),
@@ -87,7 +87,7 @@ module.exports = async ({ words, prev, lastPartial }) => {
       return listCommand.sort.options;
     case '--tracking':
       return ['yes', 'no'];
-    case '--user_id':
+    case '--user-id':
       return Promise.all([
         miteApi.getUsers({ archived: false }),
         miteApi.getMyself(),
@@ -102,7 +102,7 @@ module.exports = async ({ words, prev, lastPartial }) => {
   // date completion
   if (lastPartial) {
     const r = dateCompletion(lastPartial);
-    if (r) {
+    if (r && r.length > 1) {
       return r;
     }
   }
@@ -126,7 +126,7 @@ module.exports = async ({ words, prev, lastPartial }) => {
       description: 'define the columns that are shown',
     },
     {
-      name: '--customer_id',
+      name: '--customer-id',
       description: 'list only time entries from the given customer',
     },
     {
@@ -138,7 +138,7 @@ module.exports = async ({ words, prev, lastPartial }) => {
       description: 'define a start date from when time-entries should be shown',
     },
     {
-      name: '--group_by',
+      name: '--group-by',
       description: 'optional name of a property or multiple properties that should be used to group the time-entries',
     },
     {
@@ -146,7 +146,7 @@ module.exports = async ({ words, prev, lastPartial }) => {
       description: 'show help message',
     },
     {
-      name: '--project_id',
+      name: '--project-id',
       description: 'list only time entries from the given project',
     },
     {
@@ -158,7 +158,7 @@ module.exports = async ({ words, prev, lastPartial }) => {
       description: 'given a search query will list time-entries where the note matches the given query',
     },
     {
-      name: '--service_id',
+      name: '--service-id',
       description: 'list only time entries that have the given service assigned',
     },
     {
@@ -174,7 +174,7 @@ module.exports = async ({ words, prev, lastPartial }) => {
       description: 'show only currently active trackers',
     },
     {
-      name: '--user_id',
+      name: '--user-id',
       description: 'when defined will list only time-entries from the given user',
     },
   ];

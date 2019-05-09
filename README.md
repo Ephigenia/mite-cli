@@ -236,7 +236,7 @@ Or even more groups which also allows splitting between customers:
 
 When creating a bill for a project create a list of all services worked on in a month on a specific project:
 
-    mite list last_month --project_id 2681601 --group_by service
+    mite list last_month --project-id 2681601 --group_by service
 
     ┌────────────────────┬────────┬────────────┐
     │ Communication      │  13:03 │   994.98 € │
@@ -250,11 +250,11 @@ When creating a bill for a project create a list of all services worked on in a 
 
 In order to fill the details of the services you’ll need all the notes from that specific service. Get the notes for one specific service, project for the last month to put them on a bill or similar:
 
-    mite list last_month --project_id 2681601 --service_id 325329 --columns=note --format=text | sort -u
+    mite list last_month --project-id 2681601 --service-id 325329 --columns=note --format=text | sort -u
 
 ## Budgets
 
-The budgets command was removed cause the same result can be archived by calling: `mite list this_month --group_by=project`
+The budgets command was removed cause the same result can be archived by calling: `mite list this_month --group-by=project`
 
 ## New
 
@@ -324,7 +324,7 @@ Delete a single entry
 
 Deleting a set of entries filtered using `mite list` and unix tools:
 
-    mite list this_month --project_id 128717 --columns id --format=text | xargs -n1 mite delete
+    mite list this_month --project-id 128717 --columns id --format=text | xargs -n1 mite delete
 
 ## Un-/Lock Entry
 
@@ -338,7 +338,7 @@ Unlock a single time entry
 
 Locking all entries from the last month from a specific customer using `mite list` and `xargs`:
 
-    mite list last_month --customer_id 128171 --columns id --format=text | xargs -n1 mite lock
+    mite list last_month --customer-id 128171 --columns id --format=text | xargs -n1 mite lock
 
 ## Users
 
@@ -383,9 +383,9 @@ export all users to a csv file
 
 ## Projects
 
-List, filter and search for projects. Example showing only archived projects ordered by customer_id in ascending order
+List, filter and search for projects. Example showing only archived projects ordered by customer-id in ascending order
 
-    mite projects --archived yes --sort=customer_id
+    mite projects --archived yes --sort=customer-id
 
     ┌─────────┬───────────────┬──────────────────────────┬─────────────┬─────────┬──────────────────────────────────────────────────────────────────────────────────┐
     │ ID      │ Name          │ Customer                 │      Budget │    Rate │ Note                                                                             │
@@ -402,7 +402,7 @@ List, filter and search for projects. Example showing only archived projects ord
 
 list projects while setting different columns and export to csv:
 
-    mite projects --columns=id,customer_id,customer_name --format=csv > projects_export.csv
+    mite projects --columns=id,customer-id,customer_name --format=csv > projects_export.csv
 
 use the resulting projects in another command to archive the listed projects:
 
@@ -567,7 +567,7 @@ Using Ids from the output for further processing using `xargs`:
 
 Showing all notes from all entries from a specific service, to put them into a bill: 
 
-    mite list last_month --service_id 123 --project_id 456 --format=text --columns note
+    mite list last_month --service-id 123 --project-id 456 --format=text --columns note
 
 # Other Projects
 

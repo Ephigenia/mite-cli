@@ -28,7 +28,7 @@ module.exports = async ({ prev }) => {
       return miteApi.getCustomers().then(customers => customers.map(c => ({
         name: String(c.name)
       })));
-    case '--customer_id':
+    case '--customer-id':
       return miteApi.getCustomers().then(customers => customers.map(c => ({
         name: String(c.id),
         description: c.name
@@ -61,7 +61,7 @@ module.exports = async ({ prev }) => {
       description: 'given a regular expression will list only projects where the customers’s name matches',
     },
     {
-      name: '--customer_id',
+      name: '--customer-id',
       description: 'given a customer id will list only projects for that customer',
     },
     {

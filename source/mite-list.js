@@ -38,7 +38,7 @@ program
     config.get().listColumns
   )
   .option(
-    '--customer_id <customer_id>',
+    '--customer-id <id>',
     'customer id, can be either a single ID, or multiple comma-separated IDs.'
   )
   .option(
@@ -53,8 +53,8 @@ program
     'the format "YYYY-MM-DD". The period argument is ignored.'
   )
   .option(
-    '--group_by <value>',
-    'optional group_by parameter which should be used. Valid values are ' +
+    '--group-by <column>',
+    'optional grouping parameter which should be used. Valid values are ' +
     listCommand.groupBy.options.join(', ')
   )
   .option(
@@ -70,7 +70,7 @@ program
     null
   )
   .option(
-    '--project_id <project_id>',
+    '--project-id <id>',
     'project id, can be either a single ID, or multiple comma-separated IDs.'
   )
   .option(
@@ -100,7 +100,7 @@ program
     })
   )
   .option(
-    '--service_id <service_id>',
+    '--service-id <id>',
     'service id, can be either a single ID, or multiple comma-separated IDs.'
   )
   .option(
@@ -122,8 +122,8 @@ program
     listCommand.sort.default
   )
   .option(
-    '--user_id <user_id>',
-    'optional single user_id who’s time entries should be returned or ' +
+    '--user-id <id>',
+    'optional single user id who’s time entries should be returned or ' +
     'multiple values comma-separated. Note that the current user may not ' +
     'have the permission ot read other user’s time entries which will result ' +
     'in an empty response',
@@ -145,13 +145,13 @@ Examples:
     mite list this_year --search JIRA-123
 
   show all users who tracked billable entries ordered by the amount of time they have tracked:
-    mite list this_year --billable true --columns=user,duration --group_by=user --sort=duration
+    mite list this_year --billable true --columns=user,duration --group-by=user --sort=duration
 
   export all time-entries from the current month as csv
     mite list last_week --format=csv --columns=user,id
 
   create a markdown report of all customer and their generated profits
-    mite list this_year --format=md --group_by=customer --sort=revenue
+    mite list this_year --format=md --group-by=customer --sort=revenue
 
   The output of mite list can be forwarded to other commands using xargs. The
   following example will delete all matchin entries:
@@ -159,7 +159,7 @@ Examples:
 
   Get the notes for one specific service, project for the last month to put
   them on a bill or similar
-    mite list last_month --project_id 2681601 --service_id 325329 --columns=note --format=text | sort -u
+    mite list last_month --project-id 2681601 --service-id 325329 --columns=note --format=text | sort -u
 `);
   })
   .action(main)
@@ -172,17 +172,17 @@ function main(period) {
   const opts = {
     at: period,
     ...(typeof program.billable === 'boolean' && { billable: program.billable }),
-    ...(program.customer_id && { customer_id: program.customer_id }),
+    ...(program.customerId && { customer_id: program.customerId }),
     ...(program.reversed && { direction: 'desc' }),
-    ...(program.group_by && { group_by: program.group_by }),
+    ...(program.groupBy && { group_by: program.groupBy }),
     ...(program.limit && { limit: program.limit }),
     ...(typeof program.locked === 'boolean' && { locked: program.locked }),
     ...(program.search && { note: program.search }),
-    ...(program.project_id && { project_id: program.project_id }),
-    ...(program.service_id && { service_id: program.service_id }),
+    ...(program.projectId && { project_id: program.projectId }),
+    ...(program.serviceId && { service_id: program.serviceId }),
     ...(program.sort && { sort: program.sort }),
     ...(typeof program.tracking === 'boolean' && { tracking: program.tracking }),
-    ...(program.user_id && { user_id: program.user_id}),
+    ...(program.userId && { user_id: program.userId}),
   };
 
   if (program.from && program.to) {

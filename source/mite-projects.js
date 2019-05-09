@@ -23,7 +23,7 @@ program
     false // default list only not-archived projects
   )
   .option(
-    '--customer_id <id>',
+    '--customer-id <id>',
     'optional id of a customer (use mite customer) to filter the projects by'
   )
   .option(
@@ -93,7 +93,7 @@ async function main() {
   const opts = {
     limit: 10000,
     ...(program.search && { name: program.search }),
-    ...(program.customer_id && { customer_id: program.customer_id }),
+    ...(program.customerId && { customer_id: program.customerId }),
   };
 
   return miteApi.getProjects(opts)
