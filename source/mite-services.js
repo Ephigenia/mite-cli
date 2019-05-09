@@ -70,7 +70,7 @@ async function main() {
       const tableData = DataOutput.compileTableData(items, columns);
       console.log(DataOutput.formatData(tableData, program.format, columns));
     })
-    .catch(handleError);;
+    .catch(handleError);
 } // main
 
 try {

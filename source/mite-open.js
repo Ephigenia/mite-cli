@@ -7,7 +7,7 @@ const miteApi = require('mite-api');
 
 const pkg = require('./../package.json');
 const config = require('./config');
-const { handleError, MissingRequiredArgumentError } = require('./lib/errors');
+const { handleError } = require('./lib/errors');
 
 program
   .version(pkg.version)
@@ -56,7 +56,7 @@ function main(timeEntryId) {
     });
   })
   .catch(err => {
-    throw new Error(err && err.message || err)
+    throw new Error(err && err.message || err);
   })
   .catch(handleError);
 }
