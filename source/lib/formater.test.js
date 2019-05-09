@@ -8,6 +8,18 @@ const BUDGET_TYPE = require('./formater').BUDGET_TYPE;
 
 describe('formater', () => {
 
+  describe('booleanToHuman', () => {
+    it('returns "yes" for tru-ish values', () => {
+      expect(formater.booleanToHuman(true)).to.equal('yes');
+      expect(formater.booleanToHuman('X')).to.equal('yes');
+      expect(formater.booleanToHuman(1)).to.equal('yes');
+    });
+    it('returns "no" for tru-ish values', () => {
+      expect(formater.booleanToHuman(false)).to.equal('no');
+      expect(formater.booleanToHuman(null)).to.equal('no');
+    });
+  });
+
   describe('note', () => {
     it('strips line breaks by default', () => {
       expect(formater.note("a\r\nb")).to.equal("a b");

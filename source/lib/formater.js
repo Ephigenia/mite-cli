@@ -39,7 +39,7 @@ module.exports = {
     }
   },
 
-  booleanToHumanvalue(value) {
+  booleanToHuman(value) {
     return value ? 'yes' : 'no';
   },
 
