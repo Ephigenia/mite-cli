@@ -534,13 +534,13 @@ The output of program is designed to look good to a human and shows the results 
 The following formats are supported:
 
 - csv (comma-seperated)
-- json
+- json, *ignores ansi-colors & table headers*
 - md (markdown)
 - table (cli-table)
-- text (line-seperated)
+- text (line-seperated), *doesn’t show table headers*
 - tsv (tab-separated)
 
-There are alternative output formats which may be useful when you automatically process the results such as `csv` or `text`
+There are alternative output formats which may be useful when you automatically process the results such as `json`, `csv`, `text`:
 
     mite list last_week --format=csv --columns=user,id
 
@@ -555,7 +555,7 @@ There are alternative output formats which may be useful when you automatically 
     2018-10-29,Marcel Eichner,✔ 1:21
     ,,10:25
 
-This makes it very easy to further process the data, transform it into a HTML page or PDF.
+This makes it very easy to further process the data, transform it into a HTML page or PDF.   
 
 Creating a time-sheet for your clients can be done like this:
 
@@ -564,6 +564,10 @@ Creating a time-sheet for your clients can be done like this:
 Using Ids from the output for further processing using `xargs`:
 
     mite list --columns=id --format=text | xargs -n1 mite lock
+
+Showing all notes from all entries from a specific service, to put them into a bill: 
+
+    mite list last_month --service_id 123 --project_id 456 --format=text --columns note
 
 # Other Projects
 

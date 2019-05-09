@@ -7,6 +7,11 @@ const tableLib = require('table');
 const table = tableLib.table;
 const markdownTable = require('markdown-table');
 
+/**
+ * @type {FORMAT}
+ * @readonly
+ * @enum {string}
+ */
 const FORMAT = {
   CSV: 'csv',
   JSON: 'json',
@@ -61,7 +66,7 @@ function compileTableData(items, columns) {
 
 /**
  * @param {Array<Object>} data
- * @param {String} format
+ * @param {FORMAT} format
  * @param {Array<ColumnDefinition>} columns
  * @return {String}
  */
@@ -70,7 +75,7 @@ function formatData(data, format, columns = []) {
   assert(Array.isArray(columns), 'expeceted columns to be an array');
   assert.strictEqual(typeof format, 'string', 'expected format to be a string');
 
-  // adds table header when there are columns defined
+  // adds table header when there are more than one column defined
   if (columns && columns.length > 0) {
     data.unshift(columns
       .map(columnDefinition => columnDefinition.label)
@@ -82,8 +87,13 @@ function formatData(data, format, columns = []) {
   switch(format) {
     case 'csv':
       return csvString.stringify(data);
-    case 'json':
-      return JSON.stringify(data);
+    case 'json': {
+      // ignore table header
+      const jsonString = JSON.stringify(data.slice(1));
+      // remove ansi color codes
+      const ansiColorRegexp = /[\\u001b\\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g;
+      return jsonString.replace(ansiColorRegexp, '');
+    }
     case 'md':
       return markdownTable(data);
     case 'table': {
@@ -94,10 +104,10 @@ function formatData(data, format, columns = []) {
       return table(data, tableConfig);
     }
     case 'text':
-      // first data item contains the column names which should be omitted
-      return data.splice(1).join("\n");
+      // ignore table header
+      return data.slice(1).join('\n');
     case 'tsv':
-      return csvString.stringify(data, "\t");
+      return csvString.stringify(data, '\t');
     default:
       throw new Error(`Unknown format "${format}"`);
   }
