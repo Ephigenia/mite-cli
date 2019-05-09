@@ -7,78 +7,45 @@ const DataOutput = require('./lib/data-output');
 const pkg = require('./../package.json');
 const config = require('./config');
 const servicesCommand = require('./lib/commands/services');
-const columnOptions = require('./lib/options/columns');
-const sortOption = require('./lib/options/sort');
+const commandOptions = require('./lib/options');
+const { handleError } = require('./lib/errors');
 
 program
   .version(pkg.version)
   .description('list, filter & search for servuces')
-  .option(
-    '-a, --archived <true|false|all>',
-    'When used will only show either archived services or not archived ' +
-    'services',
-    ((val) => {
-      if (val === 'all') return 'all';
-      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
-    }),
-    'all'
-  )
-  .option(
-    '--billable <true|false|all>',
-    'wheter to show only billable or not-billable entries, no filter is used ' +
-    'when argument is not used',
-    ((val) => {
-      if (val === 'all') return 'all';
-      return ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1;
-    }),
-    'all'
-  )
-  .option(
-    '-f, --format <format>',
-    'defines the output format, valid options are ' + DataOutput.FORMATS.join(', '),
-    config.get('outputFormat')
-  )
-  .option(
-    '--columns <columns>',
-    columnOptions.description(servicesCommand.columns.options),
-    columnOptions.parse,
+  .option.apply(program, commandOptions.toArgs(commandOptions.archived, 'filter for archived or unarchived services only', 'all'))
+  .option.apply(program, commandOptions.toArgs(commandOptions.billable, 'filter for billable or not-billable services only', 'all'))
+  .option.apply(program, commandOptions.toArgs(commandOptions.format, undefined, config.get('outputFormat')))
+  .option.apply(program, commandOptions.toArgs(
+    commandOptions.columns,
+    commandOptions.columns.description(servicesCommand.columns.options),
     config.get().servicesColumns
-  )
+  ))
+  .option.apply(program, commandOptions.toArgs(
+    commandOptions.sort,
+    commandOptions.sort.description(servicesCommand.sort.options),
+    servicesCommand.sort.default
+  ))
   .option(
     '--search <query>',
     'optional search string which must be somewhere in the services’ name ' +
     '(case insensitive)'
   )
-  .option(
-    '--sort <column>',
-    sortOption.description(servicesCommand.sort.options),
-    sortOption.parse,
-    servicesCommand.sort.default
-  )
-  .on('--help', function() {
-    console.log(`
+  .on('--help', () => console.log(`
 Examples:
 
   show all services
     mite services
 
   show all archived services
-    mite service --archived=true
+    mite service --archived true
 
   show archived services with custom columns
-    mite services --columns=name,hourly_rate,created_at
+    mite services --columns name,hourly_rate,created_at
 
   export all archived services as csv
-    mite services --format=csv --columns=id,name,hourly_rate,billable > all_services.csv
-`);
-  })
-  .action(() => {
-    return main().catch(err => {
-      console.log(err && err.message || err);
-      process.exit(1);
-    });
-  })
-  .parse(process.argv);
+    mite services --format csv --columns id,name,hourly_rate,billable > all_services.csv
+  `));
 
 async function main() {
   const miteApi = require('./lib/mite-api')(config.get());
@@ -96,11 +63,18 @@ async function main() {
     )
     .then(items => miteApi.sort(
       items,
-      sortOption.resolve(program.sort, servicesCommand.sort.options),
+      commandOptions.sort.resolve(program.sort, servicesCommand.sort.options),
     ))
     .then(items => {
-      const columns = columnOptions.resolve(program.columns, servicesCommand.columns.options);
+      const columns = commandOptions.columns.resolve(program.columns, servicesCommand.columns.options);
       const tableData = DataOutput.compileTableData(items, columns);
       console.log(DataOutput.formatData(tableData, program.format, columns));
-    });
+    })
+    .catch(handleError);;
 } // main
+
+try {
+  program.action(main).parse(process.argv);
+} catch (err) {
+  handleError(err);
+}

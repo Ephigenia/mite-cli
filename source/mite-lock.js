@@ -7,53 +7,53 @@ const util = require('util');
 
 const pkg = require('./../package.json');
 const config = require('./config');
+const { handleError, MissingRequiredArgumentError } = require('./lib/errors');
 
 program
   .version(pkg.version)
+  .arguments('[timeEntryId]')
   .description(
     'Locks a specific time-entry identified by it’s id. ' +
     'The time-entry must either be owned by the requesting user or the ' +
     'requesting user must be an admin or owner. In that case the time entry ' +
     'can only be unlocked by an admin or owner.',
-    // object hash containing description of arguments
     {
       timeEntryId: 'The id of the time entry which should be locked'
-    })
-  .arguments('<timeEntryId>')
+    }
+  )
   .option(
     '--force',
-    'bypass user id or role restrictions as a admin or owner'
+    'try to bypass user id or role restrictions as a admin or owner'
   )
-  .on('--help', function() {
-    console.log(`
+  .on('--help', () => console.log(`
 Examples:
 
   Lock a single entry identified by it’s id:
     mite lock 1283761
 
   Lock multiple entries selected by using mite list:
-    mite list this_month --search="query" --columns id --format=text | xargs -n1 mite lock
-`);
-  })
-  .action((timeEntryId) => {
-    const mite = miteApi(config.get());
+    mite list this_month --search "query" --columns id --format text | xargs -n1 mite lock
+  `));
 
-    const data = {
-      locked: true,
-      ...(typeof program.force === 'boolean' && { force: program.force })
-    };
-    return util.promisify(mite.updateTimeEntry)(timeEntryId, data)
-      .then(() => {
-        console.log('Successfully locked time entry (id: %s)', timeEntryId);
-      })
-      .catch(err => {
-        console.log(err && err.message || err);
-        process.exit(1);
-      });
-  })
-  .parse(process.argv);
+function main(timeEntryId) {
+  if (!timeEntryId) {
+    throw new MissingRequiredArgumentError('Missing required <timeEntryId>');
+  }
+  const mite = miteApi(config.get());
+  const data = {
+    locked: true,
+    ...(typeof program.force === 'boolean' && { force: program.force })
+  };
+  return util.promisify(mite.updateTimeEntry)(timeEntryId, data)
+    .then(() => console.log(`Successfully locked time entry (id: ${timeEntryId})`))
+    .catch(err => {
+      throw new Error(`Error while locking time entry (id: ${timeEntryId}): ` + (err && err.message || err));
+    })
+    .catch(handleError);
+}
 
-if (!program.args.length) {
-  program.help();
-  process.exit();
+try {
+  program.action(main).parse(process.argv);
+} catch (err) {
+  handleError(err);
 }

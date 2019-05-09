@@ -25,8 +25,8 @@ Examples:
     mite customer delete 123456
 
   Delete a whole set of customers
-    mite customers --columns id --archived yes --format=text | xargs -n1 mite customer delete
-`));
+    mite customers --columns id --archived yes --format text | xargs -n1 mite customer delete
+  `));
 
 function main(customerId) {
   if (!customerId) {
@@ -36,7 +36,7 @@ function main(customerId) {
   return util.promisify(mite.deleteCustomer)(customerId)
     .then(() => console.log(`Successfully deleted customer (id: ${customerId})`))
     .catch(err => {
-      throw new Error(`Error while deleting customer (id: ${customerId}): ` + err && err.message || err);
+      throw new Error(`Error while deleting customer (id: ${customerId}): ` + (err && err.message || err));
     })
     .catch(handleError);
 }

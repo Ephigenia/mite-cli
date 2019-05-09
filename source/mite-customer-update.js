@@ -31,8 +31,8 @@ program
   )
   .option(
     '--update-entries',
-    'Works only in combination with hourly-rate. When used also updates all ' +
-    ' already created time entries with the new hourly-rate',
+    'will update also the associated time-entries when changing archived ' +
+    'state or hourly rate',
   )
   .on('--help', () => console.log(`
 Examples:
@@ -50,8 +50,8 @@ Examples:
     mite customer update --hourly-rate 9000 --update-entries 123456
 
   Unarchive all archived customers
-    mite customers --columns id --archived true --format=text | xargs -n1 mite customer update --archived false
-`));
+    mite customers --columns id --archived true --format text | xargs -n1 mite customer update --archived false
+  `));
 
 function main(customerId) {
   if (!customerId) {
@@ -68,7 +68,7 @@ function main(customerId) {
   return util.promisify(mite.updateCustomer)(customerId, data)
     .then(() => console.log(`Successfully updated customer (id: ${customerId})`))
     .catch(err => {
-      throw new Error(`Error while updating customer (id: ${customerId}): ` + err && err.message || err);
+      throw new Error(`Error while updating customer (id: ${customerId}): ` + (err && err.message || err));
     })
     .catch(handleError);
 }

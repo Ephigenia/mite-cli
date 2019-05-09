@@ -10,26 +10,24 @@ const ExternalEditor = require('external-editor');
 const pkg = require('./../package.json');
 const config = require('./config');
 const tracker = require('./lib/mite-tracker');
+const { handleError, MissingRequiredArgumentError } = require('./lib/errors');
 
 program
   .version(pkg.version)
+  .arguments('[timeEntryId]')
   .description(
     'Rewrite the note for the given time entry id or use the currently ' +
     'running time entry and edit it’s note',
     {
-      timeEntryId: 'Id of the time entry of which the note should be altered'
+      timeEntryId: 'optional id of the time entry that should be altered, ' +
+        'if not given the currently running entry is used'
     }
   )
   .option(
     '-e, --editor',
     'open preferred $EDITOR for editing'
   )
-  .arguments('<timeEntryId>')
-  .action((timeEntryId) => {
-    main(timeEntryId);
-  })
-  .on('--help', function() {
-    console.log(`
+  .on('--help', () => console.log(`
 Examples:
 
   Interactively change the note of the given entry:
@@ -37,13 +35,7 @@ Examples:
 
   Open the $EDITOR or $VISUAL to edit the note, as soon as the editor is closed the note will be saved
     mite amend --editor 127361
-`);
-  })
-  .parse(process.argv);
-
-if (!program.args.length) {
-  main(null);
-}
+    `));
 
 function main(timeEntryId) {
   const mite = miteApi(config.get());
@@ -53,18 +45,22 @@ function main(timeEntryId) {
   const edit = util.promisify(ExternalEditor.editAsync);
 
   let promise = null;
+
   if (!timeEntryId) {
     promise = miteTracker.get()
       .then(result => {
         if (!result || !result.tracker || !result.tracker.tracking_time_entry) {
-          throw new Error('Either there was no id given or no running time-tracker found.');
+          throw new MissingRequiredArgumentError(
+            'Either there was no id given or no running time-tracker found.'
+          );
         }
         return getTimeEntry(result.tracker.tracking_time_entry.id);
       });
   } else {
     promise = getTimeEntry(timeEntryId);
   }
-  promise
+
+  return promise
     .then(data => {
       if (!data) {
         throw new Error('Unable to find time entry with the given ID');
@@ -79,7 +75,6 @@ function main(timeEntryId) {
           return { note: editedText };
         });
       }
-
       const questions = [
         {
           type: program.editor ? 'editor' : 'input',
@@ -91,11 +86,15 @@ function main(timeEntryId) {
       return inquirer.prompt(questions);
     })
     .then(entry => updateTimeEntry(timeEntryId, entry))
-    .then(() => {
-      console.log('Successfully modified note of time entry (id: %s)', timeEntryId);
-    })
+    .then(() => console.log(`Successfully modified note of time entry (id: ${timeEntryId})`))
     .catch(err => {
-      console.log(err && err.message || err);
-      process.exit(1);
-    });
+      throw new Error(`Error while updating time-entry (id: ${timeEntryId}: ` + (err && err.message || err));
+    })
+    .catch(handleError);
+}
+
+try {
+  program.action(main).parse(process.argv);
+} catch (err) {
+  handleError(err);
 }

@@ -20,7 +20,6 @@ program
       serviceId: 'Id of the service which should get updated'
     }
   )
-  .option.apply(program, commandOptions.toArgs(commandOptions.archived, 'define the new archived state of the service'))
   .option.apply(program, commandOptions.toArgs(commandOptions.archived, 'defines wheter the service is billable or not'))
   .option.apply(program, commandOptions.toArgs(commandOptions.hourlyRate))
   .option(
@@ -33,8 +32,8 @@ program
   )
   .option(
     '--update-entries',
-    'Works only in combination with hourly-rate. When used also updates all ' +
-    'already created time entries with the new hourly-rate',
+    'will update also the associated time-entries when changing archived ' +
+    'state or hourly rate',
   )
   .on('--help', () => console.log(`
 Examples:
@@ -52,8 +51,8 @@ Examples:
     mite service update --name "new name" 123456
 
   Unarchive all archived services
-    mite services --archived false --columns id --format=text | xargs -n1 mite service update --archived true
-`));
+    mite services --archived false --columns id --format text | xargs -n1 mite service update --archived true
+  `));
 
 function main(serviceId) {
   if (!serviceId) {

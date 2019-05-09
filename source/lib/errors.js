@@ -34,7 +34,7 @@ function handleError(error) {
   const exitCode = error.exitCode || DEFAULT_EXIT_CODE;
 
   if (NODE_ENV === 'production') {
-    console.error(error.message);
+    console.error(error.message || error);
     process.exit(exitCode);
   } else {
     throw error;

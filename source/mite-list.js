@@ -11,6 +11,7 @@ const formater = require('./lib/formater');
 const DataOutput = require('./lib/data-output');
 const listCommand = require('./lib/commands/list');
 const columnOptions = require('./lib/options/columns');
+const commandOptions = require('./lib/options');
 
 // set a default period argument if not set
 if (!process.argv[2] || process.argv[2].substr(0, 1) === '-' && process.argv[2] !== '--help') {
@@ -25,11 +26,8 @@ program
       'or a single date. F.e. "today" or "last_week or "2019-03-17"'
   })
   .arguments('<period>')
-  .option(
-    '--billable <true|false>',
-    'wheter to show only billable or not-billable entries, all kinds of entries are returned by default',
-    (val => ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1),
-    null
+  .option.apply(program, commandOptions.toArgs(commandOptions.billable),
+    'show entries which are billable or not billable'
   )
   .option(
     '--columns <columns>',
@@ -41,11 +39,7 @@ program
     '--customer-id <id>',
     'customer id, can be either a single ID, or multiple comma-separated IDs.'
   )
-  .option(
-    '-f, --format <format>',
-    'defines the output format, valid options are ' + DataOutput.FORMATS.join(', '),
-    config.get('outputFormat')
-  )
+  .option.apply(program, commandOptions.toArgs(commandOptions.format, null, config.get('outputFormat')))
   .option(
     '--from <period|YYYY-MM-DD>',
     'in combination with "to" used for selecting a specific time frame of ' +
@@ -79,12 +73,7 @@ program
     'time entries to return, same as "period" argument or a specific date in ' +
     'the format "YYYY-MM-DD". The period argument is ignored.'
   )
-  .option(
-    '--tracking <true|false>',
-    'wheter to show only currently running entries or not running entries',
-    (val => ['true', 'yes', 'ja', 'ok', '1'].indexOf(val.toLowerCase()) > -1),
-    null
-  )
+  .option.apply(program, commandOptions.toArgs(commandOptions.tracking))
   .option(
     '--reversed',
     'reverse the sorting direction',
@@ -103,24 +92,11 @@ program
     '--service-id <id>',
     'service id, can be either a single ID, or multiple comma-separated IDs.'
   )
-  .option(
-    '--sort <column>',
-    `optional column the results should be sorted `+
-    `(default: "${listCommand.sort.default}"), ` +
-    `valid values: ${listCommand.sort.options.join(', ')}`,
-    (value) => {
-      if (listCommand.sort.options.indexOf(value) === -1) {
-        console.error(
-          'Invalid value for sort option: "%s", valid values are: ',
-          value,
-          listCommand.sort.options.join(', ')
-        );
-        process.exit(2);
-      }
-      return value;
-    },
+  .option.apply(program, commandOptions.toArgs(
+    commandOptions.sort,
+    commandOptions.sort.description(listCommand.sort.options),
     listCommand.sort.default
-  )
+  ))
   .option(
     '--user-id <id>',
     'optional single user id who’s time entries should be returned or ' +
@@ -145,21 +121,21 @@ Examples:
     mite list this_year --search JIRA-123
 
   show all users who tracked billable entries ordered by the amount of time they have tracked:
-    mite list this_year --billable true --columns=user,duration --group-by=user --sort=duration
+    mite list this_year --billable true --columns user,duration --group-by user --sort duration
 
   export all time-entries from the current month as csv
-    mite list last_week --format=csv --columns=user,id
+    mite list last_week --format csv --columns user,id
 
   create a markdown report of all customer and their generated profits
-    mite list this_year --format=md --group-by=customer --sort=revenue
+    mite list this_year --format md --group-by customer --sort revenue
 
   The output of mite list can be forwarded to other commands using xargs. The
   following example will delete all matchin entries:
-    mite list this_month --search="query" --columns id --format=text | xargs -n1 mite delete
+    mite list this_month --search="query" --columns id --format text | xargs -n1 mite delete
 
   Get the notes for one specific service, project for the last month to put
   them on a bill or similar
-    mite list last_month --project-id 2681601 --service-id 325329 --columns=note --format=text | sort -u
+    mite list last_month --project-id 2681601 --service-id 325329 --columns note --format text | sort -u
 `);
   })
   .action(main)
@@ -214,8 +190,8 @@ function main(period) {
           groupedTimeEntry.project_name || groupedTimeEntry.project_id,
           groupedTimeEntry.service_name || groupedTimeEntry.service_id,
           formater.minutesToDuration(groupedTimeEntry.minutes || 0),
-          groupedTimeEntry.revenue === null ? '-' : formater.budget(formater.BUDGET_TYPE.CENTS, groupedTimeEntry.revenue || 0),
-        ].filter((v) => (typeof v !== 'undefined'));
+          formater.budget(formater.BUDGET_TYPE.CENTS, groupedTimeEntry.revenue || 0),
+        ].filter(v => v);
       });
 
       const columnCount = tableData[0].length;

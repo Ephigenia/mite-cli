@@ -5,6 +5,7 @@ const program = require('commander');
 
 const pkg = require('./../package.json');
 const autoComplete = require('./lib/auto-complete');
+const { handleError, GeneralError } = require('./lib/errors');
 
 program
   .version(pkg.version);
@@ -19,9 +20,9 @@ program.command('install')
   .action(() => {
     autoComplete.install()
       .catch(err => {
-        console.error('error while installing autocompletion for mite', err);
-        process.exit(2);
-      });
+        throw new GeneralError('error while installing autocompletion for mite ' + err);
+      })
+      .catch(handleError);
   });
 
 program.command('uninstall')
@@ -29,9 +30,9 @@ program.command('uninstall')
   .action(() => {
     autoComplete.uninstall()
       .catch(err => {
-        console.error('error while un-installing autocompletion for mite', err);
-        process.exit(2);
-      });
+        throw new GeneralError('error while un-installing autocompletion for mite ' + err);
+      })
+      .catch(handleError);
   });
 
 program.parse(process.argv);

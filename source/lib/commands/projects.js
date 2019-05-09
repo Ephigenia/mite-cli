@@ -3,7 +3,7 @@
 const formater = require('./../formater');
 
 module.exports.sort = {
-  default: '',
+  default: 'name',
   options: [
     'archived',
     'budget',

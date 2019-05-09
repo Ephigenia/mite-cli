@@ -5,27 +5,30 @@ const program = require('commander');
 
 const pkg = require('./../package.json');
 const config = require('./config');
+const { handleError, GeneralError } = require('./lib/errors');
 
-program
-  .version(pkg.version)
-  .description('stops any running time entry')
-  .parse(process.argv);
+function main() {
+  const miteTracker = require('./lib/mite-tracker')(config.get());
+  miteTracker.get()
+    .then((response) => {
+      if (!response.tracker || !response.tracker.tracking_time_entry) {
+        throw new GeneralError('No running tracker found.');
+      }
+      return response.tracker.tracking_time_entry.id;
+    })
+    .then((timeEntryId) => miteTracker.stop(timeEntryId).then(() => timeEntryId))
+    .then((timeEntryId) => console.log(
+      `Successfully stopped time tracking (id: ${timeEntryId})`
+    ))
+    .catch(handleError);
+}
 
-const miteTracker = require('./lib/mite-tracker')(config.get());
-miteTracker.get()
-  .then((response) => {
-    if (!response.tracker || !response.tracker.tracking_time_entry) {
-      console.log('No running tracker found.');
-      process.exit(0);
-    }
-    return response.tracker.tracking_time_entry.id;
-  })
-  .then((timeEntryId) => {
-    return miteTracker.stop(timeEntryId).then(() => {
-      console.log('Successfully stopped time tracking (id: %s)', timeEntryId);
-    });
-  })
-  .catch((err) => {
-    console.log('Error while stopping time entry: %s', err && err.message || err);
-    process.exit(1);
-  });
+try {
+  program
+    .version(pkg.version)
+    .description('stops any running time entry')
+    .action(main)
+    .parse(process.argv);
+} catch (err) {
+  handleError(err);
+}

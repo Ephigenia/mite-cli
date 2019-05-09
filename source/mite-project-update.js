@@ -34,8 +34,8 @@ program
   )
   .option(
     '--update-entries',
-    'Works only in combination with hourly-rate. When used also updates all ' +
-    'already created time entries of the project with the new hourly-rate',
+    'will update also the associated time-entries when changing archived ' +
+    'stat or, hourly rate',
   )
   .on('--help', () => console.log(`
 Examples:
@@ -50,7 +50,7 @@ Change the name and note of a project
   mite project update --name "new name" --note="my new note" 123456
 
 Unarchive all archived projects
-  mite projects --archived false --columns id --format=text | xargs -n1 mite project update --archived true
+  mite projects --archived false --columns id --format text | xargs -n1 mite project update --archived true
 
 Update the hourly_rate and update all time-entries
   mite project update --hourly-rate 9000 --update-entries 1234

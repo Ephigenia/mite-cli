@@ -6,8 +6,10 @@ const options = {
   budget: require('./budget'),
   budgetType: require('./budget-type'),
   columns: require('./columns'),
+  format: require('./format'),
   hourlyRate: require('./hourly-rate'),
   sort: require('./sort'),
+  tracking: require('./tracking'),
 };
 
 module.exports = {
@@ -27,13 +29,15 @@ module.exports = {
    *   be used to create the array
    * @param {string} alternateDescription optional alternate description for
    *   the argument
+   * @param {string} defaultValue optional default Value that should be used
    * @return {Array<function|string>}
    */
-  toArgs: (commandOption, alternateDescription) => {
+  toArgs: (commandOption, alternateDescription, defaultValue) => {
     return [
       commandOption.definition,
       alternateDescription ? alternateDescription : commandOption.description(),
-      commandOption.parse
+      commandOption.parse,
+      defaultValue
     ];
   }
 };

@@ -6,46 +6,39 @@ const miteApi = require('mite-api');
 
 const pkg = require('./../package.json');
 const config = require('./config');
+const { handleError, MissingRequiredArgumentError } = require('./lib/errors');
 
 program
   .version(pkg.version)
-  .description('deletes a allready existing time entry', {
+  .arguments('[timeEntryId]')
+  .description('delete a time entry', {
     timeEntryId: 'The id of the time entry which should be deleted'
   })
-  .arguments('<timeEntryId>')
-  .on('--help', function() {
-    console.log(`
+  .on('--help', () => console.log(`
 Examples:
 
   Delete a single entry identified by it’s id:
     mite delete 1283761
 
   Delete multiple entries from a project selected by using mite list:
-    mite list this_month --project-id=123128 --columns=id --format=text | xargs -n1 mite delete
-`);
-  })
-  .action((timeEntryId) => {
-    const mite = miteApi(config.get());
-    mite.deleteTimeEntry(timeEntryId, (err, response) => {
-      if (!err) {
-        console.log(
-          'Successfully deleted time entry with the id "%s"',
-          timeEntryId
-        );
-        process.exit(0);
-      }
-      console.log('Error while deleting time entry "%s"', timeEntryId);
-      if (data) {
-        var data = JSON.parse(response);
-        console.error(data.error);
-        process.exit(1);
-        return;
-      }
-    });
-  })
-  .parse(process.argv);
+    mite list this_month --project-id 123128 --columns id --format text | xargs -n1 mite delete
+`));
 
-if (!program.args.length) {
-  program.help();
-  process.exit();
+function main(timeEntryId) {
+  if (!timeEntryId) {
+    throw new MissingRequiredArgumentError('Missing required argument <timeEntryId>');
+  }
+  const mite = miteApi(config.get());
+  mite.deleteTimeEntry(timeEntryId, (err) => {
+    if (err) {
+      handleError(new Error(`Error while deleted time entry (id: ${timeEntryId}) ` + (err && err.message || err)));
+    }
+    console.log(`Successfully deleted time entry (id: ${timeEntryId})`);
+  });
+}
+
+try {
+  program.action(main).parse(process.argv);
+} catch (err) {
+  handleError(err);
 }

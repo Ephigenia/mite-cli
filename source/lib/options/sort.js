@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = {
+  definition: '--sort <column>',
   description: (options) => {
     return (
       `optional column name(s) which define the order of the results shown. ` +

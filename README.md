@@ -182,7 +182,7 @@ Or Specific dates:
 
 Or Custom periods of time
 
-    mite list --from=2018-04-01 --to=2018-04-15
+    mite list --from 2018-04-01 --to 2018-04-15
 
 Or search for specific entries in all time-entries from the current year
 
@@ -250,11 +250,11 @@ When creating a bill for a project create a list of all services worked on in a 
 
 In order to fill the details of the services you’ll need all the notes from that specific service. Get the notes for one specific service, project for the last month to put them on a bill or similar:
 
-    mite list last_month --project-id 2681601 --service-id 325329 --columns=note --format=text | sort -u
+    mite list last_month --project-id 2681601 --service-id 325329 --columns note --format text | sort -u
 
 ## Budgets
 
-The budgets command was removed cause the same result can be archived by calling: `mite list this_month --group-by=project`
+The budgets command was removed cause the same result can be archived by calling: `mite list this_month --group-by project`
 
 ## New
 
@@ -324,7 +324,7 @@ Delete a single entry
 
 Deleting a set of entries filtered using `mite list` and unix tools:
 
-    mite list this_month --project-id 128717 --columns id --format=text | xargs -n1 mite delete
+    mite list this_month --project-id 128717 --columns id --format text | xargs -n1 mite delete
 
 ## Un-/Lock Entry
 
@@ -338,7 +338,7 @@ Unlock a single time entry
 
 Locking all entries from the last month from a specific customer using `mite list` and `xargs`:
 
-    mite list last_month --customer-id 128171 --columns id --format=text | xargs -n1 mite lock
+    mite list last_month --customer-id 128171 --columns id --format text | xargs -n1 mite lock
 
 ## Users
 
@@ -378,14 +378,14 @@ show all time tracking users from a company (all have a ephigenia.de email addre
 
 export all users to a csv file
 
-    mite users --columns=id,role,name,email,archived,language --format=csv > users.csv
+    mite users --columns id,role,name,email,archived,language --format csv > users.csv
 
 
 ## Projects
 
 List, filter and search for projects. Example showing only archived projects ordered by customer-id in ascending order
 
-    mite projects --archived yes --sort=customer-id
+    mite projects --archived yes --sort customer-id
 
     ┌─────────┬───────────────┬──────────────────────────┬─────────────┬─────────┬──────────────────────────────────────────────────────────────────────────────────┐
     │ ID      │ Name          │ Customer                 │      Budget │    Rate │ Note                                                                             │
@@ -402,11 +402,11 @@ List, filter and search for projects. Example showing only archived projects ord
 
 list projects while setting different columns and export to csv:
 
-    mite projects --columns=id,customer-id,customer_name --format=csv > projects_export.csv
+    mite projects --columns id,customer-id,customer_name --format csv > projects_export.csv
 
 use the resulting projects in another command to archive the listed projects:
 
-    mite projects --columns=id --format=text | xargs -n1 mite project update --archived false
+    mite projects --columns id --format text | xargs -n1 mite project update --archived false
 
 ### Update Project
 
@@ -416,7 +416,7 @@ Archive a single project
 
 Set the note and name of a project 
     
-    mite project update --name="js prototype" --note="prototype development" 12344567
+    mite project update --name "js prototype" --note="prototype development" 12344567
 
 Archive multiple projects using xargs:
 
@@ -430,13 +430,13 @@ Delete a single project
 
 Delete all archived projects
 
-    mite projects --columns id --archived yes --format=text | xargs -n1 mite project delete
+    mite projects --columns id --archived yes --format text | xargs -n1 mite project delete
 
 ## Customers
 
 List, filter and search for customers. Archived customers will be shown in grey.
 
-    mite customers list --search web --sort=id
+    mite customers list --search web --sort id
 
     ┌────────┬─────────────────┬─────────┬─────────────────────────────────────┐
     │ ID     │ Name            │ Rate    │ Note                                │
@@ -451,11 +451,11 @@ List, filter and search for customers. Archived customers will be shown in grey.
 
 Use different columns
 
-    mite customers --colums=name,hourly_rate
+    mite customers --colums name,hourly_rate
 
 Export all archived customers
 
-    mite customers --archived=true --format=csv > archived_customers.json
+    mite customers --archived true --format csv > archived_customers.json
 
 ### Update Customer
 
@@ -475,7 +475,7 @@ Delete a single customer
 
 Delete a whole set of customers
 
-    mite customers --columns id --archived yes --format=text | xargs -n1 mite customer delete
+    mite customers --columns id --archived yes --format text | xargs -n1 mite customer delete
 
 ## Services
 
@@ -497,13 +497,13 @@ List, filter and search for services. Archived services will be grey.
 
 ## Columns
 
-Every command that produces a tabular output uses a default set of columns per command. You can specify which columns should be shown using the `--columns` option or use `--columns=all` to show all available columns.
+Every command that produces a tabular output uses a default set of columns per command. You can specify which columns should be shown using the `--columns` option or use `--columns all` to show all available columns.
 
 The default column set can be changed per command using the config options that end with `*Columns`.
 
 The following example will only show the user and his durations from last week including the sum of the durations:
 
-    mite list last_week --billable false --columns=user,duration
+    mite list last_week --billable false --columns user,duration
 
     ┌────────────────┬────────────┐
     │ User           │   Duration │
@@ -525,7 +525,7 @@ Specifying the columns is important when you want to use the ids of items in oth
 
 The following example uses the ids of all time entries to lock them:
 
-    mite list last_month --columns=id --format=text | xargs -n1 mite lock
+    mite list last_month --columns id --format text | xargs -n1 mite lock
 
 ## Alternate Output formats
 
@@ -542,7 +542,7 @@ The following formats are supported:
 
 There are alternative output formats which may be useful when you automatically process the results such as `json`, `csv`, `text`:
 
-    mite list last_week --format=csv --columns=user,id
+    mite list last_week --format csv --columns user,id
 
     Date,User,Duration
     2018-11-02,Marcel Eichner,1:10
@@ -559,15 +559,15 @@ This makes it very easy to further process the data, transform it into a HTML pa
 
 Creating a time-sheet for your clients can be done like this:
 
-    mite list last_month --format=csv --columns=date,service,note,duration
+    mite list last_month --format csv --columns date,service,note,duration
 
 Using Ids from the output for further processing using `xargs`:
 
-    mite list --columns=id --format=text | xargs -n1 mite lock
+    mite list --columns id --format text | xargs -n1 mite lock
 
 Showing all notes from all entries from a specific service, to put them into a bill: 
 
-    mite list last_month --service-id 123 --project-id 456 --format=text --columns note
+    mite list last_month --service-id 123 --project-id 456 --format text --columns note
 
 # Other Projects
 

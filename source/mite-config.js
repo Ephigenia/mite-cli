@@ -6,6 +6,7 @@ const program = require('commander');
 
 const pkg = require('./../package.json');
 const config = require('./config');
+const { handleError, MissingRequiredArgumentError, GeneralError } = require('./lib/errors');
 
 program
   .version(pkg.version);
@@ -16,8 +17,7 @@ program
     key: 'the configuration key which should be set',
     value: 'the value which should be used'
   })
-  .on('--help', function() {
-    console.log(`
+  .on('--help', () => console.log(`
 Examples:
 
   set the subdomain and api key that should be used
@@ -26,39 +26,41 @@ Examples:
 
   set the columns for the list command:
     mite config set listColumns date,duration,note,service
-`);
-  })
+  `))
   .action((key, value) => {
-    if (!key) {
-      console.error('No configuration key given, unable to set a variable');
-      process.exit(1);
+    try {
+      if (!key) {
+        throw new MissingRequiredArgumentError(
+          'No configuration key given, unable to set a variable'
+        );
+      }
+      config.set(key, value);
+      config.save((err) => {
+        if (err) {
+          throw new GeneralError(err.message);
+        }
+        if (value === undefined) {
+          console.log(`successfully set "${key}" to the default value`);
+        } else {
+          console.log(`successfully set "${key}" to "${value}"`);
+        }
+        // make sure file is only write- and readable by the user
+        const configFilename = config.stores.file.file;
+        fs.chmodSync(configFilename, 0o600);
+      });
+    } catch (err) {
+      handleError(err);
     }
-    config.set(key, value);
-    config.save((err) => {
-      if (err) {
-        console.error(err.message);
-        process.exit(1);
-        return;
-      }
-      if (value === undefined) {
-        console.log(`successfully set "${key}" to the default value`);
-      } else {
-        console.log(`successfully set "${key}" to "${value}"`);
-      }
-      // make sure file is only write- and readable by the user
-      const configFilename = config.stores.file.file;
-      fs.chmodSync(configFilename, 0o600);
-    });
   });
 
 program.command('get [key]')
   .description('get a configruation variable’s value')
-  .on('--help', function() {
-    console.log();
-    console.log('Examples:');
-    console.log();
-    console.log('  mite config get account');
-  })
+  .on('--help', () => console.log(`
+Examples:
+
+  Get the current value of the "account" config variable:
+    mite config get account
+  `))
   .action((key) => console.log(config.get(key)));
 
 program.command('list')

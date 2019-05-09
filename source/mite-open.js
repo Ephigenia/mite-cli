@@ -7,20 +7,19 @@ const miteApi = require('mite-api');
 
 const pkg = require('./../package.json');
 const config = require('./config');
+const { handleError, MissingRequiredArgumentError } = require('./lib/errors');
 
 program
   .version(pkg.version)
+  .arguments('[timeEntryId]')
   .description(
     'opens the system’s default browser on the mite organization’s homepage ' +
     'while optionally open up the given time entry.',
-    // argument descriptions
     {
       timeEntryId: 'optional time-entry id which should be opened in the browser'
     }
   )
-  .arguments('<timeEntryId>')
-  .on('--help', function() {
-    console.log(`
+  .on('--help', () => console.log(`
 Examples:
 
   Open the organizations mite homepage in the system’s default browser:
@@ -28,16 +27,7 @@ Examples:
 
   Open the given time entry detail page in the default browser:
     mite open 128372
-`);
-  })
-  .action((timeEntryId) => {
-    main(timeEntryId);
-  })
-  .parse(process.argv);
-
-if (!program.args.length) {
-  main(null);
-}
+  `));
 
 function main(timeEntryId) {
   return new Promise((resolve, reject) => {
@@ -56,7 +46,7 @@ function main(timeEntryId) {
     });
   })
   .then((entry) => {
-    let url = 'https://' + config.get('account') + '.mite.yo.lk/';
+    let url = `https://${config.get('account')}.mite.yo.lk/`;
     console.log('No time entry id given, opening the organisation’s account');
     if (entry) {
       url += 'daily/#' + (entry.date_at).replace('-', '/') + '?open=time_entry_' + entry.id;
@@ -65,9 +55,15 @@ function main(timeEntryId) {
       process.exit(0);
     });
   })
-
   .catch(err => {
-    console.log(err && err.message || err);
-    process.exit(1);
-  });
+    throw new Error(err && err.message || err)
+  })
+  .catch(handleError);
+}
+
+
+try {
+  program.action(main).parse(process.argv);
+} catch (err) {
+  handleError(err);
 }

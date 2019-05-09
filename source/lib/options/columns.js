@@ -1,6 +1,7 @@
 'use strict';
 
 module.exports = {
+  definition: '--columns <columns>',
   description: (options) => {
     return (
       'custom list of columns to use in the output, pass in a comma-separated ' +

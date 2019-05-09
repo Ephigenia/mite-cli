@@ -11,7 +11,7 @@ const { handleError, MissingRequiredArgumentError } = require('./lib/errors');
 
 program
   .version(pkg.version)
-  .arguments('<projectId>')
+  .arguments('[projectId]')
   .description(
     'Deletes a specific project',
     {
@@ -25,7 +25,7 @@ Examples:
     mite project delete 123456
 
   Delete a whole set of projects
-    mite projects --columns id --archived yes --format=text | xargs -n1 mite project delete
+    mite projects --columns id --archived yes --format text | xargs -n1 mite project delete
 `));
 
 function main(projectId) {
@@ -36,7 +36,7 @@ function main(projectId) {
   return util.promisify(mite.deleteProject)(projectId)
     .then(() => console.log(`Successfully deleted project (id: ${projectId})`))
     .catch(err => {
-      throw new Error(`Error while deleting project (id: ${projectId}): ` + err && err.message || err);
+      throw new Error(`Error while deleting project (id: ${projectId}): ` + (err && err.message || err));
     })
     .catch(handleError);
 }
