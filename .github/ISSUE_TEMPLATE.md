@@ -6,7 +6,6 @@
     - mite-cli version
  -->
 
-
 ## Description
 <!---
     Provide a general summary of the issue in the Title above
@@ -27,11 +26,6 @@
 <!---
     reproduce this bug. Include code, command line arguments, response bodies and everything that helps a developer to reproduce the issue, if relevant
 -->
--  
--  
--  
--  
-
 
 ## Possible Solution
 <!---

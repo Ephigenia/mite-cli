@@ -11,38 +11,38 @@ Ease to use CLI tool for creating, listing, starting and stopping time tracking 
 - [Features](#features)
 - [Install](#install)
 - [Configuration](#configuration)
-  - [Advanced Configuration Options](#advanced-configuration-options)
-  - [Auto-Completion](#auto-completion)
+    - [Advanced Configuration Options](#advanced-configuration-options)
+    - [Auto-Completion](#auto-completion)
 - [Usage](#usage)
-  - [List](#list)
-    - [Filter by time](#filter-by-time)
-    - [Other Filters](#other-filters)
-    - [Grouping](#grouping)
-    - [Advanced Examples](#advanced-examples)
-  - [Budgets](#budgets)
-  - [New](#new)
-    - [Interactive](#interactive)
-    - [Non-Interactive](#non-interactive)
-    - [Advanced Usage](#advanced-usage)
-  - [Open](#open)
-  - [Tracker](#tracker)
-  - [Stop Tracker](#stop-tracker)
-  - [Edit Currently Tracked Note](#edit-currently-tracked-note)
-  - [Delete entry](#delete-entry)
-  - [Un-/Lock Entry](#un-lock-entry)
-  - [Users](#users)
-  - [Projects](#projects)
-    - [Update Project](#update-project)
-  - [Delete Project](#delete-project)
-  - [Customers](#customers)
-    - [Update Customer](#update-customer)
-  - [Delete Customer](#delete-customer)
-  - [Services](#services)
-  - [Update Service](#update-service)
-  - [Delete Service](#delete-service)
+    - [List](#list)
+        - [Filter by time](#filter-by-time)
+        - [Other Filters](#other-filters)
+        - [Grouping](#grouping)
+        - [Advanced Examples](#advanced-examples)
+    - [Budgets](#budgets)
+    - [New](#new)
+        - [Interactive](#interactive)
+        - [Non-Interactive](#non-interactive)
+        - [Advanced Usage](#advanced-usage)
+    - [Open](#open)
+    - [Tracker](#tracker)
+    - [Stop Tracker](#stop-tracker)
+    - [Edit Currently Tracked Note](#edit-currently-tracked-note)
+    - [Delete entry](#delete-entry)
+    - [Un-/Lock Entry](#un-lock-entry)
+    - [Users](#users)
+    - [Projects](#projects)
+        - [Update Project](#update-project)
+    - [Delete Project](#delete-project)
+    - [Customers](#customers)
+        - [Update Customer](#update-customer)
+    - [Delete Customer](#delete-customer)
+    - [Services](#services)
+    - [Update Service](#update-service)
+    - [Delete Service](#delete-service)
 - [Advanced Topics](#advanced-topics)
-  - [Columns](#columns)
-  - [Alternate Output formats](#alternate-output-formats)
+    - [Columns](#columns)
+    - [Alternate Output formats](#alternate-output-formats)
 - [Other Projects](#other-projects)
 - [License](#license)
 
@@ -60,34 +60,34 @@ Ease to use CLI tool for creating, listing, starting and stopping time tracking 
 Other ideas & planned features can be found in the [wiki](./wiki). If something doesn’t work please [create a new issue](https://github.com/Ephigenia/mite-cli/issues).
 
 ```
-    Usage: mite [options] [command]
+Usage: mite [options] [command]
 
-    command line tool for time tracking service mite.yo.lk
+command line tool for time tracking service mite.yo.lk
 
-    Options:
-      -V, --version      output the version number
-      -h, --help         output usage information
+Options:
+    -V, --version      output the version number
+    -h, --help         output usage information
 
-    Commands:
-      amend|reword       edit the text for a specific time entry or the currently   runnning entry
-      autocomplete       install/uninstall autocompletion
-      config             show or set configuration settings
-      customer           update/delete single customer
-      customers|clients  list, filter & search customers
-      delete|rm          delete a specific time entry
-      list|st            list time entries
-      lock               lock single time entry
-      new|create         create a new time entry
-      open               open the given time entry in browser
-      project            update/delete a single project
-      projects           list, filter, archive/unarchive & search projects
-      service            update/delete single service
-      services           list, filter & search services
-      start              start the tracker for the given id, will also stop   allready running entry
-      stop               stop any running counter
-      unlock             unlock single time entry
-      users              list, filter & search for users
-      help [cmd]         display help for [cmd]
+Commands:
+    amend|reword       edit the text for a specific time entry or the currently   runnning entry
+    autocomplete       install/uninstall autocompletion
+    config             show or set configuration settings
+    customer           update/delete single customer
+    customers|clients  list, filter & search customers
+    delete|rm          delete a specific time entry
+    list|st            list time entries
+    lock               lock single time entry
+    new|create         create a new time entry
+    open               open the given time entry in browser
+    project            update/delete a single project
+    projects           list, filter, archive/unarchive & search projects
+    service            update/delete single service
+    services           list, filter & search services
+    start              start the tracker for the given id, will also stop   allready running entry
+    stop               stop any running counter
+    unlock             unlock single time entry
+    users              list, filter & search for users
+    help [cmd]         display help for [cmd]
 ```
 
 # Install
@@ -115,21 +115,21 @@ In case you want to use multiple mite accounts please open up a [change request]
 ## Advanced Configuration Options
 
 - `currency`  
-  defines the currency used for displaying money values
+    defines the currency used for displaying money values
 - `customersColumns`  
-  defines the default columns to be used when running `mite customers list`.
+    defines the default columns to be used when running `mite customers list`.
 - `listColumns`  
-  defines the default columns to be used when running `mite list`.
+    defines the default columns to be used when running `mite list`.
 - `noteHighlightRegexp`
-  defines a single regular expression which can contain a single capturing group which will get hightlighted. By default this is set to highlight github hashtag notation (f.e. #218) and jira story identifiers (f.e. CRYO-1281). When you change this note that the beginning and trailing slashes must be omitted and the regexp is case-sensitive and modfieres cannot be changed.
+    defines a single regular expression which can contain a single capturing group which will get hightlighted. By default this is set to highlight github hashtag notation (f.e. #218) and jira story identifiers (f.e. CRYO-1281). When you change this note that the beginning and trailing slashes must be omitted and the regexp is case-sensitive and modfieres cannot be changed.
 - `outputFormat`  
-  defines the default output format for the list commands, defaults to `table`
+    defines the default output format for the list commands, defaults to `table`
 - `projectsColumns`  
-  defines the default columns to be used when running `mite projects list`.
+    defines the default columns to be used when running `mite projects list`.
 - `servicesColumns`  
-  defines the default columns to be used when running `mite services list`.
+    defines the default columns to be used when running `mite services list`.
 - `usersColumns`  
-  defines the default columns to be used when running `mite users`.
+    defines the default columns to be used when running `mite users`.
 
 Configuration options can always be resetted to their default by leaving out the value, like: `mite config set listColumns`.
 

@@ -179,4 +179,3 @@ module.exports = async ({ words, prev, lastPartial }) => {
     },
   ];
 };
-

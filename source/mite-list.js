@@ -150,6 +150,23 @@ Examples:
   .action(main)
   .parse(process.argv);
 
+function groupedTable(timeEntryGroups) {
+  return timeEntryGroups.map((groupedTimeEntry) => {
+    return [
+      groupedTimeEntry.year,
+      groupedTimeEntry.month,
+      groupedTimeEntry.week,
+      groupedTimeEntry.day,
+      groupedTimeEntry.customer_name || groupedTimeEntry.customer_id,
+      groupedTimeEntry.user_name,
+      groupedTimeEntry.project_name || groupedTimeEntry.project_id,
+      groupedTimeEntry.service_name || groupedTimeEntry.service_id,
+      formater.minutesToDuration(groupedTimeEntry.minutes || 0),
+      formater.budget(formater.BUDGET_TYPE.CENTS, groupedTimeEntry.revenue || 0),
+    ].filter(v => v);
+  });
+}
+
 function main(period) {
   const mite = miteApi(config.get());
 
@@ -187,21 +204,7 @@ function main(period) {
 
     // decide wheter to output grouped report or single entry report
     if (timeEntryGroups.length) {
-      const tableData = timeEntryGroups.map((groupedTimeEntry) => {
-        return [
-          groupedTimeEntry.year,
-          groupedTimeEntry.month,
-          groupedTimeEntry.week,
-          groupedTimeEntry.day,
-          groupedTimeEntry.customer_name || groupedTimeEntry.customer_id,
-          groupedTimeEntry.user_name,
-          groupedTimeEntry.project_name || groupedTimeEntry.project_id,
-          groupedTimeEntry.service_name || groupedTimeEntry.service_id,
-          formater.minutesToDuration(groupedTimeEntry.minutes || 0),
-          formater.budget(formater.BUDGET_TYPE.CENTS, groupedTimeEntry.revenue || 0),
-        ].filter(v => v);
-      });
-
+      const tableData = groupedTable(timeEntryGroups);
       const columnCount = tableData[0].length;
 
       // add one last row which contains minutes & revenue sums

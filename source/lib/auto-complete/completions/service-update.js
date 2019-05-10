@@ -79,4 +79,3 @@ module.exports = async ({ prev, line, word }) => {
     })))
     .then(options => [].concat(options, defaults));
 };
-

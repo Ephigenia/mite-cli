@@ -4,11 +4,17 @@
 
 # Purpose
 
-<!-- describe the purpose of the pull request. Include background information if necessary. -->
+<!--
+    describe the purpose of the pull request. Include background information
+    if necessary.
+-->
 
 # Description of Change
 
-<!-- Add a more detailed description on how and why this PR solves the issue or why the new feature should be added -->
+<!--
+    Add a more detailed description on how and why this PR solves the
+    issue or why the new feature should be added
+-->
 
 # Todos
 
