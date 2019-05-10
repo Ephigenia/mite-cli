@@ -13,8 +13,8 @@ program
   .version(pkg.version)
   .arguments('[timeEntryId]')
   .description(
-    'opens the system’s default browser on the mite organization’s homepage ' +
-    'while optionally open up the given time entry.',
+    'Opens the organization’s mite homepage in the systems default browser. ' +
+    'When timeEntryId is provided, opens up the edit form of that entry.',
     {
       timeEntryId: 'optional time-entry id which should be opened in the browser'
     }
@@ -51,9 +51,7 @@ function main(timeEntryId) {
     if (entry) {
       url += 'daily/#' + (entry.date_at).replace('-', '/') + '?open=time_entry_' + entry.id;
     }
-    opn(url).then(() => {
-      process.exit(0);
-    });
+    opn(url).then(() => process.exit(0));
   })
   .catch(err => {
     throw new Error(err && err.message || err);

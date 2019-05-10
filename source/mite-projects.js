@@ -30,8 +30,7 @@ program
   .option.apply(program, commandOptions.toArgs(commandOptions.format, undefined, config.get('outputFormat')))
   .option(
     '--search <query>',
-    'optional search string which must be somewhere in the project’s name ' +
-    '(case insensitive)'
+    'optional case-insensitive query searching in project’s name'
   )
   .option.apply(program, commandOptions.toArgs(
     commandOptions.sort,

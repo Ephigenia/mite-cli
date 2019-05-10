@@ -10,6 +10,7 @@ const option = {
       return input;
     }
     input = input.toLowerCase().trim();
+    if (input === 'all') return 'all';
     return ['true', 'yes', 'ja', 'ok', '1', ].indexOf(input) > -1;
   }
 };

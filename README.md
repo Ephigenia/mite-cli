@@ -18,9 +18,12 @@ Ease to use CLI tool for creating, listing, starting and stopping time tracking 
     - [Filter by time](#filter-by-time)
     - [Other Filters](#other-filters)
     - [Grouping](#grouping)
-    - [Advanced Examples:](#advanced-examples)
+    - [Advanced Examples](#advanced-examples)
   - [Budgets](#budgets)
   - [New](#new)
+    - [Interactive](#interactive)
+    - [Non-Interactive](#non-interactive)
+    - [Advanced Usage](#advanced-usage)
   - [Open](#open)
   - [Tracker](#tracker)
   - [Stop Tracker](#stop-tracker)
@@ -35,6 +38,8 @@ Ease to use CLI tool for creating, listing, starting and stopping time tracking 
     - [Update Customer](#update-customer)
   - [Delete Customer](#delete-customer)
   - [Services](#services)
+  - [Update Service](#update-service)
+  - [Delete Service](#delete-service)
 - [Advanced Topics](#advanced-topics)
   - [Columns](#columns)
   - [Alternate Output formats](#alternate-output-formats)
@@ -190,13 +195,22 @@ Or search for specific entries in all time-entries from the current year
 
 ### Other Filters
 
-There are also a bunch of other options available, just check `mite list --help`.
+There are various filters to limit the entries shown:
+
+- `--from` & `--to` show entries only between two dates
+- `--billable` show only (not-)billable entries
+- `--tracking` show only tracking/currently running entries
+- `--customer-id` show entries from a one or more customer(s)
+- `--service-id` show entries from a one or more service(s)
+- `--project-id` show entries from a one or more project(s)
+- `--locked` show only locked or unlocked entries
+- `--user-id` show entries from one or more user(s)
 
 ### Grouping
 
-For getting a rough overview of the monthly project or services distribution you can use the `--group_by` argument which will group the time entries. This could also be helpful for creating bills.
+For getting a rough overview of the monthly project or services distribution you can use the `--group-by` argument which will group the time entries. This could also be helpful for creating bills.
 
-    mite list last_month --group_by=service
+    mite list last_month --group-by=service
 
     ┌────────────────────┬────────┬────────────┐
     │ Communication      │  13:03 │   994.98 € │
@@ -210,7 +224,7 @@ For getting a rough overview of the monthly project or services distribution you
 
 Or even more groups which also allows splitting between customers:
 
-    mite list last_month --group_by=customer,service
+    mite list last_month --group-by=customer,service
 
     ┌─────────────────┬───────────────────┬────────┬────────────┐
     │ Soup Inc.       │ Communication     │   3:48 │   361.00 € │
@@ -232,11 +246,11 @@ Or even more groups which also allows splitting between customers:
     │                 │                   │ 138:13 │  2635.15 € │
     └─────────────────┴───────────────────┴────────┴────────────┘
 
-### Advanced Examples:
+### Advanced Examples
 
 When creating a bill for a project create a list of all services worked on in a month on a specific project:
 
-    mite list last_month --project-id 2681601 --group_by service
+    mite list last_month --project-id 2681601 --group-by service
 
     ┌────────────────────┬────────┬────────────┐
     │ Communication      │  13:03 │   994.98 € │
@@ -258,13 +272,17 @@ The budgets command was removed cause the same result can be archived by calling
 
 ## New
 
-Interactive multi-step form for creating / starting new time entries. It will read and show a list of projects, services and finally create the time entry.
+### Interactive
+
+When no arguments or just the "note" is given `mite new` asks for more details of the time-entry that should be created. Project, service and duration can be entered in an interactive survey.
 
     mite new
 
 You can also start by providing a precomposed note
 
     mite new "started working on new features"
+
+### Non-Interactive
 
 You can also start by passing over the content’s of the new time entry or even the project’s name, service, minutes or the date. The following example will create a 35 minutes entry for the Project "myProject1"
 
@@ -274,31 +292,35 @@ The duration values can be the number of minutes or a duration string. When you 
 
     mite new "researching colors for project" myProject1 programming 0:05+
 
-Create a note from the last git commit message
+### Advanced Usage 
+
+Create a time entrie’s note from the last git commit message:
 
     git log -1 --pretty=%B | xargs echo -n | mite new projectx communication 30
 
-Pipe in content for the note
+Read note content von stdin / pipe in note:
 
     echo "my new note" | mite new projectx programming 60+
 
 ## Open
 
-Opens the system’s default browser on the mite organization’s homepage while optionally open up the given time entry:
+Opens the organization’s mite homepage in the systems default browser.
+
+    mite open
+
+When a time-entry id is provided opens up the edit form of that entry.
 
     mite open 1234567
 
-If you don’t specify a time entry id the index page of your mite client account will be opened.
-
 ## Tracker
 
-Start a specific tracker
+Start tracking of a specific time entry.
 
     mite start <id>
 
 ## Stop Tracker
 
-Stops any tracked time tracker.
+Stops any currently running time entry.
 
     mite stop
 
@@ -322,7 +344,7 @@ Delete a single entry
 
     mite delete 18472721
 
-Deleting a set of entries filtered using `mite list` and unix tools:
+Deleting a set of entries filtered using `mite list` and `xargs`:
 
     mite list this_month --project-id 128717 --columns id --format text | xargs -n1 mite delete
 
@@ -380,6 +402,9 @@ export all users to a csv file
 
     mite users --columns id,role,name,email,archived,language --format csv > users.csv
 
+Show a report for all users showing the revenues and times per service for all users matching a query 
+
+    mite users --search marc --columns id --format text | xargs mite list last_month --group-by service --user-id
 
 ## Projects
 
@@ -400,15 +425,17 @@ List, filter and search for projects. Example showing only archived projects ord
     │  827261 │ Deployment    │ Example ltd. (73625)     │  24000.00 € │       - │                                                                                  │
     └─────────┴───────────────┴──────────────────────────┴─────────────┴─────────┴──────────────────────────────────────────────────────────────────────────────────┘
 
-list projects while setting different columns and export to csv:
+Export all projects using other columns as CSV:
 
     mite projects --columns id,customer-id,customer_name --format csv > projects_export.csv
 
-use the resulting projects in another command to archive the listed projects:
+Unarchive all archived projects from a specific customer using `xargs`:
 
-    mite projects --columns id --format text | xargs -n1 mite project update --archived false
+    mite projects --customer-id 123456 --columns id --format text | xargs -n1 mite project update --archived false
 
 ### Update Project
+
+The `mite project` comamnd can update the details like budget-type, archived state, hourly-rate, name or note of a project.
 
 Archive a single project
 
@@ -418,17 +445,21 @@ Set the note and name of a project
     
     mite project update --name "js prototype" --note="prototype development" 12344567
 
+Update hourly rate of a project while updating all allready associated time entries:
+
+    mite project update --hourly-rate 9000 --update-entries 1234567
+
 Archive multiple projects using xargs:
 
     mite projects --columns id --format text | xargs -n1 mite project update --archived false
 
 ## Delete Project
 
-Delete a single project
+Delete a project:
 
     mite project delete 123456
 
-Delete all archived projects
+Delete all archived projects:
 
     mite projects --columns id --archived yes --format text | xargs -n1 mite project delete
 
@@ -455,9 +486,11 @@ Use different columns
 
 Export all archived customers
 
-    mite customers --archived true --format csv > archived_customers.json
+    mite customers --archived true --format csv > archived_customers.csv
 
 ### Update Customer
+
+This comamnd can update a customer’s name, note, hourly rate and archived state.
 
 Archive a single customer
 
@@ -492,6 +525,25 @@ List, filter and search for services. Archived services will be grey.
     ├────────┼───────────────────┼──────────┼──────────┼──────────────────────────────────────────────────────────────────────────────┤
     │ 736251 │ Accounting        │        - │       no │ Accounting, invoices etc.                                                    │
     └────────┴───────────────────┴──────────┴──────────┴──────────────────────────────────────────────────────────────────────────────┘
+
+## Update Service
+
+This comamnd can update a service’s name, note, hourly rate and archived state.
+
+Change the hourly rate of a service:
+
+    mite service update --hourly-rate 8500 123456
+
+Archive a single service:
+
+    mite service update --archived false 1238127
+
+## Delete Service
+
+Delete a single service
+
+    mite service delete 123456
+
 
 # Advanced Topics
 

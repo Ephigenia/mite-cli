@@ -28,8 +28,7 @@ program
   ))
   .option(
     '--search <query>',
-    'optional search string which must be somewhere in the services’ name ' +
-    '(case insensitive)'
+    'optional case insensitive query searching in services’ name'
   )
   .on('--help', () => console.log(`
 Examples:
@@ -44,7 +43,7 @@ Examples:
     mite services --columns name,hourly_rate,created_at
 
   export all archived services as csv
-    mite services --format csv --columns id,name,hourly_rate,billable > all_services.csv
+    mite services --columns id,name,hourly_rate,billable --archived true --format csv > all_services.csv
   `));
 
 async function main() {

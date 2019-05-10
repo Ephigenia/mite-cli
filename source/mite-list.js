@@ -120,13 +120,17 @@ Examples:
   list all entries which note contains the given search query:
     mite list this_year --search JIRA-123
 
-  show all users who tracked billable entries ordered by the amount of time they have tracked:
+  show all entries from two services 123 and 38171
+    mite list last_month --service-id 123,38171
+
+  show all users who tracked billable entries ordered by the amount of time
+  they have tracked:
     mite list this_year --billable true --columns user,duration --group-by user --sort duration
 
-  export all time-entries from the current month as csv
+  export all time-entries from the current month as csv:
     mite list last_week --format csv --columns user,id
 
-  create a markdown report of all customer and their generated profits
+  create a markdown report of all customer and their generated profits:
     mite list this_year --format md --group-by customer --sort revenue
 
   The output of mite list can be forwarded to other commands using xargs. The
@@ -136,11 +140,15 @@ Examples:
   Get the notes for one specific service, project for the last month to put
   them on a bill or similar
     mite list last_month --project-id 2681601 --service-id 325329 --columns note --format text | sort -u
+
+  Show a seperate report for all users showing the revenues and times per
+  service for all users matching a query:
+    mite users --search marc --columns id --format text | xargs mite list last_month --group-by service --user-id
+
 `);
   })
   .action(main)
   .parse(process.argv);
-
 
 function main(period) {
   const mite = miteApi(config.get());

@@ -20,7 +20,8 @@ program
       serviceId: 'Id of the service which should get updated'
     }
   )
-  .option.apply(program, commandOptions.toArgs(commandOptions.archived, 'defines wheter the service is billable or not'))
+  .option.apply(program, commandOptions.toArgs(commandOptions.archived, 'defines wheter the service is archived or not'))
+  .option.apply(program, commandOptions.toArgs(commandOptions.billable, 'defines wheter the service is billable or not'))
   .option.apply(program, commandOptions.toArgs(commandOptions.hourlyRate))
   .option(
     '--name <name>',
@@ -32,7 +33,7 @@ program
   )
   .option(
     '--update-entries',
-    'will update also the associated time-entries when changing archived ' +
+    'will update also the associated time-entries when changing billable ' +
     'state or hourly rate',
   )
   .on('--help', () => console.log(`
@@ -46,6 +47,9 @@ Examples:
 
   Make a single service not billable anymore
     mite service update --billable false 123456
+
+  Change the hourly rate and update all associated entries
+    mite service update --hourly-rate 8500 --update-entries 123456
 
   Change the name of a service
     mite service update --name "new name" 123456
