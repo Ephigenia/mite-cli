@@ -70,8 +70,8 @@ class MiteTracker {
     const options = Object.assign({}, this.opts, { method: 'PATCH' });
     return this.makeRequest(url, options).then(() => timeEntryId);
   }
-};
+}
 
 module.exports = function(config) {
   return new MiteTracker(config);
-}
+};
