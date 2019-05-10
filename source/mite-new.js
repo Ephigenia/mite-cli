@@ -10,6 +10,7 @@ const config = require('./config');
 const miteApi = require('./lib/mite-api')(config.get());
 const miteTracker = require('./lib/mite-tracker')(config.get());
 const formater = require('./lib/formater');
+const { handleError } = require('./lib/errors');
 
 program
   .version(pkg.version)
@@ -263,8 +264,5 @@ async function main(note, project, service, minutes, date) {
         });
     }
   })
-  .catch(err => {
-    console.log(err && err.message || err);
-    process.exit(1);
-  });
+  .catch(handleError);
 }

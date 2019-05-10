@@ -3,19 +3,22 @@
 const fetch = require('node-fetch');
 const assert = require('assert');
 
-module.exports = (config) => {
-  const BASE_URL = `https://${config.account}.mite.yo.lk`;
+class MiteTracker {
 
-  let headers = {
-    'User-Agent': config.applicationName,
-    'X-MiteApiKey': config.apiKey,
-    'Content-Type': 'application/json',
-  };
-  const opts = {
-    headers
-  };
+  constructor(config) {
+    this.config = config;
 
-  async function makeRequest(
+    this.BASE_URL = `https://${config.account}.mite.yo.lk`;
+
+    const headers = {
+      'User-Agent': config.applicationName,
+      'X-MiteApiKey': config.apiKey,
+      'Content-Type': 'application/json',
+    };
+    this.opts = { headers };
+  }
+
+  async makeRequest(
     url,
     opts = {}
   ) {
@@ -32,21 +35,43 @@ module.exports = (config) => {
       });
   }
 
-  return {
-    get: async () => {
-      const url = `${BASE_URL}/tracker.json`;
-      const options = Object.assign({}, opts);
-      return makeRequest(url, options);
-    },
-    stop: async (timeEntryId) => {
-      const url = `${BASE_URL}/tracker/${timeEntryId}.json`;
-      const options = Object.assign({}, opts, { method: 'DELETE' });
-      return makeRequest(url, options);
-    },
-    start: async (timeEntryId) => {
-      const url = `${BASE_URL}/tracker/${timeEntryId}.json`;
-      const options = Object.assign({}, opts, { method: 'PATCH' });
-      return makeRequest(url, options);
-    }
-  };
+  /**
+   * @returns {Promise<Number|null>} the id of the currently tracked time entry
+   */
+  async get () {
+    const url = `${this.BASE_URL}/tracker.json`;
+    const options = Object.assign({}, this.opts, { method: 'GET' });
+    return this.makeRequest(url, options)
+      .then(data => {
+        // return the id of the entry
+        if (!data || !data.tracker || !data.tracker.tracking_time_entry) {
+          return null;
+        }
+        return data.tracker.tracking_time_entry.id;
+      });
+  }
+
+  /**
+   * @param {Number} timeEntryId
+   * @returns {Promise<Number|null>} the id of the stopped entry
+   */
+  async stop (timeEntryId) {
+    const url = `${this.BASE_URL}/tracker/${timeEntryId}.json`;
+    const options = Object.assign({}, this.opts, { method: 'DELETE' });
+    return this.makeRequest(url, options).then(() => timeEntryId);
+  }
+
+  /**
+   * @param {Number} timeEntryId
+   * @returns {Promise<Number|null>} the id of the started entry
+   */
+  async start (timeEntryId) {
+    const url = `${this.BASE_URL}/tracker/${timeEntryId}.json`;
+    const options = Object.assign({}, this.opts, { method: 'PATCH' });
+    return this.makeRequest(url, options).then(() => timeEntryId);
+  }
 };
+
+module.exports = function(config) {
+  return new MiteTracker(config);
+}

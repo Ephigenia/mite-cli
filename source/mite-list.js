@@ -178,7 +178,7 @@ function main(period) {
     const timeEntryGroups = results.map(data => data.time_entry_group).filter(v => v);
 
     // decide wheter to output grouped report or single entry report
-    if (timeEntryGroups.length > 0) {
+    if (timeEntryGroups.length) {
       const tableData = timeEntryGroups.map((groupedTimeEntry) => {
         return [
           groupedTimeEntry.year,

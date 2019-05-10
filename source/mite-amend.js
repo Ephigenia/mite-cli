@@ -48,13 +48,13 @@ function main(timeEntryId) {
 
   if (!timeEntryId) {
     promise = miteTracker.get()
-      .then(result => {
-        if (!result || !result.tracker || !result.tracker.tracking_time_entry) {
+      .then(timeEntryId => {
+        if (!timeEntryId) {
           throw new MissingRequiredArgumentError(
             'Either there was no id given or no running time-tracker found.'
           );
         }
-        return getTimeEntry(result.tracker.tracking_time_entry.id);
+        return getTimeEntry(timeEntryId);
       });
   } else {
     promise = getTimeEntry(timeEntryId);
@@ -65,9 +65,8 @@ function main(timeEntryId) {
       if (!data) {
         throw new Error('Unable to find time entry with the given ID');
       }
-      return data;
+      return data.time_entry;
     })
-    .then(data => data.time_entry)
     .then(timeEntry => {
       timeEntryId = timeEntry.id;
       if (program.editor) {
@@ -88,7 +87,7 @@ function main(timeEntryId) {
     .then(entry => updateTimeEntry(timeEntryId, entry))
     .then(() => console.log(`Successfully modified note of time entry (id: ${timeEntryId})`))
     .catch(err => {
-      throw new Error(`Error while updating time-entry (id: ${timeEntryId}: ` + (err && err.message || err));
+      throw new Error(`Error while updating time-entry (id: ${timeEntryId}): ` + (err && err.message || err));
     })
     .catch(handleError);
 }
