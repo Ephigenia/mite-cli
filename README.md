@@ -66,32 +66,39 @@ Other ideas & planned features can be found in the [wiki](./wiki). If something 
 ```
 Usage: mite [options] [command]
 
+_______ _____ _______ _______     _______        _____
+|  |  |   |      |    |______ ___ |       |        |
+|  |  | __|__    |    |______     |_____  |_____ __|__
+
 command line tool for time tracking service mite.yo.lk
+https://github.com/Ephigenia/mite-cli/
+
 
 Options:
-    -V, --version      output the version number
-    -h, --help         output usage information
+  -V, --version      output the version number
+  -h, --help         output usage information
 
 Commands:
-    amend|reword       edit the text for a specific time entry or the currently   runnning entry
-    autocomplete       install/uninstall autocompletion
-    config             show or set configuration settings
-    customer           update/delete single customer
-    customers|clients  list, filter & search customers
-    delete|rm          delete a specific time entry
-    list|st            list time entries
-    lock               lock single time entry
-    new|create         create a new time entry
-    open               open the given time entry in browser
-    project            update/delete a single project
-    projects           list, filter, archive/unarchive & search projects
-    service            update/delete single service
-    services           list, filter & search services
-    start              start the tracker for the given id, will also stop   allready running entry
-    stop               stop any running counter
-    unlock             unlock single time entry
-    users              list, filter & search for users
-    help [cmd]         display help for [cmd]
+  amend|reword       edit the text for a specific time entry or the currently runnning entry
+  autocomplete       install/uninstall autocompletion
+  config             show or set configuration settings
+  customer           update/delete single customer
+  customers|clients  list, filter & search customers
+  delete|rm          delete a specific time entry
+  list|st            list time entries
+  lock               lock single time entry
+  new|create         create a new time entry
+  open               open the given time entry in browser
+  project            update/delete a single project
+  projects           list, filter, archive/unarchive & search projects
+  service            update/delete single service
+  services           list, filter & search services
+  start              start the tracker for the given id, will also stop allready running entry
+  stop               stop any running counter
+  unlock             unlock single time entry
+  users              list, filter & search for users
+  help [cmd]         display help for [cmd]
+
 ```
 
 

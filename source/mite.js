@@ -26,7 +26,13 @@ program
   .command('stop', 'stop any running counter')
   .command('unlock', 'unlock single time entry')
   .command('users', 'list, filter & search for users')
-  .description(pkg.description);
+  .description(`_______ _____ _______ _______     _______        _____
+|  |  |   |      |    |______ ___ |       |        |
+|  |  | __|__    |    |______     |_____  |_____ __|__
+
+${pkg.description}
+${pkg.homepage}
+  `);
 
 // completion command is triggered by automatically installed autocompletion
 // lib and the appropriate shell, it’s not listed in the commands above as

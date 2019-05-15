@@ -4,6 +4,7 @@
   "version": "0.10.0",
   "description": "command line tool for time tracking service mite.yo.lk",
   "preferGlobal": true,
+  "homepage": "https://github.com/Ephigenia/mite-cli/",
   "keywords": [
     "budgets",
     "cli",
