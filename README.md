@@ -9,44 +9,48 @@ Ease to use CLI tool for creating, listing, starting and stopping time tracking 
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FEphigenia%2Fmite-cli.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FEphigenia%2Fmite-cli?ref=badge_shield)
 
 - [Features](#features)
-- [Install](#install)
+- [Installation](#installation)
 - [Configuration](#configuration)
-    - [Advanced Configuration Options](#advanced-configuration-options)
+    - [Configuration Options](#configuration-options)
     - [Auto-Completion](#auto-completion)
 - [Usage](#usage)
-    - [List](#list)
-        - [Filter by time](#filter-by-time)
-        - [Other Filters](#other-filters)
-        - [Grouping](#grouping)
-        - [Advanced Examples](#advanced-examples)
-    - [Budgets](#budgets)
-    - [New](#new)
-        - [Interactive](#interactive)
-        - [Non-Interactive](#non-interactive)
-        - [Advanced Usage](#advanced-usage)
-    - [Open](#open)
-    - [Tracker](#tracker)
-    - [Stop Tracker](#stop-tracker)
-    - [Edit Currently Tracked Note](#edit-currently-tracked-note)
-    - [Delete entry](#delete-entry)
-    - [Un-/Lock Entry](#un-lock-entry)
+    - [Time Entries](#time-entries)
+        - [List](#list)
+            - [Filter by time](#filter-by-time)
+            - [Other Filters](#other-filters)
+            - [Grouping / Reports](#grouping--reports)
+            - [Advanced Examples](#advanced-examples)
+        - [Create Time-Entries](#create-time-entries)
+            - [Interactive](#interactive)
+            - [Non-Interactive](#non-interactive)
+            - [Advanced Usage](#advanced-usage)
+        - [Tracker](#tracker)
+            - [Start Tracking](#start-tracking)
+            - [Stop Tracking](#stop-tracking)
+        - [Modifiy Time-Entries](#modifiy-time-entries)
+            - [Change Note](#change-note)
+            - [Un-/Lock Entry](#un-lock-entry)
+        - [Delete entry](#delete-entry)
+        - [Open](#open)
     - [Users](#users)
     - [Projects](#projects)
         - [Update Project](#update-project)
-    - [Delete Project](#delete-project)
+        - [Delete Project](#delete-project)
     - [Customers](#customers)
         - [Update Customer](#update-customer)
-    - [Delete Customer](#delete-customer)
+        - [Delete Customer](#delete-customer)
     - [Services](#services)
-    - [Update Service](#update-service)
-    - [Delete Service](#delete-service)
+        - [Update Service](#update-service)
+        - [Delete Service](#delete-service)
 - [Advanced Topics](#advanced-topics)
     - [Columns](#columns)
     - [Alternate Output formats](#alternate-output-formats)
 - [Other Projects](#other-projects)
 - [License](#license)
 
-# Features
+
+Features
+===============================================================================
 
 - Create and start new Entries with interactive survey-like cli interface
 - Delete, lock, unlock single time entries
@@ -90,7 +94,9 @@ Commands:
     help [cmd]         display help for [cmd]
 ```
 
-# Install
+
+Installation
+===============================================================================
 
     npm install -g mite-cli
 
@@ -101,18 +107,21 @@ Or use it directly using `npx`:
 Please note that all examples in this README.md assume that you have installed mite-cli globally. If not, just replace the `mite` call with `npx mite-cli` and you’re fine.
 
 
-# Configuration
+
+Configuration
+===============================================================================
 
 Before you can start you’ll have to setup your mite account and api key which you can find in your mite "Account" tab.
 
     mite config set account <name>
     mite config set apiKey <key>
 
-The configuration is stored in a file which is only writable and readable by you in your home directory: `~/.mite-cli.json`.
+The configuration is stored in a file which is only writable and readable by you in your home directory: `~/.config/mite-cli/config.json`. (Or whatever you defined in `XDG_CONFIG_HOME`).
 
 In case you want to use multiple mite accounts please open up a [change request](https://github.com/Ephigenia/mite-cli/issues)
 
-## Advanced Configuration Options
+Configuration Options
+--------------------------------------------------------------------------------
 
 - `currency`  
     defines the currency used for displaying money values
@@ -133,7 +142,8 @@ In case you want to use multiple mite accounts please open up a [change request]
 
 Configuration options can always be resetted to their default by leaving out the value, like: `mite config set listColumns`.
 
-## Auto-Completion
+Auto-Completion
+--------------------------------------------------------------------------------
 
 Since version 0.9.0 mite-cli supports auto-completions for most of the sub-commands arguments, options and option values which make it much easier to use the cli tool. No need to remember user ids or service names anymore as they are suggested when hitting TAB.
 
@@ -148,9 +158,14 @@ When you think you had enough you can uninstall it with
 
     mite autocomplete uninstall
 
-# Usage
 
-## List
+Usage
+===============================================================================
+
+Time Entries
+--------------------------------------------------------------------------------
+
+### List
 
 By default lists today’s time-entries including id, date, project name, revenue, service and the entries note. You can modify this by changing the `listColumns` in the config. (can be changed `mite config set listColumns id,user,project)`
 
@@ -175,7 +190,7 @@ When an entry is currently active and tracked it will be yellow and indicated wi
     │          │            │                 │            │    00:21 │   27.50 │                                                                      │
     └──────────┴────────────┴─────────────────┴────────────┴──────────┴─────────┴──────────────────────────────────────────────────────────────────────┘
 
-### Filter by time
+#### Filter by time
 
 You also can request longer time frames by using the first argument which is bascially the [`at` parameter](https://mite.yo.lk/en/api/time-entries.html#list-all) of the time entries api:
 
@@ -193,7 +208,7 @@ Or search for specific entries in all time-entries from the current year
 
     mite list this_year --search JIRA-123
 
-### Other Filters
+#### Other Filters
 
 There are various filters to limit the entries shown:
 
@@ -206,7 +221,9 @@ There are various filters to limit the entries shown:
 - `--locked` show only locked or unlocked entries
 - `--user-id` show entries from one or more user(s)
 
-### Grouping
+It can be hard to remember ids, that’s why I recommend using [auto-completion](#auto-completion) which makes it way easier to filter time entries.
+
+#### Grouping / Reports
 
 For getting a rough overview of the monthly project or services distribution you can use the `--group-by` argument which will group the time entries. This could also be helpful for creating bills.
 
@@ -246,7 +263,7 @@ Or even more groups which also allows splitting between customers:
     │                 │                   │ 138:13 │  2635.15 € │
     └─────────────────┴───────────────────┴────────┴────────────┘
 
-### Advanced Examples
+#### Advanced Examples
 
 When creating a bill for a project create a list of all services worked on in a month on a specific project:
 
@@ -266,13 +283,9 @@ In order to fill the details of the services you’ll need all the notes from th
 
     mite list last_month --project-id 2681601 --service-id 325329 --columns note --format text | sort -u
 
-## Budgets
+### Create Time-Entries
 
-The budgets command was removed cause the same result can be archived by calling: `mite list this_month --group-by project`
-
-## New
-
-### Interactive
+#### Interactive
 
 When no arguments or just the "note" is given `mite new` asks for more details of the time-entry that should be created. Project, service and duration can be entered in an interactive survey.
 
@@ -282,7 +295,7 @@ You can also start by providing a precomposed note
 
     mite new "started working on new features"
 
-### Non-Interactive
+#### Non-Interactive
 
 You can also start by passing over the content’s of the new time entry or even the project’s name, service, minutes or the date. The following example will create a 35 minutes entry for the Project "myProject1"
 
@@ -292,7 +305,7 @@ The duration values can be the number of minutes or a duration string. When you 
 
     mite new "researching colors for project" myProject1 programming 0:05+
 
-### Advanced Usage 
+#### Advanced Usage 
 
 Create a time entrie’s note from the last git commit message:
 
@@ -302,29 +315,23 @@ Read note content von stdin / pipe in note:
 
     echo "my new note" | mite new projectx programming 60+
 
-## Open
+### Tracker
 
-Opens the organization’s mite homepage in the systems default browser.
-
-    mite open
-
-When a time-entry id is provided opens up the edit form of that entry.
-
-    mite open 1234567
-
-## Tracker
+#### Start Tracking 
 
 Start tracking of a specific time entry.
 
-    mite start <id>
+    mite start <timeEntryId>
 
-## Stop Tracker
+#### Stop Tracking
 
 Stops any currently running time entry.
 
     mite stop
 
-## Edit Currently Tracked Note
+### Modifiy Time-Entries
+
+#### Change Note
 
 When there’s a tracker running you may want to update the note without opening the browser and enter the new details. You can use `amend` or `reword` command which will load the time entry and you can enter the new note.
 
@@ -338,17 +345,7 @@ You can also alter the notes of other time entries when you specify their id
 
     mite amend 1847132
 
-## Delete entry
-
-Delete a single entry
-
-    mite delete 18472721
-
-Deleting a set of entries filtered using `mite list` and `xargs`:
-
-    mite list this_month --project-id 128717 --columns id --format text | xargs -n1 mite delete
-
-## Un-/Lock Entry
+#### Un-/Lock Entry
 
 Lock a single time entry
 
@@ -362,7 +359,29 @@ Locking all entries from the last month from a specific customer using `mite lis
 
     mite list last_month --customer-id 128171 --columns id --format text | xargs -n1 mite lock
 
-## Users
+### Delete entry
+
+Delete a single entry
+
+    mite delete 18472721
+
+Deleting a set of entries filtered using `mite list` and `xargs`:
+
+    mite list this_month --project-id 128717 --columns id --format text | xargs -n1 mite delete
+
+### Open
+
+Opens the organization’s mite homepage in the systems default browser.
+
+    mite open
+
+When a time-entry id is provided opens up the edit form of that entry.
+
+    mite open 1234567
+
+
+Users
+--------------------------------------------------------------------------------
 
 List user accounts while client-side search in name, email & note, sort by email and list only time_trackers and admins. Archived users will be grey.
 
@@ -406,7 +425,9 @@ Show a report for all users showing the revenues and times per service for all u
 
     mite users --search marc --columns id --format text | xargs mite list last_month --group-by service --user-id
 
-## Projects
+
+Projects
+--------------------------------------------------------------------------------
 
 List, filter and search for projects. Example showing only archived projects ordered by customer-id in ascending order
 
@@ -453,7 +474,7 @@ Archive multiple projects using xargs:
 
     mite projects --columns id --format text | xargs -n1 mite project update --archived false
 
-## Delete Project
+### Delete Project
 
 Delete a project:
 
@@ -463,7 +484,9 @@ Delete all archived projects:
 
     mite projects --columns id --archived yes --format text | xargs -n1 mite project delete
 
-## Customers
+
+Customers
+--------------------------------------------------------------------------------
 
 List, filter and search for customers. Archived customers will be shown in grey.
 
@@ -500,7 +523,7 @@ Archive multiple customers using xargs:
 
     mite customers --columns id --format text | xargs -n1 mite customer update --archived false
 
-## Delete Customer
+### Delete Customer
 
 Delete a single customer
 
@@ -510,7 +533,8 @@ Delete a whole set of customers
 
     mite customers --columns id --archived yes --format text | xargs -n1 mite customer delete
 
-## Services
+Services
+--------------------------------------------------------------------------------
 
 List, filter and search for services. Archived services will be grey.
 
@@ -526,7 +550,7 @@ List, filter and search for services. Archived services will be grey.
     │ 736251 │ Accounting        │        - │       no │ Accounting, invoices etc.                                                    │
     └────────┴───────────────────┴──────────┴──────────┴──────────────────────────────────────────────────────────────────────────────┘
 
-## Update Service
+### Update Service
 
 This comamnd can update a service’s name, note, hourly rate and archived state.
 
@@ -538,16 +562,19 @@ Archive a single service:
 
     mite service update --archived false 1238127
 
-## Delete Service
+### Delete Service
 
 Delete a single service
 
     mite service delete 123456
 
 
-# Advanced Topics
 
-## Columns
+Advanced Topics
+===============================================================================
+
+Columns
+--------------------------------------------------------------------------------
 
 Every command that produces a tabular output uses a default set of columns per command. You can specify which columns should be shown using the `--columns` option or use `--columns all` to show all available columns.
 
@@ -579,7 +606,8 @@ The following example uses the ids of all time entries to lock them:
 
     mite list last_month --columns id --format text | xargs -n1 mite lock
 
-## Alternate Output formats
+Alternate Output formats
+--------------------------------------------------------------------------------
 
 The output of program is designed to look good to a human and shows the results in tabular style using box drawing characters.
 
@@ -621,11 +649,15 @@ Showing all notes from all entries from a specific service, to put them into a b
 
     mite list last_month --service-id 123 --project-id 456 --format text --columns note
 
-# Other Projects
+
+Other Projects
+===============================================================================
 
 - [Mitey](https://github.com/lionralfs/mitey)
 - [mite.cmd](https://github.com/Overbryd/mite.cmd/tree/master)
 - [mite-go](https://github.com/leanovate/mite-go)
 
-# License
+
+License
+===============================================================================
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FEphigenia%2Fmite-cli.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2FEphigenia%2Fmite-cli?ref=badge_large)
