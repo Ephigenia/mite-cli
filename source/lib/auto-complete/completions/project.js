@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 'use strict';
 
-const projectUpdateCompletion = require('./project-update');
 const projectDeleteCompletion = require('./project-delete');
+const projectNewCompletion = require('./project-new');
+const projectUpdateCompletion = require('./project-update');
 
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
@@ -21,10 +22,11 @@ module.exports = async function ({ line }) {
   const thirdArg = line.split(/\s/).splice(2)[0];
   switch (thirdArg) {
     case 'delete':
-      // forward auto-completion to sub-sub-command
       return projectDeleteCompletion.apply(projectDeleteCompletion, arguments);
+    case 'new':
+    case 'create':
+      return projectNewCompletion.apply(projectNewCompletion, arguments);
     case 'update':
-      // forward auto-completion to sub-sub-command
       return projectUpdateCompletion.apply(projectUpdateCompletion, arguments);
   }
   return [
@@ -35,6 +37,10 @@ module.exports = async function ({ line }) {
     {
       name: 'update',
       description: 'update a single project by it’s id',
+    },
+    {
+      name: 'new',
+      description: 'create a new project',
     },
     {
       name: '--help',

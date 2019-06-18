@@ -481,6 +481,18 @@ Archive multiple projects using xargs:
 
     mite projects --columns id --format text | xargs -n1 mite project update --archived false
 
+### Create Project
+
+Use `mite project new` subcommand to create new projects. There’s currently no support for complicated hourly rates per service. To find out the `customer_id` use either [Auto-Completion](#auto-completion) or copy the id from the `mite projects` list.
+
+The following example will create a new Project with a overall budget of 5000 and a hourly rate of 80:
+
+    mite project new --customer-id 123456 \
+        --name "Side Project B" \
+        --hourly-rate 80.00 \
+        --budget 5000 \
+        --budget-type cents
+
 ### Delete Project
 
 Delete a project:
