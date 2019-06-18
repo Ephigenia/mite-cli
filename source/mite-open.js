@@ -53,9 +53,6 @@ function main(timeEntryId) {
     }
     opn(url).then(() => process.exit(0));
   })
-  .catch(err => {
-    throw new Error(err && err.message || err);
-  })
   .catch(handleError);
 }
 

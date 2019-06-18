@@ -32,9 +32,6 @@ function main(serviceId) {
   const mite = miteApi(config.get());
   return util.promisify(mite.deleteService)(serviceId)
     .then(() => console.log(`Successfully deleted service (id: ${serviceId})`))
-    .catch(err => {
-      throw new Error(`Error while deleting service (id: ${serviceId}): ` + (err && err.message || err));
-    })
     .catch(handleError);
 }
 

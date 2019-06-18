@@ -64,7 +64,7 @@ Examples:
       note = fs.readFileSync("/dev/stdin", "utf-8");
       args.unshift(note);
     }
-    main.apply(main, args)
+    main.apply(main, args).catch(handleError)
       .catch(err => {
         console.error('Error while creating time entry:', err.message || err);
         process.exit(1);

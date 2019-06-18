@@ -35,9 +35,6 @@ function main(customerId) {
   const mite = miteApi(config.get());
   return util.promisify(mite.deleteCustomer)(customerId)
     .then(() => console.log(`Successfully deleted customer (id: ${customerId})`))
-    .catch(err => {
-      throw new Error(`Error while deleting customer (id: ${customerId}): ` + (err && err.message || err));
-    })
     .catch(handleError);
 }
 

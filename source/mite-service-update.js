@@ -73,9 +73,6 @@ function main(serviceId) {
   };
   return util.promisify(mite.updateProject)(serviceId, data)
     .then(() => console.log(`Successfully updated service (id: ${serviceId})`))
-    .catch(err => {
-      throw new Error(`Error while updating service (id: ${serviceId}):` + err && err.message || err);
-    })
     .catch(handleError);
 }
 

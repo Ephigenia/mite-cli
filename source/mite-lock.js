@@ -46,9 +46,6 @@ function main(timeEntryId) {
   };
   return util.promisify(mite.updateTimeEntry)(timeEntryId, data)
     .then(() => console.log(`Successfully locked time entry (id: ${timeEntryId})`))
-    .catch(err => {
-      throw new Error(`Error while locking time entry (id: ${timeEntryId}): ` + (err && err.message || err));
-    })
     .catch(handleError);
 }
 

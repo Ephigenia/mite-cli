@@ -16,9 +16,6 @@ function main() {
       }
       return miteTracker.stop(timeEntryId);
     })
-    .then((timeEntryId) => console.log(
-      `Successfully stopped time tracking (id: ${timeEntryId})`
-    ))
     .catch(handleError);
 }
 

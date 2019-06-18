@@ -35,9 +35,6 @@ function main(projectId) {
   const mite = miteApi(config.get());
   return util.promisify(mite.deleteProject)(projectId)
     .then(() => console.log(`Successfully deleted project (id: ${projectId})`))
-    .catch(err => {
-      throw new Error(`Error while deleting project (id: ${projectId}): ` + (err && err.message || err));
-    })
     .catch(handleError);
 }
 

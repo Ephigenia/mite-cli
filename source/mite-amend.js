@@ -86,9 +86,6 @@ function main(timeEntryId) {
     })
     .then(entry => updateTimeEntry(timeEntryId, entry))
     .then(() => console.log(`Successfully modified note of time entry (id: ${timeEntryId})`))
-    .catch(err => {
-      throw new Error(`Error while updating time-entry (id: ${timeEntryId}): ` + (err && err.message || err));
-    })
     .catch(handleError);
 }
 

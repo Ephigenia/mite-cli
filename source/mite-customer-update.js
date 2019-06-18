@@ -67,9 +67,6 @@ function main(customerId) {
   };
   return util.promisify(mite.updateCustomer)(customerId, data)
     .then(() => console.log(`Successfully updated customer (id: ${customerId})`))
-    .catch(err => {
-      throw new Error(`Error while updating customer (id: ${customerId}): ` + (err && err.message || err));
-    })
     .catch(handleError);
 }
 

@@ -29,6 +29,11 @@ class InvalidOptionValue extends GeneralError {
   }
 }
 
+/**
+ * Handles an Error object/instance of the Error class thrown by mite-api lib
+ *
+ * @param  {Error} error [description]
+ */
 function handleError(error) {
   const NODE_ENV = process.env.NODE_ENV || DEFAULT_NODE_ENV;
   const exitCode = error.exitCode || DEFAULT_EXIT_CODE;
