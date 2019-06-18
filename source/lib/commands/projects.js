@@ -58,6 +58,7 @@ module.exports.columns = {
       label: 'Customer',
       attribute: 'customer_name',
       format: (value, item) => {
+        if (!value) return '';
         return `${item.customer_name} (${item.customer_id})`;
       }
     },
