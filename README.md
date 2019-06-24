@@ -354,6 +354,14 @@ You can also alter the notes of other time entries when you specify their id
 
     mite amend 1847132
 
+You can also pass additional informations like the note:
+
+    mite amend 12345678 "created a programmable list of items"
+
+You can also pipe in the note:
+
+    cat myVerLongNote.txt | mite amend 1234567
+
 #### Un-/Lock Entry
 
 Lock a single time entry
