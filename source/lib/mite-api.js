@@ -60,7 +60,7 @@ class MiteApiWrapper {
       // standard callback
       mite.addTimeEntry({ time_entry: timeEntry }, (response) => {
         // response contains the created time entry as a string
-        const data = JSON.parse(response);
+        const data = JSON.parse(response.response.body);
         if (data.error) {
           return reject(new Error(data.error));
         }
