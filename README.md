@@ -558,7 +558,7 @@ Services
 
 List, filter and search for services. Archived services will be grey.
 
-    mite services
+    mite service list
 
     ┌────────┬───────────────────┬──────────┬──────────┬──────────────────────────────────────────────────────────────────────────────┐
     │ ID     │ Name              │ Rate     │ Billable │ Note                                                                         │

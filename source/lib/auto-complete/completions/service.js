@@ -3,6 +3,7 @@
 
 const serviceUpdateCompletion = require('./service-update');
 const serviceDeleteCompletion = require('./service-delete');
+const serviceListCompletion = require('./services');
 
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
@@ -21,16 +22,20 @@ module.exports = async function ({ line }) {
   const thirdArg = line.split(/\s/).splice(2)[0];
   switch (thirdArg) {
     case 'delete':
-      // forward auto-completion to sub-sub-command
       return serviceDeleteCompletion.apply(serviceDeleteCompletion, arguments);
+    case 'list':
+      return serviceListCompletion.apply(serviceListCompletion, arguments);
     case 'update':
-      // forward auto-completion to sub-sub-command
       return serviceUpdateCompletion.apply(serviceUpdateCompletion, arguments);
   }
   return [
     {
       name: 'delete',
       description: 'delete a single service by it’s id',
+    },
+    {
+      name: 'list',
+      description: 'list services',
     },
     {
       name: 'update',
