@@ -7,6 +7,7 @@ const pkg = require('./../package.json');
 
 program
   .version(pkg.version)
+  .command('list', 'list all projects').alias('ls')
   .command('new', 'creates a new project').alias('create')
   .command('update', 'update a single project')
   .command('delete', 'delete a single project')

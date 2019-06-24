@@ -438,7 +438,7 @@ Projects
 
 List, filter and search for projects. Example showing only archived projects ordered by customer-id in ascending order
 
-    mite projects --archived yes --sort customer-id
+    mite project list --archived yes --sort customer-id
 
     ┌─────────┬───────────────┬──────────────────────────┬─────────────┬─────────┬──────────────────────────────────────────────────────────────────────────────────┐
     │ ID      │ Name          │ Customer                 │      Budget │    Rate │ Note                                                                             │
@@ -455,11 +455,11 @@ List, filter and search for projects. Example showing only archived projects ord
 
 Export all projects using other columns as CSV:
 
-    mite projects --columns id,customer-id,customer_name --format csv > projects_export.csv
+    mite project list --columns id,customer-id,customer_name --format csv > projects_export.csv
 
 Unarchive all archived projects from a specific customer using `xargs`:
 
-    mite projects --customer-id 123456 --columns id --format text | xargs -n1 mite project update --archived false
+    mite project list --customer-id 123456 --columns id --format text | xargs -n1 mite project update --archived false
 
 ### Update Project
 
@@ -473,17 +473,17 @@ Set the note and name of a project
 
     mite project update --name "js prototype" --note="prototype development" 12344567
 
-Update hourly rate of a project while updating all allready associated time entries:
+Update hourly rate of a project while updating all already associated time entries:
 
     mite project update --hourly-rate 9000 --update-entries 1234567
 
 Archive multiple projects using xargs:
 
-    mite projects --columns id --format text | xargs -n1 mite project update --archived false
+    mite project list --columns id --format text | xargs -n1 mite project update --archived false
 
 ### Create Project
 
-Use `mite project new` subcommand to create new projects. There’s currently no support for complicated hourly rates per service. To find out the `customer_id` use either [Auto-Completion](#auto-completion) or copy the id from the `mite projects` list.
+Use `mite project new` subcommand to create new projects. There’s currently no support for complicated hourly rates per service. To find out the `customer_id` use either [Auto-Completion](#auto-completion) or copy the id from the `mite project list` list.
 
 The following example will create a new Project with a overall budget of 5000 and a hourly rate of 80:
 
@@ -501,7 +501,7 @@ Delete a project:
 
 Delete all archived projects:
 
-    mite projects --columns id --archived yes --format text | xargs -n1 mite project delete
+    mite project list --columns id --archived yes --format text | xargs -n1 mite project delete
 
 
 Customers

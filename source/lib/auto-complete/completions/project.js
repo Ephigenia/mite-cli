@@ -4,6 +4,7 @@
 const projectDeleteCompletion = require('./project-delete');
 const projectNewCompletion = require('./project-new');
 const projectUpdateCompletion = require('./project-update');
+const projectsListCompletion = require('./projects');
 
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
@@ -23,6 +24,8 @@ module.exports = async function ({ line }) {
   switch (thirdArg) {
     case 'delete':
       return projectDeleteCompletion.apply(projectDeleteCompletion, arguments);
+    case 'list':
+      return projectsListCompletion.apply(projectDeleteCompletion, arguments);
     case 'new':
     case 'create':
       return projectNewCompletion.apply(projectNewCompletion, arguments);
@@ -33,6 +36,10 @@ module.exports = async function ({ line }) {
     {
       name: 'delete',
       description: 'delete a single project by it’s id',
+    },
+    {
+      name: 'list',
+      description: 'lists projects',
     },
     {
       name: 'update',
