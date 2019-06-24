@@ -1,4 +1,4 @@
-Ease to use CLI tool for creating, listing, starting and stopping time tracking entries in [Mite](https://mite.yo.lk) and other things using the [mite-api](https://www.npmjs.com/package/mite-api) npm package which is using the [official mite api](https://mite.yo.lk/api/index.html)
+line-separatedEase to use CLI tool for creating, listing, starting and stopping time tracking entries in [Mite](https://mite.yo.lk) and other things using the [mite-api](https://www.npmjs.com/package/mite-api) npm package which is using the [official mite api](https://mite.yo.lk/api/index.html)
 
 [![MIT License](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 [![NPM Package](https://badge.fury.io/js/mite-cli.svg)](https://www.npmjs.com/package/mite-cli)
@@ -8,45 +8,46 @@ Ease to use CLI tool for creating, listing, starting and stopping time tracking 
 [![Maintainability](https://api.codeclimate.com/v1/badges/791e0126615bcd34a0e5/maintainability)](https://codeclimate.com/github/Ephigenia/mite-cli/maintainability)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FEphigenia%2Fmite-cli.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FEphigenia%2Fmite-cli?ref=badge_shield)
 
-- [Features](#features)
-- [Installation](#installation)
-- [Configuration](#configuration)
-    - [Configuration Options](#configuration-options)
-    - [Auto-Completion](#auto-completion)
-- [Usage](#usage)
-    - [Time Entries](#time-entries)
-        - [List](#list)
-            - [Filter by time](#filter-by-time)
-            - [Other Filters](#other-filters)
-            - [Grouping / Reports](#grouping--reports)
-            - [Advanced Examples](#advanced-examples)
-        - [Create Time-Entries](#create-time-entries)
-            - [Interactive](#interactive)
-            - [Non-Interactive](#non-interactive)
-            - [Advanced Usage](#advanced-usage)
-        - [Tracker](#tracker)
-            - [Start Tracking](#start-tracking)
-            - [Stop Tracking](#stop-tracking)
-        - [Modify Time-Entries](#modifiy-time-entries)
-            - [Change Note](#change-note)
-            - [Un-/Lock Entry](#un-lock-entry)
-        - [Delete entry](#delete-entry)
-        - [Open](#open)
-    - [Users](#users)
-    - [Projects](#projects)
-        - [Update Project](#update-project)
-        - [Delete Project](#delete-project)
-    - [Customers](#customers)
-        - [Update Customer](#update-customer)
-        - [Delete Customer](#delete-customer)
-    - [Services](#services)
-        - [Update Service](#update-service)
-        - [Delete Service](#delete-service)
-- [Advanced Topics](#advanced-topics)
-    - [Columns](#columns)
-    - [Alternate Output formats](#alternate-output-formats)
-- [Other Projects](#other-projects)
-- [License](#license)
+- [Features](#Features)
+- [Installation](#Installation)
+- [Configuration](#Configuration)
+    - [Configuration Options](#Configuration-Options)
+    - [Auto-Completion](#Auto-Completion)
+- [Usage](#Usage)
+    - [Time Entries](#Time-Entries)
+        - [List](#List)
+            - [Filter by time](#Filter-by-time)
+            - [Other Filters](#Other-Filters)
+            - [Grouping / Reports](#Grouping--Reports)
+            - [Advanced Examples](#Advanced-Examples)
+        - [Create Time-Entries](#Create-Time-Entries)
+            - [Interactive](#Interactive)
+            - [Non-Interactive](#Non-Interactive)
+            - [Advanced Usage](#Advanced-Usage)
+        - [Tracker](#Tracker)
+            - [Start Tracking](#Start-Tracking)
+            - [Stop Tracking](#Stop-Tracking)
+        - [Modify Time-Entries](#Modify-Time-Entries)
+            - [Change Note](#Change-Note)
+            - [Un-/Lock Entry](#Un-Lock-Entry)
+        - [Delete entry](#Delete-entry)
+        - [Open](#Open)
+    - [Users](#Users)
+    - [Projects](#Projects)
+        - [Update Project](#Update-Project)
+        - [Create Project](#Create-Project)
+        - [Delete Project](#Delete-Project)
+    - [Customers](#Customers)
+        - [Update Customer](#Update-Customer)
+        - [Delete Customer](#Delete-Customer)
+    - [Services](#Services)
+        - [Update Service](#Update-Service)
+        - [Delete Service](#Delete-Service)
+- [Advanced Topics](#Advanced-Topics)
+    - [Columns](#Columns)
+    - [Alternate Output formats](#Alternate-Output-formats)
+- [Other Projects](#Other-Projects)
+- [License](#License)
 
 
 Features
@@ -57,7 +58,7 @@ Features
 - Edit the currently running entries text for fast updating the work log
 - Show, filter, group time entries to show reports for last month, current week etc.
 - Delete single entries by id
-- List, sort, filter, update & delete user accounts, customers, projects & services using variable columns and cli-tables, csv or tsv data
+- List, sort, filter, update & delete user accounts, customers, projects & services using variable columns and cli-tables, CSV or TSV data
 - Highlight JIRA identifiers and github numeral hashtags in time entry’s notes (can be customized)
 - optional installable auto-completions for most of the sub-commands, options and option values
 
@@ -93,7 +94,7 @@ Commands:
   projects           list, filter, archive/unarchive & search projects
   service            update/delete single service
   services           list, filter & search services
-  start              start the tracker for the given id, will also stop allready running entry
+  start              start the tracker for the given id, will also stop already running entry
   stop               stop any running counter
   unlock             unlock single time entry
   users              list, filter & search for users
@@ -133,21 +134,21 @@ Configuration Options
 - `currency`  
     defines the currency used for displaying money values
 - `customersColumns`  
-    defines the default columns to be used when running `mite customers list`.
+    defines the default columns to be used when running `mite customer list list`.
 - `listColumns`  
     defines the default columns to be used when running `mite list`.
 - `noteHighlightRegexp`
-    defines a single regular expression which can contain a single capturing group which will get hightlighted. By default this is set to highlight github hashtag notation (f.e. #218) and jira story identifiers (f.e. CRYO-1281). When you change this note that the beginning and trailing slashes must be omitted and the regexp is case-sensitive and modfieres cannot be changed.
+    defines a single regular expression which can contain a single capturing group which will get highlighted. By default this is set to highlight github hashtag notation (f.e. #218) and jira story identifiers (f.e. CRYO-1281). When you change this note that the beginning and trailing slashes must be omitted and the regexp is case-sensitive and modifiers cannot be changed.
 - `outputFormat`  
     defines the default output format for the list commands, defaults to `table`
 - `projectsColumns`  
-    defines the default columns to be used when running `mite projects list`.
+    defines the default columns to be used when running `mite project list list`.
 - `servicesColumns`  
     defines the default columns to be used when running `mite services list`.
 - `usersColumns`  
     defines the default columns to be used when running `mite users`.
 
-Configuration options can always be resetted to their default by leaving out the value, like: `mite config set listColumns`.
+Configuration options can always be back to initial value to their default by leaving out the value, like: `mite config set listColumns`.
 
 Auto-Completion
 --------------------------------------------------------------------------------
@@ -199,7 +200,7 @@ When an entry is currently active and tracked it will be yellow and indicated wi
 
 #### Filter by time
 
-You also can request longer time frames by using the first argument which is bascially the [`at` parameter](https://mite.yo.lk/en/api/time-entries.html#list-all) of the time entries api:
+You also can request longer time frames by using the first argument which is basically the [`at` parameter](https://mite.yo.lk/en/api/time-entries.html#list-all) of the time entries api:
 
     mite list this_month
 
@@ -248,7 +249,7 @@ For getting a rough overview of the monthly project or services distribution you
 
 Or even more groups which also allows splitting between customers:
 
-    mite list last_month --group-by=customer,service
+    mite list last_month --group-by customer,service
 
     ┌─────────────────┬───────────────────┬────────┬────────────┐
     │ Soup Inc.       │ Communication     │   3:48 │   361.00 € │
@@ -308,13 +309,13 @@ You can also start by passing over the content’s of the new time entry or even
 
     mite new "created some new nice code" myProject1 programming 35
 
-The duration values can be the number of minutes or a duration string. When you add a plus sign at the end "+", f.e. "3:12+" the time entry is created and emidiently started.
+The duration values can be the number of minutes or a duration string. When you add a plus sign at the end "+", f.e. "3:12+" the time entry is created and eminently started.
 
     mite new "researching colors for project" myProject1 programming 0:05+
 
 #### Advanced Usage
 
-Create a time entrie’s note from the last git commit message:
+Create a time entries note from the last git commit message:
 
     git log -1 --pretty=%B | xargs echo -n | mite new projectx communication 30
 
@@ -344,7 +345,7 @@ When there’s a tracker running you may want to update the note without opening
 
     mite amend
 
-You can also add the `--editor` option so that your favorite editor opens up with the current note prefilled. Make sure your `$EDITOR` is correctly set.
+You can also add the `--editor` option so that your favorite editor opens up with the current note. Make sure your `$EDITOR` is correctly set.
 
     mite amend --editor
 
@@ -424,7 +425,7 @@ show all time tracking users from a company (all have a ephigenia.de email addre
 
     mite users --role time_tracker --email ephigenia.de
 
-export all users to a csv file
+export all users to a CSV file
 
     mite users --columns id,role,name,email,archived,language --format csv > users.csv
 
@@ -509,7 +510,7 @@ Customers
 
 List, filter and search for customers. Archived customers will be shown in grey.
 
-    mite customers list --search web --sort id
+    mite customer list list --search web --sort id
 
     ┌────────┬─────────────────┬─────────┬─────────────────────────────────────┐
     │ ID     │ Name            │ Rate    │ Note                                │
@@ -524,11 +525,11 @@ List, filter and search for customers. Archived customers will be shown in grey.
 
 Use different columns
 
-    mite customers --colums name,hourly_rate
+    mite customer list --colums name,hourly_rate
 
 Export all archived customers
 
-    mite customers --archived true --format csv > archived_customers.csv
+    mite customer list --archived true --format csv > archived_customers.csv
 
 ### Update Customer
 
@@ -540,7 +541,7 @@ Archive a single customer
 
 Archive multiple customers using xargs:
 
-    mite customers --columns id --format text | xargs -n1 mite customer update --archived false
+    mite customer list --columns id --format text | xargs -n1 mite customer update --archived false
 
 ### Delete Customer
 
@@ -550,7 +551,7 @@ Delete a single customer
 
 Delete a whole set of customers
 
-    mite customers --columns id --archived yes --format text | xargs -n1 mite customer delete
+    mite customer list --columns id --archived yes --format text | xargs -n1 mite customer delete
 
 Services
 --------------------------------------------------------------------------------
@@ -632,7 +633,7 @@ The output of program is designed to look good to a human and shows the results 
 
 The following formats are supported:
 
-- csv (comma-seperated)
+- csv (comma-separated)
 - json, *ignores ansi-colors & table headers*
 - md (markdown)
 - table (cli-table)
