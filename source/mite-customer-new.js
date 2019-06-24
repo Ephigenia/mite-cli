@@ -47,7 +47,7 @@ function main() {
     ...(typeof program.note === 'string' && { note: program.note })
   };
 
-  console.dir(process.argv)
+  console.dir(process.argv);
   console.dir(program.args);
   // console.dir(program);
   console.dir(data);
