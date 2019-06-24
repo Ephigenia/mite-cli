@@ -33,13 +33,14 @@ line-separatedEase to use CLI tool for creating, listing, starting and stopping 
         - [Delete entry](#Delete-entry)
         - [Open](#Open)
     - [Users](#Users)
-    - [Projects](#Projects)
-        - [Update Project](#Update-Project)
-        - [Create Project](#Create-Project)
-        - [Delete Project](#Delete-Project)
     - [Customers](#Customers)
+        - [Create Customer](#Create-Customer)
         - [Update Customer](#Update-Customer)
         - [Delete Customer](#Delete-Customer)
+    - [Projects](#Projects)
+        - [Create Project](#Create-Project)
+        - [Update Project](#Update-Project)
+        - [Delete Project](#Delete-Project)
     - [Services](#Services)
         - [Update Service](#Update-Service)
         - [Delete Service](#Delete-Service)
@@ -434,6 +435,61 @@ Show a report for all users showing the revenues and times per service for all u
     mite users --search marc --columns id --format text | xargs mite list last_month --group-by service --user-id
 
 
+
+Customers
+--------------------------------------------------------------------------------
+
+List, filter and search for customers. Archived customers will be shown in grey.
+
+    mite customer list list --search web --sort id
+
+    ┌────────┬─────────────────┬─────────┬─────────────────────────────────────┐
+    │ ID     │ Name            │ Rate    │ Note                                │
+    ├────────┼─────────────────┼─────────┼─────────────────────────────────────┤
+    │ 123456 │ WebCompany Ltd. │ 12.34 € │ client’s note                       │
+    ├────────┼─────────────────┼─────────┼─────────────────────────────────────┤
+    │ 827361 │ Solutions Web   │ 80.00 € │ Multiline lorem ipsum               │
+    │        │                 │         │ Note content                        │
+    ├────────┼─────────────────┼─────────┼─────────────────────────────────────┤
+    │ 927361 │ Mite-Cli        │ -       │ open source project                 │
+    └────────┴─────────────────┴─────────┴─────────────────────────────────────┘
+
+Use different columns
+
+    mite customer list --colums name,hourly_rate
+
+Export all archived customers
+
+    mite customer list --archived true --format csv > archived_customers.csv
+
+### Create Customer
+
+Use this command to create a new customer.
+
+    mite customer new --name "Megasoft" --hourly-rate 90
+
+### Update Customer
+
+This command can update a customer’s name, note, hourly rate and archived state.
+
+Archive a single customer
+
+    mite project update --archived false 1238127
+
+Archive multiple customers using xargs:
+
+    mite customer list --columns id --format text | xargs -n1 mite customer update --archived false
+
+### Delete Customer
+
+Delete a single customer
+
+    mite customer delete 123456
+
+Delete a whole set of customers
+
+    mite customer list --columns id --archived yes --format text | xargs -n1 mite customer delete
+
 Projects
 --------------------------------------------------------------------------------
 
@@ -462,6 +518,19 @@ Unarchive all archived projects from a specific customer using `xargs`:
 
     mite project list --customer-id 123456 --columns id --format text | xargs -n1 mite project update --archived false
 
+
+### Create Project
+
+Use `mite project new` subcommand to create new projects. There’s currently no support for complicated hourly rates per service. To find out the `customer_id` use either [Auto-Completion](#auto-completion) or copy the id from the `mite project list` list.
+
+The following example will create a new Project with a overall budget of 5000 and a hourly rate of 80:
+
+    mite project new --customer-id 123456 \
+        --name "Side Project B" \
+        --hourly-rate 80.00 \
+        --budget 5000 \
+        --budget-type cents
+
 ### Update Project
 
 The `mite project` command can update the details like budget-type, archived state, hourly-rate, name or note of a project.
@@ -482,18 +551,6 @@ Archive multiple projects using xargs:
 
     mite project list --columns id --format text | xargs -n1 mite project update --archived false
 
-### Create Project
-
-Use `mite project new` subcommand to create new projects. There’s currently no support for complicated hourly rates per service. To find out the `customer_id` use either [Auto-Completion](#auto-completion) or copy the id from the `mite project list` list.
-
-The following example will create a new Project with a overall budget of 5000 and a hourly rate of 80:
-
-    mite project new --customer-id 123456 \
-        --name "Side Project B" \
-        --hourly-rate 80.00 \
-        --budget 5000 \
-        --budget-type cents
-
 ### Delete Project
 
 Delete a project:
@@ -504,54 +561,6 @@ Delete all archived projects:
 
     mite project list --columns id --archived yes --format text | xargs -n1 mite project delete
 
-
-Customers
---------------------------------------------------------------------------------
-
-List, filter and search for customers. Archived customers will be shown in grey.
-
-    mite customer list list --search web --sort id
-
-    ┌────────┬─────────────────┬─────────┬─────────────────────────────────────┐
-    │ ID     │ Name            │ Rate    │ Note                                │
-    ├────────┼─────────────────┼─────────┼─────────────────────────────────────┤
-    │ 123456 │ WebCompany Ltd. │ 12.34 € │ client’s note                       │
-    ├────────┼─────────────────┼─────────┼─────────────────────────────────────┤
-    │ 827361 │ Solutions Web   │ 80.00 € │ Multiline lorem ipsum               │
-    │        │                 │         │ Note content                        │
-    ├────────┼─────────────────┼─────────┼─────────────────────────────────────┤
-    │ 927361 │ Mite-Cli        │ -       │ open source project                 │
-    └────────┴─────────────────┴─────────┴─────────────────────────────────────┘
-
-Use different columns
-
-    mite customer list --colums name,hourly_rate
-
-Export all archived customers
-
-    mite customer list --archived true --format csv > archived_customers.csv
-
-### Update Customer
-
-This command can update a customer’s name, note, hourly rate and archived state.
-
-Archive a single customer
-
-    mite project update --archived false 1238127
-
-Archive multiple customers using xargs:
-
-    mite customer list --columns id --format text | xargs -n1 mite customer update --archived false
-
-### Delete Customer
-
-Delete a single customer
-
-    mite customer delete 123456
-
-Delete a whole set of customers
-
-    mite customer list --columns id --archived yes --format text | xargs -n1 mite customer delete
 
 Services
 --------------------------------------------------------------------------------

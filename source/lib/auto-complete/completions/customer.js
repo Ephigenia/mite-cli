@@ -4,6 +4,7 @@
 const customerUpdateCompletion = require('./customer-update');
 const customerDeleteCompletion = require('./customer-delete');
 const customerListCompletion = require('./customers.js');
+const customerNewCompletion = require('./customer-new.js');
 
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
@@ -26,6 +27,8 @@ module.exports = async function ({ line }) {
       return customerDeleteCompletion.apply(customerDeleteCompletion, arguments);
     case 'list':
       return customerListCompletion.apply(customerDeleteCompletion, arguments);
+    case 'new':
+      return customerNewCompletion.apply(customerNewCompletion, arguments);
     case 'update':
       // forward auto-completion to sub-sub-command
       return customerUpdateCompletion.apply(customerUpdateCompletion, arguments);
@@ -35,6 +38,10 @@ module.exports = async function ({ line }) {
     {
       name: 'delete',
       description: 'delete a single customer by it’s id',
+    },
+    {
+      name: 'new',
+      description: 'create a new customer',
     },
     {
       name: 'list',
