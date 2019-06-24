@@ -29,6 +29,7 @@ line-separatedEase to use CLI tool for creating, listing, starting and stopping 
             - [Stop Tracking](#Stop-Tracking)
         - [Modify Time-Entries](#Modify-Time-Entries)
             - [Change Note](#Change-Note)
+            - [Change Service or Project](#Change-Service-or-Project)
             - [Un-/Lock Entry](#Un-Lock-Entry)
         - [Delete entry](#Delete-entry)
         - [Open](#Open)
@@ -56,7 +57,7 @@ Features
 
 - Create and start new Entries with interactive survey-like cli interface
 - Delete, lock, unlock single time entries
-- Edit the currently running entries text for fast updating the work log
+- Edit the currently running entries text, service and project for quickly updating the work log
 - Show, filter, group time entries to show reports for last month, current week etc.
 - Delete single entries by id
 - List, sort, filter, update & delete user accounts, customers, projects & services using variable columns and cli-tables, CSV or TSV data
@@ -81,21 +82,21 @@ Options:
   -h, --help         output usage information
 
 Commands:
-  amend|reword       edit the text for a specific time entry or the currently runnning entry
+  amend|reword       edit note, service, project of a specific time entry or the currently runnning entry
   autocomplete       install/uninstall autocompletion
   config             show or set configuration settings
-  customer           update/delete single customer
+  customer           create/delete/list/update customer
   customers|clients  list, filter & search customers
   delete|rm          delete a specific time entry
   list|st            list time entries
   lock               lock single time entry
   new|create         create a new time entry
   open               open the given time entry in browser
-  project            update/delete a single project
+  project            create/delete/list/update a single project
   projects           list, filter, archive/unarchive & search projects
-  service            update/delete single service
+  service            create/delete/list/update single service
   services           list, filter & search services
-  start              start the tracker for the given id, will also stop already running entry
+  start              start the tracker for the given id, will also stop allready running entry
   stop               stop any running counter
   unlock             unlock single time entry
   users              list, filter & search for users
@@ -361,6 +362,12 @@ You can also pass additional informations like the note:
 You can also pipe in the note:
 
     cat myVerLongNote.txt | mite amend 1234567
+
+#### Change Service or Project
+
+Changing the project or service id of the current or any other time entry works the same:
+
+    mite amend 12345678 --service-id 12834 --project-id 12938123
 
 #### Un-/Lock Entry
 

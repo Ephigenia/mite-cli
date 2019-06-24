@@ -16,17 +16,31 @@ program
   .version(pkg.version)
   .arguments('[timeEntryId] [note]')
   .description(
-    'Rewrite the note for the given time entry id or use the currently ' +
-    'running time entry and edit it’s note',
+    `Updates the note of the currently tracked time entry (when no id is given) \
+or the one specified in the first argument. The content of the note can be \
+second argument or piped into the program. See the examples for the different \
+usages.
+
+Also the project id and service id of a time entry can be altered if the user \
+has the required permissions to do it.`,
     {
-      timeEntryId: 'optional id of the time entry that should be altered, ' +
-        'if not given the currently running entry is used',
+      timeEntryId:
+        'optional id of the time entry that should be altered, if not given ' +
+        'the currently running entry is used',
       note: 'optional value to which the time entries note should be set'
     }
   )
   .option(
     '-e, --editor',
     'open preferred $EDITOR for editing'
+  )
+  .option(
+    '--project-id <id>',
+    'the project id which should be set'
+  )
+  .option(
+    '--service-id <id>',
+    'the service id which should be set'
   )
   .on('--help', () => console.log(`
 Examples:
@@ -42,9 +56,21 @@ Examples:
 
   Change the note via command line argument:
     mite amend 12345678 "created a programmable list of items"
+
+  If you leave out the id the currently tracked note will be changed
+    mite amend "created a programmable list of items"
+
+  Change project and service
+    mite amend 12345678 --service-id 918772 --project-id 129379
     `));
 
 function main(timeEntryId, note) {
+  // if first argument is the note instead of the timeEntry
+  if (!note && !timeEntryId.match(/^\d+/)) {
+    note = timeEntryId;
+    timeEntryId = undefined;
+  }
+
   const mite = miteApi(config.get());
   const miteTracker = tracker(config.get());
   const getTimeEntry = util.promisify(mite.getTimeEntry);
@@ -77,6 +103,11 @@ function main(timeEntryId, note) {
     promise = getTimeEntry(timeEntryId);
   }
 
+  let updateData = {
+    ...(program.projectId && { project_id: program.projectId }),
+    ...(program.serviceId && { service_id: program.serviceId }),
+  };
+
   return promise
     .then(data => {
       if (!data) {
@@ -84,18 +115,23 @@ function main(timeEntryId, note) {
       }
       return data.time_entry;
     })
+    /**
+     * @return {Object.<string>}
+     * @return {string} entry.note new note
+     */
     .then(timeEntry => {
       timeEntryId = timeEntry.id;
 
-      // only ask for updated note entered via editor or inquirer if it’s
-      // not been set before
-      if (typeof note !== 'undefined') {
-        // use note passed over via pipe
+      // if only service and project should be changed (no note given)
+      if (typeof note === 'undefined' && updateData !== {}) {
+        return updateData;
+      } else if (typeof note !== 'undefined') {
+        // note passed over via pipe or argument
         return { note };
       } else if (program.editor) {
         // use $EDITOR and return content
-        return openEditor(timeEntry.note).then((editedText) => {
-          return { note: editedText };
+        return openEditor(timeEntry.note).then((editorContent) => {
+          return { note: editorContent };
         });
       } else {
         // use interactive mode (inquirer)

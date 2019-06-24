@@ -17,7 +17,25 @@ const NOTE_MAX_LENGTH = (process.stdout.columns || 80) - 20;
  * @param {string} env.line - the current complete input line in the cli
  * @returns {Promise<Array<string>>}
  */
-module.exports = async ({ line, words }) => {
+module.exports = async ({ line, words, prev }) => {
+
+  switch (prev) {
+    case '--project-id':
+      return miteApi.getProjects({ archived: false }).then(
+        projects => projects.map(c => ({
+          name: String(c.id),
+          description: c.name
+        }))
+      );
+    case '--service-id':
+        return miteApi.getServices({ archived: false }).then(
+          service => service.map(c => ({
+            name: String(c.id),
+            description: c.name + (c.billable ? ' $' : '')
+          }))
+        );
+  }
+
   const defaults = [
     (words < 3 ? {
       name: '--help',
@@ -26,7 +44,15 @@ module.exports = async ({ line, words }) => {
     (line.indexOf('--editor') === -1 ? {
       name: '--editor',
       description: 'open $EDITOR for editing the entry’s note'
-    } : undefined)
+    } : undefined),
+    {
+      name: '--project-id',
+      description: 'id of the project the entry should be assigned to'
+    },
+    {
+      name: '--service  -id',
+      description: 'id of the service  the entry should be assigned to'
+    }
   ];
 
   // try to find the latest entries created by the current user and propose the
