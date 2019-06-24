@@ -1,3 +1,58 @@
+# [1.0.0](https://github.com/Ephigenia/mite-cli/compare/v0.10.0...v1.0.0) (2019-06-24)
+
+
+### Bug Fixes
+
+* correct description for --hourly-rate option ([1cf1c56](https://github.com/Ephigenia/mite-cli/commit/1cf1c56))
+* **mite-list:** no default limit value ([01a96f5](https://github.com/Ephigenia/mite-cli/commit/01a96f5))
+* err or err.message output upon errors in most of sub commands ([b888702](https://github.com/Ephigenia/mite-cli/commit/b888702))
+* **customer-update:** typo in success message ([75f81fd](https://github.com/Ephigenia/mite-cli/commit/75f81fd))
+* **list:** service and project id & date-completion improvment ([7c7a355](https://github.com/Ephigenia/mite-cli/commit/7c7a355))
+* **mite-list:** empty table headers in grouped output ([c38628e](https://github.com/Ephigenia/mite-cli/commit/c38628e))
+* **mite-new:** different response format from mite-api package ([24a99dd](https://github.com/Ephigenia/mite-cli/commit/24a99dd))
+* **projects-list:** projects with no customer show blank value ([bdba7ef](https://github.com/Ephigenia/mite-cli/commit/bdba7ef))
+* **sort:** string or array parameter ([2eef4a6](https://github.com/Ephigenia/mite-cli/commit/2eef4a6))
+* only use update_entries when flag is set ([e59d1eb](https://github.com/Ephigenia/mite-cli/commit/e59d1eb))
+* removes custom error code as mite-api lib covers most of the cases ([677e1d6](https://github.com/Ephigenia/mite-cli/commit/677e1d6))
+
+
+### Code Refactoring
+
+* all underscore options use minus now ([ebfe6be](https://github.com/Ephigenia/mite-cli/commit/ebfe6be))
+
+
+### Features
+
+* adds archived column and option can be set to "all" ([d1e2ad0](https://github.com/Ephigenia/mite-cli/commit/d1e2ad0))
+* **customer:** adds auto-completion for delete & update ([e56457d](https://github.com/Ephigenia/mite-cli/commit/e56457d))
+* adds config customizable columns for all listing commands ([84ca387](https://github.com/Ephigenia/mite-cli/commit/84ca387))
+* **config:** adds ability to modify note hightlighting pattern ([e8f4dc1](https://github.com/Ephigenia/mite-cli/commit/e8f4dc1))
+* **config:** adds currency code as config option ([a50046b](https://github.com/Ephigenia/mite-cli/commit/a50046b))
+* **list:** adds "all" as option for columns which show all colums available ([7d1fc5c](https://github.com/Ephigenia/mite-cli/commit/7d1fc5c))
+* **list:** adds tracking column ([b770e5f](https://github.com/Ephigenia/mite-cli/commit/b770e5f))
+* **list:** sort by multiple fields in asc and desc order ([861332c](https://github.com/Ephigenia/mite-cli/commit/861332c))
+* **mite-amend:** pass note as argument or pipe-in ([e699c8e](https://github.com/Ephigenia/mite-cli/commit/e699c8e))
+* **mite-amend:** use first argument as note if it’s not numeric ([97efeac](https://github.com/Ephigenia/mite-cli/commit/97efeac))
+* **project:** adds ability to delete ([60dd072](https://github.com/Ephigenia/mite-cli/commit/60dd072))
+* **project-delete:** adds auto-completion ([cb9fe8d](https://github.com/Ephigenia/mite-cli/commit/cb9fe8d))
+* **project-new:** adds ability to create new customers ([e21107b](https://github.com/Ephigenia/mite-cli/commit/e21107b))
+* **project-new:** adds ability to create new projects ([0605e6c](https://github.com/Ephigenia/mite-cli/commit/0605e6c))
+* **project-update:** adds budget & budget_type options ([3c94dd4](https://github.com/Ephigenia/mite-cli/commit/3c94dd4))
+* **projects-list:** adds archived column ([d52af59](https://github.com/Ephigenia/mite-cli/commit/d52af59))
+* **service:** adds ability to update service’s properties ([bc893b9](https://github.com/Ephigenia/mite-cli/commit/bc893b9))
+* **service:** adds auto-completion for delete & update ([ca92479](https://github.com/Ephigenia/mite-cli/commit/ca92479))
+* adds customer-delete ([aa1a31b](https://github.com/Ephigenia/mite-cli/commit/aa1a31b))
+* adds JSON output format ([fe95bd3](https://github.com/Ephigenia/mite-cli/commit/fe95bd3))
+* adds JSON output format ([5b054a0](https://github.com/Ephigenia/mite-cli/commit/5b054a0))
+* update hourly_rate and update entries in customer, project and service ([c213cf0](https://github.com/Ephigenia/mite-cli/commit/c213cf0))
+
+
+### BREAKING CHANGES
+
+* all options containing an underscore are changed to have a minus instead so that it aligns with the other options which contain multiple words. F.e. `--customer_id` becomes `--customer-id`.
+
+
+
 # [0.10.0](https://github.com/Ephigenia/mite-cli/compare/v0.9.0...v0.10.0) (2019-04-20)
 
 
