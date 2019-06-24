@@ -27,7 +27,7 @@ Ease to use CLI tool for creating, listing, starting and stopping time tracking 
         - [Tracker](#tracker)
             - [Start Tracking](#start-tracking)
             - [Stop Tracking](#stop-tracking)
-        - [Modifiy Time-Entries](#modifiy-time-entries)
+        - [Modify Time-Entries](#modifiy-time-entries)
             - [Change Note](#change-note)
             - [Un-/Lock Entry](#un-lock-entry)
         - [Delete entry](#delete-entry)
@@ -312,7 +312,7 @@ The duration values can be the number of minutes or a duration string. When you 
 
     mite new "researching colors for project" myProject1 programming 0:05+
 
-#### Advanced Usage 
+#### Advanced Usage
 
 Create a time entrie’s note from the last git commit message:
 
@@ -324,7 +324,7 @@ Read note content von stdin / pipe in note:
 
 ### Tracker
 
-#### Start Tracking 
+#### Start Tracking
 
 Start tracking of a specific time entry.
 
@@ -336,7 +336,7 @@ Stops any currently running time entry.
 
     mite stop
 
-### Modifiy Time-Entries
+### Modify Time-Entries
 
 #### Change Note
 
@@ -428,7 +428,7 @@ export all users to a csv file
 
     mite users --columns id,role,name,email,archived,language --format csv > users.csv
 
-Show a report for all users showing the revenues and times per service for all users matching a query 
+Show a report for all users showing the revenues and times per service for all users matching a query
 
     mite users --search marc --columns id --format text | xargs mite list last_month --group-by service --user-id
 
@@ -463,14 +463,14 @@ Unarchive all archived projects from a specific customer using `xargs`:
 
 ### Update Project
 
-The `mite project` comamnd can update the details like budget-type, archived state, hourly-rate, name or note of a project.
+The `mite project` command can update the details like budget-type, archived state, hourly-rate, name or note of a project.
 
 Archive a single project
 
     mite project update --archived false 1238127
 
-Set the note and name of a project 
-    
+Set the note and name of a project
+
     mite project update --name "js prototype" --note="prototype development" 12344567
 
 Update hourly rate of a project while updating all allready associated time entries:
@@ -520,7 +520,7 @@ Export all archived customers
 
 ### Update Customer
 
-This comamnd can update a customer’s name, note, hourly rate and archived state.
+This command can update a customer’s name, note, hourly rate and archived state.
 
 Archive a single customer
 
@@ -559,7 +559,7 @@ List, filter and search for services. Archived services will be grey.
 
 ### Update Service
 
-This comamnd can update a service’s name, note, hourly rate and archived state.
+This command can update a service’s name, note, hourly rate and archived state.
 
 Change the hourly rate of a service:
 
@@ -652,7 +652,7 @@ Using Ids from the output for further processing using `xargs`:
 
     mite list --columns id --format text | xargs -n1 mite lock
 
-Showing all notes from all entries from a specific service, to put them into a bill: 
+Showing all notes from all entries from a specific service, to put them into a bill:
 
     mite list last_month --service-id 123 --project-id 456 --format text --columns note
 
