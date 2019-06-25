@@ -19,38 +19,48 @@ const formater = require('./../../formater');
  */
 module.exports = async ({ words }) => {
 
+  let options = [];
   switch(words) {
     case 2: {
-      return ['note'];
+      options.push(['note']);
+      break;
     }
     // project
     case 3: {
-      return miteApi.getProjects({ archived: false }).then(
-        projects => projects.map(p => (p.name))
-      );
+      const projects = await miteApi.getProjects({ archived: false });
+      options.push(...projects.map(p => (p.name)));
+      break;
     }
     // service
     case 4: {
-      return miteApi.getServices({ archived: false }).then(
-        service => service.map(s => ({
+      const services = await miteApi.getServices({ archived: false });
+      options.push(...services.map(s => (
+        {
           name: s.name,
           description: s.name + (s.billable ? ' $' : '')
-        }))
-      );
+        }
+      )));
+      break;
     }
     // minutes
     case 5: {
+      // add one option for each time interval which should be most common
       const minutes = [1, 5, 15, 30, 45, 60, 90, 120, 150, 180, 210, 240, 300, 360, 420, 480];
-      return minutes.map(minutes => ({
-        description: String(minutes) + ' minute(s)',
+      options.push(...minutes.map(minutes => ({
+        description: `${minutes} minute(s)`,
         name: formater.minutesToDuration(minutes),
-      }));
+      })));
+      break;
     }
     // date
     case 6: {
-      return [
+      options.push([
+        // add YYYY-MM-DD as option
         (new Date()).toISOString().substr(0, 10)
-      ];
+      ]);
+      break;
     }
   }
+
+  return options;
 };
