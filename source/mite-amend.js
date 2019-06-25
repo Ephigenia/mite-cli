@@ -64,18 +64,18 @@ Examples:
     mite amend 12345678 --service-id 918772 --project-id 129379
     `));
 
+const mite = miteApi(config.get());
+const miteTracker = tracker(config.get());
+const getTimeEntry = util.promisify(mite.getTimeEntry);
+const updateTimeEntry = util.promisify(mite.updateTimeEntry);
+const openEditor = util.promisify(ExternalEditor.editAsync);
+
 function main(timeEntryId, note) {
   // if first argument is the note instead of the timeEntry
   if (!note && !timeEntryId.match(/^\d+/)) {
     note = timeEntryId;
     timeEntryId = undefined;
   }
-
-  const mite = miteApi(config.get());
-  const miteTracker = tracker(config.get());
-  const getTimeEntry = util.promisify(mite.getTimeEntry);
-  const updateTimeEntry = util.promisify(mite.updateTimeEntry);
-  const openEditor = util.promisify(ExternalEditor.editAsync);
 
   // use note from pipe
   let args = Array.prototype.slice.call(arguments);
@@ -86,6 +86,9 @@ function main(timeEntryId, note) {
     note = fs.readFileSync("/dev/stdin", "utf-8");
     args.unshift(note);
   }
+
+  console.log('note', note);
+  process.exit(0);
 
   let promise = null;
 

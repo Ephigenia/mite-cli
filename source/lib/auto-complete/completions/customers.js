@@ -4,6 +4,33 @@
 const DataOutput = require('./../../data-output');
 const customersCommand = require('./../../commands/customers');
 
+const defaults = [
+  {
+    name: '--archived',
+    description: 'defines wheter archived customers should be shown or not'
+  },
+  {
+    name: '--columns',
+    description: 'define the columns that are shown',
+  },
+  {
+    name: '--format',
+    description: 'defines the output format',
+  },
+  {
+    name: '--help',
+    description: 'show help message'
+  },
+  {
+    name: '--search',
+    description: 'given a query will list only customers that match the query',
+  },
+  {
+    name: '--sort',
+    description: 'defines the order of customers shown',
+  }
+];
+
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
  *
@@ -31,30 +58,5 @@ module.exports = async ({ prev }) => {
       return customersCommand.sort.options;
   }
 
-  return [
-    {
-      name: '--archived',
-      description: 'defines wheter archived customers should be shown or not'
-    },
-    {
-      name: '--columns',
-      description: 'define the columns that are shown',
-    },
-    {
-      name: '--format',
-      description: 'defines the output format',
-    },
-    {
-      name: '--help',
-      description: 'show help message'
-    },
-    {
-      name: '--search',
-      description: 'given a query will list only customers that match the query',
-    },
-    {
-      name: '--sort',
-      description: 'defines the order of customers shown',
-    }
-  ];
+  return defaults;
 };

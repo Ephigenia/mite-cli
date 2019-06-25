@@ -38,8 +38,8 @@ const FORMATS = Object.values(FORMAT);
  * @return {Array<Array<String>>}
  */
 function compileTableData(items, columns) {
-  assert(Array.isArray(items), 'expeceted data to be an array');
-  assert(Array.isArray(columns), 'expeceted columns to be an array');
+  assert(Array.isArray(items), 'expected data to be an array');
+  assert(Array.isArray(columns), 'expected columns to be an array');
 
   return items.map(item => {
     let row = columns.map(columnDefinition => {
@@ -70,8 +70,8 @@ function compileTableData(items, columns) {
  * @return {Array<Array<String>>}
  */
 function getTableFooterColumns(items, columns) {
-  assert(Array.isArray(items), 'expeceted items to be an array');
-  assert(Array.isArray(columns), 'expeceted columns to be an array');
+  assert(Array.isArray(items), 'expected items to be an array');
+  assert(Array.isArray(columns), 'expected columns to be an array');
 
   return columns.map(columnDefinition => {
     let columnSum;
@@ -85,6 +85,11 @@ function getTableFooterColumns(items, columns) {
   });
 }
 
+function stripColorColodes(string) {
+  const ansiColorRegexp = /[\\u001b\\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g;
+  return string.replace(ansiColorRegexp, '');
+}
+
 /**
  * @param {Array<Object>} data
  * @param {FORMAT} format
@@ -92,8 +97,8 @@ function getTableFooterColumns(items, columns) {
  * @return {String}
  */
 function formatData(data, format, columns = []) {
-  assert(Array.isArray(data), 'expeceted data to be an array');
-  assert(Array.isArray(columns), 'expeceted columns to be an array');
+  assert(Array.isArray(data), 'expected data to be an array');
+  assert(Array.isArray(columns), 'expected columns to be an array');
   assert.strictEqual(typeof format, 'string', 'expected format to be a string');
 
   // adds table header when there are more than one column defined
@@ -112,8 +117,7 @@ function formatData(data, format, columns = []) {
       // ignore table header
       const jsonString = JSON.stringify(data.slice(1));
       // remove ansi color codes
-      const ansiColorRegexp = /[\\u001b\\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g;
-      return jsonString.replace(ansiColorRegexp, '');
+      return stripColorColodes(jsonString);
     }
     case 'md':
       return markdownTable(data);

@@ -5,6 +5,37 @@ const config = require('./../../../config');
 const miteApi = require('./../../mite-api')(config.get());
 const { BUDGET_TYPES } = require('./../../constants');
 
+const defaults = [
+  {
+    name: '--archived',
+    description: 'archive or unarchive a project',
+  },
+  {
+    name: '--budget-type',
+    description: 'change the budget_type',
+  },
+  {
+    name: '--hourly-rate',
+    description: 'change the hourly-rate',
+  },
+  {
+    name: '--name',
+    description: 'change the name of the project',
+  },
+  {
+    name: '--note',
+    description: 'change the note of the project',
+  },
+  {
+    name: '--update-entries',
+    description: 'update time entries when hourly_rate was changed',
+  },
+  {
+    name: '--help',
+    description: 'show help message',
+  }
+];
+
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
  *
@@ -16,39 +47,8 @@ const { BUDGET_TYPES } = require('./../../constants');
  * @param {string} env.line - the current complete input line in the cli
  * @returns {Promise<Array<string>>}
  */
-module.exports = async ({ prev, line, word }) => {
-  const defaults = [
-    line.indexOf('--archived') === -1 ? {
-      name: '--archived',
-      description: 'archive or unarchive a project',
-    } : undefined,
-    line.indexOf('--budget-type') === -1 ? {
-      name: '--budget-type',
-      description: 'change the budget_type',
-    } : undefined,
-    line.indexOf('--hourly-rate') === -1 ? {
-      name: '--hourly-rate',
-      description: 'change the hourly-rate',
-    } : undefined,
-    line.indexOf('--name') === -1 ? {
-      name: '--name',
-      description: 'change the name of the project',
-    } : undefined,
-    line.indexOf('--note') === -1 ? {
-      name: '--note',
-      description: 'change the note of the project',
-    } : undefined,
-    line.indexOf('--update-entries') === -1 ? {
-      name: '--update-entries',
-      description: 'update time entries when hourly_rate was changed',
-    } : undefined,
-    // include --help only when no other arguments or options are provided
-    word < 4 ? {
-      name: '--help',
-      description: 'show help message',
-    } : undefined,
-  ];
-
+module.exports = async ({ prev, line }) => {
+  // propose values for some of the arguments
   switch(prev) {
     case '--archived':
       return ['yes', 'no'];
@@ -64,16 +64,19 @@ module.exports = async ({ prev, line, word }) => {
 
   // show list of archived or unarchived projects depending on the --archived
   // flag wich is allready been given
-  const options = {};
+  let options = defaults.filter(option => {
+    return line.indexOf(option.name) === -1;
+  });
+
   if (line.match(/--archived/)) {
     options.archived = !/--archived[ =](yes|true|1|ja)/.test(line);
   }
+  const projects = await miteApi.getProjects(options);
+  const projectOptions = projects.map(c => ({
+    name: String(c.id),
+    description: c.name
+  }));
 
-  // return a list of project ids and default options
-  return miteApi.getProjects(options)
-    .then(projects => projects.map(c => ({
-      name: String(c.id),
-      description: c.name
-    })))
-    .then(options => [].concat(options, defaults));
+  // merge customer options and defaults togheter
+  return [].concat(projectOptions, options);
 };

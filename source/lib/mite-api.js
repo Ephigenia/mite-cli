@@ -159,8 +159,8 @@ class MiteApiWrapper {
 
   sortBoolean (a, b, direction = 'asc') {
     if (a > b) return direction === 'asc' ? -1 : 1;
-      if (a < b) return direction === 'asc' ? 1 : -1;
-      return 0;
+    if (a < b) return direction === 'asc' ? 1 : -1;
+    return 0;
   }
 
   async getItemsAndArchived(itemName, options = {}) {

@@ -17,24 +17,32 @@ sorted.
 
 Note that users with the role time-tracker will not be able to list users!
   `)
-  .option.apply(program, commandOptions.toArgs(commandOptions.archived, 'filter for archived or unarchived customers only', 'all'))
+  .option.apply(program, commandOptions.toArgs(
+    commandOptions.archived,
+    'filter for archived or unarchived customers only',
+    'all'
+  ))
   .option.apply(program, commandOptions.toArgs(
     commandOptions.columns,
     commandOptions.columns.description(usersCommand.columns.options),
     config.get().usersColumns
   ))
-  .option.apply(program, commandOptions.toArgs(commandOptions.format, undefined, config.get('outputFormat')))
+  .option.apply(program, commandOptions.toArgs(
+    commandOptions.format,
+    undefined,
+    config.get('outputFormat')
+  ))
   .option(
     '--name <query>',
-    'optional case-sensitive query for names'
+    'Optional case-sensitive query for names'
   )
   .option(
     '--email <query>',
-    'optional case-sensitive search for users emails'
+    'Optional case-sensitive search for users emails'
   )
   .option(
     '--role <role>',
-    'optional user role to filter, multiple arguments comma-separated',
+    'Optional user role to filter, multiple arguments comma-separated',
     ((val) => {
       if (typeof val === 'string') {
         return val.split(/\s*,\s*/);
@@ -44,7 +52,7 @@ Note that users with the role time-tracker will not be able to list users!
   )
   .option(
     '--search <regexp>',
-    'optional cient-side regexp searching in user name, email and note.'
+    'Optional cient-side regexp searching in user name, email and note.'
   )
   .option.apply(program, commandOptions.toArgs(
     commandOptions.sort,
@@ -70,6 +78,28 @@ Examples:
     mite users --columns id,role,name,email,archived,language --format csv > users.csv
   `));
 
+/**
+ * Filter function for matching a user against a search query which searches
+ * in email, name and note
+ *
+ * @param {String} query
+ * @param {Object} user
+ * @param {String} user.email
+ * @param {String} user.name
+ * @param {String} user.note
+ * @return {Boolean}
+ */
+function filterUsersByQuery(query, user) {
+  // no query given pass all projects as there’s probably no "search"
+  // argument given to the CLI
+  if (!query) {
+    return true;
+  }
+  const regexp = new RegExp(program.search, 'i');
+  const target = [user.name, user.email, user.note].join('');
+  return target.match(regexp);
+}
+
 async function main() {
   const miteApi = require('./lib/mite-api')(config.get());
 
@@ -84,14 +114,7 @@ async function main() {
     .then((users) => users
       .filter(({ archived }) => program.archived === 'all' && true || archived === program.archived)
       .filter(({ role }) => !program.role && true || program.role.indexOf(role) > -1)
-      .filter((user) => {
-        if (!program.search) {
-          return user;
-        }
-        const regexp = new RegExp(program.search, 'i');
-        const target = [user.name, user.email, user.note].join('');
-        return target.match(regexp);
-      })
+      .filter(filterUsersByQuery.bind(this, program.search))
     )
     .then(items => miteApi.sort(
       items,

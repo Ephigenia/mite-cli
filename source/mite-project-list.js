@@ -65,8 +65,34 @@ Examples:
     mite projects list --columns id --format text | xargs -n1 mite project update --archived false
   `));
 
+/**
+ * Filter function which searches for the given query in the project’s
+ * customer name or ID
+ *
+ * @param {String} query customer name or ID
+ * @param {Object} project
+ * @param {String} project.customer_name
+ * @param {Number} project.customer_id
+ * @return {Boolean}
+ */
+function filterProjectsByCustomerName(query, project) {
+  // no query given pass all projects as there’s probably no "customer"
+  // argument given to the CLI
+  if (!query) {
+    return true;
+  }
+  const { customer_name, customer_id } = project;
+  const regexp = new RegExp(query, 'i');
+  return (
+    customer_name === query ||
+    regexp.exec(customer_name) ||
+    regexp.exec(String(customer_id)
+  ));
+}
+
 async function main() {
   const miteApi = require('./lib/mite-api')(config.get());
+
   const opts = {
     limit: 10000,
     ...(program.search && { name: program.search }),
@@ -76,18 +102,7 @@ async function main() {
   return miteApi.getProjects(opts)
     .then(projects => projects
       .filter(({ archived }) => program.archived === 'all' ? true : archived === program.archived)
-      .filter(({ customer_name, customer_id }) => {
-        // filter by customer regexp, skip if no cli argument was given
-        if (!program.customer) {
-          return true;
-        }
-        const regexp = new RegExp(program.customer, 'i');
-        return (
-          customer_name === program.customer ||
-          regexp.exec(customer_name) ||
-          regexp.exec(String(customer_id)
-        ));
-      })
+      .filter(filterProjectsByCustomerName.bind(null, program.customer))
     )
     .then(items => miteApi.sort(
       items,
@@ -103,7 +118,7 @@ async function main() {
 } // main
 
 try {
-  program.action(() => main().catch(handleError)).parse(process.argv);
+  program.action(main).parse(process.argv);
 } catch (err) {
   handleError(err);
 }

@@ -1,6 +1,29 @@
 #!/usr/bin/env node
 'use strict';
 
+const defaults = [
+  {
+    name: '--archived',
+    description: 'archvied or not-archived state',
+  },
+  {
+    name: '--hourly-rate',
+    description: 'hourly rate that should be used',
+  },
+  {
+    name: '--name',
+    description: 'name of the customer',
+  },
+  {
+    name: '--note',
+    description: 'additional note of the customre',
+  },
+  {
+    name: '--help',
+    description: 'show help message',
+  }
+];
+
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
  *
@@ -12,31 +35,8 @@
  * @param {string} env.line - the current complete input line in the cli
  * @returns {Promise<Array<string>>}
  */
-module.exports = async ({ prev, line, word }) => {
-  const defaults = [
-    line.indexOf('--archived') === -1 ? {
-      name: '--archived',
-      description: 'archvied or not-archived state',
-    } : undefined,
-    line.indexOf('--hourly-rate') === -1 ? {
-      name: '--hourly-rate',
-      description: 'hourly rate that should be used',
-    } : undefined,
-    line.indexOf('--name') === -1 ? {
-      name: '--name',
-      description: 'name of the customer',
-    } : undefined,
-    line.indexOf('--note') === -1 ? {
-      name: '--note',
-      description: 'additional note of the customre',
-    } : undefined,
-    // include --help only when no other arguments or options are provided
-    word < 4 ? {
-      name: '--help',
-      description: 'show help message',
-    } : undefined,
-  ];
-
+module.exports = async ({ prev, line }) => {
+  // propose values for some of the arguments
   switch(prev) {
     case '--archived':
       return ['yes', 'no'];
@@ -48,6 +48,8 @@ module.exports = async ({ prev, line, word }) => {
       return ['0.00'];
   }
 
-  // return a list of project ids and default options
-  return defaults;
+  // return default options without the ones which where already entered
+  return defaults.filter(option => {
+    return line.indexOf(option.name) === -1;
+  });
 };
