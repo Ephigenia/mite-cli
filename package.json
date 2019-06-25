@@ -56,7 +56,7 @@
     "start": "node $npm_package_main",
     "tdd": "npm run test -- --watch",
     "test": "mocha --check-leaks source/**/*test.js --exit",
-    "test:outdated": "npm-check --ignore $npm_package_npmCheck_ignore",
+    "test:outdated": "npm-check --production --ignore $npm_package_npmCheck_ignore",
     "test:security": "snyk test --severity-threshold=high",
     "update": "npm-check --update",
     "version:recommend": "conventional-recommended-bump --preset angular",
