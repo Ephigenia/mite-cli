@@ -147,16 +147,20 @@ class MiteApiWrapper {
   }
 
   sortCompare (a, b, direction = 'asc') {
+    if (typeof a === 'boolean' && typeof b === 'boolean') {
+      return this.sortBoolean(a, b, direction);
+    }
     if (typeof a === 'string') a = a.toLowerCase();
     if (typeof b === 'string') b = b.toLowerCase();
-    if (typeof a === 'boolean' && typeof b === 'boolean') {
-      if (a > b) return direction === 'asc' ? -1 : 1;
-      if (a < b) return direction === 'asc' ? 1 : -1;
-      return 0;
-    }
     if (a > b) return direction === 'asc' ? 1 : -1;
     if (a < b) return direction === 'asc' ? -1 : 1;
     return 0;
+  }
+
+  sortBoolean (a, b, direction = 'asc') {
+    if (a > b) return direction === 'asc' ? -1 : 1;
+      if (a < b) return direction === 'asc' ? 1 : -1;
+      return 0;
   }
 
   async getItemsAndArchived(itemName, options = {}) {
