@@ -14,8 +14,7 @@ program
   .version(pkg.version)
   .description(
     `Creates a new project while using the given argument parameters \
-as starting values. Note that some users are not able to crate new \
-projects.`
+as starting values. Note that some users are not able to create new projects.`
   )
   .option.apply(program, commandOptions.toArgs(commandOptions.archived, 'Defines the archived state'))
   .option.apply(program, commandOptions.toArgs(commandOptions.budget, null, 'hours'))
@@ -27,7 +26,7 @@ projects.`
   .option.apply(program, commandOptions.toArgs(commandOptions.hourlyRate))
   .option(
     '--name <name>',
-    'Required name of the project',
+    'Required name of the project'
   )
   .option(
     '--note <note>',
@@ -44,11 +43,9 @@ Examples:
 --budget-type cents
 `));
 
-function main() {
-  const mite = miteApi(config.get());
-
-  if (!program.name) {
-    throw new MissingRequiredArgumentError('Missing required "name"');
+function main(name) {
+  if (!name) {
+    throw new MissingRequiredArgumentError('Missing required "name" argument');
   }
 
   const data = {
@@ -57,10 +54,11 @@ function main() {
     ...(program.budget && { budget: program.budget }),
     ...(program.customerId && { 'customer_id': program.customerId }),
     ...(typeof program.hourlyRate === 'number' && { hourly_rate: program.hourlyRate }),
-    ...(typeof program.name === 'string' && { name: program.name }),
+    ...(typeof name === 'string' && { name: name }),
     ...(typeof program.note === 'string' && { note: program.note })
   };
 
+  const mite = miteApi(config.get());
   return util.promisify(mite.addProject)(data)
     .then(body => {
       const projectId = body.project.id;
@@ -72,9 +70,8 @@ https://${config.get('account')}.mite.yo.lk/reports/projects/${projectId}`);
 }
 
 try {
-  program
-    .action(main)
-    .parse(process.argv);
+  program.parse(process.argv);
+  main(program.name).catch(handleError);
 } catch (err) {
   handleError(err);
 }
