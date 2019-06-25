@@ -16,16 +16,16 @@ class MissingRequiredArgumentError extends GeneralError {
     this.exitCode = 4;
   }
 }
-class MissingRequiredOptionError extends GeneralError {
-  constructor(message) {
-    super(message || 'missing required option');
-    this.exitCode = 3;
-  }
-}
 class InvalidOptionValue extends GeneralError {
   constructor(message) {
     super(message || 'Invalid or not parsable option value');
     this.exitCode = 2;
+  }
+}
+class MissingRequiredOptionError extends GeneralError {
+  constructor(message) {
+    super(message || 'missing required option');
+    this.exitCode = 3;
   }
 }
 
@@ -33,6 +33,7 @@ class InvalidOptionValue extends GeneralError {
  * Handles an Error object/instance of the Error class thrown by mite-api lib
  *
  * @param  {Error} error [description]
+ * @throws Error
  */
 function handleError(error) {
   const NODE_ENV = process.env.NODE_ENV || DEFAULT_NODE_ENV;
@@ -51,6 +52,5 @@ module.exports = {
   MissingRequiredOptionError,
   MissingRequiredArgumentError,
   InvalidOptionValue,
-
   handleError,
 };

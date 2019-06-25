@@ -13,7 +13,8 @@ const { handleError, MissingRequiredArgumentError } = require('./lib/errors');
 program
   .version(pkg.version)
   .description(
-    `Creates a new customer while using the given values.`
+    `Creates a new customer while using the given values. \
+Note that some users are not able to create new projects.`
   )
   .option.apply(program, commandOptions.toArgs(commandOptions.archived, 'Defines the archived state'))
   .option.apply(program, commandOptions.toArgs(commandOptions.hourlyRate))
@@ -28,31 +29,23 @@ program
   .on('--help', () => console.log(`
 Examples:
 
-  Create a new customer:
+  Create a new customer with an hourly rate of 80:
     mite customer new --name "World Company" --hourly-rate 80
 `));
 
-
-function main() {
-  const mite = miteApi(config.get());
-
-  if (!program.name) {
+function main(name) {
+  if (!name) {
     throw new MissingRequiredArgumentError('Missing required "name"');
   }
 
   const data = {
     ...(typeof program.archived === 'boolean' && { archived: program.archived }),
     ...(typeof program.hourlyRate === 'number' && { hourly_rate: program.hourlyRate }),
-    ...(typeof program.name === 'string' && { name: program.name }),
+    ...(typeof name === 'string' && { name: name }),
     ...(typeof program.note === 'string' && { note: program.note })
   };
 
-  console.dir(process.argv);
-  console.dir(program.args);
-  // console.dir(program);
-  console.dir(data);
-  process.exit();
-
+  const mite = miteApi(config.get());
   return util.promisify(mite.addCustomer)(data)
     .then(body => {
       const customerId = body.customer.id;
@@ -64,9 +57,8 @@ https://${config.get('account')}.mite.yo.lk/customers/${customerId}/edit`);
 }
 
 try {
-  program
-    .action(main)
-    .parse(process.argv);
+  program.parse(process.argv);
+  main(program.name).catch(handleError);
 } catch (err) {
   handleError(err);
 }
