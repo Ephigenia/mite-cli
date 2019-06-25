@@ -47,7 +47,7 @@ Examples:
 function main() {
   const mite = miteApi(config.get());
 
-  if (program.name) {
+  if (!program.name) {
     throw new MissingRequiredArgumentError('Missing required "name"');
   }
 
