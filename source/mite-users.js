@@ -12,7 +12,11 @@ const { handleError } = require('./lib/errors');
 
 program
   .version(pkg.version)
-  .description('list, filter & search for users')
+  .description(`Shows a list of user accounts which can be filtered, searched, \
+sorted.
+
+Note that users with the role time-tracker will not be able to list users!
+  `)
   .option.apply(program, commandOptions.toArgs(commandOptions.archived, 'filter for archived or unarchived customers only', 'all'))
   .option.apply(program, commandOptions.toArgs(
     commandOptions.columns,

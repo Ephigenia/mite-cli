@@ -12,8 +12,17 @@ const { handleError } = require('./lib/errors');
 
 program
   .version(pkg.version)
-  .description('list, filter & search for customers')
-  .option.apply(program, commandOptions.toArgs(commandOptions.archived, 'filter for archived or unarchived customers only', 'all'))
+  .description(`Shows a list of customers which can be filtered, searched, \
+sorted and used as input for other commands. See the examples for simple and \
+and more complex examples.
+
+Note that users with the role time tracker will not be able to list customers!
+`)
+  .option.apply(program, commandOptions.toArgs(
+    commandOptions.archived,
+    'filter for archived or unarchived customers only',
+    'all'
+  ))
   .option.apply(program, commandOptions.toArgs(
     commandOptions.columns,
     commandOptions.columns.description(customersCommand.columns.options),
@@ -33,7 +42,7 @@ program
 Examples:
 
   Search for specific customers
-    mite customer list --search company1
+    mite customer list --search Big
 
   List customers ordered by their hourly rate
     mite customer list --sort hourly_rate
