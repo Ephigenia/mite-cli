@@ -167,11 +167,16 @@ function groupedTable(timeEntryGroups) {
   });
 }
 
-function main(period) {
-  const mite = miteApi(config.get());
-
-  const opts = {
-    at: period,
+/**
+ * Returns the request options for requesting the time entries or grouped
+ * time entries for the given time entries and filtering options.
+ *
+ * @param {string} period
+ * @param {object} program
+ * @return {Object<String>} time entries or grouped time entries
+ */
+function getRequestOptions(period, program) {
+  const data = {
     ...(typeof program.billable === 'boolean' && { billable: program.billable }),
     ...(program.customerId && { customer_id: program.customerId }),
     ...(program.reversed && { direction: 'desc' }),
@@ -186,64 +191,68 @@ function main(period) {
     ...(program.userId && { user_id: program.userId}),
   };
 
+  // add optional time period using from & to
   if (program.from && program.to) {
-    opts.from = program.from;
-    opts.to = program.to;
-    delete opts.at;
+    data.from = program.from;
+    data.to = program.to;
+    delete data.at;
+  } else {
+    data.at = period;
   }
 
+  return data;
+}
+
+function showGroupedReport(timeEntryGroups, format) {
+  const tableData = groupedTable(timeEntryGroups);
+  const columnCount = tableData[0].length;
+
+  // add one last row which contains minutes & revenue sums
+  const footerRow = new Array(columnCount);
+  const revenueSum = timeEntryGroups.reduce((v, a) => {
+    return v + a.revenue || 0;
+  }, 0);
+  footerRow[columnCount - 1] = formater.budget(formater.BUDGET_TYPE.CENTS, revenueSum || 0);
+  const minutesSum = timeEntryGroups.reduce((v, a) => {
+    return v + a.minutes || 0;
+  }, 0);
+  footerRow[columnCount - 2] = formater.minutesToDuration(minutesSum);
+  tableData.push(footerRow.map(v => chalk.yellow(v)));
+
+  return DataOutput.formatData(tableData, format);
+}
+
+function showNormalReport(items, columns, format) {
+  const tableData = DataOutput.compileTableData(items, columns);
+
+  // Table footer
+  // add table footer if any of the table columns has a reducer
+  if (columnOptions.hasReducer(columns)) {
+    let footerColumns = DataOutput.getTableFooterColumns(tableData, columns);
+    footerColumns = footerColumns.map(v => chalk.bold(v)); // make footer bold
+    tableData.push(footerColumns);
+  }
+
+  return DataOutput.formatData(tableData, format, columns);
+}
+
+function main(period) {
+  const mite = miteApi(config.get());
+
+  const opts = getRequestOptions(period, program);
   const columns = columnOptions.resolve(program.columns, listCommand.columns.options);
 
   mite.getTimeEntries(opts, (err, results) => {
-    if (err) {
-      throw err;
-    }
+    if (err) throw err;
 
     const timeEntries = results.map(data => data.time_entry).filter(v => v);
     const timeEntryGroups = results.map(data => data.time_entry_group).filter(v => v);
 
     // decide wheter to output grouped report or single entry report
     if (timeEntryGroups.length) {
-      const tableData = groupedTable(timeEntryGroups);
-      const columnCount = tableData[0].length;
-
-      // add one last row which contains minutes & revenue sums
-      const footerRow = new Array(columnCount);
-      const revenueSum = timeEntryGroups.reduce((v, a) => {
-        return v + a.revenue || 0;
-      }, 0);
-      footerRow[columnCount - 1] = formater.budget(formater.BUDGET_TYPE.CENTS, revenueSum || 0);
-      const minutesSum = timeEntryGroups.reduce((v, a) => {
-        return v + a.minutes || 0;
-      }, 0);
-      footerRow[columnCount - 2] = formater.minutesToDuration(minutesSum);
-      tableData.push(footerRow.map(v => chalk.yellow(v)));
-
-      console.log(DataOutput.formatData(tableData, program.format));
-      process.exit(0);
-    } // end grouped reports
-
-    const tableData = DataOutput.compileTableData(timeEntries, columns);
-
-    // Table footer
-    // add table footer if any of the table columns has a reducer
-    if (columns.find(c => c.reducer)) {
-      tableData.push(
-        columns
-          .map(columnDefinition => {
-            let columnSum;
-            if (columnDefinition.reducer) {
-              columnSum = timeEntries.reduce(columnDefinition.reducer, null);
-            }
-            if (columnSum && columnDefinition.format) {
-              return columnDefinition.format(columnSum);
-            }
-            return columnSum || '';
-          })
-          .map(v => chalk.bold(v))
-      );
+      console.log(showGroupedReport(timeEntryGroups, program.format));
+    } else {
+      console.log(showNormalReport(timeEntries, columns, program.format));
     }
-
-    console.log(DataOutput.formatData(tableData, program.format, columns));
   });
 } // main

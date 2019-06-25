@@ -14,6 +14,9 @@ module.exports = {
       .filter(v => v)
       .join(',');
   },
+  hasReducer: function(columns) {
+    return columns.find(c => c.reducer);
+  },
   resolve: function (csvList, columns) {
     if (csvList === 'all') {
       return Object.values(columns);

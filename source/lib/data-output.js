@@ -65,6 +65,27 @@ function compileTableData(items, columns) {
 }
 
 /**
+ * @param {Array<Object>} items
+ * @param {Array<ColumnDefinition} columns
+ * @return {Array<Array<String>>}
+ */
+function getTableFooterColumns(items, columns) {
+  assert(Array.isArray(items), 'expeceted items to be an array');
+  assert(Array.isArray(columns), 'expeceted columns to be an array');
+
+  return columns.map(columnDefinition => {
+    let columnSum;
+    if (columnDefinition.reducer) {
+      columnSum = items.reduce(columnDefinition.reducer, null);
+    }
+    if (columnSum && columnDefinition.format) {
+      return columnDefinition.format(columnSum);
+    }
+    return columnSum || '';
+  });
+}
+
+/**
  * @param {Array<Object>} data
  * @param {FORMAT} format
  * @param {Array<ColumnDefinition>} columns
@@ -118,4 +139,5 @@ module.exports = {
   FORMATS,
   formatData,
   compileTableData,
+  getTableFooterColumns
 };
