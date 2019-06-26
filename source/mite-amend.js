@@ -72,7 +72,7 @@ const openEditor = util.promisify(ExternalEditor.editAsync);
 
 function main(timeEntryId, note) {
   // if first argument is the note instead of the timeEntry
-  if (!note && !timeEntryId.match(/^\d+/)) {
+  if (!note && timeEntryId && !timeEntryId.match(/^\d+/)) {
     note = timeEntryId;
     timeEntryId = undefined;
   }
