@@ -203,7 +203,7 @@ function getRequestOptions(period, program) {
   return data;
 }
 
-function showGroupedReport(timeEntryGroups, format) {
+function getGroupedReport(timeEntryGroups, format) {
   const tableData = groupedTable(timeEntryGroups);
   const columnCount = tableData[0].length;
 
@@ -222,13 +222,13 @@ function showGroupedReport(timeEntryGroups, format) {
   return DataOutput.formatData(tableData, format);
 }
 
-function showNormalReport(items, columns, format) {
+function getNormalReport(items, columns, format) {
   const tableData = DataOutput.compileTableData(items, columns);
 
   // Table footer
   // add table footer if any of the table columns has a reducer
   if (columnOptions.hasReducer(columns)) {
-    let footerColumns = DataOutput.getTableFooterColumns(tableData, columns);
+    let footerColumns = DataOutput.getTableFooterColumns(items, columns);
     footerColumns = footerColumns.map(v => chalk.bold(v)); // make footer bold
     tableData.push(footerColumns);
   }
@@ -250,9 +250,9 @@ function main(period) {
 
     // decide wheter to output grouped report or single entry report
     if (timeEntryGroups.length) {
-      console.log(showGroupedReport(timeEntryGroups, program.format));
+      console.log(getGroupedReport(timeEntryGroups, program.format));
     } else {
-      console.log(showNormalReport(timeEntries, columns, program.format));
+      console.log(getNormalReport(timeEntries, columns, program.format));
     }
   });
 } // main

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
+const fs = require('fs');
 const program = require('commander');
 const miteApi = require('mite-api');
 const util = require('util');
@@ -10,7 +11,11 @@ const ExternalEditor = require('external-editor');
 const pkg = require('./../package.json');
 const config = require('./config');
 const tracker = require('./lib/mite-tracker');
-const { handleError, MissingRequiredArgumentError } = require('./lib/errors');
+const {
+  handleError,
+  MissingRequiredArgumentError,
+  GeneralError
+} = require('./lib/errors');
 
 program
   .version(pkg.version)
@@ -62,7 +67,7 @@ Examples:
 
   Change project and service
     mite amend 12345678 --service-id 918772 --project-id 129379
-    `));
+  `));
 
 const mite = miteApi(config.get());
 const miteTracker = tracker(config.get());
@@ -71,24 +76,18 @@ const updateTimeEntry = util.promisify(mite.updateTimeEntry);
 const openEditor = util.promisify(ExternalEditor.editAsync);
 
 function main(timeEntryId, note) {
-  // if first argument is the note instead of the timeEntry
+  // when first argument is not a number use it as note
   if (!note && timeEntryId && !timeEntryId.match(/^\d+/)) {
     note = timeEntryId;
     timeEntryId = undefined;
   }
 
-  // use note from pipe
-  let args = Array.prototype.slice.call(arguments);
-  args = args.slice(0, -1);
+  // detect if there’s any input piped into the program and use this input
+  // as note
   if (process.stdin.isTTY === undefined) {
     // shift the other arguments one to the left so that the order is correct
-    const fs = require("fs");
-    note = fs.readFileSync("/dev/stdin", "utf-8");
-    args.unshift(note);
+    note = fs.readFileSync('/dev/stdin', 'utf-8');
   }
-
-  console.log('note', note);
-  process.exit(0);
 
   let promise = null;
 
@@ -106,6 +105,8 @@ function main(timeEntryId, note) {
     promise = getTimeEntry(timeEntryId);
   }
 
+  // prepare an object which contains the data for the time entrywhich will
+  // be updated
   let updateData = {
     ...(program.projectId && { project_id: program.projectId }),
     ...(program.serviceId && { service_id: program.serviceId }),
@@ -114,7 +115,7 @@ function main(timeEntryId, note) {
   return promise
     .then(data => {
       if (!data) {
-        throw new Error('Unable to find time entry with the given ID');
+        throw new GeneralError('Unable to find time entry with the given ID');
       }
       return data.time_entry;
     })
@@ -140,7 +141,7 @@ function main(timeEntryId, note) {
         // use interactive mode (inquirer)
         const questions = [
           {
-            type: program.editor ? 'editor' : 'input',
+            type: 'input',
             name: 'note',
             message: 'Note',
             default: timeEntry.note,
