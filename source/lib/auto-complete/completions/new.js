@@ -18,8 +18,8 @@ const formater = require('./../../formater');
  * @returns {Promise<Array<string>>}
  */
 module.exports = async ({ words }) => {
-
   let options = [];
+
   switch(words) {
     case 2: {
       options.push(['note']);

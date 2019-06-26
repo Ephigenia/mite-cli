@@ -6,6 +6,29 @@ const projectNewCompletion = require('./project-new');
 const projectUpdateCompletion = require('./project-update');
 const projectsListCompletion = require('./projects');
 
+const defaults = [
+  {
+    name: 'delete',
+    description: 'delete a single project by it’s id',
+  },
+  {
+    name: 'list',
+    description: 'lists projects',
+  },
+  {
+    name: 'update',
+    description: 'update a single project by it’s id',
+  },
+  {
+    name: 'new',
+    description: 'create a new project',
+  },
+  {
+    name: '--help',
+    description: 'show help message',
+  },
+];
+
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
  *
@@ -18,10 +41,11 @@ const projectsListCompletion = require('./projects');
  * @returns {Promise<Array<string>>}
  */
 module.exports = async function ({ line }) {
-  // check wheter the update sub-sub command is called and forward completion
-  // to that command
-  const thirdArg = line.split(/\s/).splice(2)[0];
-  switch (thirdArg) {
+  // check if a sub command was accessed and return the auto-completion of
+  // this sub-command instead, in this case subcommand would be at the 3rd
+  // place
+  const subCommand = line.split(/\s/).splice(2)[0];
+  switch (subCommand) {
     case 'delete':
       return projectDeleteCompletion.apply(projectDeleteCompletion, arguments);
     case 'list':
@@ -32,26 +56,7 @@ module.exports = async function ({ line }) {
     case 'update':
       return projectUpdateCompletion.apply(projectUpdateCompletion, arguments);
   }
-  return [
-    {
-      name: 'delete',
-      description: 'delete a single project by it’s id',
-    },
-    {
-      name: 'list',
-      description: 'lists projects',
-    },
-    {
-      name: 'update',
-      description: 'update a single project by it’s id',
-    },
-    {
-      name: 'new',
-      description: 'create a new project',
-    },
-    {
-      name: '--help',
-      description: 'show help message',
-    },
-  ];
+
+  // otherwise return defaults
+  return defaults;
 };

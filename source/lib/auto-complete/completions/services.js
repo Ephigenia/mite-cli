@@ -3,6 +3,38 @@
 
 const DataOutput = require('./../../data-output');
 const servicesCommand = require('./../../commands/services');
+const { removeAlreadyUsedOptions } = require('../helpers');
+
+const defaults = [
+  {
+    name: '--archived',
+    description: 'defines wheter services which are archived should be listed',
+  },
+  {
+    name: '--billable',
+    description: 'defines wheter billable services should be shown or not',
+  },
+  {
+    name: '--columns',
+    description: 'define the columns that are shown',
+  },
+  {
+    name: '--format',
+    description: 'defines the output format',
+  },
+  {
+    name: '--help',
+    description: 'show help message',
+  },
+  {
+    name: '--search',
+    description: 'given a search query will list only services that match that query',
+  },
+  {
+    name: '--sort',
+    description: 'defines the order of results shown',
+  },
+];
 
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
@@ -15,8 +47,9 @@ const servicesCommand = require('./../../commands/services');
  * @param {string} env.line - the current complete input line in the cli
  * @returns {Promise<Array<string>>}
  */
-module.exports = async ({ prev }) => {
-  switch(prev) {
+module.exports = async ({ prev, line }) => {
+  // argument value completion
+  switch (prev) {
     case '--archived':
     case '-a':
       return ['yes', 'no', 'all'];
@@ -33,34 +66,7 @@ module.exports = async ({ prev }) => {
       return servicesCommand.sort.options;
   }
 
-  return [
-    {
-      name: '--archived',
-      description: 'defines wheter services which are archived should be listed',
-    },
-    {
-      name: '--billable',
-      description: 'defines wheter billable services should be shown or not',
-    },
-    {
-      name: '--columns',
-      description: 'define the columns that are shown',
-    },
-    {
-      name: '--format',
-      description: 'defines the output format',
-    },
-    {
-      name: '--help',
-      description: 'show help message',
-    },
-    {
-      name: '--search',
-      description: 'given a search query will list only services that match that query',
-    },
-    {
-      name: '--sort',
-      description: 'defines the order of results shown',
-    },
-  ];
+  // return default options without the ones which where already entered
+  const options = removeAlreadyUsedOptions(defaults, line);
+  return options;
 };

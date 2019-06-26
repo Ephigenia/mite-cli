@@ -3,8 +3,47 @@
 
 const config = require('./../../../config');
 const miteApi = require('./../../mite-api')(config.get());
+const {
+  getCustomerOptions,
+  removeAlreadyUsedOptions
+} = require('../helpers');
 const DataOutput = require('./../../data-output');
 const projectsCommand = require('./../../commands/projects');
+
+const defaults = [
+  {
+    name: '--archived',
+    description: 'defines wheter archived projects should be shown',
+  },
+  {
+    name: '--format',
+    description: 'defines the output format',
+  },
+  {
+    name: '--columns',
+    description: 'define the columns that are shown',
+  },
+  {
+    name: '--customer',
+    description: 'given a regular expression will list only projects where the customers’s name matches',
+  },
+  {
+    name: '--customer-id',
+    description: 'given a customer id will list only projects for that customer',
+  },
+  {
+    name: '--help',
+    description: 'show help message',
+  },
+  {
+    name: '--search',
+    description: 'given a query will show only projects where name or customer name match',
+  },
+  {
+    name: '--sort',
+    description: 'defines the order of projects',
+  }
+];
 
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
@@ -17,7 +56,8 @@ const projectsCommand = require('./../../commands/projects');
  * @param {string} env.line - the current complete input line in the cli
  * @returns {Promise<Array<string>>}
  */
-module.exports = async ({ prev }) => {
+module.exports = async ({ prev, line }) => {
+  // argument value completion
   switch (prev) {
     case '--archived':
     case '-a':
@@ -25,14 +65,12 @@ module.exports = async ({ prev }) => {
     case '--columns':
       return Object.keys(projectsCommand.columns.options).concat(['all']);
     case '--customer':
+      // propose a list of customers
       return miteApi.getCustomers().then(customers => customers.map(c => ({
         name: String(c.name)
       })));
     case '--customer-id':
-      return miteApi.getCustomers().then(customers => customers.map(c => ({
-        name: String(c.id),
-        description: c.name
-      })));
+      return await getCustomerOptions();
     case '--format':
     case '-f':
       return DataOutput.FORMATS;
@@ -42,39 +80,7 @@ module.exports = async ({ prev }) => {
       return projectsCommand.sort.options;
   }
 
-  return [
-    // @TODO do not add completions if they have been already adde
-    {
-      name: '--archived',
-      description: 'defines wheter archived projects should be shown',
-    },
-    {
-      name: '--format',
-      description: 'defines the output format',
-    },
-    {
-      name: '--columns',
-      description: 'define the columns that are shown',
-    },
-    {
-      name: '--customer',
-      description: 'given a regular expression will list only projects where the customers’s name matches',
-    },
-    {
-      name: '--customer-id',
-      description: 'given a customer id will list only projects for that customer',
-    },
-    {
-      name: '--help',
-      description: 'show help message',
-    },
-    {
-      name: '--search',
-      description: 'given a query will show only projects where name or customer name match',
-    },
-    {
-      name: '--sort',
-      description: 'defines the order of projects',
-    }
-  ];
+  // return default options without the ones which where already entered
+  const options = removeAlreadyUsedOptions(defaults, line);
+  return options;
 };

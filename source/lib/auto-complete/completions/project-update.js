@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 'use strict';
 
-const config = require('./../../../config');
-const miteApi = require('./../../mite-api')(config.get());
 const { BUDGET_TYPES } = require('./../../constants');
+const {
+  getProjectOptions,
+  removeAlreadyUsedOptions
+} = require('../helpers');
 
 const defaults = [
   {
@@ -48,8 +50,8 @@ const defaults = [
  * @returns {Promise<Array<string>>}
  */
 module.exports = async ({ prev, line }) => {
-  // propose values for some of the arguments
-  switch(prev) {
+  // argument value completion
+  switch (prev) {
     case '--archived':
       return ['yes', 'no'];
     case '--budget-type':
@@ -62,21 +64,15 @@ module.exports = async ({ prev, line }) => {
       return ['0.00'];
   }
 
-  // show list of archived or unarchived projects depending on the --archived
-  // flag wich is allready been given
-  let options = defaults.filter(option => {
-    return line.indexOf(option.name) === -1;
-  });
+  // return default options without the ones which where already entered
+  const options = removeAlreadyUsedOptions(defaults, line);
 
+  let query = {};
   if (line.match(/--archived/)) {
-    options.archived = !/--archived[ =](yes|true|1|ja)/.test(line);
+    query.archived = !/--archived[ =](yes|true|1|ja)/.test(line);
   }
-  const projects = await miteApi.getProjects(options);
-  const projectOptions = projects.map(c => ({
-    name: String(c.id),
-    description: c.name
-  }));
+  const projectOptions = await getProjectOptions(query);
 
   // merge customer options and defaults togheter
-  return [].concat(projectOptions, options);
+  return [].concat([], options, projectOptions);
 };

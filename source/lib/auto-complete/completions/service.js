@@ -5,6 +5,25 @@ const serviceUpdateCompletion = require('./service-update');
 const serviceDeleteCompletion = require('./service-delete');
 const serviceListCompletion = require('./services');
 
+const defaults = [
+  {
+    name: 'delete',
+    description: 'delete a single service by it’s id',
+  },
+  {
+    name: 'list',
+    description: 'list services',
+  },
+  {
+    name: 'update',
+    description: 'update a single service by it’s id',
+  },
+  {
+    name: '--help',
+    description: 'show help message',
+  },
+];
+
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
  *
@@ -28,22 +47,6 @@ module.exports = async function ({ line }) {
     case 'update':
       return serviceUpdateCompletion.apply(serviceUpdateCompletion, arguments);
   }
-  return [
-    {
-      name: 'delete',
-      description: 'delete a single service by it’s id',
-    },
-    {
-      name: 'list',
-      description: 'list services',
-    },
-    {
-      name: 'update',
-      description: 'update a single service by it’s id',
-    },
-    {
-      name: '--help',
-      description: 'show help message',
-    },
-  ];
+
+  return defaults;
 };

@@ -12,21 +12,19 @@
  * @param {string} env.line - the current complete input line in the cli
  * @returns {Promise<Array<string>>}
  */
-module.exports = async ({ words }) => {
-  if (words < 3) {
-    return [
-      {
-        name: 'timeEntryId',
-        description: 'id of the time entry which should be unlocked',
-      },
-      {
-        name: '--help',
-        description: 'show help message'
-      },
-      {
-        name: '--force',
-        description: 'try to force-unlock the time entry'
-      }
-    ];
-  }
+module.exports = async () => {
+  return [
+    {
+      name: 'timeEntryId',
+      description: 'id of the time entry which should be unlocked',
+    },
+    {
+      name: '--help',
+      description: 'show help message'
+    },
+    {
+      name: '--force',
+      description: 'try to force-unlock the time entry'
+    }
+  ];
 };

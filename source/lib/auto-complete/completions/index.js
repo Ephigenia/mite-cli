@@ -15,6 +15,8 @@ module.exports = {
   service: require('./service'),
   services: require('./services'),
   start: require('./start'),
+  // stop: no auto completion for stop as there can only be one time entry
+  // running at a time and there’s no need for proposing other time entries
   unlock: require('./unlock'),
   users: require('./users'),
 };

@@ -1,8 +1,10 @@
 #!/usr/bin/env node
 'use strict';
 
-const config = require('./../../../config');
-const miteApi = require('./../../mite-api')(config.get());
+const {
+  getCustomerOptions,
+  removeAlreadyUsedOptions,
+} = require('../helpers');
 
 const defaults = [
   {
@@ -43,7 +45,7 @@ const defaults = [
  * @returns {Promise<Array<string>>}
  */
 module.exports = async ({ prev, line }) => {
-  // propose values for some of the arguments
+  // argument completion
   switch(prev) {
     case '--archived':
       return ['yes', 'no'];
@@ -55,23 +57,16 @@ module.exports = async ({ prev, line }) => {
       return ['0.00'];
   }
 
-  // show list of archived or unarchived projects depending on the --archived
-  // flag wich is allready been given
-  let options = defaults.filter(option => {
-    return line.indexOf(option.name) === -1;
-  });
+  // return default options without the ones which where already entered
+  const options = removeAlreadyUsedOptions(defaults, line);
 
   // get a list of available customers from mite for adding them as options
   const requestOptions = {};
   if (line.match(/--archived/)) {
     customerOptions.archived = !/--archived[ =](yes|true|1|ja)/.test(line);
   }
-  const customers = await miteApi.getCustomers(requestOptions);
-  const customerOptions = customers.map(c => ({
-    name: String(c.id),
-    description: c.name
-  }));
+  const customerOptions = await getCustomerOptions(requestOptions);
 
-  // merge customer options and defaults togheter
-  return [].concat(customerOptions, options);
+  // return customer options and other options
+  return [].concat([], options, customerOptions);
 };

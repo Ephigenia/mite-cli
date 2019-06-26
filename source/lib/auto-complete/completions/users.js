@@ -4,6 +4,46 @@
 const DataOutput = require('./../../data-output');
 const usersCommand = require('./../../commands/users');
 const { USER_ROLES } = require('./../../constants');
+const { removeAlreadyUsedOptions } = require('../helpers');
+
+const defaults = [
+  {
+    name: '--archived',
+    description: 'defines wheter services which are archived should be listed',
+  },
+  {
+    name: '--columns',
+    description: 'defines which columns should be shown'
+  },
+  {
+    name: '--email',
+    description: 'given a email will list only users with that email',
+  },
+  {
+    name: '--format',
+    description: 'defines the output format',
+  },
+  {
+    name: '--help',
+    description: 'show help message',
+  },
+  {
+    name: '--name',
+    description: 'given a query only shows users that have a matching name',
+  },
+  {
+    name: '--role',
+    description: 'list only users that have the given role',
+  },
+  {
+    name: '--search',
+    description: 'given a search query will list only services that match that query',
+  },
+  {
+    name: '--sort',
+    description: 'defines the order of results shown',
+  },
+];
 
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
@@ -16,8 +56,9 @@ const { USER_ROLES } = require('./../../constants');
  * @param {string} env.line - the current complete input line in the cli
  * @returns {Promise<Array<string>>}
  */
-module.exports = async ({ prev }) => {
-  switch(prev) {
+module.exports = async ({ prev, line }) => {
+  // argument value completion
+  switch (prev) {
     case '--archived':
     case '-a':
       return ['yes', 'no', 'all'];
@@ -36,43 +77,7 @@ module.exports = async ({ prev }) => {
       return usersCommand.sort.options;
   }
 
-  // list of options and short descriptions
-  return [
-    {
-      name: '--archived',
-      description: 'defines wheter services which are archived should be listed',
-    },
-    {
-      name: '--columns',
-      description: 'defines which columns should be shown'
-    },
-    {
-      name: '--email',
-      description: 'given a email will list only users with that email',
-    },
-    {
-      name: '--format',
-      description: 'defines the output format',
-    },
-    {
-      name: '--help',
-      description: 'show help message',
-    },
-    {
-      name: '--name',
-      description: 'given a query only shows users that have a matching name',
-    },
-    {
-      name: '--role',
-      description: 'list only users that have the given role',
-    },
-    {
-      name: '--search',
-      description: 'given a search query will list only services that match that query',
-    },
-    {
-      name: '--sort',
-      description: 'defines the order of results shown',
-    },
-  ];
+  // return default options without the ones which where already entered
+  const options = removeAlreadyUsedOptions(defaults, line);
+  return options;
 };

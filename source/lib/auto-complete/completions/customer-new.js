@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 'use strict';
 
+const { removeAlreadyUsedOptions } = require('../helpers');
+
 const defaults = [
   {
     name: '--archived',
@@ -37,7 +39,7 @@ const defaults = [
  */
 module.exports = async ({ prev, line }) => {
   // propose values for some of the arguments
-  switch(prev) {
+  switch (prev) {
     case '--archived':
       return ['yes', 'no'];
     case '--name':
@@ -49,7 +51,7 @@ module.exports = async ({ prev, line }) => {
   }
 
   // return default options without the ones which where already entered
-  return defaults.filter(option => {
-    return line.indexOf(option.name) === -1;
-  });
+  const options = removeAlreadyUsedOptions(defaults, line);
+
+  return options;
 };

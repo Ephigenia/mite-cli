@@ -3,6 +3,7 @@
 
 const DataOutput = require('./../../data-output');
 const customersCommand = require('./../../commands/customers');
+const { removeAlreadyUsedOptions } = require('../helpers');
 
 const defaults = [
   {
@@ -42,7 +43,8 @@ const defaults = [
  * @param {string} env.line - the current complete input line in the cli
  * @returns {Promise<Array<string>>}
  */
-module.exports = async ({ prev }) => {
+module.exports = async ({ prev, line }) => {
+  // argument completion
   switch (prev) {
     case '--archived':
     case '-a':
@@ -58,5 +60,8 @@ module.exports = async ({ prev }) => {
       return customersCommand.sort.options;
   }
 
-  return defaults;
+  // return default options without the ones which where already entered
+  const options = removeAlreadyUsedOptions(defaults, line);
+
+  return options;
 };

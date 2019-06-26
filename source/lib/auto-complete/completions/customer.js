@@ -6,6 +6,29 @@ const customerDeleteCompletion = require('./customer-delete');
 const customerListCompletion = require('./customers.js');
 const customerNewCompletion = require('./customer-new.js');
 
+const defaults = [
+  {
+    name: 'delete',
+    description: 'delete a single customer by it’s id',
+  },
+  {
+    name: 'new',
+    description: 'create a new customer',
+  },
+  {
+    name: 'list',
+    description: 'list customers',
+  },
+  {
+    name: 'update',
+    description: 'update a single customer by it’s id',
+  },
+  {
+    name: '--help',
+    description: 'show help message',
+  },
+];
+
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
  *
@@ -18,42 +41,21 @@ const customerNewCompletion = require('./customer-new.js');
  * @returns {Promise<Array<string>>}
  */
 module.exports = async function ({ line }) {
-  // check wheter the update sub-sub command is called and forward completion
-  // to that command
-  const thirdArg = line.split(/\s/).splice(2)[0];
-  switch (thirdArg) {
+  // check if a sub command was accessed and return the auto-completion of
+  // this sub-command instead, in this case subcommand would be at the 3rd
+  // place
+  const subCommand = line.split(/\s/).splice(2)[0];
+  switch (subCommand) {
     case 'delete':
-      // forward auto-completion to sub-sub-command
       return customerDeleteCompletion.apply(customerDeleteCompletion, arguments);
     case 'list':
       return customerListCompletion.apply(customerDeleteCompletion, arguments);
     case 'new':
       return customerNewCompletion.apply(customerNewCompletion, arguments);
     case 'update':
-      // forward auto-completion to sub-sub-command
       return customerUpdateCompletion.apply(customerUpdateCompletion, arguments);
-
   }
-  return [
-    {
-      name: 'delete',
-      description: 'delete a single customer by it’s id',
-    },
-    {
-      name: 'new',
-      description: 'create a new customer',
-    },
-    {
-      name: 'list',
-      description: 'list customers',
-    },
-    {
-      name: 'update',
-      description: 'update a single customer by it’s id',
-    },
-    {
-      name: '--help',
-      description: 'show help message',
-    },
-  ];
+
+  // otherwise return defaults
+  return defaults;
 };

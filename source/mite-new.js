@@ -120,9 +120,8 @@ function getServiceChoices(pretty = true) {
     });
 }
 
-function checkResults(options, query, type) {
-  // first try to find an exact match of id or name
-  let searchResults = options.filter(result => {
+function getSearchResults(options, query) {
+  return options.filter(result => {
     return result.name &&
       (
         // case-insensitive match or ID match
@@ -131,9 +130,14 @@ function checkResults(options, query, type) {
         (result.value == query)
       );
   });
+}
+
+function checkResults(options, query, type) {
+  // first try to find an exact match of id or name
+  let searchResults = getSearchResults(options, query)
 
   // then try to find partial matches
-  if (searchResults.length === 0) {
+  if (!searchResults.length) {
     searchResults = options.filter(result => {
       return result.name && (result.name.toUpperCase().indexOf(query.toUpperCase()) > -1);
     });

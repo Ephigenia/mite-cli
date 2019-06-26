@@ -56,7 +56,7 @@ Examples:
   Open the $EDITOR or $VISUAL to edit the note, as soon as the editor is closed the note will be saved
     mite amend --editor 127361
 
-  Change the note using pipes:
+  Pipe content of the note into the program:
     cat myVerLongNote.txt | mite amend 1234567
 
   Change the note via command line argument:
@@ -71,9 +71,67 @@ Examples:
 
 const mite = miteApi(config.get());
 const miteTracker = tracker(config.get());
-const getTimeEntry = util.promisify(mite.getTimeEntry);
+const getTimeEntryPromise = util.promisify(mite.getTimeEntry);
 const updateTimeEntry = util.promisify(mite.updateTimeEntry);
 const openEditor = util.promisify(ExternalEditor.editAsync);
+
+async function getTimeEntryData(timeEntryId) {
+  if (!timeEntryId) {
+    timeEntryId = await miteTracker.get();
+    if (!timeEntryId) {
+      throw new MissingRequiredArgumentError(
+        'Either there was no id given or no running time-tracker found.'
+      );
+    }
+  }
+  return getTimeEntryPromise(timeEntryId)
+    .then(data => {
+      if (!data) {
+        throw new GeneralError('Unable to find time entry with the given ID');
+      }
+      return data.time_entry;
+    });
+}
+
+function inquireNote(updateData, note) {
+  // use interactive mode (inquirer)
+  const questions = [
+    {
+      type: 'input',
+      name: 'note',
+      message: 'Note',
+      default: note,
+    },
+  ];
+  return inquirer.prompt(questions).then((answers) => {
+    updateData.note = answers.note;
+    return updateData;
+  });
+}
+
+async function getUpdatedTimeEntryData(program, note, timeEntry) {
+  // prepare an object which contains the data for the time entrywhich will
+  // be updated
+  let updateData = {
+    id: timeEntry.id,
+    ...(typeof note === 'string' && { note }),
+    ...(program.projectId && { project_id: program.projectId }),
+    ...(program.serviceId && { service_id: program.serviceId }),
+  };
+
+  if (program.editor) {
+    // always open up editor when --editor argument was used
+    return openEditor(updateData.note || timeEntry.note).then((editorContent) => {
+      updateData.note = editorContent;
+      return updateData;
+    });
+  } else if (!note && !program.projectId && !program.serviceId) {
+    // ask for note only when no note was passed to cli
+    return inquireNote(updateData, updateData.note || timeEntry.note);
+  }
+
+  return updateData;
+}
 
 function main(timeEntryId, note) {
   // when first argument is not a number use it as note
@@ -85,73 +143,13 @@ function main(timeEntryId, note) {
   // detect if there’s any input piped into the program and use this input
   // as note
   if (process.stdin.isTTY === undefined) {
-    // shift the other arguments one to the left so that the order is correct
     note = fs.readFileSync('/dev/stdin', 'utf-8');
   }
 
-  let promise = null;
-
-  if (!timeEntryId) {
-    promise = miteTracker.get()
-      .then(timeEntryId => {
-        if (!timeEntryId) {
-          throw new MissingRequiredArgumentError(
-            'Either there was no id given or no running time-tracker found.'
-          );
-        }
-        return getTimeEntry(timeEntryId);
-      });
-  } else {
-    promise = getTimeEntry(timeEntryId);
-  }
-
-  // prepare an object which contains the data for the time entrywhich will
-  // be updated
-  let updateData = {
-    ...(program.projectId && { project_id: program.projectId }),
-    ...(program.serviceId && { service_id: program.serviceId }),
-  };
-
-  return promise
-    .then(data => {
-      if (!data) {
-        throw new GeneralError('Unable to find time entry with the given ID');
-      }
-      return data.time_entry;
-    })
-    /**
-     * @return {Object.<string>}
-     * @return {string} entry.note new note
-     */
-    .then(timeEntry => {
-      timeEntryId = timeEntry.id;
-
-      // if only service and project should be changed (no note given)
-      if (typeof note === 'undefined' && updateData !== {}) {
-        return updateData;
-      } else if (typeof note !== 'undefined') {
-        // note passed over via pipe or argument
-        return { note };
-      } else if (program.editor) {
-        // use $EDITOR and return content
-        return openEditor(timeEntry.note).then((editorContent) => {
-          return { note: editorContent };
-        });
-      } else {
-        // use interactive mode (inquirer)
-        const questions = [
-          {
-            type: 'input',
-            name: 'note',
-            message: 'Note',
-            default: timeEntry.note,
-          },
-        ];
-        return inquirer.prompt(questions);
-      }
-    })
-    .then(entry => updateTimeEntry(timeEntryId, entry))
-    .then(() => console.log(`Successfully modified note of time entry (id: ${timeEntryId})`))
+  return getTimeEntryData(timeEntryId)
+    .then(getUpdatedTimeEntryData.bind(this, program, note))
+    .then(entry => updateTimeEntry(entry.id, entry).then(() => entry))
+    .then(entry => console.log(`Successfully modified note of time entry (id: ${entry.id})`))
     .catch(handleError);
 }
 

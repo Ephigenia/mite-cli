@@ -152,17 +152,29 @@ class MiteApiWrapper {
     }
     if (typeof a === 'string') a = a.toLowerCase();
     if (typeof b === 'string') b = b.toLowerCase();
-    if (a > b) return direction === 'asc' ? 1 : -1;
-    if (a < b) return direction === 'asc' ? -1 : 1;
+    if (a > b && direction === 'asc') return 1;
+    if (a > b && direction !== 'asc') return -1;
+    if (a < b && direction === 'asc') return -1;
+    if (a < b && direction !== 'asc') return 1;
     return 0;
   }
 
   sortBoolean (a, b, direction = 'asc') {
-    if (a > b) return direction === 'asc' ? -1 : 1;
-    if (a < b) return direction === 'asc' ? 1 : -1;
+    if (a > b && direction === 'asc') return -1;
+    if (a > b && direction !== 'asc') return 1;
+    if (a < b && direction === 'asc') return 1;
+    if (a < b && direction !== 'asc') return -1;
     return 0;
   }
 
+  /**
+ * Returns an array of tabtab options containing users
+ *
+ * @param {String} itemName name of the resource that should be requested
+ * @param {Object<String>} options request parameters
+ * @param {Boolean} options.archived include archived items or not
+ * @return {Promise<Array<Object>>}
+ */
   async getItemsAndArchived(itemName, options = {}) {
     const defaultOpts = {
       limit: 1000

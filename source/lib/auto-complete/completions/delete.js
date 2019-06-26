@@ -1,10 +1,14 @@
 #!/usr/bin/env node
 'use strict';
 
-const config = require('./../../../config');
-const miteApi = require('./../../mite-api')(config.get());
+const { getMyRecentTimeEntriesOptions } = require('../helpers');
 
-const NOTE_MAX_LENGTH = (process.stdout.columns || 80) - 20;
+const defaults = [
+  {
+    name: '--help',
+    description: 'show help message'
+  }
+];
 
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
@@ -17,28 +21,13 @@ const NOTE_MAX_LENGTH = (process.stdout.columns || 80) - 20;
  * @param {string} env.line - the current complete input line in the cli
  * @returns {Promise<Array<string>>}
  */
-module.exports = async ({ words }) => {
-  const defaults = [
-    (words < 3 ? {
-      name: '--help',
-      description: 'show help message'
-    } : undefined)
-  ];
+module.exports = async () => {
+  let options = defaults;
 
   // try to find the latest entries created by the current user and propose the
   // ids of these
-  return miteApi.getMyRecentTimeEntries()
-    .then(timeEntries => timeEntries.map(entry => {
-      let note = entry.note || '[no note]';
-      if (note.length > NOTE_MAX_LENGTH) {
-        note = note.substr(0, NOTE_MAX_LENGTH - 1) + '…';
-      }
-      return {
-        name: String(entry.id),
-        description: `${entry.date_at} ${note}`
-      };
-    }))
-    .then(options => {
-      return [].concat([], options, defaults);
-    });
+  const recentTimeEntryOptions = await getMyRecentTimeEntriesOptions();
+
+  // merge entry options with other options
+  return [].concat([], options, recentTimeEntryOptions);
 };

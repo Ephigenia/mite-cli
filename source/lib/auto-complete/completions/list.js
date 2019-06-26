@@ -2,117 +2,19 @@
 'use strict';
 
 const DataOutput = require('./../../data-output');
-const config = require('./../../../config');
-const miteApi = require('./../../mite-api')(config.get());
 const listCommand = require('./../../commands/list');
 
+const {
+  getCustomerOptions,
+  getProjectOptions,
+  getServiceOptions,
+  getUserIdOptions,
+  removeAlreadyUsedOptions,
+} = require('../helpers');
 const { TIME_FRAMES } = require('./../../constants');
 
-function dateCompletion(lastPartial) {
-  const now = new Date();
-  let options = [
-    now.toISOString().substr(0, 10)
-  ];
-  // YYYY-MM- completion
-  if (lastPartial.match(/^\d{1,4}-\d{1,2}-?$/)) {
-    options = options.concat([...Array(31).keys()].map(i => {
-      return `${lastPartial.replace(/-$/, '')}-` + (++i < 10 ? '0' : '') + i;
-    }));
-  }
-  // YYYY- completion
-  if (lastPartial.match(/^\d{1,4}-?$/)) {
-    options = options.concat([...Array(12).keys()].map(i => {
-      return `${lastPartial.replace(/-$/, '')}-` + (++i < 10 ? '0' : '') + i + '-DD';
-    }));
-  }
-  return options;
-}
-
-/**
- * https://www.npmjs.com/package/tabtab#3-parsing-env
- *
- * @param {string} env.lastPartial - the characters entered in the current
- *                               argument before hitting tabtab
- * @param {string} env.prev - last given argument value, or previously
- *                            completed value
- * @param {string} env.words - the number of argument currently active
- * @param {string} env.line - the current complete input line in the cli
- * @returns {Promise<Array<string>>}
- */
-module.exports = async ({ words, prev, lastPartial }) => {
-
-  switch (prev) {
-    case '--archived':
-    case '-a':
-      return ['yes', 'no'];
-    case '--billable':
-      return ['yes', 'no'];
-    case '--columns':
-      return Object.keys(listCommand.columns.options).concat(['all']);
-    case '--customer-id':
-      return miteApi.getCustomers({ archived: false }).then(
-        customers => customers.map(c => ({
-          name: String(c.id),
-          description: c.name
-        }))
-      );
-    case '--group-by':
-      return listCommand.groupBy.options;
-    case '--format':
-    case '-f':
-      return DataOutput.FORMATS;
-    case '--from':
-    case '--to':
-      return TIME_FRAMES.concat(dateCompletion(lastPartial));
-    case '--locked':
-      return ['yes', 'no'];
-    case '--project-id':
-      return miteApi.getProjects({ archived: false }).then(
-        projects => projects.map(c => ({
-          name: String(c.id),
-          description: c.name
-        }))
-      );
-    case '--search':
-    case '-s':
-      return ['note'];
-    case '--service-id':
-      return miteApi.getServices({ archived: false }).then(
-        service => service.map(c => ({
-          name: String(c.id),
-          description: c.name + (c.billable ? ' $' : '')
-        }))
-      );
-    case '--sort':
-      return listCommand.sort.options;
-    case '--tracking':
-      return ['yes', 'no'];
-    case '--user-id':
-      return Promise.all([
-        miteApi.getUsers({ archived: false }),
-        miteApi.getMyself(),
-      ]).then(([users, me]) => {
-        return users.map(u => ({
-          name: String(u.id),
-          description: u.name + (me.id === u.id ? ' (you)' : '')
-        }));
-      });
-  }
-
-  // date completion
-  if (lastPartial) {
-    const r = dateCompletion(lastPartial);
-    if (r && r.length > 1) {
-      return r;
-    }
-  }
-
-  // auto-completion for time-frame option argument
-  if (words === 2 && lastPartial.substr(0, 1) !== '-') {
-    return TIME_FRAMES.concat(dateCompletion(lastPartial));
-  }
-
-  return [
+const defaults = [
+  [
     {
       name: '--archived',
       description: 'defines wheter time-entries which are archived should be listed',
@@ -177,5 +79,92 @@ module.exports = async ({ words, prev, lastPartial }) => {
       name: '--user-id',
       description: 'when defined will list only time-entries from the given user',
     },
+  ]
+];
+
+function dateCompletion(lastPartial) {
+  const now = new Date();
+  let options = [
+    now.toISOString().substr(0, 10)
   ];
+  // YYYY-MM- completion
+  if (lastPartial.match(/^\d{1,4}-\d{1,2}-?$/)) {
+    options = options.concat([...Array(31).keys()].map(i => {
+      return `${lastPartial.replace(/-$/, '')}-` + (++i < 10 ? '0' : '') + i;
+    }));
+  }
+  // YYYY- completion
+  if (lastPartial.match(/^\d{1,4}-?$/)) {
+    options = options.concat([...Array(12).keys()].map(i => {
+      return `${lastPartial.replace(/-$/, '')}-` + (++i < 10 ? '0' : '') + i + '-DD';
+    }));
+  }
+  return options;
+}
+
+/**
+ * https://www.npmjs.com/package/tabtab#3-parsing-env
+ *
+ * @param {string} env.lastPartial - the characters entered in the current
+ *                               argument before hitting tabtab
+ * @param {string} env.prev - last given argument value, or previously
+ *                            completed value
+ * @param {string} env.words - the number of argument currently active
+ * @param {string} env.line - the current complete input line in the cli
+ * @returns {Promise<Array<string>>}
+ */
+module.exports = async ({ words, prev, lastPartial, line }) => {
+
+  // argument value completion
+  switch (prev) {
+    case '--archived':
+    case '-a':
+      return ['yes', 'no'];
+    case '--billable':
+      return ['yes', 'no'];
+    case '--columns':
+      return Object.keys(listCommand.columns.options).concat(['all']);
+    case '--customer-id':
+      return await getCustomerOptions();
+    case '--group-by':
+      return listCommand.groupBy.options;
+    case '--format':
+    case '-f':
+      return DataOutput.FORMATS;
+    case '--from':
+    case '--to':
+      return TIME_FRAMES.concat(dateCompletion(lastPartial));
+    case '--locked':
+      return ['yes', 'no'];
+    case '--project-id':
+      return await getProjectOptions();
+    case '--search':
+    case '-s':
+      return ['note'];
+    case '--service-id':
+      return await getServiceOptions();
+    case '--sort':
+      return listCommand.sort.options;
+    case '--tracking':
+      return ['yes', 'no'];
+    case '--user-id':
+      return await getUserIdOptions();
+  }
+
+  // date completion
+  if (lastPartial) {
+    const r = dateCompletion(lastPartial);
+    if (r && r.length > 1) {
+      return r;
+    }
+  }
+
+  // auto-completion for time-frame option argument
+  if (words === 2 && lastPartial.substr(0, 1) !== '-') {
+    return TIME_FRAMES.concat(dateCompletion(lastPartial));
+  }
+
+  // return default options without the ones which where already entered
+  const options = removeAlreadyUsedOptions(defaults, line);
+  return options;
 };

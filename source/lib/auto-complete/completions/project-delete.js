@@ -1,8 +1,17 @@
 #!/usr/bin/env node
 'use strict';
 
-const config = require('./../../../config');
-const miteApi = require('./../../mite-api')(config.get());
+const {
+  getProjectOptions,
+  removeAlreadyUsedOptions
+} = require('../helpers');
+
+const defaults = [
+  {
+    name: '--help',
+    description: 'show help message'
+  }
+];
 
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
@@ -15,19 +24,12 @@ const miteApi = require('./../../mite-api')(config.get());
  * @param {string} env.line - the current complete input line in the cli
  * @returns {Promise<Array<string>>}
  */
-module.exports = async ({ words }) => {
-  const defaults = [
-    (words < 3 ? {
-      name: '--help',
-      description: 'show help message'
-    } : undefined)
-  ];
+module.exports = async ({ line }) => {
+  // return default options without the ones which where already entered
+  const options = removeAlreadyUsedOptions(defaults, line);
 
   // return a list of service ids and default options
-  return miteApi.getProjects()
-    .then(projects => projects.map(c => ({
-      name: String(c.id),
-      description: c.name
-    })))
-    .then(options => [].concat(options, defaults));
+  const projectOptions = await getProjectOptions();
+
+  return [].concat([], options, projectOptions);
 };

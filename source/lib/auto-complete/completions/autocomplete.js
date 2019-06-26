@@ -12,21 +12,19 @@
  * @param {string} env.line - the current complete input line in the cli
  * @returns {Promise<Array<string>>}
  */
-module.exports = async ({ words }) => {
-  if (words < 3) {
-    return [
-      {
-        name: '--help',
-        description: 'show help message'
-      },
-      {
-        name: 'install',
-        description: 'tries to install auto-completion for mite-cli'
-      },
-      {
-        name: 'uninstall',
-        description: 'removes previously installed auto-completion'
-      }
-    ];
-  }
+module.exports = async () => {
+  return [
+    {
+      name: '--help',
+      description: 'show help message'
+    },
+    {
+      name: 'install',
+      description: 'tries to install auto-completion for mite-cli'
+    },
+    {
+      name: 'uninstall',
+      description: 'removes previously installed auto-completion'
+    }
+  ];
 };
