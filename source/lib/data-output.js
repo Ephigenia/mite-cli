@@ -111,30 +111,30 @@ function formatData(data, format, columns = []) {
 
   // format the output according to the given format
   switch(format) {
-    case 'csv':
+    case FORMAT.CSV:
       return csvString.stringify(data);
-    case 'json': {
+    case FORMAT.JSON: {
       // ignore table header
       const jsonString = JSON.stringify(data.slice(1));
       // remove ansi color codes
       return stripColorColodes(jsonString);
     }
-    case 'md':
+    case FORMAT.MD:
       return markdownTable(data);
-    case 'table': {
+    case FORMAT.TABLE: {
       const tableConfig = {
         border: tableLib.getBorderCharacters('norc'),
         columns
       };
       return table(data, tableConfig);
     }
-    case 'text':
+    case FORMAT.TEXT:
       // ignore table header
       return data.slice(1).join('\n');
-    case 'tsv':
+    case FORMAT.TSV:
       return csvString.stringify(data, '\t');
     default:
-      throw new Error(`Unknown format "${format}"`);
+      throw new Error(`Unknown output format "${format}" specified.`);
   }
 }
 
