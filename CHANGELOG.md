@@ -1,3 +1,21 @@
+## [1.0.1](https://github.com/Ephigenia/mite-cli/compare/v1.0.0...v1.0.1) (2019-06-27)
+
+
+### Bug Fixes
+
+* **customer:** new now accepts the name ([3207b62](https://github.com/Ephigenia/mite-cli/commit/3207b62))
+* **customer-new:** show server error messages correctly ([f76b3e2](https://github.com/Ephigenia/mite-cli/commit/f76b3e2))
+* **errors:** check for lowercased NODE_ENV ([658e6ca](https://github.com/Ephigenia/mite-cli/commit/658e6ca))
+* **list:** table footer not empty anymore ([5a3d727](https://github.com/Ephigenia/mite-cli/commit/5a3d727))
+* **mite-amend:** only match timeEntryId when it’s truish ([895857d](https://github.com/Ephigenia/mite-cli/commit/895857d))
+* **mite-api:** addTimeEntry callback argument order ([03ec43c](https://github.com/Ephigenia/mite-cli/commit/03ec43c))
+* **project:** new now accepts the name ([e3bb65d](https://github.com/Ephigenia/mite-cli/commit/e3bb65d))
+* **project-new:** correct default for budgetType ([bd7fd58](https://github.com/Ephigenia/mite-cli/commit/bd7fd58))
+* **project-new:** show server error messages correctly ([97f2534](https://github.com/Ephigenia/mite-cli/commit/97f2534))
+* **start:** correct error message shown ([d7510a7](https://github.com/Ephigenia/mite-cli/commit/d7510a7))
+
+
+
 # [1.0.0](https://github.com/Ephigenia/mite-cli/compare/v0.10.0...v1.0.0) (2019-06-24)
 
 
