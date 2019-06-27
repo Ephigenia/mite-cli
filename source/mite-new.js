@@ -134,7 +134,7 @@ function getSearchResults(options, query) {
 
 function checkResults(options, query, type) {
   // first try to find an exact match of id or name
-  let searchResults = getSearchResults(options, query)
+  let searchResults = getSearchResults(options, query);
 
   // then try to find partial matches
   if (!searchResults.length) {

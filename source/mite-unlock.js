@@ -12,11 +12,10 @@ const { handleError, MissingRequiredArgumentError } = require('./lib/errors');
 program
   .version(pkg.version)
   .arguments('[timeEntryId]')
-  .description(
-    'Unlocks a specific time-entry identified by it’s id. ' +
-    'Time entries can only get unlocked if they have been locked by the same ' +
-    'user or users who are admin or owner. ' +
-    'Use the --force argument if you want to bypass that restriction as admin.',
+  .description(`Unlocks a specific time-entry identified by it’s id. \
+Time entries can only get unlocked if they have been locked by the same \
+user or users who are admin or owner. \
+Use the --force argument if you want to bypass that restriction as admin.`,
     {
       timeEntryId: 'The id of the time entry which should be unloacked'
     }

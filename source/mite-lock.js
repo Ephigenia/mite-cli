@@ -12,11 +12,10 @@ const { handleError, MissingRequiredArgumentError } = require('./lib/errors');
 program
   .version(pkg.version)
   .arguments('[timeEntryId]')
-  .description(
-    'Locks a specific time-entry identified by it’s id. ' +
-    'The time-entry must either be owned by the requesting user or the ' +
-    'requesting user must be an admin or owner. In that case the time entry ' +
-    'can only be unlocked by an admin or owner.',
+  .description(`Locks a specific time-entry identified by it’s id. \
+The time-entry must either be owned by the requesting user or the \
+requesting user must be an admin or owner. In that case the time entry \
+can only be unlocked by an admin or owner.`,
     {
       timeEntryId: 'The id of the time entry which should be locked'
     }

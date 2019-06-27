@@ -21,7 +21,7 @@ Note that users with the role time tracker will not be able to list customers!
   .option.apply(program, commandOptions.toArgs(
     commandOptions.archived,
     'filter for archived or unarchived customers only',
-    'all'
+    false
   ))
   .option.apply(program, commandOptions.toArgs(
     commandOptions.columns,
