@@ -17,8 +17,8 @@ program
 as starting values. Note that some users are not able to create new projects.`
   )
   .option.apply(program, commandOptions.toArgs(commandOptions.archived, 'Defines the archived state'))
-  .option.apply(program, commandOptions.toArgs(commandOptions.budget, null, 'hours'))
-  .option.apply(program, commandOptions.toArgs(commandOptions.budgetType))
+  .option.apply(program, commandOptions.toArgs(commandOptions.budget))
+  .option.apply(program, commandOptions.toArgs(commandOptions.budgetType, null, 'minutes'))
   .option(
     '--customer-id <customerId>',
     'Optional id of the customer this project should belong to.'
@@ -57,6 +57,8 @@ function main(name) {
     ...(typeof name === 'string' && { name: name }),
     ...(typeof program.note === 'string' && { note: program.note })
   };
+
+  console.log(data);
 
   const mite = miteApi(config.get());
   return util.promisify(mite.addProject)(data)
