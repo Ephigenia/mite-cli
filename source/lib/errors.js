@@ -36,7 +36,7 @@ class MissingRequiredOptionError extends GeneralError {
  * @throws Error
  */
 function handleError(error) {
-  const NODE_ENV = process.env.NODE_ENV || DEFAULT_NODE_ENV;
+  const NODE_ENV = (process.env.NODE_ENV || DEFAULT_NODE_ENV).toLowerCase();
   const exitCode = error.exitCode || DEFAULT_EXIT_CODE;
 
   if (NODE_ENV === 'production') {

@@ -14,17 +14,17 @@ program
   .version(pkg.version)
   .description(
     `Creates a new customer while using the given values. \
-Note that some users are not able to create new projects.`
+Note that some users are not able to create new customers.`
   )
   .option.apply(program, commandOptions.toArgs(commandOptions.archived, 'Defines the archived state'))
   .option.apply(program, commandOptions.toArgs(commandOptions.hourlyRate))
   .option(
     '--name <name>',
-    'Name of the project',
+    'Name of the customer',
   )
   .option(
     '--note <note>',
-    'Optional additional note of the project',
+    'Optional additional note of the customer',
   )
   .on('--help', () => console.log(`
 Examples:
@@ -34,8 +34,8 @@ Examples:
 `));
 
 function main(name) {
-  if (!name) {
-    throw new MissingRequiredArgumentError('Missing required "name"');
+  if (typeof name !== 'string' || !name) {
+    throw new MissingRequiredArgumentError('Missing or empty required option --name <name>');
   }
 
   const data = {
