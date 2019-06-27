@@ -44,8 +44,8 @@ Examples:
 `));
 
 function main(name) {
-  if (!name) {
-    throw new MissingRequiredArgumentError('Missing required "name" argument');
+  if (typeof name !== 'string' || !name) {
+    throw new MissingRequiredArgumentError('Missing or empty required option --name <name>');
   }
 
   const data = {

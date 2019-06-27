@@ -31,7 +31,7 @@ Examples:
     try {
       if (!key) {
         throw new MissingRequiredArgumentError(
-          'No configuration key given, unable to set a variable'
+          'Missing required option [key]'
         );
       }
       config.set(key, value);

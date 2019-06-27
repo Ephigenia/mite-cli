@@ -58,13 +58,14 @@ class MiteApiWrapper {
     return new Promise(function(resolve, reject) {
       // addTimeEntry cannot use util.promisify as it doesn't match the
       // standard callback
-      mite.addTimeEntry({ time_entry: timeEntry }, (response) => {
-        // response contains the created time entry as a string
-        const data = JSON.parse(response.response.body);
-        if (data.error) {
-          return reject(new Error(data.error));
+      mite.addTimeEntry({ time_entry: timeEntry }, (err, json) => {
+        if (err) {
+          return reject(err);
         }
-        return resolve(data);
+        if (json && json.error) {
+          return reject(new Error(json.error));
+        }
+        return resolve(json);
       });
     });
   }
