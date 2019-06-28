@@ -14,72 +14,70 @@ const {
 const { TIME_FRAMES } = require('./../../constants');
 
 const defaults = [
-  [
-    {
-      name: '--archived',
-      description: 'defines wheter time-entries which are archived should be listed',
-    },
-    {
-      name: '--billable',
-      description: 'defines wheter billable time-entries should be shown or not',
-    },
-    {
-      name: '--columns',
-      description: 'define the columns that are shown',
-    },
-    {
-      name: '--customer-id',
-      description: 'list only time entries from the given customer',
-    },
-    {
-      name: '--format',
-      description: 'defines the output format',
-    },
-    {
-      name: '--from',
-      description: 'define a start date from when time-entries should be shown',
-    },
-    {
-      name: '--group-by',
-      description: 'optional name of a property or multiple properties that should be used to group the time-entries',
-    },
-    {
-      name: '--help',
-      description: 'show help message',
-    },
-    {
-      name: '--project-id',
-      description: 'list only time entries from the given project',
-    },
-    {
-      name: '--reversed',
-      description: 'sort in reversed direction',
-    },
-    {
-      name: '--search',
-      description: 'given a search query will list time-entries where the note matches the given query',
-    },
-    {
-      name: '--service-id',
-      description: 'list only time entries that have the given service assigned',
-    },
-    {
-      name: '--sort',
-      description: 'defines the order of results shown',
-    },
-    {
-      name: '--to',
-      description: 'define a end date from when time-entries should be shown',
-    },
-    {
-      name: '--tracking',
-      description: 'show only currently active trackers',
-    },
-    {
-      name: '--user-id',
-      description: 'when defined will list only time-entries from the given user',
-    },
-  ]
+  {
+    name: '--archived',
+    description: 'defines wheter time-entries which are archived should be listed',
+  },
+  {
+    name: '--billable',
+    description: 'defines wheter billable time-entries should be shown or not',
+  },
+  {
+    name: '--columns',
+    description: 'define the columns that are shown',
+  },
+  {
+    name: '--customer-id',
+    description: 'list only time entries from the given customer',
+  },
+  {
+    name: '--format',
+    description: 'defines the output format',
+  },
+  {
+    name: '--from',
+    description: 'define a start date from when time-entries should be shown',
+  },
+  {
+    name: '--group-by',
+    description: 'optional name of a property or multiple properties that should be used to group the time-entries',
+  },
+  {
+    name: '--help',
+    description: 'show help message',
+  },
+  {
+    name: '--project-id',
+    description: 'list only time entries from the given project',
+  },
+  {
+    name: '--reversed',
+    description: 'sort in reversed direction',
+  },
+  {
+    name: '--search',
+    description: 'given a search query will list time-entries where the note matches the given query',
+  },
+  {
+    name: '--service-id',
+    description: 'list only time entries that have the given service assigned',
+  },
+  {
+    name: '--sort',
+    description: 'defines the order of results shown',
+  },
+  {
+    name: '--to',
+    description: 'define a end date from when time-entries should be shown',
+  },
+  {
+    name: '--tracking',
+    description: 'show only currently active trackers',
+  },
+  {
+    name: '--user-id',
+    description: 'when defined will list only time-entries from the given user',
+  },
 ];
 
 function dateCompletion(lastPartial) {
@@ -114,7 +112,6 @@ function dateCompletion(lastPartial) {
  * @returns {Promise<Array<string>>}
  */
 module.exports = async ({ words, prev, lastPartial, line }) => {
-
   // argument value completion
   switch (prev) {
     case '--archived':
