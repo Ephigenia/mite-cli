@@ -47,6 +47,14 @@ const defaults = [
     description: 'show help message',
   },
   {
+    name: '--limit',
+    description: 'number of items to show'
+  },
+  {
+    name: '--locked',
+    description: 'filter out entries by their locked state'
+  },
+  {
     name: '--project-id',
     description: 'list only time entries from the given project',
   },
