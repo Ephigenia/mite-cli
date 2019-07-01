@@ -47,7 +47,6 @@ const defaults = [
     description: 'show help message',
   },
   {
-  {
     name: '--limit',
     description: 'number of items to show'
   },

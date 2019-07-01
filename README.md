@@ -230,6 +230,7 @@ There are various filters to limit the entries shown:
 - `--project-id` show entries from a one or more project(s)
 - `--locked` show only locked or unlocked entries
 - `--user-id` show entries from one or more user(s)
+- `--min-duration`, `--max-duration` filter by the duration
 
 It can be hard to remember ids, that’s why I recommend using [auto-completion](#auto-completion) which makes it way easier to filter time entries.
 

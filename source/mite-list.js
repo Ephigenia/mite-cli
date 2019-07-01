@@ -65,11 +65,11 @@ program
   )
   .option(
     '--min-duration <minDuration>',
-    'only show entries that have at least the given duration',
+    'filter out entries which have a duration below the given value (client side)',
   )
   .option(
     '--max-duration <maxDuration>',
-    'only show entries that have at least the given duration',
+    'filter out entries which have a duration above the given value (client side)',
   )
   .option(
     '--project-id <id>',
