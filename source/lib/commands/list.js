@@ -66,6 +66,13 @@ module.exports.columns = {
           value = timeEntry.tracking.minutes;
         }
         let duration = formater.minutesToDuration(value);
+        // format the durations in orange or red if they are larger than
+        // some maximums to indicate possibly wrong entries
+        if (value > 60 * 12) {
+          duration = chalk.red(duration);
+        } else if (value > 60 * 8) {
+          duration = chalk.orange(duration);
+        }
         if (timeEntry && timeEntry.locked) {
           duration = chalk.green('✔') + ' ' + duration;
         }
