@@ -47,9 +47,21 @@ module.exports = {
     return this.number(minutes / 8 / 60, 2);
   },
 
+  /**
+   * Converts a string containing a duration like "2:21" to minutes
+   *
+   * @param {string|number} minutes
+   * @return {number}
+   */
   durationToMinutes(minutes) {
-    const parts = minutes.split(':');
-    return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+    if (typeof minutes === 'number') return minutes;
+    if (typeof minutes === 'string') {
+      if (minutes.match(/^\d+$/)) {
+        return parseInt(minutes, 10);
+      }
+      const parts = minutes.split(':');
+      return parseInt(parts[0], 10) * 60 + parseInt(parts[1], 10);
+    }
   },
 
   minutesToDuration(minutes) {

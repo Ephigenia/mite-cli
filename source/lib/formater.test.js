@@ -93,6 +93,9 @@ describe('formater', () => {
         expect(formater.durationToMinutes(row[0])).to.equal(row[1]);
       });
     });
+    it('just returns integer values assuming they are minuetes', () => {
+      expect(formater.durationToMinutes(827)).to.equal(827);
+    });
   });
 
   describe('minutesToDuration', () => {

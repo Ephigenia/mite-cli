@@ -47,6 +47,14 @@ const defaults = [
     description: 'show help message',
   },
   {
+    name: '--min-duration',
+    description: 'filter out all entries which have a duration below the given value',
+  },
+  {
+    name: '--max-duration',
+    description: 'filter out all entries which have a duration above the given value',
+  },
+  {
     name: '--project-id',
     description: 'list only time entries from the given project',
   },

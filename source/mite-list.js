@@ -64,6 +64,14 @@ program
     null
   )
   .option(
+    '--min-duration <minDuration>',
+    'only show entries that have at least the given duration',
+  )
+  .option(
+    '--max-duration <maxDuration>',
+    'only show entries that have at least the given duration',
+  )
+  .option(
     '--project-id <id>',
     'project id, can be either a single ID, or multiple comma-separated IDs.'
   )
@@ -203,6 +211,24 @@ function getRequestOptions(period, program) {
   return data;
 }
 
+/**
+ *
+ * @param {MiteTimeEntry} entry
+ * @param {object} program
+ */
+function filterData(program, row) {
+  let valid = true;
+  if (program.minDuration) {
+    const minDuration = formater.durationToMinutes(program.minDuration, 10);
+    valid &= row.minutes >= minDuration;
+  }
+  if (program.maxDuration) {
+    const maxDuration = formater.durationToMinutes(program.maxDuration, 10);
+    valid &= row.minutes <= maxDuration;
+  }
+  return valid;
+}
+
 function getGroupedReport(timeEntryGroups, format) {
   const tableData = groupedTable(timeEntryGroups);
   const columnCount = tableData[0].length;
@@ -245,7 +271,7 @@ function main(period) {
   mite.getTimeEntries(opts, (err, results) => {
     if (err) throw err;
 
-    const timeEntries = results.map(data => data.time_entry).filter(v => v);
+    const timeEntries = results.map(data => data.time_entry).filter(v => v).filter(filterData.bind(this, program));
     const timeEntryGroups = results.map(data => data.time_entry_group).filter(v => v);
 
     // decide wheter to output grouped report or single entry report
