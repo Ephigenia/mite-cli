@@ -47,6 +47,15 @@ const defaults = [
     description: 'show help message',
   },
   {
+  {
+    name: '--limit',
+    description: 'number of items to show'
+  },
+  {
+    name: '--locked',
+    description: 'filter out entries by their locked state'
+  },
+  {
     name: '--min-duration',
     description: 'filter out all entries which have a duration below the given value',
   },
