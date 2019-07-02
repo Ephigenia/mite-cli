@@ -80,7 +80,7 @@
     "chai": "^4.2.0",
     "conventional-changelog-cli": "^2.0.21",
     "conventional-recommended-bump": "^5.0.0",
-    "eslint": "^6.0.0",
+    "eslint": "^6.0.1",
     "mocha": "^6.1.4",
     "npm-check": "^5.9.0"
   }
