@@ -11,14 +11,13 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys:
-            - v2-dependencies-{{ checksum "package-lock.json" }}
+          key: dependency-cache-{{ checksum "package-lock.json" }}
       - run: npm install
       - save_cache:
           when: on_success
           paths:
             - node_modules
-          key: v2-dependencies-{{ checksum "package-lock.json" }}
+          key: dependency-cache-{{ checksum "package-lock.json" }}
       - persist_to_workspace:
           root: ~/project
           paths: ./*
