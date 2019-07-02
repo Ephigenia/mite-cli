@@ -18,6 +18,10 @@ const defaults = [
     description: 'open $EDITOR for editing the entry’s note'
   },
   {
+    name: '--duration',
+    description: 'set, substract or add mimnutes',
+  },
+  {
     name: '--project-id',
     description: 'id of the project the entry should be assigned to'
   },
@@ -45,6 +49,8 @@ module.exports = async ({ line, prev }) => {
       return getProjectOptions({ archived: false });
     case '--service-id':
       return getServiceOptions({ archived: false });
+    case '--duration':
+      return ['0\\:00'];
   }
 
   // return default options without the ones which where already entered

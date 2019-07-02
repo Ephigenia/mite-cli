@@ -6,6 +6,7 @@ const program = require('commander');
 const miteApi = require('mite-api');
 const util = require('util');
 const inquirer = require('inquirer');
+const formater = require('./lib/formater');
 const ExternalEditor = require('external-editor');
 
 const pkg = require('./../package.json');
@@ -40,6 +41,11 @@ has the required permissions to do it.`,
     'open preferred $EDITOR for editing'
   )
   .option(
+    '--duration <value>',
+    `set the duration/tracked time directly in HH:MM format or minutes or add \
+("+2:12") or substract ("-12") some minutes`
+  )
+  .option(
     '--project-id <id>',
     'the project id which should be set'
   )
@@ -67,6 +73,12 @@ Examples:
 
   Change project and service
     mite amend 12345678 --service-id 918772 --project-id 129379
+
+  Change the tracked time to 4 hours and 12 minutes
+    mite amend 12345678 --duration 4:12
+
+  Change the time and add 20 minutes
+  mite amend 12345678 --duration +4:12
   `));
 
 const mite = miteApi(config.get());
@@ -119,13 +131,30 @@ async function getUpdatedTimeEntryData(program, note, timeEntry) {
     ...(program.serviceId && { service_id: program.serviceId }),
   };
 
+  // substract, add or set minutes directly using the --duration option
+  if (program.duration) {
+    const durationValueStr = program.duration.replace(/[\s+-]/, '');
+    const minutes = formater.durationToMinutes(durationValueStr);
+    switch(program.duration.substr(0, 1)) {
+      case '+':
+        console.log('setting minutes');
+        updateData.minutes = timeEntry.minutes + minutes;
+        break;
+      case '-':
+        updateData.minutes = timeEntry.minutes - minutes;
+        break;
+      default:
+        updateData.minutes = minutes;
+    }
+  }
+
   if (program.editor) {
     // always open up editor when --editor argument was used
     return openEditor(updateData.note || timeEntry.note).then((editorContent) => {
       updateData.note = editorContent;
       return updateData;
     });
-  } else if (!note && !program.projectId && !program.serviceId) {
+  } else if (!note && !program.projectId && !program.serviceId && !program.duration) {
     // ask for note only when no note was passed to cli
     return inquireNote(updateData, updateData.note || timeEntry.note);
   }

@@ -30,6 +30,8 @@ Easy to use CLI tool for creating, listing, starting and stopping time tracking 
         - [Modify Time-Entries](#Modify-Time-Entries)
             - [Change Note](#Change-Note)
             - [Change Service or Project](#Change-Service-or-Project)
+            - [Set Tracked Time](#Set-Tracked-Time)
+            - [Adding/Removing Time](#AddingRemoving-Time)
             - [Un-/Lock Entry](#Un-Lock-Entry)
         - [Delete entry](#Delete-entry)
         - [Open](#Open)
@@ -369,6 +371,28 @@ You can also pipe in the note:
 Changing the project or service id of the current or any other time entry works the same:
 
     mite amend 12345678 --service-id 12834 --project-id 12938123
+
+#### Set Tracked Time
+
+Setting the minutes of a specific time entry can be done with `mite amend` and passing a duration string in the format `HH:MM` or specifying the minutes directly:
+
+    mite amend 123455678 --duration 30
+
+or
+
+    mite amend 123455678 --duration 0:30
+
+which is both the same and sets the minutes to 30.
+
+#### Adding/Removing Time
+
+It’s also possible to use the same option (`--duration`) to remove or add some duration. You can still use the `HH:MM` format or minutes directly:
+
+    mite amend 12345678 --duration +98
+
+which will add 98 minutes to the time entry or remove 12 minutes:
+
+    mite amend 12345678 --duration -0:12
 
 #### Un-/Lock Entry
 
