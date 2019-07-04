@@ -137,7 +137,6 @@ async function getUpdatedTimeEntryData(program, note, timeEntry) {
     const minutes = formater.durationToMinutes(durationValueStr);
     switch(program.duration.substr(0, 1)) {
       case '+':
-        console.log('setting minutes');
         updateData.minutes = timeEntry.minutes + minutes;
         break;
       case '-':

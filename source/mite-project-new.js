@@ -58,8 +58,6 @@ function main(name) {
     ...(typeof program.note === 'string' && { note: program.note })
   };
 
-  console.log(data);
-
   const mite = miteApi(config.get());
   return util.promisify(mite.addProject)(data)
     .then(body => {
