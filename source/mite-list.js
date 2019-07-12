@@ -12,6 +12,7 @@ const DataOutput = require('./lib/data-output');
 const listCommand = require('./lib/commands/list');
 const columnOptions = require('./lib/options/columns');
 const commandOptions = require('./lib/options');
+const { handleError } = require('./lib/errors');
 
 // set a default period argument if not set
 if (!process.argv[2] || process.argv[2].substr(0, 1) === '-' && process.argv[2] !== '--help') {
@@ -269,7 +270,7 @@ function main(period) {
   const columns = columnOptions.resolve(program.columns, listCommand.columns.options);
 
   mite.getTimeEntries(opts, (err, results) => {
-    if (err) throw err;
+    if (err) return handleError(err);
 
     const timeEntries = results.map(data => data.time_entry).filter(v => v).filter(filterData.bind(this, program));
     const timeEntryGroups = results.map(data => data.time_entry_group).filter(v => v);

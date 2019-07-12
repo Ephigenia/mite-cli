@@ -69,7 +69,7 @@
     "external-editor": "^3.0.3",
     "inquirer": "^6.4.1",
     "markdown-table": "^1.1.3",
-    "mite-api": "github:marcel-devdude/mite-api#master",
+    "mite-api": "^0.1.1",
     "nconf": "^0.10.0",
     "node-fetch": "^2.6.0",
     "opn": "^6.0.0",
