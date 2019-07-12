@@ -22,10 +22,28 @@ jobs:
           root: ~/project
           paths: ./*
 
-  test:
+  test-8.16:
+    working_directory: ~/project
+    docker:
+      - image: circleci/node:8.16.0
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: npm test
+
+  test-10.16:
     working_directory: ~/project
     docker:
       - image: circleci/node:10.16.0
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: npm test
+
+  test-12.6:
+    working_directory: ~/project
+    docker:
+      - image: circleci/node:12.6.0
     steps:
       - attach_workspace:
           at: ~/project
@@ -64,7 +82,13 @@ workflows:
   default:
     jobs:
       - setup
-      - test:
+      - test-10.16:
+          requires:
+            - setup
+      - test-8.16:
+          requires:
+            - setup
+      - test-12.6:
           requires:
             - setup
       - lint:
