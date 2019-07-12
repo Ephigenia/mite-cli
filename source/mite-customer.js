@@ -8,7 +8,7 @@ const pkg = require('./../package.json');
 program
   .version(pkg.version)
   .command('delete', 'delete a single customer').alias('rm')
-  .command('list', 'list custoemrs').alias('ls')
+  .command('list', 'list customers').alias('ls')
   .command('new', 'creates a new project').alias('create')
   .command('update', 'update a single customer')
   .parse(process.argv);
