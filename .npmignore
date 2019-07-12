@@ -1,4 +1,5 @@
-.github/
 .DS_Store
 
+.circleci
+.github/
 source/**/*test.js
