@@ -66,6 +66,15 @@ describe('mite-api wrapper', () => {
         const result = mite.sort(items, 'name');
         expect(result.map(v => v.name)).to.deep.equal(['Magneto', 'MYstique', 'Xavier']);
       });
+      it('returns the array sorted case-insensitive in reverse order by the given attribute using string comparison', () => {
+        const items = [
+          { name: 'Xavier' },
+          { name: 'Magneto' },
+          { name: 'MYstique' },
+        ];
+        const result = mite.sort(items, '-name');
+        expect(result.map(v => v.name)).to.deep.equal(['Xavier', 'MYstique', 'Magneto']);
+      });
     }); // string comparison
 
     describe('numeric comparison', () => {
