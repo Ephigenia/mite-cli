@@ -1,3 +1,21 @@
+# [1.1.0](https://github.com/Ephigenia/mite-cli/compare/v1.0.1...v1.1.0) (2019-07-12)
+
+
+### Bug Fixes
+
+* **list:** adds missing limit and locked to autocompletion ([d8222e6](https://github.com/Ephigenia/mite-cli/commit/d8222e6))
+* **list:** autocompletion works again ([a2ec467](https://github.com/Ephigenia/mite-cli/commit/a2ec467))
+* **mite-list:** error handling upon errs in getTimeEntries call ([b681f71](https://github.com/Ephigenia/mite-cli/commit/b681f71))
+
+
+### Features
+
+* **list:** adds max-duration and min-duration ([932e4cb](https://github.com/Ephigenia/mite-cli/commit/932e4cb))
+* **list:** highlight durations above 8 (orange) or 12 hours (red) ([18241a6](https://github.com/Ephigenia/mite-cli/commit/18241a6))
+* **mite-amend:** set/add/remove minutes of time-entry ([10864f4](https://github.com/Ephigenia/mite-cli/commit/10864f4))
+
+
+
 ## [1.0.1](https://github.com/Ephigenia/mite-cli/compare/v1.0.0...v1.0.1) (2019-06-27)
 
 
