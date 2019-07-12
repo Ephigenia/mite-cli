@@ -161,11 +161,8 @@ class MiteApiWrapper {
   }
 
   sortBoolean (a, b, direction = 'asc') {
-    if (a > b && direction === 'asc') return -1;
-    if (a > b && direction !== 'asc') return 1;
-    if (a < b && direction === 'asc') return 1;
-    if (a < b && direction !== 'asc') return -1;
-    return 0;
+    if (direction === 'asc') return b-a;
+    return a - b;
   }
 
   /**
