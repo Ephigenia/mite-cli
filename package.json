@@ -43,7 +43,7 @@
     "mite": "source/mite.js"
   },
   "npmCheck": {
-    "ignore": "{}"
+    "ignore": "{lodash.template,lodash,mem}"
   },
   "main": "source/mite.js",
   "scripts": {
