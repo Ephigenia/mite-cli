@@ -6,6 +6,10 @@ const miteApi = require('./../../mite-api')(config.get());
 
 const formater = require('./../../formater');
 
+const shellescape = function(str) {
+  return String(str).replace(' ', '\\ ');
+};
+
 /**
  * https://www.npmjs.com/package/tabtab#3-parsing-env
  *
@@ -28,7 +32,7 @@ module.exports = async ({ words }) => {
     // project
     case 3: {
       const projects = await miteApi.getProjects({ archived: false });
-      options.push(...projects.map(p => (p.name)));
+      options.push(...projects.map(p => shellescape(p.name)));
       break;
     }
     // service
@@ -36,7 +40,8 @@ module.exports = async ({ words }) => {
       const services = await miteApi.getServices({ archived: false });
       options.push(...services.map(s => (
         {
-          name: s.name,
+          // escape the name’s spaces
+          name: shellescape(s.name),
           description: s.name + (s.billable ? ' $' : '')
         }
       )));
