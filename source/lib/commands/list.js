@@ -6,26 +6,28 @@ const chalk = require('chalk');
 module.exports.sort = {
   default: 'date',
   options: [
-    'date',
-    'user',
     'customer',
-    'project',
-    'service',
-    'note',
+    'date',
     'minutes',
+    'note',
+    'project',
     'revenue',
+    'service',
+    'user',
   ]
 };
 
 module.exports.groupBy = {
+  // list of valid options taken from
+  // https://mite.yo.lk/en/api/time-entries.html#list-grouped
   options: [
-    'user',
     'customer',
+    'day',
+    'month',
     'project',
     'service',
-    'day',
+    'user',
     'week',
-    'month',
     'year',
   ]
 };
