@@ -8,50 +8,51 @@ Easy to use CLI tool for creating, listing, starting and stopping time tracking 
 [![Maintainability](https://api.codeclimate.com/v1/badges/791e0126615bcd34a0e5/maintainability)](https://codeclimate.com/github/Ephigenia/mite-cli/maintainability)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FEphigenia%2Fmite-cli.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FEphigenia%2Fmite-cli?ref=badge_shield)
 
-- [Features](#Features)
-- [Installation](#Installation)
-- [Configuration](#Configuration)
-    - [Configuration Options](#Configuration-Options)
-    - [Auto-Completion](#Auto-Completion)
-- [Usage](#Usage)
-    - [Time Entries](#Time-Entries)
-        - [List](#List)
-            - [Filter by time](#Filter-by-time)
-            - [Other Filters](#Other-Filters)
-            - [Grouping / Reports](#Grouping--Reports)
-            - [Advanced Examples](#Advanced-Examples)
-        - [Create Time-Entries](#Create-Time-Entries)
-            - [Interactive](#Interactive)
-            - [Non-Interactive](#Non-Interactive)
-            - [Advanced Usage](#Advanced-Usage)
-        - [Tracker](#Tracker)
-            - [Start Tracking](#Start-Tracking)
-            - [Stop Tracking](#Stop-Tracking)
-        - [Modify Time-Entries](#Modify-Time-Entries)
-            - [Change Note](#Change-Note)
-            - [Change Service or Project](#Change-Service-or-Project)
-            - [Set Tracked Time](#Set-Tracked-Time)
-            - [Adding/Removing Time](#AddingRemoving-Time)
-            - [Un-/Lock Entry](#Un-Lock-Entry)
-        - [Delete entry](#Delete-entry)
-        - [Open](#Open)
-    - [Users](#Users)
-    - [Customers](#Customers)
-        - [Create Customer](#Create-Customer)
-        - [Update Customer](#Update-Customer)
-        - [Delete Customer](#Delete-Customer)
-    - [Projects](#Projects)
-        - [Create Project](#Create-Project)
-        - [Update Project](#Update-Project)
-        - [Delete Project](#Delete-Project)
-    - [Services](#Services)
-        - [Update Service](#Update-Service)
-        - [Delete Service](#Delete-Service)
-- [Advanced Topics](#Advanced-Topics)
-    - [Columns](#Columns)
-    - [Alternate Output formats](#Alternate-Output-formats)
-- [Other Projects](#Other-Projects)
-- [License](#License)
+- [Features](#features)
+- [Installation](#installation)
+- [Configuration](#configuration)
+    - [Configuration Options](#configuration-options)
+    - [Auto-Completion](#auto-completion)
+- [Usage](#usage)
+    - [Time Entries](#time-entries)
+        - [List](#list)
+            - [Filter by time](#filter-by-time)
+            - [Other Filters](#other-filters)
+            - [Grouping / Reports](#grouping--reports)
+            - [Advanced Examples](#advanced-examples)
+        - [Create Time-Entries](#create-time-entries)
+            - [Interactive](#interactive)
+            - [Non-Interactive](#non-interactive)
+            - [Advanced Usage](#advanced-usage)
+        - [Tracker](#tracker)
+            - [Start Tracking](#start-tracking)
+            - [Stop Tracking](#stop-tracking)
+        - [Modify Time-Entries](#modify-time-entries)
+            - [Change Note](#change-note)
+            - [Change Service or Project](#change-service-or-project)
+            - [Set Tracked Time](#set-tracked-time)
+            - [Adding/Removing Time](#addingremoving-time)
+            - [Un-/Lock Entry](#un-lock-entry)
+        - [Delete entry](#delete-entry)
+        - [Open](#open)
+    - [Users](#users)
+    - [Customers](#customers)
+        - [Create Customer](#create-customer)
+        - [Update Customer](#update-customer)
+        - [Delete Customer](#delete-customer)
+    - [Projects](#projects)
+        - [Create Project](#create-project)
+        - [Update Project](#update-project)
+        - [Delete Project](#delete-project)
+    - [Services](#services)
+        - [Update Service](#update-service)
+        - [Delete Service](#delete-service)
+- [Advanced Topics](#advanced-topics)
+    - [Columns](#columns)
+    - [Plotting Charts](#plotting-charts)
+    - [Alternate Output formats](#alternate-output-formats)
+- [Other Projects](#other-projects)
+- [License](#license)
 
 
 Features
@@ -674,6 +675,81 @@ Specifying the columns is important when you want to use the ids of items in oth
 The following example uses the ids of all time entries to lock them:
 
     mite list last_month --columns id --format text | xargs -n1 mite lock
+
+Plotting Charts
+--------------------------------------------------------------------------------
+
+The following command will list all customers from last year and plot their minuets as bar charts to the terminal so that it’s easy to compare the values to each other:
+
+    mite list last_year --group-by year,customer --columns customer,minutes --format tsv \
+        | sed "$ d" \
+        | gnuplot -e \
+        "
+            set style data boxes;
+            set key off;
+            set terminal dumb \"$COLUMNS\" 40;
+            set datafile separator \"\t\";
+            plot '<cat' every ::1 using 2: xtic(1)
+        ";
+
+There are even more charting possibilities using the open source [gnuplot](http://www.gnuplot.info/).
+
+You can also reproduce the charts from the mite admin showing the number of hours worked in the last month:
+
+    mite list this_month --group-by day --columns day,minutes --format tsv \
+        | sed "$ d" \
+        | gnuplot -e \
+        "
+            set style data boxes;
+            set key off;
+            set terminal dumb 120 40;
+            set datafile separator \"\t\";
+            plot '<cat' every ::1 using 2: xtic(1)
+        ";
+
+Which will show the chart:
+
+```
+  450 +-------------------------------------------------------------------------------------------------------------+
+      |     +    +     +    +     +    +     +    +     +    +     +    +     +    +     +    +     +    +     +    |
+      |                                                                                                             |
+      |                             *******                                                                         |
+  400 |-+                           *     *                                                                       +-|
+      |                             *     *                                                                         |
+      |                             *     *                                ******                     *******       |
+      |                             *     *                                *    *                     *     *       |
+  350 |-+                           *     *                                *    *                     *     *     +-|
+      |                             *     *                                *    *                     *     *       |
+      |                             *     *                                *    *                     *     *    ***|
+      |                             *     *    *******                     *    *                     *     *    *  |
+  300 |-+                           *     *    *     *                     *    *                ******     *    *+-|
+      |             ******          *     *    *     *                     *    *******          *    *     *    *  |
+      |             *    *          *     *    *     *                     *    *     *          *    *     *    *  |
+      |             *    *          *     *    *     *                     *    *     *          *    *     *    *  |
+  250 |-+           *    *          *     *    *     *               *******    *     *          *    *     ******+-|
+      |  ******     *    *          *     *    *     ******          *     *    *     *          *    *     *    *  |
+      |  *    *     *    *          *     *    *     *    *          *     *    *     ******     *    *     *    *  |
+      |  *    *     *    *          *     *    *     *    *          *     *    *     *    *     *    *     *    *  |
+  200 |-+*    *     *    *     ******     *    *     *    *          *     *    *     *    *     *    *     *    *+-|
+      |  *    *     *    *     *    *     *    *     *    *          *     *    *     *    *******    *     *    *  |
+      |  *    *     *    *     *    *     *    *     *    *          *     *    *     *    *     *    *     *    *  |
+      |  *    *     *    *     *    *     *    *     *    *          *     *    *     *    *     *    *     *    *  |
+  150 |-+*    *     *    *     *    *     *    *     *    *          *     *    *     *    *     *    *     *    *+-|
+      |  *    *******    *     *    *     *    *     *    *          *     *    *     *    *     *    *     *    *  |
+      |  *    *     *    *     *    *     ******     *    *          *     *    *     *    *     *    *     *    *  |
+      |  *    *     *    *     *    *     *    *     *    *          *     *    *     *    *     *    *     *    *  |
+  100 |-+*    *     *    *     *    *     *    *     *    *          *     *    *     *    *     *    *     *    *+-|
+      |  *    *     *    *     *    *     *    *     *    *          *     *    *     *    *     *    *     *    *  |
+      |  *    *     *    *     *    *     *    *     *    *          *     *    *     *    *     *    *     *    *  |
+      |  *    *     *    *******    *     *    *     *    *          *     *    *     *    *     *    *     *    *  |
+   50 |-+*    *     *    *     *    *     *    *     *    *          *     *    *     *    *     *    *     *    *+-|
+      |  *    *     *    *     *    *     *    *     *    *******    *     *    *     *    *     *    *     *    *  |
+      |  *    *     *    *     *    *     *    *     *    *     *    *     *    *     *    *     *    *     *    *  |
+      |  *  + *  +  *  + *  +  *  + *  +  *  + *  +  *  + *  +  ******  +  *  + *  +  *  + *  +  *  + *  +  *  + *  |
+    0 +-------------------------------------------------------------------------------------------------------------+
+     29    25   24    23   22    19   18    17   16    15   14    12   11    10   09    08   05    04   03    02   01
+```
+
 
 Alternate Output formats
 --------------------------------------------------------------------------------
