@@ -159,21 +159,8 @@ Examples:
   .action(main)
   .parse(process.argv);
 
-function groupedTable(timeEntryGroups) {
-  return timeEntryGroups.map((groupedTimeEntry) => {
-    return [
-      groupedTimeEntry.year,
-      groupedTimeEntry.month,
-      groupedTimeEntry.week,
-      groupedTimeEntry.day,
-      groupedTimeEntry.customer_name || groupedTimeEntry.customer_id,
-      groupedTimeEntry.user_name,
-      groupedTimeEntry.project_name || groupedTimeEntry.project_id,
-      groupedTimeEntry.service_name || groupedTimeEntry.service_id,
-      formater.minutesToDuration(groupedTimeEntry.minutes || 0),
-      formater.budget(formater.BUDGET_TYPE.CENTS, groupedTimeEntry.revenue || 0),
-    ].filter(v => v !== undefined);
-  });
+function groupedTable(timeEntryGroups, columns = []) {
+  return DataOutput.compileTableData(timeEntryGroups, columns);
 }
 
 /**
@@ -230,21 +217,16 @@ function filterData(program, row) {
   return valid;
 }
 
-function getGroupedReport(timeEntryGroups, format) {
-  const tableData = groupedTable(timeEntryGroups);
-  const columnCount = tableData[0].length;
+function getGroupedReport(timeEntryGroups, columns, format) {
+  const tableData = groupedTable(timeEntryGroups, columns);
 
-  // add one last row which contains minutes & revenue sums
-  const footerRow = new Array(columnCount);
-  const revenueSum = timeEntryGroups.reduce((v, a) => {
-    return v + a.revenue || 0;
-  }, 0);
-  footerRow[columnCount - 1] = formater.budget(formater.BUDGET_TYPE.CENTS, revenueSum || 0);
-  const minutesSum = timeEntryGroups.reduce((v, a) => {
-    return v + a.minutes || 0;
-  }, 0);
-  footerRow[columnCount - 2] = formater.minutesToDuration(minutesSum);
-  tableData.push(footerRow.map(v => chalk.yellow(v)));
+  // Table footer
+  // add table footer if any of the table columns has a reducer
+  if (columnOptions.hasReducer(columns)) {
+    let footerColumns = DataOutput.getTableFooterColumns(timeEntryGroups, columns);
+    footerColumns = footerColumns.map(v => chalk.bold(v)); // make footer bold
+    tableData.push(footerColumns);
+  }
 
   return DataOutput.formatData(tableData, format);
 }
@@ -277,7 +259,7 @@ function main(period) {
 
     // decide wheter to output grouped report or single entry report
     if (timeEntryGroups.length) {
-      console.log(getGroupedReport(timeEntryGroups, program.format));
+      console.log(getGroupedReport(timeEntryGroups, columns, program.format));
     } else {
       console.log(getNormalReport(timeEntries, columns, program.format));
     }
