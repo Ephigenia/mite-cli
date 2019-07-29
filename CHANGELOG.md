@@ -1,3 +1,20 @@
+## [1.1.1](https://github.com/Ephigenia/mite-cli/compare/v1.1.0...v1.1.1) (2019-07-29)
+
+
+### Bug Fixes
+
+* **mie-list:** duration coloring with existing yellow instead of orange ([2acfcef](https://github.com/Ephigenia/mite-cli/commit/2acfcef))
+* **mite-list:** 0-value columns are not filtered in grouped reports ([b8c1922](https://github.com/Ephigenia/mite-cli/commit/b8c1922))
+* **mite-list:** apply min/max-duration also to grouped reports ([4e1a7db](https://github.com/Ephigenia/mite-cli/commit/4e1a7db))
+* **mite-list:** different default columns when groupBy is used ([66afe00](https://github.com/Ephigenia/mite-cli/commit/66afe00))
+* **mite-list:** fix json output ansi color stripping ([e0c4385](https://github.com/Ephigenia/mite-cli/commit/e0c4385))
+* **mite-list:** no colored undefined revenue anymore ([31d46d9](https://github.com/Ephigenia/mite-cli/commit/31d46d9))
+* **mite-list:** removes additional line-break when using TSV format ([e3511f8](https://github.com/Ephigenia/mite-cli/commit/e3511f8))
+* **mite-list:** using dataformater for grouped output too ([c532dcc](https://github.com/Ephigenia/mite-cli/commit/c532dcc))
+* **mite-new:** auto-completion escape space service or customer ([913f3a2](https://github.com/Ephigenia/mite-cli/commit/913f3a2))
+
+
+
 # [1.1.0](https://github.com/Ephigenia/mite-cli/compare/v1.0.1...v1.1.0) (2019-07-12)
 
 
