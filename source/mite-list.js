@@ -170,7 +170,7 @@ function getRequestOptions(period, program) {
   const data = {
     ...(typeof program.billable === 'boolean' && { billable: program.billable }),
     ...(program.customerId && { customer_id: program.customerId }),
-    ...(program.reversed && { direction: 'desc' }),
+    ...(program.reversed && { direction: 'asc' }),
     ...(program.groupBy && { group_by: program.groupBy }),
     ...(program.limit && { limit: program.limit }),
     ...(typeof program.locked === 'boolean' && { locked: program.locked }),
