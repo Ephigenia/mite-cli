@@ -158,10 +158,6 @@ Examples:
   .action(main)
   .parse(process.argv);
 
-function groupedTable(timeEntryGroups, columns = []) {
-  return DataOutput.compileTableData(timeEntryGroups, columns);
-}
-
 /**
  * Returns the request options for requesting the time entries or grouped
  * time entries for the given time entries and filtering options.
@@ -219,21 +215,7 @@ function filterData(program, row) {
   return valid;
 }
 
-function getGroupedReport(timeEntryGroups, columns, format) {
-  const tableData = groupedTable(timeEntryGroups, columns);
-
-  // Table footer
-  // add table footer if any of the table columns has a reducer
-  if (columnOptions.hasReducer(columns)) {
-    let footerColumns = DataOutput.getTableFooterColumns(timeEntryGroups, columns);
-    footerColumns = footerColumns.map(v => v ? chalk.bold(v) : v); // make footer bold
-    tableData.push(footerColumns);
-  }
-
-  return DataOutput.formatData(tableData, format);
-}
-
-function getNormalReport(items, columns, format) {
+function getReport(items, columns, format) {
   const tableData = DataOutput.compileTableData(items, columns);
 
   // Table footer
@@ -270,9 +252,9 @@ function main(period) {
 
     // decide wheter to output grouped report or single entry report
     if (timeEntryGroups.length) {
-      console.log(getGroupedReport(timeEntryGroups, columns, program.format));
+      console.log(getReport(timeEntryGroups, columns, program.format));
     } else {
-      console.log(getNormalReport(timeEntries, columns, program.format));
+      console.log(getReport(timeEntries, columns, program.format));
     }
   });
 } // main
