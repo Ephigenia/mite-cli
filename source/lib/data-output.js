@@ -53,14 +53,14 @@ function compileTableData(items, columns) {
     });
     // show archived items in grey
     if (item.archived) {
-      row = row.map(v => chalk.grey(v));
+      row = row.map(v => v ? chalk.grey(v) : v);
     }
     // colorize the whole row when it’s actively tracked or archived
     if (item.tracking) {
-      row = row.map(v => chalk.yellow(v));
+      row = row.map(v => v ? chalk.yellow(v) : v);
     }
     if (item.locked) {
-      row = row.map(v => chalk.grey(v));
+      row = row.map(v => v ? chalk.grey(v) : v);
     }
     return row;
   });
