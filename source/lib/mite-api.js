@@ -153,19 +153,16 @@ class MiteApiWrapper {
     }
     if (typeof a === 'string') a = a.toLowerCase();
     if (typeof b === 'string') b = b.toLowerCase();
-    if (a > b && direction === 'asc') return 1;
-    if (a > b && direction !== 'asc') return -1;
-    if (a < b && direction === 'asc') return -1;
-    if (a < b && direction !== 'asc') return 1;
-    return 0;
+    if (direction === 'asc') {
+      return (a > b) - (a < b);
+    } else {
+      return ((a > b) - (a < b)) * -1;
+    }
   }
 
   sortBoolean (a, b, direction = 'asc') {
-    if (a > b && direction === 'asc') return -1;
-    if (a > b && direction !== 'asc') return 1;
-    if (a < b && direction === 'asc') return 1;
-    if (a < b && direction !== 'asc') return -1;
-    return 0;
+    if (direction === 'asc') return b - a;
+    return a - b;
   }
 
   /**

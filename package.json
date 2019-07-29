@@ -43,7 +43,7 @@
     "mite": "source/mite.js"
   },
   "npmCheck": {
-    "ignore": "{}"
+    "ignore": "{lodash.template,lodash,mem}"
   },
   "main": "source/mite.js",
   "scripts": {
@@ -68,20 +68,24 @@
     "csv-string": "^3.1.6",
     "external-editor": "^3.1.0",
     "inquirer": "^6.5.0",
+    "lodash": "^4.17.15",
+    "lodash.template": ">=4.5.0",
     "markdown-table": "^1.1.3",
+    "mem": ">=4.0.0",
     "mite-api": "^0.1.1",
     "nconf": "^0.10.0",
     "node-fetch": "^2.6.0",
     "opn": "^6.0.0",
-    "table": "^5.4.1",
-    "tabtab": "^3.0.2"
+    "table": "^5.4.4",
+    "tabtab": "^3.0.2",
+    "weeknumber": "^1.1.1"
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "conventional-changelog-cli": "^2.0.21",
-    "conventional-recommended-bump": "^5.0.0",
-    "eslint": "^6.0.1",
-    "mocha": "^6.1.4",
+    "conventional-changelog-cli": "^2.0.23",
+    "conventional-recommended-bump": "^6.0.0",
+    "eslint": "^6.1.0",
+    "mocha": "^6.2.0",
     "npm-check": "^5.9.0"
   }
 }

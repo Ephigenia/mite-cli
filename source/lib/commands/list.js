@@ -1,31 +1,35 @@
 'use strict';
 
-const formater = require('./../formater');
+const weekNumber = require('weeknumber');
 const chalk = require('chalk');
+
+const formater = require('./../formater');
 
 module.exports.sort = {
   default: 'date',
   options: [
-    'date',
-    'user',
     'customer',
-    'project',
-    'service',
-    'note',
+    'date',
     'minutes',
+    'note',
+    'project',
     'revenue',
+    'service',
+    'user',
   ]
 };
 
 module.exports.groupBy = {
+  // list of valid options taken from
+  // https://mite.yo.lk/en/api/time-entries.html#list-grouped
   options: [
-    'user',
     'customer',
+    'day',
+    'month',
     'project',
     'service',
-    'day',
+    'user',
     'week',
-    'month',
     'year',
   ]
 };
@@ -45,6 +49,12 @@ module.exports.columns = {
     customer: {
       label: 'Customer',
       attribute: 'customer_name',
+      format: function(value, timeEntry) {
+        if (!value) {
+          return timeEntry.customer_id;
+        }
+        return value;
+      }
     },
     customer_id: {
       label: 'Customer ID',
@@ -71,7 +81,7 @@ module.exports.columns = {
         if (value > 60 * 12) {
           duration = chalk.red(duration);
         } else if (value > 60 * 8) {
-          duration = chalk.orange(duration);
+          duration = chalk.yellow(duration);
         }
         if (timeEntry && timeEntry.locked) {
           duration = chalk.green('✔') + ' ' + duration;
@@ -122,6 +132,10 @@ module.exports.columns = {
       width: 20,
       alignment: 'right',
       wrapWord: true,
+      format: (value, timeEntry) => {
+        if (!value) return timeEntry.project_id;
+        return value;
+      }
     },
     project_id: {
       label: 'Project ID',
@@ -134,7 +148,7 @@ module.exports.columns = {
       alignment: 'right',
       format: (value) => {
         if (!value) {
-          return '-';
+          return undefined;
         }
         return formater.budget(formater.BUDGET_TYPE.CENTS, value || 0);
       },
@@ -148,6 +162,10 @@ module.exports.columns = {
       attribute: 'service_name',
       width: 20,
       alignment: 'right',
+      format: (value, timeEntry) => {
+        if (!value) return timeEntry.service_id;
+        return value;
+      }
     },
     service_id: {
       label: 'Service ID',
@@ -169,6 +187,46 @@ module.exports.columns = {
     user_id: {
       label: 'User ID',
       attribute: 'user_id',
+    },
+
+    week: {
+      label: 'Week',
+      attribute: 'week',
+      format: function(value, column) {
+        if (column.week) return column.week;
+        if (column.created_at) {
+          const date = new Date(column.created_at);
+          return column.created_at.substr(0, 4) + '' + weekNumber.weekNumber(date);
+        }
+        return undefined;
+      }
+    },
+    year: {
+      label: 'Year',
+      attribute: 'year',
+      format: function(value, column) {
+        if (column.year) return column.year;
+        if (column.created_at) return column.created_at.substr(0, 4);
+        return undefined;
+      }
+    },
+    month: {
+      label: 'Month',
+      attribute: 'month',
+      format: function(value, column) {
+        if (column.month) return column.month;
+        if (column.created_at) return column.created_at.substr(5, 2);
+        return undefined;
+      }
+    },
+    day: {
+      label: 'Day',
+      attribute: 'day',
+      format: function(value, column) {
+        if (column.day) return column.day.substr(-2);
+        if (column.created_at) return column.created_at.substr(8, 2);
+        return undefined;
+      }
     },
   }
 }; // list

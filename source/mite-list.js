@@ -33,8 +33,7 @@ program
   .option(
     '--columns <columns>',
     columnOptions.description(listCommand.columns.options),
-    columnOptions.parse,
-    config.get().listColumns
+    columnOptions.parse
   )
   .option(
     '--customer-id <id>',
@@ -159,23 +158,6 @@ Examples:
   .action(main)
   .parse(process.argv);
 
-function groupedTable(timeEntryGroups) {
-  return timeEntryGroups.map((groupedTimeEntry) => {
-    return [
-      groupedTimeEntry.year,
-      groupedTimeEntry.month,
-      groupedTimeEntry.week,
-      groupedTimeEntry.day,
-      groupedTimeEntry.customer_name || groupedTimeEntry.customer_id,
-      groupedTimeEntry.user_name,
-      groupedTimeEntry.project_name || groupedTimeEntry.project_id,
-      groupedTimeEntry.service_name || groupedTimeEntry.service_id,
-      formater.minutesToDuration(groupedTimeEntry.minutes || 0),
-      formater.budget(formater.BUDGET_TYPE.CENTS, groupedTimeEntry.revenue || 0),
-    ].filter(v => v);
-  });
-}
-
 /**
  * Returns the request options for requesting the time entries or grouped
  * time entries for the given time entries and filtering options.
@@ -188,7 +170,7 @@ function getRequestOptions(period, program) {
   const data = {
     ...(typeof program.billable === 'boolean' && { billable: program.billable }),
     ...(program.customerId && { customer_id: program.customerId }),
-    ...(program.reversed && { direction: 'desc' }),
+    ...(program.reversed && { direction: 'asc' }),
     ...(program.groupBy && { group_by: program.groupBy }),
     ...(program.limit && { limit: program.limit }),
     ...(typeof program.locked === 'boolean' && { locked: program.locked }),
@@ -213,9 +195,12 @@ function getRequestOptions(period, program) {
 }
 
 /**
+ * Callback function to filter time entries which are shown depending on the
+ * command line options
  *
- * @param {MiteTimeEntry} entry
  * @param {object} program
+ * @param {MiteTimeEntry} entry
+ * @return {boolean}
  */
 function filterData(program, row) {
   let valid = true;
@@ -230,33 +215,14 @@ function filterData(program, row) {
   return valid;
 }
 
-function getGroupedReport(timeEntryGroups, format) {
-  const tableData = groupedTable(timeEntryGroups);
-  const columnCount = tableData[0].length;
-
-  // add one last row which contains minutes & revenue sums
-  const footerRow = new Array(columnCount);
-  const revenueSum = timeEntryGroups.reduce((v, a) => {
-    return v + a.revenue || 0;
-  }, 0);
-  footerRow[columnCount - 1] = formater.budget(formater.BUDGET_TYPE.CENTS, revenueSum || 0);
-  const minutesSum = timeEntryGroups.reduce((v, a) => {
-    return v + a.minutes || 0;
-  }, 0);
-  footerRow[columnCount - 2] = formater.minutesToDuration(minutesSum);
-  tableData.push(footerRow.map(v => chalk.yellow(v)));
-
-  return DataOutput.formatData(tableData, format);
-}
-
-function getNormalReport(items, columns, format) {
+function getReport(items, columns, format) {
   const tableData = DataOutput.compileTableData(items, columns);
 
   // Table footer
   // add table footer if any of the table columns has a reducer
   if (columnOptions.hasReducer(columns)) {
     let footerColumns = DataOutput.getTableFooterColumns(items, columns);
-    footerColumns = footerColumns.map(v => chalk.bold(v)); // make footer bold
+    footerColumns = footerColumns.map(v => v ? chalk.bold(v) : v); // make footer bold
     tableData.push(footerColumns);
   }
 
@@ -267,19 +233,28 @@ function main(period) {
   const mite = miteApi(config.get());
 
   const opts = getRequestOptions(period, program);
+  // "columns" default option is different
+  if (!program.columns) {
+    // when groupBy is used, make sure that revenue and duration are used
+    if (program.groupBy) {
+      program.columns = program.groupBy + ',revenue,duration';
+    } else {
+      program.columns = config.get().listColumns;
+    }
+  }
   const columns = columnOptions.resolve(program.columns, listCommand.columns.options);
 
   mite.getTimeEntries(opts, (err, results) => {
     if (err) return handleError(err);
 
     const timeEntries = results.map(data => data.time_entry).filter(v => v).filter(filterData.bind(this, program));
-    const timeEntryGroups = results.map(data => data.time_entry_group).filter(v => v);
+    const timeEntryGroups = results.map(data => data.time_entry_group).filter(filterData.bind(this, program));
 
     // decide wheter to output grouped report or single entry report
     if (timeEntryGroups.length) {
-      console.log(getGroupedReport(timeEntryGroups, program.format));
+      console.log(getReport(timeEntryGroups, columns, program.format));
     } else {
-      console.log(getNormalReport(timeEntries, columns, program.format));
+      console.log(getReport(timeEntries, columns, program.format));
     }
   });
 } // main

@@ -42,6 +42,8 @@ function compileTableData(items, columns) {
   assert(Array.isArray(columns), 'expected columns to be an array');
 
   return items.map(item => {
+    // format the value of the column according to the column definition
+    // or formatting function
     let row = columns.map(columnDefinition => {
       const value = item[columnDefinition.attribute];
       if (typeof columnDefinition.format === 'function') {
@@ -51,14 +53,14 @@ function compileTableData(items, columns) {
     });
     // show archived items in grey
     if (item.archived) {
-      row = row.map(v => chalk.grey(v));
+      row = row.map(v => v ? chalk.grey(v) : v);
     }
     // colorize the whole row when it’s actively tracked or archived
     if (item.tracking) {
-      row = row.map(v => chalk.yellow(v));
+      row = row.map(v => v ? chalk.yellow(v) : v);
     }
     if (item.locked) {
-      row = row.map(v => chalk.grey(v));
+      row = row.map(v => v ? chalk.grey(v) : v);
     }
     return row;
   });
@@ -81,12 +83,12 @@ function getTableFooterColumns(items, columns) {
     if (columnSum && columnDefinition.format) {
       return columnDefinition.format(columnSum);
     }
-    return columnSum || '';
+    return columnSum || undefined;
   });
 }
 
 function stripColorColodes(string) {
-  const ansiColorRegexp = /[\\u001b\\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g;
+  const ansiColorRegexp = /\\u001b?\[\d{1,2}m/g;
   return string.replace(ansiColorRegexp, '');
 }
 
@@ -132,7 +134,7 @@ function formatData(data, format, columns = []) {
       // ignore table header
       return data.slice(1).join('\n');
     case FORMAT.TSV:
-      return csvString.stringify(data, '\t');
+      return csvString.stringify(data, '\t').trim();
     default:
       throw new Error(`Unknown output format "${format}" specified.`);
   }
