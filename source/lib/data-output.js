@@ -88,7 +88,7 @@ function getTableFooterColumns(items, columns) {
 }
 
 function stripColorColodes(string) {
-  const ansiColorRegexp = /[\\u001b\\u009b][[()#;?]*(?:[0-9]{1,4}(?:;[0-9]{0,4})*)?[0-9A-ORZcf-nqry=><]/g;
+  const ansiColorRegexp = /\\u001b?\[\d{1,2}m/g;
   return string.replace(ansiColorRegexp, '');
 }
 
