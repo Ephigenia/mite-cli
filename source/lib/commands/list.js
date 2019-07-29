@@ -73,7 +73,7 @@ module.exports.columns = {
         if (value > 60 * 12) {
           duration = chalk.red(duration);
         } else if (value > 60 * 8) {
-          duration = chalk.orange(duration);
+          duration = chalk.yellow(duration);
         }
         if (timeEntry && timeEntry.locked) {
           duration = chalk.green('✔') + ' ' + duration;
