@@ -172,7 +172,7 @@ function groupedTable(timeEntryGroups) {
       groupedTimeEntry.service_name || groupedTimeEntry.service_id,
       formater.minutesToDuration(groupedTimeEntry.minutes || 0),
       formater.budget(formater.BUDGET_TYPE.CENTS, groupedTimeEntry.revenue || 0),
-    ].filter(v => v);
+    ].filter(v => v !== undefined);
   });
 }
 
