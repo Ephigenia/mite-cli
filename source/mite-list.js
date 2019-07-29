@@ -248,7 +248,7 @@ function main(period) {
     if (err) return handleError(err);
 
     const timeEntries = results.map(data => data.time_entry).filter(v => v).filter(filterData.bind(this, program));
-    const timeEntryGroups = results.map(data => data.time_entry_group).filter(v => v);
+    const timeEntryGroups = results.map(data => data.time_entry_group).filter(filterData.bind(this, program));
 
     // decide wheter to output grouped report or single entry report
     if (timeEntryGroups.length) {
