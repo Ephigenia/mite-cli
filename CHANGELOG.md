@@ -1,3 +1,12 @@
+## [1.1.2](https://github.com/Ephigenia/mite-cli/compare/v1.1.1...v1.1.2) (2019-07-29)
+
+
+### Bug Fixes
+
+* **mite-list:** typo in filters breaking whole list ([6161089](https://github.com/Ephigenia/mite-cli/commit/6161089))
+
+
+
 ## [1.1.1](https://github.com/Ephigenia/mite-cli/compare/v1.1.0...v1.1.1) (2019-07-29)
 
 
