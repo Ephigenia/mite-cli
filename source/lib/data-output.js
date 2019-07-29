@@ -42,6 +42,8 @@ function compileTableData(items, columns) {
   assert(Array.isArray(columns), 'expected columns to be an array');
 
   return items.map(item => {
+    // format the value of the column according to the column definition
+    // or formatting function
     let row = columns.map(columnDefinition => {
       const value = item[columnDefinition.attribute];
       if (typeof columnDefinition.format === 'function') {
@@ -132,7 +134,7 @@ function formatData(data, format, columns = []) {
       // ignore table header
       return data.slice(1).join('\n');
     case FORMAT.TSV:
-      return csvString.stringify(data, '\t');
+      return csvString.stringify(data, '\t').trim();
     default:
       throw new Error(`Unknown output format "${format}" specified.`);
   }
