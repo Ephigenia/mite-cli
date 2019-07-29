@@ -33,8 +33,7 @@ program
   .option(
     '--columns <columns>',
     columnOptions.description(listCommand.columns.options),
-    columnOptions.parse,
-    config.get().listColumns
+    columnOptions.parse
   )
   .option(
     '--customer-id <id>',
@@ -200,9 +199,12 @@ function getRequestOptions(period, program) {
 }
 
 /**
+ * Callback function to filter time entries which are shown depending on the
+ * command line options
  *
- * @param {MiteTimeEntry} entry
  * @param {object} program
+ * @param {MiteTimeEntry} entry
+ * @return {boolean}
  */
 function filterData(program, row) {
   let valid = true;
@@ -224,7 +226,7 @@ function getGroupedReport(timeEntryGroups, columns, format) {
   // add table footer if any of the table columns has a reducer
   if (columnOptions.hasReducer(columns)) {
     let footerColumns = DataOutput.getTableFooterColumns(timeEntryGroups, columns);
-    footerColumns = footerColumns.map(v => chalk.bold(v)); // make footer bold
+    footerColumns = footerColumns.map(v => v ? chalk.bold(v) : v); // make footer bold
     tableData.push(footerColumns);
   }
 
@@ -238,7 +240,7 @@ function getNormalReport(items, columns, format) {
   // add table footer if any of the table columns has a reducer
   if (columnOptions.hasReducer(columns)) {
     let footerColumns = DataOutput.getTableFooterColumns(items, columns);
-    footerColumns = footerColumns.map(v => chalk.bold(v)); // make footer bold
+    footerColumns = footerColumns.map(v => v ? chalk.bold(v) : v); // make footer bold
     tableData.push(footerColumns);
   }
 
@@ -249,6 +251,15 @@ function main(period) {
   const mite = miteApi(config.get());
 
   const opts = getRequestOptions(period, program);
+  // "columns" default option is different
+  if (!program.columns) {
+    // when groupBy is used, make sure that revenue and duration are used
+    if (program.groupBy) {
+      program.columns = program.groupBy + ',revenue,duration';
+    } else {
+      program.columns = config.get().listColumns;
+    }
+  }
   const columns = columnOptions.resolve(program.columns, listCommand.columns.options);
 
   mite.getTimeEntries(opts, (err, results) => {

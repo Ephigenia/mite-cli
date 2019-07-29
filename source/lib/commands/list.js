@@ -1,7 +1,9 @@
 'use strict';
 
-const formater = require('./../formater');
+const weekNumber = require('weeknumber');
 const chalk = require('chalk');
+
+const formater = require('./../formater');
 
 module.exports.sort = {
   default: 'date',
@@ -186,12 +188,25 @@ module.exports.columns = {
       label: 'User ID',
       attribute: 'user_id',
     },
+
+    week: {
+      label: 'Week',
+      attribute: 'week',
+      format: function(value, column) {
+        if (column.week) return column.week;
+        if (column.created_at) {
+          const date = new Date(column.created_at);
+          return column.created_at.substr(0, 4) + '' + weekNumber.weekNumber(date);
+        }
+        return undefined;
+      }
+    },
     year: {
       label: 'Year',
       attribute: 'year',
       format: function(value, column) {
         if (column.year) return column.year;
-        if (column.created_at) return column.column.created_at;
+        if (column.created_at) return column.created_at.substr(0, 4);
         return undefined;
       }
     },

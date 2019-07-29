@@ -83,7 +83,7 @@ function getTableFooterColumns(items, columns) {
     if (columnSum && columnDefinition.format) {
       return columnDefinition.format(columnSum);
     }
-    return columnSum || '';
+    return columnSum || undefined;
   });
 }
 
