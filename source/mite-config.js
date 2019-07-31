@@ -26,6 +26,9 @@ Examples:
 
   set the columns for the list command:
     mite config set listColumns date,duration,note,service
+
+  set a value of a configuration variable back to it’s default:
+    mite config set listColumns
   `))
   .action((key, value) => {
     try {

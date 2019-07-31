@@ -23,7 +23,7 @@ nconf.defaults({
   applicationName: `mite-cli/${pkg.version}`,
   customersColumns: customersCommand.columns.default,
   listColumns: listCommand.columns.default,
-  noteHighlightRegexp: '([A-Z]{1,10}-\\d{1,10})|(#\\d+)',
+  noteHighlightRegexp: '([A-Z]{1,10}-\\d{1,10})|(#\\d+)|(\\(\\d\\d?:\\d\\d\\s(to|bis)\\s\\d\\d?:\\d\\d\\))',
   outputFormat: DataOutput.FORMAT.TABLE,
   projectsColumns: projectsCommand.columns.default,
   servicesColumns: servicesCommand.columns.default,

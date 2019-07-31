@@ -12,6 +12,7 @@ Easy to use CLI tool for creating, listing, starting and stopping time tracking 
 - [Installation](#installation)
 - [Configuration](#configuration)
     - [Configuration Options](#configuration-options)
+        - [Defaults](#defaults)
     - [Auto-Completion](#auto-completion)
 - [Usage](#usage)
     - [Time Entries](#time-entries)
@@ -144,6 +145,8 @@ Configuration Options
     defines the default columns to be used when running `mite list`.
 - `noteHighlightRegexp`
     defines a single regular expression which can contain a single capturing group which will get highlighted. By default this is set to highlight github hashtag notation (f.e. #218) and jira story identifiers (f.e. CRYO-1281). When you change this note that the beginning and trailing slashes must be omitted and the regexp is case-sensitive and modifiers cannot be changed.
+
+    It will also highlight duration notes in the content following the `(10:00 to 12:00)` format.
 - `outputFormat`  
     defines the default output format for the list commands, defaults to `table`
 - `projectsColumns`  
@@ -152,6 +155,8 @@ Configuration Options
     defines the default columns to be used when running `mite services list`.
 - `usersColumns`  
     defines the default columns to be used when running `mite users`.
+
+### Defaults
 
 Configuration options can always be back to initial value to their default by leaving out the value, like: `mite config set listColumns`.
 
