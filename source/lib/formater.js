@@ -80,7 +80,7 @@ module.exports = {
     return hours + ':' + remainingMinutes;
   },
 
-  number(value, precision) {
+  number(value, precision = 2) {
     if (typeof value !== 'number') {
       throw new TypeError('Expected value to be a of type Number');
     } else if (isNaN(value)) {
@@ -88,11 +88,15 @@ module.exports = {
     } else if (!isFinite(value)) {
       throw new Error('Expecte value not to be a finite value.');
     }
-    precision = precision || 2;
-    return String(value.toFixed(precision));
+    const options = {
+      minimumFractionDigits: precision,
+      maximumFractionDigits: precision,
+    };
+    const locale = 'en-EN';
+    return value.toLocaleString(locale, options);
   },
 
-  price(value, precision) {
+  price(value, precision = 2) {
     precision = precision || 2;
     return String(value.toFixed(precision));
   },

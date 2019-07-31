@@ -58,6 +58,9 @@ describe('formater', () => {
     it('can have a differenct precision', () => {
       expect(formater.number(2.128391, 4)).to.equal('2.1284');
     });
+    it('adds thousand seperator', () => {
+      expect(formater.number(29828172.21)).to.equal('29,828,172.21');
+    });
     it('throws an exception when the first argument is not a number', () => {
       expect(() => formater.number(null)).to.throw(TypeError);
       expect(() => formater.number(8/0)).to.throw(Error);
