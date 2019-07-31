@@ -161,7 +161,7 @@ describe('formater', () => {
       });
       it('can format very big values', () => {
         const result = formater.budget(BUDGET_TYPE.CENTS, 98726134.91928);
-        expect(result).to.equal('987261.35 €');
+        expect(result).to.equal('987,261.35 €');
       });
       it('formats the value to 2 number diget', () => {
         const result = formater.budget(BUDGET_TYPE.CENTS, 0.01);

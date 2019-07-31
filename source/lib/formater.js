@@ -98,7 +98,7 @@ module.exports = {
 
   price(value, precision = 2) {
     precision = precision || 2;
-    return String(value.toFixed(precision));
+    return this.number(value, precision);
   },
 
   budget(type, value) {
