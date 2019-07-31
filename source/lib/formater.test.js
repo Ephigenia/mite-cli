@@ -42,6 +42,13 @@ describe('formater', () => {
         ' and ' + chalk.bold(chalk.blue('BLABLUB-0002')) + ' is cool'
       );
     });
+    it('highlights time durations', () => {
+      expect(formater.note(
+        '(8:00 to 21:00) this is a note'
+      )).to.equal(
+        chalk.bold(chalk.blue('(8:00 to 21:00)')) + ' this is a note'
+      );
+    });
   });
 
   describe('number', () => {
@@ -50,6 +57,9 @@ describe('formater', () => {
     });
     it('can have a differenct precision', () => {
       expect(formater.number(2.128391, 4)).to.equal('2.1284');
+    });
+    it('adds thousand seperator', () => {
+      expect(formater.number(29828172.21)).to.equal('29,828,172.21');
     });
     it('throws an exception when the first argument is not a number', () => {
       expect(() => formater.number(null)).to.throw(TypeError);
@@ -151,7 +161,7 @@ describe('formater', () => {
       });
       it('can format very big values', () => {
         const result = formater.budget(BUDGET_TYPE.CENTS, 98726134.91928);
-        expect(result).to.equal('987261.35 €');
+        expect(result).to.equal('987,261.35 €');
       });
       it('formats the value to 2 number diget', () => {
         const result = formater.budget(BUDGET_TYPE.CENTS, 0.01);

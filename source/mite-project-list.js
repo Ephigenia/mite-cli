@@ -53,7 +53,7 @@ Examples:
     mite projects list --sort budget
 
   show all projects while not archived on top and ordered by their highes budget
-    mite projects list --archived all --sort -archived,-budget
+    mite projects list --archived all --sort="-archived,-budget"
 
   show all projects by a specific customer
     mite projects list --customer Client1

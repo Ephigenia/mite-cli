@@ -20,6 +20,7 @@ module.exports = {
     }
     return sortOptions
       .map(attribute => {
+        // remove optional "-" sign from the attribute’s name
         const attr = attribute.replace(/^-/, '');
         // check if each attribute is valid
         if (columns.indexOf(attr) === -1) {

@@ -14,8 +14,8 @@ const columnOptions = require('./lib/options/columns');
 const commandOptions = require('./lib/options');
 const { handleError } = require('./lib/errors');
 
-// set a default period argument if not set
-if (!process.argv[2] || process.argv[2].substr(0, 1) === '-' && process.argv[2] !== '--help') {
+// no other options or comamnd line arguments used, default "period" to "today"
+if (process.argv.length === 2) {
   process.argv.splice(2, 0, 'today');
 }
 
@@ -23,8 +23,10 @@ program
   .version(pkg.version)
   .description('list time entries', {
     period:
-      'name of the period for which the time entries should be shown' +
-      'or a single date. F.e. "today" or "last_week or "2019-03-17"'
+      `name of the period for which the time entries should be shown \
+or a single date. F.e. "today" or "last_week or "2019-03-17". \
+Defaults to "today" when no other options are used and to "all" \
+when other options are used.`
   })
   .arguments('<period>')
   .option.apply(program, commandOptions.toArgs(commandOptions.billable),
@@ -155,7 +157,6 @@ Examples:
 
 `);
   })
-  .action(main)
   .parse(process.argv);
 
 /**
@@ -164,7 +165,7 @@ Examples:
  *
  * @param {string} period
  * @param {object} program
- * @return {Object<String>} time entries or grouped time entries
+ * @return {Object<String, any>} time entries or grouped time entries
  */
 function getRequestOptions(period, program) {
   const data = {
@@ -186,8 +187,7 @@ function getRequestOptions(period, program) {
   if (program.from && program.to) {
     data.from = program.from;
     data.to = program.to;
-    delete data.at;
-  } else {
+  } else if (period) {
     data.at = period;
   }
 
@@ -232,7 +232,7 @@ function getReport(items, columns, format) {
 function main(period) {
   const mite = miteApi(config.get());
 
-  const opts = getRequestOptions(period, program);
+  const requestOpts = getRequestOptions(period, program);
   // "columns" default option is different
   if (!program.columns) {
     // when groupBy is used, make sure that revenue and duration are used
@@ -244,18 +244,19 @@ function main(period) {
   }
   const columns = columnOptions.resolve(program.columns, listCommand.columns.options);
 
-  mite.getTimeEntries(opts, (err, results) => {
+  mite.getTimeEntries(requestOpts, (err, results) => {
     if (err) return handleError(err);
 
-
-    const timeEntries = results.map(data => data.time_entry).filter(v => v).filter(filterData.bind(this, program));
-    const timeEntryGroups = results.map(data => data.time_entry_group).filter(v => v).filter(filterData.bind(this, program));
-
     // decide wheter to output grouped report or single entry report
-    if (timeEntryGroups.length) {
-      console.log(getReport(timeEntryGroups, columns, program.format));
-    } else {
-      console.log(getReport(timeEntries, columns, program.format));
-    }
+    let items = results
+      .map(data => data[program.groupBy ? 'time_entry_group' : 'time_entry'])
+      .filter(v => v)
+      .filter(filterData.bind(this, program))
+      ;
+    const report = getReport(items, columns, program.format);
+    console.log(report);
   });
 } // main
+
+const period = program.args[0];
+main(period);
