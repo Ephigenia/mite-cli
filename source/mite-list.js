@@ -243,13 +243,11 @@ function main(period) {
     if (err) return handleError(err);
 
     // decide wheter to output grouped report or single entry report
-    let items = [];
-    if (program.groupBy) {
-      items = results.map(data => data.time_entry_group);
-    } else {
-      items = results.map(data => data.time_entry);
-    }
-    items = items.filter(v => v).filter(filterData.bind(this, program));
+    let items = results
+      .map(data => data[program.groupBy ? 'time_entry_group' : 'time_entry'])
+      .filter(v => v)
+      .filter(filterData.bind(this, program))
+      ;
     const report = getReport(items, columns, program.format);
     console.log(report);
   });
