@@ -42,6 +42,13 @@ describe('formater', () => {
         ' and ' + chalk.bold(chalk.blue('BLABLUB-0002')) + ' is cool'
       );
     });
+    it('highlights time durations', () => {
+      expect(formater.note(
+        '(8:00 to 21:00) this is a note'
+      )).to.equal(
+        chalk.bold(chalk.blue('(8:00 to 21:00)')) + ' this is a note'
+      );
+    });
   });
 
   describe('number', () => {
