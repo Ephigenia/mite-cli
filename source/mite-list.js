@@ -14,6 +14,11 @@ const columnOptions = require('./lib/options/columns');
 const commandOptions = require('./lib/options');
 const { handleError } = require('./lib/errors');
 
+// no other options or comamnd line arguments used, default "period" to "today"
+if (process.argv.length === 2) {
+  process.argv.splice(2, 0, 'today');
+}
+
 program
   .version(pkg.version)
   .description('list time entries', {
@@ -253,9 +258,5 @@ function main(period) {
   });
 } // main
 
-// no other options or comamnd line arguments used, default "period" to "today"
-if (process.argv.length === 2) {
-  process.argv.splice(2, 0, 'today');
-}
 const period = program.args[0];
 main(period);
