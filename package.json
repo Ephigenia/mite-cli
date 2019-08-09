@@ -64,7 +64,7 @@
   },
   "dependencies": {
     "chalk": "^2.4.2",
-    "commander": "^2.20.0",
+    "commander": "^3.0.0",
     "csv-string": "^3.1.6",
     "external-editor": "^3.1.0",
     "inquirer": "^6.5.0",
