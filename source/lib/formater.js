@@ -64,6 +64,10 @@ module.exports = {
     }
   },
 
+  minutesToIndustryHours(minutes) {
+    return minutes / 3 * 5 / 100;
+  },
+
   minutesToDuration(minutes) {
     if (typeof minutes !== 'number') {
       throw new TypeError('Expected minutes to be a of type Number');

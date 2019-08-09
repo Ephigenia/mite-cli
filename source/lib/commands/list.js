@@ -96,6 +96,19 @@ module.exports.columns = {
         return sum + cur.minutes;
       }
     },
+    hours: {
+      label: 'Hours',
+      attribute: 'minutes',
+      alignment: 'right',
+      format: (value, timeEntry) => {
+        if (!value) return undefined;
+        if (timeEntry && timeEntry.tracking) {
+          value = timeEntry.tracking.minutes;
+        }
+        return formater.number(formater.minutesToIndustryHours(value), 2);
+      },
+      reducer: (sum, cur) => sum + cur.minutes,
+    },
     hourly_rate: {
       label: 'Rate',
       attribute: 'hourly_rate',
