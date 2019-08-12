@@ -67,7 +67,7 @@
     "commander": "^3.0.0",
     "csv-string": "^3.1.6",
     "external-editor": "^3.1.0",
-    "inquirer": "^6.5.0",
+    "inquirer": "^6.5.1",
     "lodash": "^4.17.15",
     "lodash.template": ">=4.5.0",
     "markdown-table": "^1.1.3",
