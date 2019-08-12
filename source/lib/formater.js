@@ -64,6 +64,17 @@ module.exports = {
     }
   },
 
+  getDurationColor(minutes) {
+    // format the durations in orange or red if they are larger than
+    // some maximums to indicate possibly wrong entries
+    if (minutes > 60 * 12) {
+      return chalk.red;
+    } else if (minutes > 60 * 8) {
+      return chalk.yellow;
+    }
+    return v => v;
+  },
+
   minutesToIndustryHours(minutes) {
     return minutes / 3 * 5 / 100;
   },

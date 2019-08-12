@@ -76,13 +76,8 @@ module.exports.columns = {
           value = timeEntry.tracking.minutes;
         }
         let duration = formater.minutesToDuration(value);
-        // format the durations in orange or red if they are larger than
-        // some maximums to indicate possibly wrong entries
-        if (value > 60 * 12) {
-          duration = chalk.red(duration);
-        } else if (value > 60 * 8) {
-          duration = chalk.yellow(duration);
-        }
+        const colorFunction = formater.getDurationColor(value);
+        duration = colorFunction(duration);
         if (timeEntry && timeEntry.locked) {
           duration = chalk.green('✔') + ' ' + duration;
         }
@@ -105,7 +100,9 @@ module.exports.columns = {
         if (timeEntry && timeEntry.tracking) {
           value = timeEntry.tracking.minutes;
         }
-        return formater.number(formater.minutesToIndustryHours(value), 2);
+        const hours = formater.number(formater.minutesToIndustryHours(value), 2);
+        const colorFunction = formater.getDurationColor(value);
+        return colorFunction(hours);
       },
       reducer: (sum, cur) => sum + cur.minutes,
     },
@@ -127,6 +124,9 @@ module.exports.columns = {
     minutes: {
       label: 'Minutes',
       attribute: 'minutes',
+      format: (value) => {
+        return value && formater.getDurationColor(value)(value);
+      },
       reducer: (sum, cur) => {
         return sum + cur.minutes;
       }
