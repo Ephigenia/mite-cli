@@ -163,9 +163,15 @@ class MiteApiWrapper {
     const query = {
       project_id: projectIds.join(','),
       group_by: 'project,month',
-      at: 'this_month',
+      order: 'month',
+      // at: 'this_month',
     };
     return util.promisify(this.mite.getTimeEntries)(query)
+      // .then(r => {
+
+      //   console.log(r);
+      //   return r;
+      // })
       .then(r => r.map(i => i.time_entry_group));
   }
 
@@ -221,7 +227,7 @@ class MiteApiWrapper {
         // be used to determine the percentage of used budget
         results.forEach((result) => {
           const proj = projects.find(p => p.id === result.project_id);
-          if (proj) {
+          if (proj && !proj.used_budget) {
             proj.used_budget = result;
           }
         });
