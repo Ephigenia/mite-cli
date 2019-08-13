@@ -159,6 +159,7 @@ class MiteApiWrapper {
       .filter(p => p.budget)
       .filter(p => filteredBudgetTypes.indexOf(p.budget_type) > -1)
       .map(p => p.id);
+    if (!projectIds.length) return Promise.resolve([]);
     const query = {
       project_id: projectIds.join(','),
       group_by: 'project,month',
@@ -168,12 +169,38 @@ class MiteApiWrapper {
       .then(r => r.map(i => i.time_entry_group));
   }
 
+  getProjectsTotalRevenue (projects) {
+    const projectIds = projects.map(project => project.id);
+    const query = {
+      project_id: projectIds.join(','),
+      group_by: 'project',
+    };
+    if (!projectIds.length) return Promise.resolve(projects);
+    return util.promisify(this.mite.getTimeEntries)(query)
+      .then(r => r.map(i => i.time_entry_group))
+      .then(results => {
+        results.forEach((result) => {
+          const proj = projects.find(p => p.id === result.project_id);
+          if (proj) {
+            proj.revenue = result.revenue;
+          }
+        });
+        return projects;
+      });
+  }
+
   getTotalUsedProjectBudget (projects) {
     // only request time entries that belong to projects that have a
     // budget defined
+    const filteredBudgetTypes = [
+      BUDGET_TYPE.MINUTES,
+      BUDGET_TYPE.CENTS,
+    ];
     const projectIds = projects
       .filter(p => p.budget)
+      .filter(p => filteredBudgetTypes.indexOf(p.budget_type) > -1)
       .map(p => p.id);
+    if (!projectIds.length) return Promise.resolve([]);
     const query = {
       project_id: projectIds.join(','),
       group_by: 'project',
@@ -194,7 +221,9 @@ class MiteApiWrapper {
         // be used to determine the percentage of used budget
         results.forEach((result) => {
           const proj = projects.find(p => p.id === result.project_id);
-          proj.used_budget = result;
+          if (proj) {
+            proj.used_budget = result;
+          }
         });
         return projects;
       });

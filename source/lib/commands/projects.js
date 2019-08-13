@@ -150,6 +150,15 @@ module.exports.columns = {
         return formater.budget(formater.BUDGET_TYPE.CENTS, value || 0);
       },
     },
+    revenue: {
+      label: 'Revenue',
+      attribute: 'revenue',
+      width: 12,
+      alignment: 'right',
+      format: (value) => {
+        return formater.budget(formater.BUDGET_TYPE.CENTS, value || 0);
+      }
+    },
     updated_at: {
       label: 'Updated At',
       attribute: 'updated_at',
