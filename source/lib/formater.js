@@ -7,6 +7,15 @@ const { USER_ROLES, BUDGET_TYPE } = require('./constants');
 module.exports = {
   BUDGET_TYPE: BUDGET_TYPE,
 
+  percentChart(percentage, width = 10, chars = {}) {
+    chars = Object.assign({ on: '█', off: '░'}, chars);
+    // limit percentage between 1 and 0
+    percentage = Math.min(1, Math.max(0, percentage));
+    const onWidth = Math.round(width * percentage);
+    const offWidth = Math.round(width - (width * percentage)) || 0;
+    return chars.on.repeat(onWidth) + chars.off.repeat(offWidth);
+  },
+
   note(
     note,
     stripNewLines = true,

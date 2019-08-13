@@ -170,4 +170,22 @@ describe('formater', () => {
     });
   }); // budget
 
+  describe('percentChart', () => {
+    const data = [
+      [-1, '░░░░░░░░░░'],
+      [0, '░░░░░░░░░░'],
+      [0.1, '█░░░░░░░░░'],
+      [1.2, '██████████'],
+    ];
+    data.forEach(row => {
+      it(`displays $row[0] as ${row[1]}`, () => {
+        expect(formater.percentChart(row[0])).to.equal(row[1]);
+      });
+    });
+    it('accepts different characters', () => {
+      expect(formater.percentChart(0.2, 10, { on: '_'}))
+        .to.equal('__░░░░░░░░');
+    });
+  }); // percentChart
+
 }); // test suite

@@ -4,6 +4,7 @@ const util = require('util');
 const assert = require('assert');
 
 const miteApi = require('mite-api');
+const { BUDGET_TYPE } = require('./../lib/constants');
 
 /**
  * @typedef MiteTimeEntry
@@ -145,6 +146,58 @@ class MiteApiWrapper {
 
       return scores.reduce((acc, cur) => acc + cur, 0);
     });
+  }
+
+  getMonthlyUsedProjectBudgets (projects) {
+    // only request time entries that belong to projects that have a
+    // budget defined
+    const filteredBudgetTypes = [
+      BUDGET_TYPE.MINUTES_PER_MONTH,
+      BUDGET_TYPE.CENTS_PER_MONTH,
+    ];
+    const projectIds = projects
+      .filter(p => p.budget)
+      .filter(p => filteredBudgetTypes.indexOf(p.budget_type) > -1)
+      .map(p => p.id);
+    const query = {
+      project_id: projectIds.join(','),
+      group_by: 'project,month',
+      at: 'this_month',
+    };
+    return util.promisify(this.mite.getTimeEntries)(query)
+      .then(r => r.map(i => i.time_entry_group));
+  }
+
+  getTotalUsedProjectBudget (projects) {
+    // only request time entries that belong to projects that have a
+    // budget defined
+    const projectIds = projects
+      .filter(p => p.budget)
+      .map(p => p.id);
+    const query = {
+      project_id: projectIds.join(','),
+      group_by: 'project',
+    };
+    return util.promisify(this.mite.getTimeEntries)(query)
+      .then(r => r.map(i => i.time_entry_group));
+  }
+
+  getUsedProjectBudgets (projects) {
+    return Promise.all([
+      this.getTotalUsedProjectBudget(projects),
+      this.getMonthlyUsedProjectBudgets(projects)
+    ])
+      .then(([list1, list2]) => list1.concat(list2))
+      .then(results => {
+        // extend the matching project with a new key "used_budget" which
+        // contains the result of the grouped time entry request which can
+        // be used to determine the percentage of used budget
+        results.forEach((result) => {
+          const proj = projects.find(p => p.id === result.project_id);
+          proj.used_budget = result;
+        });
+        return projects;
+      });
   }
 
   sortCompare (a, b, direction = 'asc') {

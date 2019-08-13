@@ -109,7 +109,10 @@ async function main() {
       commandOptions.sort.resolve(program.sort, projectsCommand.sort.options),
       { customer: 'customer_name' }
     ))
-    .then(items => {
+    // .then(items => console.log(items))
+    .then(items => miteApi.getUsedProjectBudgets(items))
+    .then((items) => {
+      // console.log('resulting projects are', budgets);
       const columns = commandOptions.columns.resolve(program.columns, projectsCommand.columns.options);
       const tableData = DataOutput.compileTableData(items, columns);
       console.log(DataOutput.formatData(tableData, program.format, columns));

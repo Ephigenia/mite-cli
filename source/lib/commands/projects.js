@@ -1,6 +1,23 @@
 'use strict';
 
 const formater = require('./../formater');
+const { BUDGET_TYPE } = require('./../../lib/constants');
+
+function getBudgetUsage(project) {
+  if (!project.used_budget) return undefined;
+  let percentage = 0;
+  switch (project.budget_type) {
+    case BUDGET_TYPE.MINUTES_PER_MONTH:
+    case BUDGET_TYPE.MINUTES:
+      percentage = project.used_budget.minutes / project.budget;
+      break;
+    case BUDGET_TYPE.CENTS_PER_MONTH:
+    case BUDGET_TYPE.CENTS:
+      percentage = (project.used_budget.revenue || 0) / project.budget;
+      break;
+  }
+  return percentage;
+}
 
 module.exports.sort = {
   default: 'name',
@@ -19,7 +36,7 @@ module.exports.sort = {
 };
 
 module.exports.columns = {
-  default: 'id,name,customer,budget,hourly_rate,note',
+  default: 'name,customer,budget,budget_used,budget_used_chart,hourly_rate',
   options: {
     archived: {
       label: 'Archived',
@@ -29,7 +46,7 @@ module.exports.columns = {
     budget: {
       label: 'Budget',
       attribute: 'budget',
-      width: 10,
+      width: 12,
       alignment: 'right',
       format: (value, item) => {
         if (!value) {
@@ -37,6 +54,47 @@ module.exports.columns = {
         }
         return formater.budget(item.budget_type, value);
       },
+    },
+    // shows the relative usage of the budget defined, requires the "project"
+    // item to have information about the total budget
+    budget_usage: {
+      label: 'Budget' + "\n" + 'Used',
+      attribute: 'budget',
+      width: 6,
+      alignment: 'right',
+      format: (value, item) => {
+        if (!value || !item.used_budget) return;
+        let percentage = getBudgetUsage(item);
+        return `${formater.number(percentage * 100, 0)}%`;
+      }
+    },
+    budget_used_chart: {
+      label: 'Budget\nUsed',
+      attribute: 'budget',
+      width: 10,
+      alignment: 'left',
+      format: (value, item) => {
+        if (!value || !item.used_budget) return;
+        let percentage = getBudgetUsage(item);
+        return formater.percentChart(percentage, 10);
+      }
+    },
+    budget_used: {
+      label: 'Budget' + "\n" + 'Used',
+      attribute: 'budget',
+      width: 12,
+      alignment: 'right',
+      format: (value, item) => {
+        if (!item.used_budget || !value) return '';
+        switch (item.budget_type) {
+          case BUDGET_TYPE.MINUTES_PER_MONTH:
+          case BUDGET_TYPE.MINUTES:
+            return formater.budget(BUDGET_TYPE.MINUTES, item.used_budget.minutes);
+          case BUDGET_TYPE.CENTS_PER_MONTH:
+          case BUDGET_TYPE.CENTS:
+            return formater.budget(BUDGET_TYPE.CENTS, item.used_budget.revenue);
+        }
+      }
     },
     budget_type: {
       label: 'Budget Type',
