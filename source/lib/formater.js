@@ -84,6 +84,17 @@ module.exports = {
     return v => v;
   },
 
+  getBudgetPercentageColor(percentage) {
+    // format the durations in orange or red if they are larger than
+    // some maximums to indicate possibly wrong entries
+    if (percentage > 0.90) {
+      return chalk.red;
+    } else if (percentage > 0.75) {
+      return chalk.yellow;
+    }
+    return v => v;
+  },
+
   minutesToIndustryHours(minutes) {
     return minutes / 3 * 5 / 100;
   },

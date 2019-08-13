@@ -65,7 +65,7 @@ module.exports.columns = {
       format: (value, item) => {
         if (!value || !item.used_budget) return;
         let percentage = getBudgetUsage(item);
-        return `${formater.number(percentage * 100, 0)}%`;
+        return formater.getBudgetPercentageColor(percentage)(`${formater.number(percentage * 100, 0)}%`);
       }
     },
     budget_used_chart: {
@@ -76,7 +76,7 @@ module.exports.columns = {
       format: (value, item) => {
         if (!value || !item.used_budget) return;
         let percentage = getBudgetUsage(item);
-        return formater.percentChart(percentage, 10);
+        return formater.getBudgetPercentageColor(percentage)(formater.percentChart(percentage, 10));
       }
     },
     budget_used: {
