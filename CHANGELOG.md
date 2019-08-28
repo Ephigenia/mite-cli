@@ -1,3 +1,26 @@
+# [1.2.0](https://github.com/Ephigenia/mite-cli/compare/v1.1.2...v1.2.0) (2019-08-28)
+
+
+### Bug Fixes
+
+* **mite-list:** adds thousand seperators to numbers ([b65c03e](https://github.com/Ephigenia/mite-cli/commit/b65c03e))
+* **mite-list:** adds thousand seperators to revenue values ([c9f0a34](https://github.com/Ephigenia/mite-cli/commit/c9f0a34))
+* **mite-list:** changes note highlight regexp for highlighting durations ([949cd47](https://github.com/Ephigenia/mite-cli/commit/949cd47))
+* **mite-list:** coloring of minutes & hours ([807095a](https://github.com/Ephigenia/mite-cli/commit/807095a))
+* **mite-list:** defaults to today fixed ([addcc7b](https://github.com/Ephigenia/mite-cli/commit/addcc7b))
+* **mite-list:** show all entries when no period is set ([52779ff](https://github.com/Ephigenia/mite-cli/commit/52779ff))
+
+
+### Features
+
+* **mite-list:** adds hours column which shows industry hours ([68a9d26](https://github.com/Ephigenia/mite-cli/commit/68a9d26))
+* **project-list:** adds revenue column for showing total revenue per project ([4cfb9d6](https://github.com/Ephigenia/mite-cli/commit/4cfb9d6))
+* **project-list:** budget chart and percentage orange or red ([4e80e3e](https://github.com/Ephigenia/mite-cli/commit/4e80e3e))
+* **project-list:** last month actively used monthly budget shown ([fa31eef](https://github.com/Ephigenia/mite-cli/commit/fa31eef))
+* **project-list:** optional display of budget used as chart or value(s) ([a2b0977](https://github.com/Ephigenia/mite-cli/commit/a2b0977))
+
+
+
 ## [1.1.2](https://github.com/Ephigenia/mite-cli/compare/v1.1.1...v1.1.2) (2019-07-29)
 
 
