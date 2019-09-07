@@ -168,6 +168,14 @@ Examples:
  * @return {Object<String, any>} time entries or grouped time entries
  */
 function getRequestOptions(period, program) {
+
+  // mite’s "periods" strings using underscore like in "this_month", "this_week"
+  // but sometimes the user enters a minus instead of underscore, then replace
+  // it
+  if (typeof period === 'string') {
+    period = period.replace(/-/g, '_');
+  }
+
   const data = {
     ...(typeof program.billable === 'boolean' && { billable: program.billable }),
     ...(program.customerId && { customer_id: program.customerId }),
