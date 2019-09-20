@@ -224,7 +224,7 @@ function filterData(program, row) {
 }
 
 function getReport(items, columns, format) {
-  const tableData = DataOutput.compileTableData(items, columns);
+  const tableData = DataOutput.compileTableData(items, columns, format);
 
   // Table footer
   // add table footer if any of the table columns has a reducer

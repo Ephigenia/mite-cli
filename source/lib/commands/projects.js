@@ -2,6 +2,7 @@
 
 const formater = require('./../formater');
 const { BUDGET_TYPE } = require('./../../lib/constants');
+const supportsExtendedFormat = require('./../data-output').supportsExtendedFormat
 
 function getBudgetUsage(project) {
   if (!project.used_budget) return undefined;
@@ -48,8 +49,8 @@ module.exports.columns = {
       attribute: 'budget',
       width: 12,
       alignment: 'right',
-      format: (value, item) => {
-        if (!value) {
+      format: (value, item, format) => {
+        if (!value && supportsExtendedFormat(format)) {
           return '-';
         }
         return formater.budget(item.budget_type, value);
@@ -117,7 +118,7 @@ module.exports.columns = {
       attribute: 'customer_name',
       format: (value, item) => {
         if (!value) return '';
-        return `${item.customer_name} (${item.customer_id})`;
+        return item.customer_name;
       }
     },
     id: {
@@ -143,8 +144,8 @@ module.exports.columns = {
       attribute: 'hourly_rate',
       width: 10,
       alignment: 'right',
-      format: (value) => {
-        if (!value) {
+      format: (value, item, format) => {
+        if (!value && supportsExtendedFormat(format)) {
           return '-';
         }
         return formater.budget(formater.BUDGET_TYPE.CENTS, value || 0);

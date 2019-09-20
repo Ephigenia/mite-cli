@@ -23,6 +23,18 @@ const FORMAT = {
 const FORMATS = Object.values(FORMAT);
 
 /**
+ * @params {FORMAT}
+ * @returns {Boolean}
+ */
+function supportsExtendedFormat(format) {
+  return [
+    FORMAT.MD,
+    FORMAT.TABLE,
+    FORMAT.TEXT,
+  ].indexOf(format) !== -1;
+}
+
+/**
  * @typedef ColumnDefinition
  * @property {String} label label used for the table header
  * @property {String} attribute name of the attribute which should be shown
@@ -35,9 +47,10 @@ const FORMATS = Object.values(FORMAT);
 /**
  * @param {Array<Object>} items
  * @param {Array<ColumnDefinition} columns
+ * @param {FORMAT} format
  * @return {Array<Array<String>>}
  */
-function compileTableData(items, columns) {
+function compileTableData(items, columns, format = FORMAT.TABLE) {
   assert(Array.isArray(items), 'expected data to be an array');
   assert(Array.isArray(columns), 'expected columns to be an array');
 
@@ -47,7 +60,7 @@ function compileTableData(items, columns) {
     let row = columns.map(columnDefinition => {
       const value = item[columnDefinition.attribute];
       if (typeof columnDefinition.format === 'function') {
-        return columnDefinition.format(value, item);
+        return columnDefinition.format(value, item, format);
       }
       return value;
     });
@@ -143,6 +156,7 @@ function formatData(data, format, columns = []) {
 module.exports = {
   FORMAT,
   FORMATS,
+  supportsExtendedFormat,
   formatData,
   compileTableData,
   getTableFooterColumns

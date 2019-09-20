@@ -767,7 +767,7 @@ The following formats are supported:
 - md (markdown)
 - table (cli-table)
 - text (line-seperated), *doesn’t show table headers*
-- tsv (tab-separated)
+- tsv (tab-separated), perfect for inserting into excel or google docs
 
 There are alternative output formats which may be useful when you automatically process the results such as `json`, `csv`, `text`:
 

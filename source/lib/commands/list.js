@@ -3,6 +3,8 @@
 const weekNumber = require('weeknumber');
 const chalk = require('chalk');
 
+const supportsExtendedFormat = require('./../data-output').supportsExtendedFormat;
+
 const formater = require('./../formater');
 
 module.exports.sort = {
@@ -71,11 +73,15 @@ module.exports.columns = {
       attribute: 'minutes',
       width: 10,
       alignment: 'right',
-      format: (value, timeEntry) => {
+      format: (value, timeEntry, format = null) => {
         if (timeEntry && timeEntry.tracking) {
           value = timeEntry.tracking.minutes;
         }
         let duration = formater.minutesToDuration(value);
+        // skip additional formatting when format is one of the ones listed
+        if (!supportsExtendedFormat(format)) return duration;
+        // additional format like color or check mark play symbol only
+        // in formats that are shon in the cli
         const colorFunction = formater.getDurationColor(value);
         duration = colorFunction(duration);
         if (timeEntry && timeEntry.locked) {
@@ -95,12 +101,13 @@ module.exports.columns = {
       label: 'Hours',
       attribute: 'minutes',
       alignment: 'right',
-      format: (value, timeEntry) => {
+      format: (value, timeEntry, format) => {
         if (!value) return undefined;
         if (timeEntry && timeEntry.tracking) {
           value = timeEntry.tracking.minutes;
         }
         const hours = formater.number(formater.minutesToIndustryHours(value), 2);
+        if (!supportsExtendedFormat(format)) return value;
         const colorFunction = formater.getDurationColor(value);
         return colorFunction(hours);
       },
