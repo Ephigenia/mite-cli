@@ -2,4 +2,4 @@
 'use strict';
 
 // backwards compatibility for ˚`mite services`
-require('./mite-services-list');
+require('./mite-service-list');
