@@ -106,7 +106,7 @@ async function getCustomerOptions(options = { archived: false }) {
 async function getUserIdOptions(options = { archived: false }) {
   return Promise.all([
     miteApi.getUsers(options),
-    miteApi.getMyself(),
+    miteApi.getMySelf(),
   ]).then(([users, me]) => {
     return users.map(u => ({
       name: String(u.id),
