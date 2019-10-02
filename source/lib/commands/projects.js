@@ -2,7 +2,7 @@
 
 const formater = require('./../formater');
 const { BUDGET_TYPE } = require('./../../lib/constants');
-const supportsExtendedFormat = require('./../data-output').supportsExtendedFormat
+const supportsExtendedFormat = require('./../data-output').supportsExtendedFormat;
 
 function getBudgetUsage(project) {
   if (!project.used_budget) return undefined;
