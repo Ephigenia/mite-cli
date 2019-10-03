@@ -172,7 +172,7 @@ function getRequestOptions(period, program) {
   // mite’s "periods" strings using underscore like in "this_month", "this_week"
   // but sometimes the user enters a minus instead of underscore, then replace
   // it
-  if (typeof period === 'string' && !period.match(/[\d-]+/)) {
+  if (typeof period === 'string' && !period.match(/[\d]+/)) {
     period = period.replace(/-/g, '_');
   }
 
