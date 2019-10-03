@@ -1,3 +1,17 @@
+## [1.2.1](https://github.com/Ephigenia/mite-cli/compare/v1.2.0...v1.2.1) (2019-10-03)
+
+
+### Bug Fixes
+
+* **helpers:** getMySelf mispelling ([fecb888](https://github.com/Ephigenia/mite-cli/commit/fecb888))
+* **mite-list:** accept also underscored time period’s like "this_month" ([34edfcd](https://github.com/Ephigenia/mite-cli/commit/34edfcd))
+* **mite-list:** allow passing of exact dates without replacing underscores ([646f81b](https://github.com/Ephigenia/mite-cli/commit/646f81b))
+* **mite-list:** fix replacement of period hyphens ([f5b7cb1](https://github.com/Ephigenia/mite-cli/commit/f5b7cb1))
+* **mite-list:** no coloring and utf8 chars in some formats ([9fbb5df](https://github.com/Ephigenia/mite-cli/commit/9fbb5df))
+* **mite-services:** fixes call to mite services ([66166c4](https://github.com/Ephigenia/mite-cli/commit/66166c4))
+
+
+
 # [1.2.0](https://github.com/Ephigenia/mite-cli/compare/v1.1.2...v1.2.0) (2019-08-28)
 
 
