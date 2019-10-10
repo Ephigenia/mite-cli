@@ -64,7 +64,7 @@
   },
   "dependencies": {
     "chalk": "^2.4.2",
-    "commander": "^4.0.0-0",
+    "commander": "^4.0.0-1",
     "csv-string": "^3.1.6",
     "external-editor": "^3.1.0",
     "inquirer": "^7.0.0",
@@ -82,8 +82,8 @@
   },
   "devDependencies": {
     "chai": "^4.2.0",
-    "conventional-changelog-cli": "^2.0.23",
-    "conventional-recommended-bump": "^6.0.0",
+    "conventional-changelog-cli": "^2.0.25",
+    "conventional-recommended-bump": "^6.0.2",
     "eslint": "^6.5.1",
     "mocha": "^6.2.1",
     "npm-check": "^5.9.0"
