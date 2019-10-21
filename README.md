@@ -53,6 +53,7 @@ Easy to use CLI tool for creating, listing, starting and stopping time tracking 
     - [Plotting Charts](#plotting-charts)
     - [Alternate Output formats](#alternate-output-formats)
 - [Other Projects](#other-projects)
+- [Contributing](#contributing)
 - [License](#license)
 
 
@@ -806,6 +807,11 @@ Other Projects
 - [mite.cmd](https://github.com/Overbryd/mite.cmd/tree/master)
 - [mite-go](https://github.com/leanovate/mite-go)
 
+
+Contributing
+===============================================================================
+
+- [CONTRIBUTING](./CONTRIBUTING
 
 License
 ===============================================================================
