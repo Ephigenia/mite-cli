@@ -219,6 +219,10 @@ Or Specific dates:
 
     mite list 2017-01-02
 
+Or relative weekdays (show entries from last friday)
+
+    mite list friday
+
 Or Custom periods of time
 
     mite list --from 2018-04-01 --to 2018-04-15
@@ -231,7 +235,7 @@ Or search for specific entries in all time-entries from the current year
 
 There are various filters to limit the entries shown:
 
-- `--from` & `--to` show entries only between two dates
+- `--from` & `--to` show entries only between two dates or relative dates
 - `--billable` show only (not-)billable entries
 - `--tracking` show only tracking/currently running entries
 - `--customer-id` show entries from a one or more customer(s)

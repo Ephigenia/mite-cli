@@ -133,6 +133,12 @@ Examples:
   show all entries from two services 123 and 38171
     mite list last_month --service-id 123,38171
 
+  show all time entries from a specific date
+    mite list 2019-10-21
+
+  show time entries from last thursday
+    mite list thursday
+
   show all users who tracked billable entries ordered by the amount of time
   they have tracked:
     mite list this_year --billable true --columns user,duration --group-by user --sort duration
@@ -174,6 +180,26 @@ function getRequestOptions(period, program) {
   // it
   if (typeof period === 'string' && !period.match(/[\d]+/)) {
     period = period.replace(/-/g, '_');
+  }
+  // check if the period is a week day name and calculate the date of this
+  // weekday, f.e. "friday" from last week becomes the date a string
+  const weekdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+  const matchingWeekday = weekdays.find(weekday => {
+    return (
+      weekday === period ||
+      period.substr(0, 2).toLowerCase() === weekday.substr(0, 2)
+    );
+  });
+  if (matchingWeekday) {
+    const weekdayIndex = weekdays.indexOf(matchingWeekday);
+    const todayIndex = (new Date).getDay();
+    const now = new Date();
+    if (todayIndex <= weekdayIndex) {
+      now.setDate(now.getDate() - (7 - weekdayIndex + todayIndex));
+    } else {
+      now.setDate(now.getDate() - weekdayIndex - 1);
+    }
+    period = now.toISOString().substr(0, 10);
   }
 
   const data = {
