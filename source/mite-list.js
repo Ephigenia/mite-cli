@@ -187,7 +187,8 @@ function getRequestOptions(period, program) {
   const matchingWeekday = weekdays.find(weekday => {
     return (
       weekday === period ||
-      period.substr(0, 2).toLowerCase() === weekday.substr(0, 2)
+      period.toLowerCase() === weekday.toLowerCase() ||
+      period.toLowerCase() === weekday.substr(0, 2)
     );
   });
   if (matchingWeekday) {
