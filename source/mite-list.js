@@ -21,14 +21,18 @@ if (process.argv.length === 2) {
 
 program
   .version(pkg.version)
+  .arguments('<period>')
   .description('list time entries', {
     period:
-      `name of the period for which the time entries should be shown \
-or a single date. F.e. "today" or "last_week or "2019-03-17". \
-Defaults to "today" when no other options are used and to "all" \
-when other options are used.`
+      `name of the period for which the time entries should be shown. \
+Can be single dates, duraions and weekday names: \n\
+- "today" shows todays time entries (default)\n\
+- "last_week" or "last-week" shows entries from the whole last week\n\
+- "7days", "2days", "3m" shows time entries since 7 days, 2days or 3 months\n\
+- "2019-10-12" shows all entries from that exact date\n\
+- "friday", "fr" or other weekday names or abbreviations show all entries since \
+  this last weekday`
   })
-  .arguments('<period>')
   .option.apply(program, commandOptions.toArgs(commandOptions.billable),
     'show entries which are billable or not billable'
   )
@@ -174,33 +178,57 @@ Examples:
  * @return {Object<String, any>} time entries or grouped time entries
  */
 function getRequestOptions(period, program) {
-
+  // use notation of "3d" or "5w" to translate into from and to time periods
+  const matches = String(period).match(/^(\d+)(d|w|m|day|week|month)s$/);
+  if (matches) {
+    const from = new Date();
+    switch(matches[2]) {
+      case 'd':
+      case 'day':
+        from.setDate(from.getDate() - parseInt(matches[1], 10));
+        break;
+      case 'w':
+      case 'week':
+          from.setDate(from.getDate() - parseInt(matches[1], 10) * 7);
+        break;
+      case 'm':
+      case 'month':
+        from.setMonth(from.getMonth() - parseInt(matches[1], 10));
+        break;
+    }
+    program.from = from.toISOString().substr(0, 10);
+    program.to = (new Date).toISOString().substr(0, 10);
+    period = undefined;
+  }
   // mite’s "periods" strings using underscore like in "this_month", "this_week"
   // but sometimes the user enters a minus instead of underscore, then replace
   // it
-  if (typeof period === 'string' && !period.match(/[\d]+/)) {
-    period = period.replace(/-/g, '_');
-  }
-  // check if the period is a week day name and calculate the date of this
-  // weekday, f.e. "friday" from last week becomes the date a string
-  const weekdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-  const matchingWeekday = weekdays.find(weekday => {
-    return (
-      weekday === period ||
-      period.toLowerCase() === weekday.toLowerCase() ||
-      period.toLowerCase() === weekday.substr(0, 2)
-    );
-  });
-  if (matchingWeekday) {
-    const weekdayIndex = weekdays.indexOf(matchingWeekday);
-    const todayIndex = (new Date).getDay();
-    const now = new Date();
-    if (todayIndex <= weekdayIndex) {
-      now.setDate(now.getDate() - (7 - weekdayIndex + todayIndex));
-    } else {
-      now.setDate(now.getDate() - weekdayIndex - 1);
+  if (typeof period === 'string') {
+    if (!period.match(/[\d]+/)) {
+      period = period.replace(/-/g, '_');
     }
-    period = now.toISOString().substr(0, 10);
+
+    // check if the period is a week day name and calculate the date of this
+    // weekday, f.e. "friday" from last week becomes the date a string
+    const weekdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+    const matchingWeekday = weekdays.find(weekday => {
+      return (
+        weekday === period ||
+        period.toLowerCase() === weekday.toLowerCase() ||
+        period.toLowerCase() === weekday.substr(0, 2)
+      );
+    });
+    if (matchingWeekday) {
+      const weekdayIndex = weekdays.indexOf(matchingWeekday);
+      const todayIndex = (new Date).getDay();
+      const now = new Date();
+      if (todayIndex <= weekdayIndex) {
+        now.setDate(now.getDate() - (7 - weekdayIndex + todayIndex));
+      } else {
+        now.setDate(now.getDate() - weekdayIndex - 1);
+      }
+      period = now.toISOString().substr(0, 10);
+    }
   }
 
   const data = {

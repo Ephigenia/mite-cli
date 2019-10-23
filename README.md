@@ -223,6 +223,10 @@ Or relative weekdays (show entries from last friday)
 
     mite list friday
 
+Or relative duration notation (show entries form last 2 weeks)
+
+    mite list 2w
+
 Or Custom periods of time
 
     mite list --from 2018-04-01 --to 2018-04-15
