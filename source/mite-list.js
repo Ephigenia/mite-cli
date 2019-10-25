@@ -179,7 +179,7 @@ Examples:
  */
 function getRequestOptions(period, program) {
   // use notation of "3d" or "5w" to translate into from and to time periods
-  const matches = String(period).match(/^(\d+)(d|w|m|day|week|month)s$/);
+  const matches = String(period).match(/^(\d+)(d|w|m|day|week|month)s?$/);
   if (matches) {
     const from = new Date();
     switch(matches[2]) {
