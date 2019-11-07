@@ -56,9 +56,9 @@
     "start": "node $npm_package_main",
     "tdd": "npm run test -- --watch",
     "test": "mocha --check-leaks source/**/*test.js --exit",
-    "test:outdated": "npm-check --production --ignore $npm_package_npmCheck_ignore",
+    "test:outdated": "npm outdated",
     "test:security": "snyk test --severity-threshold=high",
-    "update": "npm-check --update",
+    "update": "npx npm-check --update",
     "version:recommend": "conventional-recommended-bump --preset angular",
     "version": "npm run changelog && git add CHANGELOG.md"
   },
@@ -78,14 +78,16 @@
     "opn": "^6.0.0",
     "table": "^5.4.6",
     "tabtab": "^3.0.2",
-    "weeknumber": "^1.1.1"
+    "weeknumber": "^1.1.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
     "conventional-changelog-cli": "^2.0.25",
     "conventional-recommended-bump": "^6.0.2",
-    "eslint": "^6.5.1",
-    "mocha": "^6.2.1",
+    "eslint": "^6.6.0",
+    "mocha": "^6.2.2"
+  },
+  "optionalDependencies": {
     "npm-check": "^5.9.0"
   }
 }
