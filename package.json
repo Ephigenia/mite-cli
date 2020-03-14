@@ -42,9 +42,6 @@
   "bin": {
     "mite": "source/mite.js"
   },
-  "npmCheck": {
-    "ignore": "{lodash.template,lodash,mem}"
-  },
   "main": "source/mite.js",
   "scripts": {
     "changelog:preview": "conventional-changelog --output-unreleased -p angular",
@@ -57,7 +54,6 @@
     "tdd": "npm run test -- --watch",
     "test": "mocha --check-leaks source/**/*test.js --exit",
     "test:security": "snyk test --severity-threshold=high",
-    "update": "npx npm-check --update",
     "version:recommend": "conventional-recommended-bump --preset angular",
     "version": "npm run changelog && git add CHANGELOG.md"
   },
