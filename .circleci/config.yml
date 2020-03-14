@@ -68,15 +68,6 @@ jobs:
       - run: if [ -z "$SNYK_TOKEN" ]; then echo "missing SNYK_TOKEN env variable"; exit 1; fi;
       - run: npm run -s test:security
 
-  outdated:
-    working_directory: ~/project
-    docker:
-      - image: circleci/node:10.16.3
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run: npm run -s test:outdated
-
 workflows:
   version: 2
   default:
@@ -92,8 +83,5 @@ workflows:
           requires:
             - setup
       - lint:
-          requires:
-            - setup
-      - outdated:
           requires:
             - setup
