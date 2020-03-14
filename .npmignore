@@ -1,5 +1,6 @@
 .DS_Store
 
+.prettierignore
 .circleci
 .github/
 source/**/*test.js
