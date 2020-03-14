@@ -52,14 +52,14 @@
     "preversion": "npm test && npm run lint && npm run test:outdated",
     "start": "node $npm_package_main",
     "tdd": "npm run test -- --watch",
-    "test": "mocha --check-leaks source/**/*test.js --exit",
+    "test": "mocha --check-leaks --exit source/**/*test.js",
     "test:security": "snyk test --severity-threshold=high",
     "version:recommend": "conventional-recommended-bump --preset angular",
     "version": "npm run changelog && git add CHANGELOG.md"
   },
   "dependencies": {
     "chalk": "^3.0.0",
-    "commander": "^5.0.0",
+    "commander": "^4.1.1",
     "csv-string": "^3.1.8",
     "external-editor": "^3.1.0",
     "inquirer": "^7.1.0",
