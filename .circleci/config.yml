@@ -22,6 +22,15 @@ jobs:
           root: ~/project
           paths: ./*
 
+  npm-audit-strict:
+    working_directory: ~/project
+    docker:
+      - image: circleci/node:8
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: npm audit --only=prod --audit-level=high
+
   test-8-latest:
     working_directory: ~/project
     docker:
@@ -82,6 +91,9 @@ workflows:
   default:
     jobs:
       - setup
+      - npm-audit-strict:
+          requires:
+            - setup
       # run tests in different node versions
       - test-8-latest:
           requires:
