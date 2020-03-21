@@ -36,6 +36,7 @@
     "type": "git",
     "url": "git+https://github.com/Ephigenia/mite-cli.git"
   },
+  "funding": "http://github.com/sponsors/Ephigenia",
   "bugs": {
     "url": "https://github.com/Ephigenia/mite-cli/issues"
   },
