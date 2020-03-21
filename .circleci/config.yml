@@ -29,7 +29,7 @@ jobs:
     steps:
       - attach_workspace:
           at: ~/project
-      - run: npm audit --only=prod --audit-level=high
+      - run: npm audit:strict
 
   test-8-latest:
     working_directory: ~/project
