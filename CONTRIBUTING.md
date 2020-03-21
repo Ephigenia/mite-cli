@@ -42,3 +42,20 @@ There are several most common tags: `TODO`, `FIXME`, `BUG`, `HACK`, `TODOC`, `FA
 Commit Messages
 ===============================================================================
 Please follow the very common [angular commit messages guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-guidelines).
+
+
+Releasing
+===============================================================================
+
+### Check the new version recommended according to the git log:
+
+  npm run version:recommend
+
+### Check changelog output for next version
+
+  npm run changelog:preview
+
+### Create new Release & Publish:
+
+  npm version minor;
+  npm publish;
