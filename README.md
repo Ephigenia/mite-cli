@@ -21,6 +21,7 @@ Easy to use CLI tool for creating, listing, starting and stopping time tracking 
             - [Other Filters](#other-filters)
             - [Grouping / Reports](#grouping--reports)
             - [Advanced Examples](#advanced-examples)
+        - [Disabling unicode Characters](#disabling-unicode-characters)
         - [Create Time-Entries](#create-time-entries)
             - [Interactive](#interactive)
             - [Non-Interactive](#non-interactive)
@@ -310,6 +311,14 @@ When creating a bill for a project create a list of all services worked on in a 
 In order to fill the details of the services you’ll need all the notes from that specific service. Get the notes for one specific service, project for the last month to put them on a bill or similar:
 
     mite list last_month --project-id 2681601 --service-id 325329 --columns note --format text | sort -u
+
+### Disabling unicode Characters
+
+Some columns like "duration", "hours" add some unicode characters to f.e. indicate that the time entry is already locked or currently running. This may not be wanted if you’re exporting the entries to a file.
+
+You can disable this behavior by setting the (`NO_COLOR`)[https://no-color.org/] variable before calling mite:
+
+    NO_COLOR=1 mite list --columns date,service,note,duration --format md
 
 ### Create Time-Entries
 

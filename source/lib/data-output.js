@@ -27,6 +27,9 @@ const FORMATS = Object.values(FORMAT);
  * @returns {Boolean}
  */
 function supportsExtendedFormat(format) {
+  if (process.env.NO_COLOR) {
+    return false;
+  }
   return [
     FORMAT.MD,
     FORMAT.TABLE,

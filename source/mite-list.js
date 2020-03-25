@@ -165,6 +165,8 @@ Examples:
   service for all users matching a query:
     mite users --search marc --columns id --format text | xargs mite list last_month --group-by service --user-id
 
+  Create PDF with time entries from a specific project for the last month
+    NO_COLOR=1 mite list last-month --project-id 1234 --columns date,service,note,duration --format md | md-to-pdf
 `);
   })
   .parse(process.argv);
