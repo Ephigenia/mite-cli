@@ -53,6 +53,10 @@ Easy to use CLI tool for creating, listing, starting and stopping time tracking 
     - [Columns](#columns)
     - [Plotting Charts](#plotting-charts)
     - [Alternate Output formats](#alternate-output-formats)
+    - [Exporting CSVs](#exporting-csvs)
+    - [Batch-Edit Time Entries](#batch-edit-time-entries)
+    - [Monthly/Daily summary](#monthlydaily-summary)
+    - [Generating PDFs](#generating-pdfs)
 - [Other Projects](#other-projects)
 - [Contributing](#contributing)
 - [License](#license)
@@ -802,19 +806,41 @@ There are alternative output formats which may be useful when you automatically 
     2018-10-29,Marcel Eichner,✔ 1:21
     ,,10:25
 
-This makes it very easy to further process the data, transform it into a HTML page or PDF.   
+This makes it very easy to further process the data, transform it into a HTML page or PDF.
+
+Exporting CSVs
+--------------------------------------------------------------------------------
 
 Creating a time-sheet for your clients can be done like this:
 
     mite list last_month --format csv --columns date,service,note,duration
 
+Batch-Edit Time Entries
+--------------------------------------------------------------------------------
+
 Using Ids from the output for further processing using `xargs`:
 
     mite list --columns id --format text | xargs -n1 mite lock
 
-Showing all notes from all entries from a specific service, to put them into a bill:
+Monthly/Daily summary
+--------------------------------------------------------------------------------
 
-    mite list last_month --service-id 123 --project-id 456 --format text --columns note
+Show only the notes from yesterday’s entries to put them into a standup message:
+
+    mite list yesterday --format text --columns note --format text
+
+Showing all billable entries’ notes of a specific project:
+
+    mite list last_month --project-id 456 --columns note --format text --billable yes
+
+Generating PDFs
+--------------------------------------------------------------------------------
+
+The most common use case for creating pdfs is when a client asks for a nice looking pdf with the entries from a specific project and timeframe. The mite-cli cannot create pdfs on it’s own but you can use the power of other tools like [md-to-pdf](https://www.npmjs.com/package/md-to-pdf):
+
+    NO_COLOR mite-cli list last_month --project-id 1234 --columns=date,note,duration --format md | md-to-pdf > "./time-entries-$(date +%Y%m%d).pdf"
+
+The call to md-to-pdf can be improved by adding custom stylesheets, templates for headers and footers and can be adjusted to your needs.
 
 
 Other Projects
