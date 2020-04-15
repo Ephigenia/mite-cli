@@ -7,7 +7,7 @@ jobs:
   setup:
     working_directory: ~/project
     docker:
-      - image: circleci/node:10.20.0
+      - image: circleci/node:10.20.1
     steps:
       - checkout
       - restore_cache:
@@ -70,7 +70,7 @@ jobs:
   lint:
     working_directory: ~/project
     docker:
-      - image: circleci/node:10.20.0
+      - image: circleci/node:10.20.1
     steps:
       - attach_workspace:
           at: ~/project
@@ -79,7 +79,7 @@ jobs:
   test:security:
     working_directory: ~/project
     docker:
-      - image: circleci/node:10.20.0
+      - image: circleci/node:10.20.1
     steps:
       - attach_workspace:
           at: ~/project
