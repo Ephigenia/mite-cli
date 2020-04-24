@@ -849,7 +849,7 @@ Other Projects
 - [Mitey](https://github.com/lionralfs/mitey)
 - [mite.cmd](https://github.com/Overbryd/mite.cmd/tree/master)
 - [mite-go](https://github.com/leanovate/mite-go)
-
+- [acari](https://github.com/untoldwind/acari)
 
 Contributing
 ===============================================================================
