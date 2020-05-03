@@ -41,6 +41,10 @@ has the required permissions to do it.`,
     'open preferred $EDITOR for editing'
   )
   .option(
+    '--date <date>',
+    'move the time entry to the given date in the format YYYY-MM-DD',
+  )
+  .option(
     '--duration <value>',
     `set the duration/tracked time directly in HH:MM format or minutes or add \
 ("+2:12") or substract ("-12") some minutes`
@@ -127,6 +131,7 @@ async function getUpdatedTimeEntryData(program, note, timeEntry) {
   let updateData = {
     id: timeEntry.id,
     ...(typeof note === 'string' && { note }),
+    ...(program.date && { date_at: program.date }),
     ...(program.projectId && { project_id: program.projectId }),
     ...(program.serviceId && { service_id: program.serviceId }),
   };
