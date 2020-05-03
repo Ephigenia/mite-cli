@@ -65,8 +65,11 @@ Examples:
   list all users
     mite users
 
-  search for a specific user
-    mite users --search marc
+  search for a specific user that exactly matches
+    mite users --search "^marc$"
+
+  search for a users that somewhat match the regexp
+    mite users --search "steph"
 
   show all time tracking users from a company (all have a ephigenia.de email address)
     mite users --role time_tracker --email ephigenia.de
@@ -107,7 +110,7 @@ async function main() {
     limit: 1000,
     offset: 0,
     ...(program.email && { email: program.email }),
-    ...(program.name && { name: program.name }),
+    ...(program.search && { query: program.search }),
   };
 
   return miteApi.getUsers(opts)
