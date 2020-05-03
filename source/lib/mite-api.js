@@ -258,7 +258,6 @@ class MiteApiWrapper {
   }
 
   filterItems(items, query) {
-    console.log(query);
     if (!query) return items;
     const queryRegexp = new RegExp(query, 'i');
     return items.filter(item => this.filterItem(item, queryRegexp));

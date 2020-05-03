@@ -234,7 +234,6 @@ async function main(note, project, service, minutes, date) {
 
   return promise.then((entry) => {
     entry.note = entry.note || note;
-
     // do not create an entry when minutes are invalid
     if (!entry.minutes) {
       throw new Error('no time entry created due to empty minutes');
@@ -245,7 +244,6 @@ async function main(note, project, service, minutes, date) {
       // remove the + sign
       entry.minutes = entry.minutes.substr(0, entry.minutes.length - 1);
     }
-
     // convert duraion notation from HH:MM to minutes value
     if (/^\d+:\d+?$/.test(entry.minutes)) {
       entry.minutes = formater.durationToMinutes(entry.minutes);
@@ -256,17 +254,20 @@ async function main(note, project, service, minutes, date) {
         );
       }
     }
+
     return miteApi.addTimeEntry(entry);
   })
   .then((data) => data.time_entry.id)
   .then((timeEntryId) => {
-    console.log('Successfully created time entry (id: %s)', timeEntryId);
     if (startTracker) {
       return miteTracker.start(timeEntryId)
         .then(() => {
-          console.log('Successfully started time entry (id: %s)', timeEntryId);
+          console.log(timeEntryId);
+          process.exit(0);
         });
     }
+    console.log(timeEntryId);
+    process.exit(0);
   })
   .catch(handleError);
 }
