@@ -37,6 +37,7 @@ Easy to use CLI tool for creating, listing, starting and stopping time tracking 
             - [Change Service or Project](#change-service-or-project)
             - [Set Tracked Time](#set-tracked-time)
             - [Adding/Removing Time](#addingremoving-time)
+            - [Move Time Entry to another date](#move-time-entry-to-another-date)
             - [Un-/Lock Entry](#un-lock-entry)
         - [Delete entry](#delete-entry)
         - [Open](#open)
@@ -436,6 +437,10 @@ It’s also possible to use the same option (`--duration`) to remove or add some
 which will add 98 minutes to the time entry or remove 12 minutes:
 
     mite amend 12345678 --duration -0:12
+
+#### Move Time Entry to another date
+
+    mite amend 12345678 --date 2020-05-03
 
 #### Un-/Lock Entry
 

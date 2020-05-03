@@ -78,6 +78,9 @@ Examples:
   Change project and service
     mite amend 12345678 --service-id 918772 --project-id 129379
 
+  Move the entry to another date:
+    mite amend 12345678 --date 2020-05-03
+
   Change the tracked time to 4 hours and 12 minutes
     mite amend 12345678 --duration 4:12
 
