@@ -29,8 +29,8 @@ program
   ))
   .option.apply(program, commandOptions.toArgs(commandOptions.format, undefined, config.get('outputFormat')))
   .option(
-    '--search <query>',
-    'optional case-insensitive query searching in project’s name'
+    '--search <regexp>',
+    'optional case-insensitive regular expression matching on the name'
   )
   .option.apply(program, commandOptions.toArgs(
     commandOptions.sort,
@@ -45,6 +45,9 @@ Examples:
 
   list all projects (including archived)
     mite projects list --archived all
+
+  search for project(s) using regexp
+    mite projects list --search "customer\\d+|other-name"
 
   list projects while setting different columns and export to csv
     mite projects list --columns id,customer_id,customer_name --format csv > projects_export.csv
@@ -95,7 +98,8 @@ async function main() {
 
   const opts = {
     limit: 10000,
-    ...(program.search && { name: program.search }),
+    // ...(program.search && { name: program.search }),
+    ...(program.search && { query: program.search }),
     ...(program.customerId && { customer_id: program.customerId }),
   };
 

@@ -30,8 +30,8 @@ Note that users with the role time tracker will not be able to list customers!
   ))
   .option.apply(program, commandOptions.toArgs(commandOptions.format, undefined, config.get('outputFormat')))
   .option(
-    '--search <query>',
-    'optional case-insensitive string to search'
+    '--search <regexp>',
+    'optional case-insensitive regular expression matchin on project’s name'
   )
   .option.apply(program, commandOptions.toArgs(
     commandOptions.sort,
@@ -62,7 +62,7 @@ async function main() {
 
   const opts = {
     limit: 1000,
-    ...(program.search && { name: program.search })
+    ...(program.search && { query: program.search })
   };
 
   return miteApi.getCustomers(opts)

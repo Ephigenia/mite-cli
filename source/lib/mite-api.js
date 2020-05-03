@@ -253,14 +253,27 @@ class MiteApiWrapper {
     return a - b;
   }
 
+  filterItem(item, regexp) {
+    return regexp.test((item || {}).name);
+  }
+
+  filterItems(items, query) {
+    console.log(query);
+    if (!query) return items;
+    const queryRegexp = new RegExp(query, 'i');
+    return items.filter(item => this.filterItem(item, queryRegexp));
+  }
+
   /**
- * Returns an array of tabtab options containing users
- *
- * @param {String} itemName name of the resource that should be requested
- * @param {Object<String>} options request parameters
- * @param {Boolean} options.archived include archived items or not
- * @return {Promise<Array<Object>>}
- */
+   * Returns an array of tabtab options containing users
+   *
+   * @param {String} itemName name of the resource that should be requested
+   * @param {Object<String>} options request parameters
+   * @param {Boolean} options.archived include archived items or not
+   * @param {String} options.query optional search string that is tried to match
+   *   on each item’s name.
+   * @return {Promise<Array<Object>>}
+   */
   async getItemsAndArchived(itemName, options = {}) {
     const defaultOpts = {
       limit: 1000
@@ -279,6 +292,7 @@ class MiteApiWrapper {
       }
       return true;
     }))
+    .then(items => this.filterItems(items, options.query))
     // always sort by name
     .then(items => this.sort(items, 'name'));
   }
