@@ -41,6 +41,10 @@ has the required permissions to do it.`,
     'open preferred $EDITOR for editing'
   )
   .option(
+    '--date <date>',
+    'move the time entry to the given date in the format YYYY-MM-DD',
+  )
+  .option(
     '--duration <value>',
     `set the duration/tracked time directly in HH:MM format or minutes or add \
 ("+2:12") or substract ("-12") some minutes`
@@ -73,6 +77,9 @@ Examples:
 
   Change project and service
     mite amend 12345678 --service-id 918772 --project-id 129379
+
+  Move the entry to another date:
+    mite amend 12345678 --date 2020-05-03
 
   Change the tracked time to 4 hours and 12 minutes
     mite amend 12345678 --duration 4:12
@@ -127,6 +134,7 @@ async function getUpdatedTimeEntryData(program, note, timeEntry) {
   let updateData = {
     id: timeEntry.id,
     ...(typeof note === 'string' && { note }),
+    ...(program.date && { date_at: program.date }),
     ...(program.projectId && { project_id: program.projectId }),
     ...(program.serviceId && { service_id: program.serviceId }),
   };

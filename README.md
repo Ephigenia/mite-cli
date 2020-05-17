@@ -10,6 +10,9 @@ Easy to use CLI tool for creating, listing, starting and stopping time tracking 
 
 - [Features](#features)
 - [Installation](#installation)
+        - [Global](#global)
+        - [Local](#local)
+        - [via NPX](#via-npx)
 - [Configuration](#configuration)
     - [Configuration Options](#configuration-options)
         - [Defaults](#defaults)
@@ -34,6 +37,7 @@ Easy to use CLI tool for creating, listing, starting and stopping time tracking 
             - [Change Service or Project](#change-service-or-project)
             - [Set Tracked Time](#set-tracked-time)
             - [Adding/Removing Time](#addingremoving-time)
+            - [Move Time Entry to another date](#move-time-entry-to-another-date)
             - [Un-/Lock Entry](#un-lock-entry)
         - [Delete entry](#delete-entry)
         - [Open](#open)
@@ -111,21 +115,33 @@ Commands:
   unlock             unlock single time entry
   users              list, filter & search for users
   help [cmd]         display help for [cmd]
-
 ```
 
 
 Installation
 ===============================================================================
 
+There are tree different ways to use mite-cli.
+
+Please note that all examples in this README.md assume that you have installed mite-cli globally. If not, just replace the `mite` call with `~/node_modules/.bin/mite` or `npx mite-cli`.
+
+### Global
+
     npm install -g mite-cli
 
-Or use it directly using `npx`:
+### Local
+
+    npm insall mite-cli
+
+Then you can call mite-cli binary link created in `node_modules/.bin`:
+
+    ~/node_modules/.bin/mite
+
+### via NPX
+
+Or use it directly using [`npx`](https://www.npmjs.com/package/npx):
 
     npx mite-cli
-
-Please note that all examples in this README.md assume that you have installed mite-cli globally. If not, just replace the `mite` call with `npx mite-cli` and you’re fine.
-
 
 
 Configuration
@@ -421,6 +437,10 @@ It’s also possible to use the same option (`--duration`) to remove or add some
 which will add 98 minutes to the time entry or remove 12 minutes:
 
     mite amend 12345678 --duration -0:12
+
+#### Move Time Entry to another date
+
+    mite amend 12345678 --date 2020-05-03
 
 #### Un-/Lock Entry
 
@@ -849,7 +869,7 @@ Other Projects
 - [Mitey](https://github.com/lionralfs/mitey)
 - [mite.cmd](https://github.com/Overbryd/mite.cmd/tree/master)
 - [mite-go](https://github.com/leanovate/mite-go)
-
+- [acari](https://github.com/untoldwind/acari)
 
 Contributing
 ===============================================================================

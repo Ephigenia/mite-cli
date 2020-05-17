@@ -27,8 +27,8 @@ program
     servicesCommand.sort.default
   ))
   .option(
-    '--search <query>',
-    'optional case insensitive query searching in services’ name'
+    '--search <regexp>',
+    'optional case-insensitive regular expression matching on the name'
   )
   .on('--help', () => console.log(`
 Examples:
@@ -38,6 +38,9 @@ Examples:
 
   show all archived services
     mite service list --archived true
+
+  search for services
+    mite service list --search "programming|coding"
 
   show archived services with custom columns
     mite service list --columns name,hourly_rate,created_at
@@ -52,7 +55,7 @@ async function main() {
   const opts = {
     limit: 1000,
     offset: 0,
-    ...(program.search && { name: program.search }),
+    ...(program.search && { query: program.search }),
   };
 
   return miteApi.getServices(opts)
