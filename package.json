@@ -79,8 +79,8 @@
   },
   "devDependencies": {
     "chai": "4.2.0",
-    "conventional-changelog-cli": "2.0.31",
-    "conventional-recommended-bump": "6.0.5",
+    "conventional-changelog-cli": "2.0.34",
+    "conventional-recommended-bump": "6.0.9",
     "eslint": "6.8.0",
     "mocha": "^7.1.2"
   }
