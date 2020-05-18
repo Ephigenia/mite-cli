@@ -63,7 +63,7 @@ module.exports = async ({ prev, line }) => {
   // get a list of available customers from mite for adding them as options
   const requestOptions = {};
   if (line.match(/--archived/)) {
-    customerOptions.archived = !/--archived[ =](yes|true|1|ja)/.test(line);
+    requestOptions.archived = !/--archived[ =](yes|true|1|ja)/.test(line);
   }
   const customerOptions = await getCustomerOptions(requestOptions);
 
