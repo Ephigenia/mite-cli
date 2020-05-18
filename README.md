@@ -7,6 +7,8 @@ Easy to use CLI tool for creating, listing, starting and stopping time tracking 
 [![Known Vulnerabilities](https://snyk.io/test/github/ephigenia/mite-cli/badge.svg)](https://snyk.io/test/github/ephigenia/mite-cli)
 [![Maintainability](https://api.codeclimate.com/v1/badges/791e0126615bcd34a0e5/maintainability)](https://codeclimate.com/github/Ephigenia/mite-cli/maintainability)
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FEphigenia%2Fmite-cli.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FEphigenia%2Fmite-cli?ref=badge_shield)
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/Ephigenia/mite-cli.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Ephigenia/mite-cli/context:javascript)
+[![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/Ephigenia/mite-cli.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Ephigenia/mite-cli/context:javascript)
 
 - [Features](#features)
 - [Installation](#installation)
