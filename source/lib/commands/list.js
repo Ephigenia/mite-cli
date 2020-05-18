@@ -170,7 +170,7 @@ module.exports.columns = {
         if (!value) {
           return undefined;
         }
-        return formater.budget(formater.BUDGET_TYPE.CENTS, value || 0);
+        return formater.budget(formater.BUDGET_TYPE.CENTS, value);
       },
       reducer: (sum, cur) => {
         if (!sum) sum = 0;

@@ -14,7 +14,7 @@ module.exports = {
     if (!val.match(/^\d+(.?\d+)$/)) {
       throw new InvalidOptionValue(`The given hourlyRate is not valid.`);
     }
-    val = parseFloat(val, 10);
+    val = parseFloat(val);
     if (isNaN(val)) {
       throw new InvalidOptionValue(`The given hourlyRate is not valid.`);
     }

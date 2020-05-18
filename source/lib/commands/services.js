@@ -46,7 +46,7 @@ module.exports.columns = {
         if (!value) {
           return '-';
         }
-        return formater.budget(formater.BUDGET_TYPE.CENTS, value || 0);
+        return formater.budget(formater.BUDGET_TYPE.CENTS, value);
       },
     },
     id: {
