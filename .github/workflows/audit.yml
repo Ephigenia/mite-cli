@@ -1,4 +1,4 @@
-name: npm audit
+name: audit
 
 on:
   pull_request:
@@ -12,7 +12,7 @@ on:
 
 jobs:
   scan:
-    name: npm audit
+    name: audit
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
