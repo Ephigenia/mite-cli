@@ -1,0 +1,6 @@
+- uses: actions/checkout@v1
+- name: packages check
+  uses: Amr-Reda/npm-unused-packages-checker@v1
+  with:
+    IGNORE_PACKAGES:  '[]'
+    IGNORE_PATHS:  '[]'
