@@ -46,7 +46,7 @@
   "main": "source/mite.js",
   "scripts": {
     "audit": "npm audit",
-    "audit:strict": "npm run -s audit -- --only=prod --audit-level=high",
+    "audit:strict": "npm audit --production --audit-level=high",
     "changelog:preview": "conventional-changelog --output-unreleased -p angular",
     "changelog": "conventional-changelog -s -i CHANGELOG.md -p angular -r 0",
     "lint": "eslint source",
