@@ -1,7 +1,7 @@
 {
   "author": "Ephigenia M. Eichner",
   "name": "mite-cli",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "command line tool for time tracking service mite.yo.lk",
   "preferGlobal": true,
   "homepage": "https://github.com/Ephigenia/mite-cli/",
@@ -46,7 +46,7 @@
   "main": "source/mite.js",
   "scripts": {
     "audit": "npm audit",
-    "audit:strict": "npm run -s audit -- --only=prod --audit-level=high",
+    "audit:strict": "npm audit --production --audit-level=high",
     "changelog:preview": "conventional-changelog --output-unreleased -p angular",
     "changelog": "conventional-changelog -s -i CHANGELOG.md -p angular -r 0",
     "lint": "eslint source",
