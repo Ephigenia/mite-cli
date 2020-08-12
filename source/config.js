@@ -5,6 +5,7 @@ const path = require('path');
 const os = require('os');
 
 const pkg = require('./../package.json');
+const { handleError, GeneralError } = require('./lib/errors');
 
 const homedir = os.homedir();
 const configFilename = path.resolve(path.join(homedir, '.mite-cli.json'));
@@ -16,7 +17,11 @@ const projectsCommand = require('./lib/commands/projects');
 const servicesCommand = require('./lib/commands/services');
 const usersCommand = require('./lib/commands/users');
 
-nconf.file(configFilename);
+try {
+  nconf.file(configFilename);
+} catch (err) {
+  handleError(new GeneralError(err.message));
+}
 
 nconf.defaults({
   currency: '€',
