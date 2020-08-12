@@ -30,13 +30,16 @@ class MissingRequiredOptionError extends GeneralError {
 }
 
 /**
- * Handles an Error object/instance of the Error class thrown by mite-api lib
+ * Handles the given error according to the current NODE_ENV.
+ *
+ * Handles the given error according to the current NODE_ENV.  Dependant on the
+ * current NODE_ENV value the given error is shown with or without stack trace.
  *
  * @param  {Error} error [description]
  * @throws Error
  */
 function handleError(error) {
-  const NODE_ENV = (process.env.NODE_ENV || DEFAULT_NODE_ENV).toLowerCase();
+  const NODE_ENV = String(process.env.NODE_ENV || DEFAULT_NODE_ENV).toLowerCase();
   const exitCode = error.exitCode || DEFAULT_EXIT_CODE;
 
   if (NODE_ENV === 'production') {
