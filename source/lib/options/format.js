@@ -8,6 +8,9 @@ module.exports = {
     `defines the output format, valid options are ${FORMATS.join(', ')}`
   ),
   parse: (str) => {
+    if (typeof str === 'string') {
+      return str.toLocaleLowerCase();
+    }
     return str;
   },
 };
