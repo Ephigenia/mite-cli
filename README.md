@@ -25,7 +25,7 @@ Easy to use CLI tool for creating, listing, starting and stopping time tracking 
             - [Other Filters](#other-filters)
             - [Grouping / Reports](#grouping--reports)
             - [Advanced Examples](#advanced-examples)
-        - [Disabling unicode Characters](#disabling-unicode-characters)
+        - [Disabling Unicode Characters](#disabling-unicode-characters)
         - [Create Time-Entries](#create-time-entries)
             - [Interactive](#interactive)
             - [Non-Interactive](#non-interactive)
@@ -70,16 +70,16 @@ Easy to use CLI tool for creating, listing, starting and stopping time tracking 
 Features
 ===============================================================================
 
-- Create and start new Entries with interactive survey-like cli interface
+- Create new Entries with interactive survey-like (optional) CLI interface
 - Delete, lock, unlock single time entries
 - Edit the currently running entries text, service and project for quickly updating the work log
-- Show, filter, group time entries to show reports for last month, current week etc.
-- Delete single entries by id
-- List, sort, filter, update & delete user accounts, customers, projects & services using variable columns and cli-tables, CSV or TSV data
-- Highlight JIRA identifiers and github numeral hashtags in time entry’s notes (can be customized)
-- optional installable auto-completions for most of the sub-commands, options and option values
+- Read, filter, group time entries to show reports for different time periods
+- List, sort, filter, update & delete user accounts, customers, projects & services using variable columns and CLI-tables, [CSV](https://en.wikipedia.org/wiki/Comma-separated_values)) or [TSV](https://en.wikipedia.org/wiki/Tab-separated_values) data
+- Highlight [JIRA](https://www.atlassian.com/de/software/jira) identifiers (`ABC-1279`) and GitHub numeral (`#2121`) hashtags in time entry’s notes (customizable)
+- auto-completions for most of the sub-commands, options and option values (optional)
+- Support for standard streams in most of the sub-commands.
 
-Other ideas & planned features can be found in the [wiki](./wiki). If something doesn’t work please [create a new issue](https://github.com/Ephigenia/mite-cli/issues).
+Other ideas & planned features can be found in the [wiki](./wiki). Report Requirements, Bugs, Issues of any kind: [create a new issue](https://github.com/Ephigenia/mite-cli/issues).
 
 ```
 Usage: mite [options] [command]
@@ -148,7 +148,7 @@ Or use it directly using [`npx`](https://www.npmjs.com/package/npx):
 Configuration
 ===============================================================================
 
-Before you can start you’ll have to setup your mite account and api key which you can find in your mite "Account" tab.
+Before you can start you’ll have to setup your mite account and API key which you can find in your mite "Account" tab.
 
     mite config set account <name>
     mite config set apiKey <key>
@@ -167,7 +167,7 @@ Configuration Options
 - `listColumns`  
     defines the default columns to be used when running `mite list`.
 - `noteHighlightRegexp`
-    defines a single regular expression which can contain a single capturing group which will get highlighted. By default this is set to highlight github hashtag notation (f.e. #218) and jira story identifiers (f.e. CRYO-1281). When you change this note that the beginning and trailing slashes must be omitted and the regexp is case-sensitive and modifiers cannot be changed.
+    defines a single regular expression which can contain a single capturing group which will get highlighted. By default this is set to highlight GitHub hashtag notation (f.e. #218) and Jira story identifiers (f.e. CRYO-1281). When you change this note that the beginning and trailing slashes must be omitted and the regexp is case-sensitive and modifiers cannot be changed.
 
     It will also highlight duration notes in the content following the `(10:00 to 12:00)` format.
 - `outputFormat`  
@@ -181,14 +181,14 @@ Configuration Options
 
 ### Defaults
 
-Configuration options can always be back to initial value to their default by leaving out the value, like: `mite config set listColumns`.
+Configuration options can always be back to the initial value to their default by leaving out the value, like: `mite config set listColumns`.
 
 Auto-Completion
 --------------------------------------------------------------------------------
 
-Since version 0.9.0 mite-cli supports auto-completions for most of the sub-commands arguments, options and option values which make it much easier to use the cli tool. No need to remember user ids or service names anymore as they are suggested when hitting TAB.
+Since version 0.9.0 mite-cli supports auto-completions for most of the sub-commands arguments, options and option values which make it much easier to use in on the command line. No need to remember user ids or service names anymore as they are suggested when hitting TAB.
 
-- Right now auto-completion is only supported and tested on -nix-systems and with the following bash environments: bash, fish and zsh
+- Right now auto-completion is only supported and tested on -nix-systems and with the following bash environments: [bash](https://tiswww.case.edu/php/chet/bash/bashtop.html), [fish](https://fishshell.com/) and [ZSH](https://www.zsh.org/)
 - mite-cli must be installed globally and must be in `$PATH`
 
 Before auto-completions can be used you need to install them using the `autocomplete` command:
@@ -233,7 +233,7 @@ When an entry is currently active and tracked it will be yellow and indicated wi
 
 #### Filter by time
 
-You also can request longer time frames by using the first argument which is basically the [`at` parameter](https://mite.yo.lk/en/api/time-entries.html#list-all) of the time entries api:
+You also can request longer time frames by using the first argument which is basically the [`at` parameter](https://mite.yo.lk/en/api/time-entries.html#list-all) of the time entries API:
 
     mite list this_month
 
@@ -241,7 +241,7 @@ Or Specific dates:
 
     mite list 2017-01-02
 
-Or relative weekdays (show entries from last friday)
+Or relative weekdays (show entries from last Friday)
 
     mite list friday
 
@@ -329,13 +329,13 @@ When creating a bill for a project create a list of all services worked on in a 
     │                    │ 138:13 │ 11866.57 € │
     └────────────────────┴────────┴────────────┘
 
-In order to fill the details of the services you’ll need all the notes from that specific service. Get the notes for one specific service, project for the last month to put them on a bill or similar:
+In order to fill the details of the services you’ll need all the notes from that specific service. Get the notes for one specific service, a project for the last month to put them on a bill or similar:
 
     mite list last_month --project-id 2681601 --service-id 325329 --columns note --format text | sort -u
 
-### Disabling unicode Characters
+### Disabling Unicode Characters
 
-Some columns like "duration", "hours" add some unicode characters to f.e. indicate that the time entry is already locked or currently running. This may not be wanted if you’re exporting the entries to a file.
+Some columns like "duration", "hours" add some Unicode characters to f.e. indicate that the time entry is already locked or currently running. This may not be wanted if you’re exporting the entries to a file.
 
 You can disable this behavior by setting the (`NO_COLOR`)[https://no-color.org/] variable before calling mite:
 
@@ -355,9 +355,9 @@ You can also start by providing a precomposed note
 
 #### Non-Interactive
 
-You can also start by passing over the content’s of the new time entry or even the project’s name, service, minutes or the date. The following example will create a 35 minutes entry for the Project "myProject1"
+Start creating new time-tracking items right from the command-line. Just pass the things that you’ve done, the project’s name, service name, minutes or the date. The following example will create a 35 minutes entry for the Project "my-project"
 
-    mite new "created some new nice code" myProject1 programming 35
+    mite new "created some new nice code" my-project programming 35
 
 The duration values can be the number of minutes or a duration string. When you add a plus sign at the end "+", f.e. "3:12+" the time entry is created and eminently started.
 
@@ -367,9 +367,9 @@ The duration values can be the number of minutes or a duration string. When you 
 
 Create a time entries note from the last git commit message:
 
-    git log -1 --pretty=%B | xargs echo -n | mite new projectx communication 30
+    git log -1 --pretty=%B | xargs echo -n | mite new my-project communication 30
 
-Read note content von stdin / pipe in note:
+Pipe a note’s content (preferably from other outputs) to `mite new`:
 
     echo "my new note" | mite new projectx programming 60+
 
@@ -403,7 +403,7 @@ You can also alter the notes of other time entries when you specify their id
 
     mite amend 1847132
 
-You can also pass additional informations like the note:
+You can also pass additional information like the note:
 
     mite amend 12345678 "created a programmable list of items"
 
@@ -511,7 +511,7 @@ List archived user accounts
     │       1234 │ time_tracker │ James Howlett   │ email3@host.com             │                                                    │
     └────────────┴──────────────┴─────────────────┴─────────────────────────────┴────────────────────────────────────────────────────┘
 
-show all time tracking users from a company (all have a ephigenia.de email address)
+show all-time tracking users from a company (all have a specific email domain)
 
     mite users --role time_tracker --email ephigenia.de
 
@@ -612,7 +612,7 @@ Unarchive all archived projects from a specific customer using `xargs`:
 
 Use `mite project new` subcommand to create new projects. There’s currently no support for complicated hourly rates per service. To find out the `customer_id` use either [Auto-Completion](#auto-completion) or copy the id from the `mite project list` list.
 
-The following example will create a new Project with a overall budget of 5000 and a hourly rate of 80:
+The following example will create a new Project with an overall budget of 5000 and an hourly rate of 80:
 
     mite project new --customer-id 123456 \
         --name "Side Project B" \
@@ -740,7 +740,7 @@ The following command will list all customers from last year and plot their minu
             plot '<cat' every ::1 using 2: xtic(1)
         ";
 
-There are even more charting possibilities using the open source [gnuplot](http://www.gnuplot.info/).
+There are even more charting possibilities using the open-source [gnuplot](http://www.gnuplot.info/).
 
 You can also reproduce the charts from the mite admin showing the number of hours worked in the last month:
 
@@ -801,7 +801,7 @@ Which will show the chart:
 Alternate Output formats
 --------------------------------------------------------------------------------
 
-The output of program is designed to look good to a human and shows the results in tabular style using box drawing characters.
+The purpose of the application is to simplify and streamline the interaction with the mite time-tracking service while making the output readable on the command-line.
 
 The following formats are supported:
 
@@ -861,7 +861,7 @@ The most common use case for creating pdfs is when a client asks for a nice look
 
     NO_COLOR mite-cli list last_month --project-id 1234 --columns=date,note,duration --format md | md-to-pdf > "./time-entries-$(date +%Y%m%d).pdf"
 
-The call to md-to-pdf can be improved by adding custom stylesheets, templates for headers and footers and can be adjusted to your needs.
+`md-to-pdf` can be improved by adding custom stylesheets, templates for headers and footers and can be adjusted to your needs.
 
 
 Other Projects
