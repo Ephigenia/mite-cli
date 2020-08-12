@@ -2,7 +2,7 @@
 'use strict';
 
 const program = require('commander');
-const opn = require('opn');
+const open = require('open');
 const miteApi = require('mite-api');
 
 const pkg = require('./../package.json');
@@ -51,7 +51,7 @@ function main(timeEntryId) {
     if (entry) {
       url += 'daily/#' + (entry.date_at).replace('-', '/') + '?open=time_entry_' + entry.id;
     }
-    opn(url).then(() => process.exit(0));
+    open(url).then(() => process.exit(0));
   })
   .catch(handleError);
 }
