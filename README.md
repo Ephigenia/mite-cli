@@ -11,9 +11,9 @@ Easy to use CLI tool for creating, listing, starting and stopping time tracking 
 
 - [Features](#features)
 - [Installation](#installation)
-        - [Global](#global)
-        - [Local](#local)
-        - [via NPX](#via-npx)
+    - [Global](#global)
+    - [Local](#local)
+    - [via NPX](#via-npx)
 - [Configuration](#configuration)
     - [Configuration Options](#configuration-options)
         - [Defaults](#defaults)
@@ -126,11 +126,11 @@ There are tree different ways to use mite-cli.
 
 Please note that all examples in this README.md assume that you have installed mite-cli globally. If not, just replace the `mite` call with `~/node_modules/.bin/mite` or `npx mite-cli`.
 
-### Global
+## Global
 
     npm install -g mite-cli
 
-### Local
+## Local
 
     npm insall mite-cli
 
@@ -138,7 +138,7 @@ Then you can call mite-cli binary link created in `node_modules/.bin`:
 
     ~/node_modules/.bin/mite
 
-### via NPX
+## via NPX
 
 Or use it directly using [`npx`](https://www.npmjs.com/package/npx):
 
