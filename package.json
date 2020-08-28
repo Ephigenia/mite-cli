@@ -80,6 +80,6 @@
     "conventional-changelog-cli": "2.1.0",
     "conventional-recommended-bump": "6.0.10",
     "eslint": "7.7.0",
-    "mocha": "8.1.2"
+    "mocha": "8.1.3"
   }
 }
