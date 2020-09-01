@@ -5,6 +5,7 @@ const {
   getMyRecentTimeEntriesOptions,
   getProjectOptions,
   getServiceOptions,
+  getUserIdOptions,
   removeAlreadyUsedOptions,
 } = require('../helpers');
 
@@ -27,7 +28,11 @@ const defaults = [
   },
   {
     name: '--service-id',
-    description: 'id of the service  the entry should be assigned to'
+    description: 'id of the service the entry should be assigned to'
+  },
+  {
+    name: '--user-id',
+    description: 'id of the user that should get assigned'
   }
 ];
 
@@ -49,6 +54,8 @@ module.exports = async ({ line, prev }) => {
       return getProjectOptions({ archived: false });
     case '--service-id':
       return getServiceOptions({ archived: false });
+    case '--user-id':
+        return getUserIdOptions();
     case '--duration':
       return ['0\\:00'];
   }

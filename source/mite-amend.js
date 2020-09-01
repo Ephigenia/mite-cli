@@ -57,6 +57,10 @@ has the required permissions to do it.`,
     '--service-id <id>',
     'the service id which should be set'
   )
+  .option(
+    '--user-id <id>',
+    'change the user who owns the time-entry (requires admin account)'
+  )
   .on('--help', () => console.log(`
 Examples:
 
@@ -84,8 +88,11 @@ Examples:
   Change the tracked time to 4 hours and 12 minutes
     mite amend 12345678 --duration 4:12
 
+  Change the user of entry 81713
+    mite amend --user-id 128731 81713
+
   Change the time and add 20 minutes
-  mite amend 12345678 --duration +4:12
+    mite amend 12345678 --duration +4:12
   `));
 
 const mite = miteApi(config.get());
@@ -137,6 +144,7 @@ async function getUpdatedTimeEntryData(program, note, timeEntry) {
     ...(program.date && { date_at: program.date }),
     ...(program.projectId && { project_id: program.projectId }),
     ...(program.serviceId && { service_id: program.serviceId }),
+    ...(program.userId && { user_id: program.userId }),
   };
 
   // substract, add or set minutes directly using the --duration option
@@ -161,7 +169,13 @@ async function getUpdatedTimeEntryData(program, note, timeEntry) {
       updateData.note = editorContent;
       return updateData;
     });
-  } else if (!note && !program.projectId && !program.serviceId && !program.duration) {
+  } else if (
+    !note &&
+    !program.projectId &&
+    !program.serviceId &&
+    !program.duration &&
+    !program.userId
+  ) {
     // ask for note only when no note was passed to cli
     return inquireNote(updateData, updateData.note || timeEntry.note);
   }
