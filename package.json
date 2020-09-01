@@ -79,7 +79,7 @@
     "chai": "4.2.0",
     "conventional-changelog-cli": "2.1.0",
     "conventional-recommended-bump": "6.0.10",
-    "eslint": "7.7.0",
+    "eslint": "7.8.0",
     "mocha": "8.1.2"
   }
 }
