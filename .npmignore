@@ -1,6 +1,11 @@
 .DS_Store
 
-.prettierignore
 .circleci
+.editorconfig
+.eslintrc
 .github/
+.prettierignore
+.prettierignore
+coverage/
+renovate.json
 source/**/*test.js
