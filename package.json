@@ -6,16 +6,25 @@
   "preferGlobal": true,
   "homepage": "https://github.com/Ephigenia/mite-cli/",
   "keywords": [
+    "accounting",
+    "billing",
     "budgets",
     "cli",
     "command-line-tool",
     "commandline",
+    "freelance",
     "list",
     "mite",
     "project",
     "shell",
+    "time-management",
     "time-tracking",
-    "tool"
+    "timemanagement",
+    "timesheet",
+    "timesheets",
+    "timetracking",
+    "tool",
+    "tracker"
   ],
   "license": "MIT",
   "maintainer": {
