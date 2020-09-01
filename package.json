@@ -79,7 +79,7 @@
     "mite-api": "^0.1.1",
     "nconf": "^0.10.0",
     "node-fetch": "^2.6.0",
-    "open": "7.2.0",
+    "open": "7.2.1",
     "table": "^6.0.0",
     "tabtab": "^3.0.2",
     "weeknumber": "^1.1.2"
@@ -89,6 +89,6 @@
     "conventional-changelog-cli": "2.1.0",
     "conventional-recommended-bump": "6.0.10",
     "eslint": "7.8.0",
-    "mocha": "8.1.2"
+    "mocha": "8.1.3"
   }
 }
