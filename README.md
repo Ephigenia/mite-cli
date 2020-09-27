@@ -867,10 +867,14 @@ The most common use case for creating pdfs is when a client asks for a nice look
 Other Projects
 ===============================================================================
 
-- [Mitey](https://github.com/lionralfs/mitey)
-- [mite.cmd](https://github.com/Overbryd/mite.cmd/tree/master)
-- [mite-go](https://github.com/leanovate/mite-go)
-- [acari](https://github.com/untoldwind/acari)
+- [acari](https://github.com/untoldwind/acari) mite CLI in rust
+- [mite-clock](https://github.com/iliakur/miteclock) CLI tool for start, stopping time-entries on the fly
+- [mite-go](https://github.com/leanovate/mite-go) mite CLI in go
+- [mite-goal](https://github.com/gr2m/mite.goal) web-app displaying targeted monthly time budgets
+- [mite-overtime](https://github.com/gbirke/mite-overtime) webapp display of calculated overtime values
+- [mite-reminder](https://github.com/leanovate/mite-reminder) slack application sending notifications for missing time entries
+- [mite.cmd](https://github.com/Overbryd/mite.cmd) mite CLI in ruby
+- [Mitey](https://github.com/lionralfs/mitey) mite CLI in javascript
 
 Contributing
 ===============================================================================
