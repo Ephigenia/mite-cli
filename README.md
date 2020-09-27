@@ -29,6 +29,7 @@ Easy to use CLI tool for creating, listing, starting and stopping time tracking 
         - [Create Time-Entries](#create-time-entries)
             - [Interactive](#interactive)
             - [Non-Interactive](#non-interactive)
+            - [Shortcuts](#shortcuts)
             - [Advanced Usage](#advanced-usage)
         - [Tracker](#tracker)
             - [Start Tracking](#start-tracking)
@@ -362,6 +363,30 @@ Start creating new time-tracking items right from the command-line. Just pass th
 The duration values can be the number of minutes or a duration string. When you add a plus sign at the end "+", f.e. "3:12+" the time entry is created and eminently started.
 
     mite new "researching colors for project" myProject1 programming 0:05+
+
+#### Shortcuts
+
+The program doesn’t provide any feature for fastly creating time entries on the fly but your OS does! Create one or more bash aliase(s) for your most used time entries.
+
+The following example creates a bash-alias for creating new running time-entry for a specific project:
+
+    # ~/.bashrc
+    alias "m1"="mite new Standup ProjectX Meetings 1+";
+
+You can also pass over some arguments like the note for the entry and an optional amount of time if you use bash functions instead of aliases:
+
+    # ~/.bashrc
+    m() {
+        mite new "$1" ProjectX Programming "${2:-1+}";
+    }
+
+Then you can fastly create new running entries:
+
+    m standup
+
+Or add new entries with a fixed time using the second argument:
+
+    m "added new feature xy" 3:21
 
 #### Advanced Usage
 
