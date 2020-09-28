@@ -20,6 +20,7 @@ program
   .command('open', 'open the given time entry in browser')
   .command('project', 'create/delete/list/update a single project')
   .command('projects', 'list, filter, archive/unarchive & search projects')
+  .command('resume', 'resume most recent entry')
   .command('service', 'create/delete/list/update single service')
   .command('services', 'list, filter & search services')
   .command('start', 'start the tracker for the given id, will also stop allready running entry')
