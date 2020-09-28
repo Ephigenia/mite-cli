@@ -4,16 +4,40 @@ const util = require('util');
 const assert = require('assert');
 
 const miteApi = require('mite-api');
+
+const MiteTracker = require('./mite-tracker');
 const { BUDGET_TYPE } = require('./../lib/constants');
 
 /**
+ * @typedef MiteTimeEntryTracker
+ * @type {object}
+ * @property {string} since iso date string of the moment the tracker was
+ *   started
+ * @property {string} minues number of minutes the tracker is running since
+ */
+
+/**
  * @typedef MiteTimeEntry
- * @property {Number} customer_id
- * @property {Number} minutes
- * @property {Number} project_id
- * @property {Number} service_id
- * @property {String} date_at
- * @property {String} note
+ * @type {object}
+ * @property {boolean} billable boolean indicating if this time entry is
+ *   billable or not
+ * @property {number} customer_id id of the customer this entry belongs to
+ * @property {number} id unique id of the entry
+ * @property {boolean} locked indicates wheter the time entry can be edited
+ *   or not
+ * @property {number} minutes number of minutes tracked in this entry
+ * @property {number} project_id id of the project
+ * @property {number} revenue calculated revenue for this time-entry
+ * @property {number} service_id id of the service
+ * @property {number} user_id id of the user
+ * @property {String} customer_name name of customer
+ * @property {String} date_at date string in the format "YYYY-MM-DD"
+ * @property {String} note content
+ * @property {String} project_name project’s name
+ * @property {String} service_name service’s name
+ * @property {MiteTimeEntryTracker} [tracker] information about the currently
+ *   active tracker when this entry is currently tracked
+ * @property {string} user_name name of the user who tracked this entry
  */
 
 /**
@@ -28,12 +52,12 @@ const { BUDGET_TYPE } = require('./../lib/constants');
 class MiteApiWrapper {
 
   /**
-   *
    * @param {MiteConfig} config
    */
   constructor(config) {
     this.config = config;
     this.mite = miteApi(config);
+    this.tracker = new MiteTracker(config);
   }
 
   /**
@@ -76,7 +100,7 @@ class MiteApiWrapper {
    * current user.
    *
    * @param {Number} limit
-   * @returns {Promise<MiteTimeEntry>}
+   * @returns {Promise<MiteTimeEntry[]>}
    */
   async getMyRecentTimeEntries(limit = 5) {
     assert.strictEqual(typeof limit, 'number', 'expected limit to be number');
@@ -92,6 +116,21 @@ class MiteApiWrapper {
       })
       .then(items => items.map(item => item.time_entry));
   }
+
+  /**
+   * Returns the most recently created time entry of the current user if
+   * there’s one.
+   *
+   * @returns {Promise<MiteTimeEntry[]|false>} most recent time entry or false
+   */
+  async getMyRecentTimeEntry() {
+    return this.getMyRecentTimeEntries(1)
+      .then(entries => {
+        if (entries && entries.length) return entries[0];
+        return false;
+      });
+  }
+
 
   /**
    * Returns an ordered copy of the given items where the given attribute

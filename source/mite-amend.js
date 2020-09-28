@@ -3,7 +3,6 @@
 
 const fs = require('fs');
 const program = require('commander');
-const miteApi = require('mite-api');
 const util = require('util');
 const inquirer = require('inquirer');
 const formater = require('./lib/formater');
@@ -11,6 +10,7 @@ const ExternalEditor = require('external-editor');
 
 const pkg = require('./../package.json');
 const config = require('./config');
+const mite = require('./lib/mite-api')(config.get());
 const tracker = require('./lib/mite-tracker');
 const {
   handleError,
@@ -93,12 +93,14 @@ Examples:
 
   Change the time and add 20 minutes
     mite amend 12345678 --duration +4:12
+
+  Change the note for the recently created entry
+    mite amend last
   `));
 
-const mite = miteApi(config.get());
 const miteTracker = tracker(config.get());
-const getTimeEntryPromise = util.promisify(mite.getTimeEntry);
-const updateTimeEntry = util.promisify(mite.updateTimeEntry);
+const getTimeEntryPromise = util.promisify(mite.mite.getTimeEntry);
+const updateTimeEntry = util.promisify(mite.mite.updateTimeEntry);
 const openEditor = util.promisify(ExternalEditor.editAsync);
 
 async function getTimeEntryData(timeEntryId) {
@@ -183,9 +185,12 @@ async function getUpdatedTimeEntryData(program, note, timeEntry) {
   return updateData;
 }
 
-function main(timeEntryId, note) {
+async function main(timeEntryId, note) {
+  if (String(timeEntryId).toLowerCase() === 'last') {
+    timeEntryId = (await mite.getMyRecentTimeEntry() || {}).id;
+  }
   // when first argument is not a number use it as note
-  if (!note && timeEntryId && !timeEntryId.match(/^\d+/)) {
+  if (!note && timeEntryId && !String(timeEntryId).match(/^\d+/)) {
     note = timeEntryId;
     timeEntryId = undefined;
   }
