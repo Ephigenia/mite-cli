@@ -4,6 +4,8 @@ const util = require('util');
 const assert = require('assert');
 
 const miteApi = require('mite-api');
+
+const MiteTracker = require('./mite-tracker');
 const { BUDGET_TYPE } = require('./../lib/constants');
 
 /**
@@ -55,6 +57,7 @@ class MiteApiWrapper {
   constructor(config) {
     this.config = config;
     this.mite = miteApi(config);
+    this.tracker = new MiteTracker(config);
   }
 
   /**

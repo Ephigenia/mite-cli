@@ -33,6 +33,7 @@ Easy to use CLI tool for creating, listing, starting and stopping time tracking 
             - [Advanced Usage](#advanced-usage)
         - [Tracker](#tracker)
             - [Start Tracking](#start-tracking)
+            - [Resume Tracking](#resume-tracking)
             - [Stop Tracking](#stop-tracking)
         - [Modify Time-Entries](#modify-time-entries)
             - [Change Note](#change-note)
@@ -406,6 +407,12 @@ Start tracking of a specific time entry.
 
     mite start <timeEntryId>
 
+#### Resume Tracking
+
+Re-start tracking for the most recent entry
+
+    mite start --last
+
 #### Stop Tracking
 
 Stops any currently running time entry.
@@ -423,6 +430,10 @@ When there’s a tracker running you may want to update the note without opening
 You can also add the `--editor` option so that your favorite editor opens up with the current note. Make sure your `$EDITOR` is correctly set.
 
     mite amend --editor
+
+Change the note for the most recently created entry, f.e. for adding some notes
+
+    mite amend last
 
 You can also alter the notes of other time entries when you specify their id
 

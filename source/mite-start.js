@@ -6,7 +6,7 @@ const program = require('commander');
 const pkg = require('./../package.json');
 const config = require('./config');
 const { handleError, MissingRequiredArgumentError } = require('./lib/errors');
-const miteApi = require('./lib/mite-api')(config.get());
+const mite = require('./lib/mite-api')(config.get());
 
 program
   .version(pkg.version)
@@ -36,13 +36,12 @@ async function main(timeEntryId) {
   // "--last" was used, ignore timeEntryId and use the id of the latest entry
   // of the current user if there’s one
   if (program.last) {
-    timeEntryId = (await miteApi.getMyRecentTimeEntry() || {}).id;
+    timeEntryId = (await mite.getMyRecentTimeEntry() || {}).id;
   }
   if (!timeEntryId) {
     throw new MissingRequiredArgumentError('Missing required argument [timeEntryId]');
   }
-  const miteTracker = require('./lib/mite-tracker')(config.get());
-  miteTracker.start(timeEntryId)
+  mite.tracker.start(timeEntryId)
     // TODO change output to just the ID when tty is off
     .then(() => console.log(`Successfully started the time entry (id: ${timeEntryId})`))
     .catch(handleError);
