@@ -6,31 +6,38 @@ const program = require('commander');
 const pkg = require('./../package.json');
 const config = require('./config');
 const { handleError, MissingRequiredArgumentError } = require('./lib/errors');
+const miteApi = require('./lib/mite-api')(config.get());
 
 program
   .version(pkg.version)
   .arguments('[timeEntryId]')
-  .option(
-    '-l, --last',
-    'start the last created entry and continue tracking',
-  )
-  // TODO add examples for "--last"
-  // TODO add examples for amend
   .description('start the tracker for the given id, will also stop allready running entry', {
     timeEntryId: 'id of the entry which should be started'
-  });
+  })
+  .option(
+    '-l, --last',
+    're-start time-tracking of the last created time-entry',
+  )
+  .on('--help', () => console.log(`
+Examples:
 
-function main(timeEntryId) {
+  Start the time entry with the id 127831
+    mite start 127831
+
+  Start the most recently created time-entry
+    mite start --last
+`));
+
+async function main(timeEntryId) {
+  // the "magic" entry id "last" acts like the "--last" option
   if (String(timeEntryId).toLowerCase()  === 'last') {
     program.last = true;
   }
   // "--last" was used, ignore timeEntryId and use the id of the latest entry
   // of the current user if there’s one
   if (program.last) {
-    console.log('find last entry id');
-    process.exit(0);
+    timeEntryId = (await miteApi.getMyRecentTimeEntry() || {}).id;
   }
-
   if (!timeEntryId) {
     throw new MissingRequiredArgumentError('Missing required argument [timeEntryId]');
   }
