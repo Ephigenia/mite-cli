@@ -31,6 +31,7 @@ Easy to use CLI tool for creating, listing, starting and stopping time tracking 
             - [Non-Interactive](#non-interactive)
             - [Shortcuts](#shortcuts)
             - [Advanced Usage](#advanced-usage)
+            - [Start & Open Entry](#start--open-entry)
         - [Tracker](#tracker)
             - [Start Tracking](#start-tracking)
             - [Resume Tracking](#resume-tracking)
@@ -398,6 +399,12 @@ Create a time entries note from the last git commit message:
 Pipe a note’s content (preferably from other outputs) to `mite new`:
 
     echo "my new note" | mite new projectx programming 60+
+
+#### Start & Open Entry
+
+In case you don’t know what to track exactly or which tasks you’d be doing while you’re doing them you can create a new entry and open the note in an editor. The note will get saved as soon as you close the editor:
+
+    mite new "started" ProjectX Programmierung 1+ | xargs -n1 mite amend --editor
 
 ### Tracker
 

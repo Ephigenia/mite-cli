@@ -44,7 +44,7 @@ function main (timeEntryId) {
     ...(typeof program.force === 'boolean' && { force: program.force })
   };
   return util.promisify(mite.updateTimeEntry)(timeEntryId, data)
-    .then(() => console.log(`Successfully unlocked time entry (id: ${timeEntryId})`))
+    .then(() => console.log(timeEntryId))
     .catch(handleError);
 }
 

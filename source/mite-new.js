@@ -259,6 +259,7 @@ async function main(note, project, service, minutes, date) {
   })
   .then((data) => data.time_entry.id)
   .then((timeEntryId) => {
+    // output the id of the entry which was started for piping
     if (startTracker) {
       return miteTracker.start(timeEntryId)
         .then(() => {

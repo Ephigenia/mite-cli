@@ -42,8 +42,8 @@ async function main(timeEntryId) {
     throw new MissingRequiredArgumentError('Missing required argument [timeEntryId]');
   }
   mite.tracker.start(timeEntryId)
-    // TODO change output to just the ID when tty is off
-    .then(() => console.log(`Successfully started the time entry (id: ${timeEntryId})`))
+    // output the id of the entry which was started for piping
+    .then(() => console.log(timeEntryId))
     .catch(handleError);
 }
 
