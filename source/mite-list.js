@@ -197,6 +197,10 @@ function getRequestOptions(period, program) {
       case 'month':
         from.setMonth(from.getMonth() - parseInt(matches[1], 10));
         break;
+      case 'y':
+      case 'year':
+        from.setFullYear(from.getFullYear() - parseInt(matches[1], 10));
+        break;
     }
     program.from = from.toISOString().substr(0, 10);
     program.to = (new Date).toISOString().substr(0, 10);
