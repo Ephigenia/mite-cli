@@ -65,6 +65,7 @@ Easy to use CLI tool for creating, listing, starting and stopping time tracking 
     - [Batch-Edit Time Entries](#batch-edit-time-entries)
     - [Monthly/Daily summary](#monthlydaily-summary)
     - [Generating PDFs](#generating-pdfs)
+    - [Tmux Integration](#tmux-integration)
 - [Other Projects](#other-projects)
 - [Contributing](#contributing)
 - [License](#license)
@@ -905,6 +906,11 @@ The most common use case for creating pdfs is when a client asks for a nice look
     NO_COLOR mite-cli list last_month --project-id 1234 --columns=date,note,duration --format md | md-to-pdf > "./time-entries-$(date +%Y%m%d).pdf"
 
 `md-to-pdf` can be improved by adding custom stylesheets, templates for headers and footers and can be adjusted to your needs.
+
+Tmux Integration
+-------------------------------------------------------------------------------
+
+Keep track of your daily and monthly efforts right in the status bar of tmux using the [tmux-mite-cli](https://github.com/Ephigenia/tmux-mite-cli) plugin. Currently in alpha stage.
 
 
 Other Projects
