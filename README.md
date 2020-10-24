@@ -113,6 +113,7 @@ Commands:
   open               open the given time entry in browser
   project            create/delete/list/update a single project
   projects           list, filter, archive/unarchive & search projects
+  resume             resume most recent entry
   service            create/delete/list/update single service
   services           list, filter & search services
   start              start the tracker for the given id, will also stop allready running entry
@@ -152,18 +153,23 @@ Or use it directly using [`npx`](https://www.npmjs.com/package/npx):
 Configuration
 ===============================================================================
 
-Before you can start you’ll have to setup your mite account and API key which you can find in your mite "Account" tab.
+Before you can start, you’ll need to setup the mite account name ("mycompany" in
+https://**mycompany**.mite.yo.lk) and API key ("Account" -> "My Account").
 
     mite config set account <name>
     mite config set apiKey <key>
 
-The configuration is stored in a file which is only writable and readable by you in your home directory: `~/.config/mite-cli/config.json`. (Or whatever you defined in `XDG_CONFIG_HOME`).
-
-In case you want to use multiple mite accounts please open up a [change request](https://github.com/Ephigenia/mite-cli/issues)
+The configuration is stored in `~/.mite-cli.json` or whatever you
+defined in `XDG_CONFIG_HOME`. That also means that right now only one account
+can be used at a time. There already is an [issue for different configs](https://github.com/Ephigenia/mite-cli/issues/36).
 
 Configuration Options
 --------------------------------------------------------------------------------
 
+- `account`
+    The mite account name, the subdomain part
+- `apiKey`
+    The user specific apiKey
 - `currency`  
     defines the currency used for displaying money values
 - `customersColumns`  
