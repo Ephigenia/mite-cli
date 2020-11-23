@@ -18,7 +18,7 @@ program.command('install')
     'when mite is installed globally.'
   )
   .action(() => {
-    autoComplete.install()
+    return autoComplete.install()
       .catch(err => {
         throw new GeneralError('error while installing autocompletion for mite ' + err);
       })
@@ -35,9 +35,9 @@ program.command('uninstall')
       .catch(handleError);
   });
 
-program.parse(process.argv);
+program.on('command:*', function (operands) {
+  console.error(`error: unknown command '${operands[0]}'`);
+  process.exit(1);
+});
 
-if (!program.args.length) {
-  program.help();
-  process.exit();
-}
+program.parse(process.argv);
