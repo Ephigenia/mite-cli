@@ -24,6 +24,7 @@ try {
 }
 
 nconf.defaults({
+  cacheFilename: path.resolve(path.join(homedir, '.mite-cli-cache.json')),
   currency: '€',
   applicationName: `mite-cli/${pkg.version}`,
   customersColumns: customersCommand.columns.default,

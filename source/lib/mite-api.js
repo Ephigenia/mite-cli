@@ -4,9 +4,9 @@ const util = require('util');
 const assert = require('assert');
 
 const miteApi = require('mite-api');
-
 const MiteTracker = require('./mite-tracker');
 const { BUDGET_TYPE } = require('./../lib/constants');
+const Cache = require('./cache');
 
 /**
  * @typedef MiteTimeEntryTracker
@@ -58,6 +58,7 @@ class MiteApiWrapper {
     this.config = config;
     this.mite = miteApi(config);
     this.tracker = new MiteTracker(config);
+    this.cache = new Cache(config.cacheFilename);
   }
 
   /**
@@ -292,14 +293,19 @@ class MiteApiWrapper {
     return a - b;
   }
 
-  filterItem(item, regexp) {
-    return regexp.test((item || {}).name);
+  removeItemByArchived(item, archivedFlag) {
+    if (typeof archivedFlag === 'boolean') {
+      return item.archived === archivedFlag;
+    }
+    return true;
   }
 
-  filterItems(items, query) {
-    if (!query) return items;
-    const queryRegexp = new RegExp(query, 'i');
-    return items.filter(item => this.filterItem(item, queryRegexp));
+  itemMatchQuery(item, query) {
+    if (query) {
+      const regexp = new RegExp(query, 'i');
+      return regexp.test((item || {}).name)
+    }
+    return true;
   }
 
   /**
@@ -318,21 +324,26 @@ class MiteApiWrapper {
     };
     const itemNamePluralCamelCased = itemName.substr(0, 1).toUpperCase() + itemName.substr(1) + 's';
     const opts = Object.assign({}, defaultOpts, options);
-    return Promise.all([
-      util.promisify(this.mite['get' + itemNamePluralCamelCased])(opts),
-      util.promisify(this.mite['getArchived' + itemNamePluralCamelCased])(opts),
-    ])
-    .then(results => Array.prototype.concat.apply([], results))
-    .then(items => items.map(c => c[itemName]))
-    .then(items => items.filter(item => {
-      if (typeof options.archived === 'boolean') {
-        return item.archived === options.archived;
-      }
-      return true;
-    }))
-    .then(items => this.filterItems(items, options.query))
-    // always sort by name
-    .then(items => this.sort(items, 'name'));
+
+    const cacheKey = ['getItemsAndArchived', itemName, options];
+    let items = await this.cache.get(cacheKey);
+    if (!items) {
+      items = await Promise.all([
+        util.promisify(this.mite['get' + itemNamePluralCamelCased])(opts),
+        util.promisify(this.mite['getArchived' + itemNamePluralCamelCased])(opts),
+      ]);
+      items = Array.prototype.concat.apply([], items)
+        .map(c => c[itemName])
+        .filter(item => this.removeItemByArchived(item, options.archived))
+        .filter(item => this.itemMatchQuery(item, options.query));
+      this.sort(items, 'name');
+
+      // cache values for 24 hours
+      await this.cache.set(cacheKey, items, { ttl: 5 * 24 * 3600 });
+      await this.cache.save();
+    }
+
+    return items;
   }
 
   async getCustomers (options = {}) {
