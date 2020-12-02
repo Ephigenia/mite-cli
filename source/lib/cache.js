@@ -19,7 +19,7 @@ class Cache {
   createCacheItem(value, options) {
     const now = new Date();
     const timestamp = now.getTime();
-    const expire = options.expire || timestamp + (options.ttl * 1000);
+    const expire = options.expire || timestamp + (options.ttl * 1000);
     return { value, timestamp, expire };
   }
 
@@ -32,10 +32,8 @@ class Cache {
     if (this.loaded) {
       return this;
     }
-    try {
-      const content = await fs.promises.readFile(this.filename);
-      this.cache = this.deserialize(content);
-    } catch (err) {}
+    const content = await fs.promises.readFile(this.filename);
+    this.cache = this.deserialize(content);
     this.loaded = true;
     return this;
   }
@@ -47,6 +45,11 @@ class Cache {
 
   key(input) {
     return JSON.stringify(input);
+  }
+
+  clear() {
+    this.cache = {};
+    return this;
   }
 
   async set(key, value, { ttl, expire }) {
@@ -61,7 +64,7 @@ class Cache {
     // only return the item’s value when it’s not expired
     if (item && !this.isExpired(item)) {
       return item.value;
-    };
+    }
     return undefined;
   }
 

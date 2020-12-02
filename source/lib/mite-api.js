@@ -303,7 +303,7 @@ class MiteApiWrapper {
   itemMatchQuery(item, query) {
     if (query) {
       const regexp = new RegExp(query, 'i');
-      return regexp.test((item || {}).name)
+      return regexp.test((item || {}).name);
     }
     return true;
   }
