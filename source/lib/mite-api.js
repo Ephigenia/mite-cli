@@ -339,7 +339,7 @@ class MiteApiWrapper {
       this.sort(items, 'name');
 
       // cache values for 24 hours
-      await this.cache.set(cacheKey, items, { ttl: 5 * 24 * 3600 });
+      await this.cache.set(cacheKey, items, { ttl: this.config.cacheTtl });
       await this.cache.save();
     }
 
