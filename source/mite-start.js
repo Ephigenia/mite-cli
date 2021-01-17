@@ -18,7 +18,8 @@ program
     '-l, --last',
     're-start time-tracking of the last created time-entry',
   )
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   Start the time entry with the id 127831
@@ -26,7 +27,7 @@ Examples:
 
   Start the most recently created time-entry
     mite start --last
-`));
+`);
 
 async function main(timeEntryId) {
   // the "magic" entry id "last" acts like the "--last" option

@@ -15,7 +15,8 @@ program
   .description('Deletes a specific service', {
     serviceId: 'Id of the service which should get delete'
   })
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   Delete a single service
@@ -23,7 +24,7 @@ Examples:
 
   Delete a whole set of services
     mite services --columns id --archived yes --format text | xargs -n1 mite service delete
-`));
+`);
 
 function main(serviceId) {
   if (!serviceId) {

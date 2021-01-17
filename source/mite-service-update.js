@@ -36,7 +36,8 @@ program
     'will update also the associated time-entries when changing billable ' +
     'state or hourly rate',
   )
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   Put a service into the archive:
@@ -56,7 +57,7 @@ Examples:
 
   Unarchive all archived services
     mite services --archived false --columns id --format text | xargs -n1 mite service update --archived true
-  `));
+  `);
 
 function main(serviceId) {
   if (!serviceId) {

@@ -124,8 +124,8 @@ Can be single dates, duraions and weekday names: \n\
       return val;
     })
   )
-  .on('--help', function() {
-    console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   list all entries from the current month:
@@ -167,8 +167,7 @@ Examples:
 
   Create PDF with time entries from a specific project for the last month
     NO_COLOR=1 mite list last-month --project-id 1234 --columns date,service,note,duration --format md | md-to-pdf
-`);
-  })
+`)
   .parse(process.argv);
 
 /**

@@ -30,7 +30,8 @@ program
     '--search <regexp>',
     'optional case-insensitive regular expression matching on the name'
   )
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   show all services
@@ -47,7 +48,7 @@ Examples:
 
   export all archived services as csv
     mite service list --columns id,name,hourly_rate,billable --archived true --format csv > all_services.csv
-  `));
+  `);
 
 async function main() {
   const miteApi = require('./lib/mite-api')(config.get());

@@ -24,7 +24,8 @@ Use the --force argument if you want to bypass that restriction as admin.`,
     '--force',
     'bypass user id or role restrictions as a admin or owner'
   )
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   Unlock a single entry identified by it’s id:
@@ -32,7 +33,7 @@ Examples:
 
   Unlock multiple entries selected by using mite list:
     mite list this_month --search "query" --columns id --format text | xargs -n1 mite unlock
-  `));
+  `);
 
 function main (timeEntryId) {
   if (!timeEntryId) {

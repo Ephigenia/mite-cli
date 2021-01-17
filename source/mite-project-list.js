@@ -37,7 +37,8 @@ program
     commandOptions.sort.description(projectsCommand.sort.options),
     projectsCommand.sort.default
   ))
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   list all projects
@@ -66,7 +67,7 @@ Examples:
 
   use the resulting projects in another command to archive the listed projects
     mite projects list --columns id --format text | xargs -n1 mite project update --archived false
-  `));
+  `);
 
 /**
  * Filter function which searches for the given query in the project’s

@@ -32,7 +32,8 @@ as starting values. Note that some users are not able to create new projects.`
     '--note <note>',
     'Optional Note of the project',
   )
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   Create a new project with a overall budget of 5000:
@@ -41,7 +42,7 @@ Examples:
 --hourly-rate 80.00 \
 --budget 5000 \
 --budget-type cents
-`));
+`);
 
 function main(name) {
   if (typeof name !== 'string' || !name) {

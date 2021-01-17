@@ -34,7 +34,8 @@ program
     'will update also the associated time-entries when changing archived ' +
     'state or hourly rate',
   )
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   Put a customer into the archive:
@@ -51,7 +52,7 @@ Examples:
 
   Unarchive all archived customers
     mite customers --columns id --archived true --format text | xargs -n1 mite customer update --archived false
-  `));
+  `);
 
 function main(customerId) {
   if (!customerId) {

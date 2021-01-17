@@ -26,12 +26,13 @@ Note that some users are not able to create new customers.`
     '--note <note>',
     'Optional additional note of the customer',
   )
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   Create a new customer with an hourly rate of 80:
     mite customer new --name "World Company" --hourly-rate 80
-`));
+`);
 
 function main(name) {
   if (typeof name !== 'string' || !name) {

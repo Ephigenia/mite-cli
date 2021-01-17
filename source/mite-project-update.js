@@ -37,7 +37,8 @@ program
     'will update also the associated time-entries when changing archived ' +
     'stat or, hourly rate',
   )
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
 Put a project into the archive:
@@ -54,7 +55,7 @@ Unarchive all archived projects
 
 Update the hourly_rate and update all time-entries
   mite project update --hourly-rate 9000 --update-entries 1234
-`));
+`);
 
 function main(projectId) {
   if (!projectId) {

@@ -18,7 +18,8 @@ program
       customerId: 'Id of the customer that should get deleted'
     }
   )
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   Delete a single customer
@@ -26,7 +27,7 @@ Examples:
 
   Delete a whole set of customers
     mite customers --columns id --archived yes --format text | xargs -n1 mite customer delete
-  `));
+  `);
 
 function main(customerId) {
   if (!customerId) {

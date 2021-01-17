@@ -61,7 +61,8 @@ has the required permissions to do it.`,
     '--user-id <id>',
     'change the user who owns the time-entry (requires admin account)'
   )
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   Interactively change the note of the given entry:
@@ -96,7 +97,7 @@ Examples:
 
   Change the note for the recently created entry
     mite amend last
-  `));
+  `);
 
 const miteTracker = tracker(config.get());
 const getTimeEntryPromise = util.promisify(mite.mite.getTimeEntry);

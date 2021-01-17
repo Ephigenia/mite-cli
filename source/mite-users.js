@@ -59,7 +59,8 @@ Note that users with the role time-tracker will not be able to list users!
     commandOptions.sort.description(usersCommand.sort.options),
     usersCommand.sort.default
   ))
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   list all users
@@ -79,7 +80,7 @@ Examples:
 
   export all users to a csv file
     mite users --columns id,role,name,email,archived,language --format csv > users.csv
-  `));
+  `);
 
 /**
  * Filter function for matching a user against a search query which searches

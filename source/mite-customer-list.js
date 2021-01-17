@@ -38,7 +38,8 @@ Note that users with the role time tracker will not be able to list customers!
     commandOptions.sort.description(customersCommand.sort.options),
     customersCommand.sort.default
   ))
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   Search for specific customers
@@ -55,7 +56,7 @@ Examples:
 
   Use resulting customers to update their archived state
     mite customer list --search company 1 --colums id --format text | xargs -n1 mite customer update --archived false
-  `));
+  `);
 
 async function main() {
   const miteApi = require('./lib/mite-api')(config.get());

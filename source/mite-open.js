@@ -19,7 +19,8 @@ program
       timeEntryId: 'optional time-entry id which should be opened in the browser'
     }
   )
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   Open the organizations mite homepage in the system’s default browser:
@@ -27,7 +28,7 @@ Examples:
 
   Open the given time entry detail page in the default browser:
     mite open 128372
-  `));
+  `);
 
 function main(timeEntryId) {
   return new Promise((resolve, reject) => {

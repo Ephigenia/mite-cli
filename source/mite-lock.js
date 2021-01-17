@@ -24,7 +24,8 @@ can only be unlocked by an admin or owner.`,
     '--force',
     'try to bypass user id or role restrictions as a admin or owner'
   )
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   Lock a single entry identified by it’s id:
@@ -32,7 +33,7 @@ Examples:
 
   Lock multiple entries selected by using mite list:
     mite list this_month --search "query" --columns id --format text | xargs -n1 mite lock
-  `));
+  `);
 
 function main(timeEntryId) {
   if (!timeEntryId) {
