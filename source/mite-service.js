@@ -15,5 +15,4 @@ program
 // show help message when the required first argument is not given
 if (!program.args.length) {
   program.help();
-  process.exit();
 }
