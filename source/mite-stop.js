@@ -25,7 +25,7 @@ try {
     .version(pkg.version)
     .description('stops any running time entry')
     .action(main)
-    .parse(process.argv);
+    .parse();
 } catch (err) {
   handleError(err);
 }

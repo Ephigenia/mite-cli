@@ -168,7 +168,7 @@ Examples:
   Create PDF with time entries from a specific project for the last month
     NO_COLOR=1 mite list last-month --project-id 1234 --columns date,service,note,duration --format md | md-to-pdf
 `)
-  .parse(process.argv);
+  .parse();
 
 /**
  * Returns the request options for requesting the time entries or grouped

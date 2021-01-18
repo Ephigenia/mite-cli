@@ -212,7 +212,7 @@ async function main(timeEntryId, note) {
 try {
   program
     .action(main)
-    .parse(process.argv);
+    .parse();
 } catch (err) {
   handleError(err);
 }

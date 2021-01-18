@@ -71,7 +71,7 @@ https://${config.get('account')}.mite.yo.lk/reports/projects/${projectId}`);
 }
 
 try {
-  program.parse(process.argv);
+  program.parse();
   main(program.name).catch(handleError);
 } catch (err) {
   handleError(err);

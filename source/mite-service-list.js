@@ -77,7 +77,7 @@ async function main() {
 } // main
 
 try {
-  program.action(main).parse(process.argv);
+  program.action(main).parse();
 } catch (err) {
   handleError(err);
 }

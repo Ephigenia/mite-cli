@@ -80,7 +80,7 @@ function main(serviceId) {
 try {
   program
     .action(main)
-    .parse(process.argv);
+    .parse();
 } catch (err) {
   handleError(err);
 }

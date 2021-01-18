@@ -58,7 +58,7 @@ https://${config.get('account')}.mite.yo.lk/customers/${customerId}/edit`);
 }
 
 try {
-  program.parse(process.argv);
+  program.parse();
   main(program.name).catch(handleError);
 } catch (err) {
   handleError(err);

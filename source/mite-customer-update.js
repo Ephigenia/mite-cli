@@ -74,7 +74,7 @@ function main(customerId) {
 try {
   program
     .action(main)
-    .parse(process.argv);
+    .parse();
 } catch (err) {
   handleError(err);
 }

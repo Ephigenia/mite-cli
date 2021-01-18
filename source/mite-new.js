@@ -69,7 +69,7 @@ Examples:
         process.exit(1);
       });
   })
-  .parse(process.argv);
+  .parse();
 
 // show help message when number of arguments is to much
 if (process.argv.length > 7)  {

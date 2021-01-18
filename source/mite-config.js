@@ -72,7 +72,7 @@ program.command('list')
   .description('list all currently defined config vars')
   .action(() => console.log(config.get()));
 
-program.parse(process.argv);
+program.parse();
 
 if (!program.args.length) {
   program.help();
