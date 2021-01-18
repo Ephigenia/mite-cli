@@ -30,13 +30,14 @@ Examples:
 `);
 
 async function main(timeEntryId) {
+  const opts = program.opts();
   // the "magic" entry id "last" acts like the "--last" option
   if (String(timeEntryId).toLowerCase()  === 'last') {
-    program.last = true;
+    opts.last = true;
   }
   // "--last" was used, ignore timeEntryId and use the id of the latest entry
   // of the current user if there’s one
-  if (program.last) {
+  if (opts.last) {
     timeEntryId = (await mite.getMyRecentTimeEntry() || {}).id;
   }
   if (!timeEntryId) {

@@ -54,18 +54,19 @@ Examples:
     mite customers --columns id --archived true --format text | xargs -n1 mite customer update --archived false
   `);
 
-function main(customerId) {
+function main(customerId, opts) {
   if (!customerId) {
     throw new MissingRequiredArgumentError('Missing required <customerId>');
   }
   const mite = miteApi(config.get());
   const data = {
-    ...(typeof program.archived === 'boolean' && { archived: program.archived }),
-    ...(typeof program.hourlyRate === 'number' && { hourly_rate: program.hourlyRate }),
-    ...(typeof program.name === 'string' && { name: program.name }),
-    ...(typeof program.note === 'string' && { note: program.note }),
-    ...(typeof program.updateEntries === 'boolean' && { update_hourly_rate_on_time_entries: true }),
+    ...(typeof opts.archived === 'boolean' && { archived: opts.archived }),
+    ...(typeof opts.hourlyRate === 'number' && { hourly_rate: opts.hourlyRate }),
+    ...(typeof opts.name === 'string' && { name: opts.name }),
+    ...(typeof opts.note === 'string' && { note: opts.note }),
+    ...(typeof opts.updateEntries === 'boolean' && { update_hourly_rate_on_time_entries: true }),
   };
+
   return util.promisify(mite.updateCustomer)(customerId, data)
     .then(() => console.log(`Successfully updated customer (id: ${customerId})`))
     .catch(handleError);
@@ -73,7 +74,7 @@ function main(customerId) {
 
 try {
   program
-    .action(main)
+    .action(main, program.opts())
     .parse();
 } catch (err) {
   handleError(err);

@@ -51,22 +51,23 @@ Examples:
   `);
 
 async function main() {
+  const opts = program.opts();
   const miteApi = require('./lib/mite-api')(config.get());
 
-  const opts = {
+  const options = {
     limit: 1000,
     offset: 0,
-    ...(program.search && { query: program.search }),
+    ...(opts.search && { query: opts.search }),
   };
 
-  return miteApi.getServices(opts)
+  return miteApi.getServices(options)
     .then(services => services
-      .filter(({ archived }) => program.archived === 'all' ? true : archived === program.archived)
-      .filter(({ billable }) => program.billable === 'all' ? true : billable === program.billable)
+      .filter(({ archived }) => opts.archived === 'all' ? true : archived === opts.archived)
+      .filter(({ billable }) => opts.billable === 'all' ? true : billable === opts.billable)
     )
     .then(items => miteApi.sort(
       items,
-      commandOptions.sort.resolve(program.sort, servicesCommand.sort.options),
+      commandOptions.sort.resolve(opts.sort, servicesCommand.sort.options),
     ))
     .then(items => {
       const columns = commandOptions.columns.resolve(program.columns, servicesCommand.columns.options);

@@ -58,18 +58,19 @@ Update the hourly_rate and update all time-entries
 `);
 
 function main(projectId) {
+  const opts = program.opts();
   if (!projectId) {
     throw new MissingRequiredArgumentError('Missing required <projectId>');
   }
   const mite = miteApi(config.get());
   const data = {
-    ...(typeof program.archived === 'boolean' && { archived: program.archived }),
-    ...(program.budgetType && { budget_type: program.budgetType }),
-    ...(program.budget && { budget: program.budget }),
-    ...(typeof program.hourlyRate === 'number' && { hourly_rate: program.hourlyRate }),
-    ...(typeof program.name === 'string' && { name: program.name }),
-    ...(typeof program.note === 'string' && { note: program.note }),
-    ...(typeof program.updateEntries === 'boolean' && { update_hourly_rate_on_time_entries: true }),
+    ...(typeof opts.archived === 'boolean' && { archived: opts.archived }),
+    ...(opts.budgetType && { budget_type: opts.budgetType }),
+    ...(opts.budget && { budget: opts.budget }),
+    ...(typeof opts.hourlyRate === 'number' && { hourly_rate: opts.hourlyRate }),
+    ...(typeof opts.name === 'string' && { name: opts.name }),
+    ...(typeof opts.note === 'string' && { note: opts.note }),
+    ...(typeof opts.updateEntries === 'boolean' && { update_hourly_rate_on_time_entries: true }),
   };
 
   return util.promisify(mite.updateProject)(projectId, data)

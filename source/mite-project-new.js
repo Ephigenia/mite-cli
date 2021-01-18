@@ -44,19 +44,19 @@ Examples:
 --budget-type cents
 `);
 
-function main(name) {
+function main(name, opts) {
   if (typeof name !== 'string' || !name) {
     throw new MissingRequiredArgumentError('Missing or empty required option --name <name>');
   }
 
   const data = {
-    ...(typeof program.archived === 'boolean' && { archived: program.archived }),
-    ...(program.budgetType && { budget_type: program.budgetType }),
-    ...(program.budget && { budget: program.budget }),
-    ...(program.customerId && { 'customer_id': program.customerId }),
-    ...(typeof program.hourlyRate === 'number' && { hourly_rate: program.hourlyRate }),
+    ...(typeof opts.archived === 'boolean' && { archived: opts.archived }),
+    ...(opts.budgetType && { budget_type: opts.budgetType }),
+    ...(opts.budget && { budget: opts.budget }),
+    ...(opts.customerId && { 'customer_id': opts.customerId }),
+    ...(typeof opts.hourlyRate === 'number' && { hourly_rate: opts.hourlyRate }),
     ...(typeof name === 'string' && { name: name }),
-    ...(typeof program.note === 'string' && { note: program.note })
+    ...(typeof opts.note === 'string' && { note: opts.note })
   };
 
   const mite = miteApi(config.get());
@@ -72,7 +72,7 @@ https://${config.get('account')}.mite.yo.lk/reports/projects/${projectId}`);
 
 try {
   program.parse();
-  main(program.name).catch(handleError);
+  main(program.name, program.opts()).catch(handleError);
 } catch (err) {
   handleError(err);
 }

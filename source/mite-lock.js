@@ -36,13 +36,14 @@ Examples:
   `);
 
 function main(timeEntryId) {
+  const opts = program.opts();
   if (!timeEntryId) {
     throw new MissingRequiredArgumentError('Missing required <timeEntryId>');
   }
   const mite = miteApi(config.get());
   const data = {
     locked: true,
-    ...(typeof program.force === 'boolean' && { force: program.force })
+    ...(typeof opts.force === 'boolean' && { force: opts.force })
   };
   return util.promisify(mite.updateTimeEntry)(timeEntryId, data)
     .then(() => console.log(`Successfully locked time entry (id: ${timeEntryId})`))

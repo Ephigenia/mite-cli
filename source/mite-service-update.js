@@ -60,17 +60,18 @@ Examples:
   `);
 
 function main(serviceId) {
+  const opts = program.opts();
   if (!serviceId) {
     throw new MissingRequiredArgumentError('Missing required <serviceId>');
   }
   const mite = miteApi(config.get());
   const data = {
-    ...(typeof program.archived === 'boolean' && { archived: program.archived }),
-    ...(typeof program.billable === 'boolean' && { billable: program.billable }),
-    ...(typeof program.hourlyRate === 'number' && { hourly_rate: program.hourlyRate }),
-    ...(typeof program.name === 'string' && { name: program.name }),
-    ...(typeof program.note === 'string' && { note: program.note }),
-    ...(typeof program.updateEntries === 'boolean' && { update_hourly_rate_on_time_entries: true }),
+    ...(typeof opts.archived === 'boolean' && { archived: opts.archived }),
+    ...(typeof opts.billable === 'boolean' && { billable: opts.billable }),
+    ...(typeof opts.hourlyRate === 'number' && { hourly_rate: opts.hourlyRate }),
+    ...(typeof opts.name === 'string' && { name: opts.name }),
+    ...(typeof opts.note === 'string' && { note: opts.note }),
+    ...(typeof opts.updateEntries === 'boolean' && { update_hourly_rate_on_time_entries: true }),
   };
   return util.promisify(mite.updateProject)(serviceId, data)
     .then(() => console.log(`Successfully updated service (id: ${serviceId})`))

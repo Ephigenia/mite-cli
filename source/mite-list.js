@@ -178,7 +178,7 @@ Examples:
  * @param {object} program
  * @return {Object<String, any>} time entries or grouped time entries
  */
-function getRequestOptions(period, program) {
+function getRequestOptions(period, opts) {
   // use notation of "3d" or "5w" to translate into from and to time periods
   const matches = String(period).match(/^(\d+)(d|w|m|day|week|month)s?$/);
   if (matches) {
@@ -201,10 +201,11 @@ function getRequestOptions(period, program) {
         from.setFullYear(from.getFullYear() - parseInt(matches[1], 10));
         break;
     }
-    program.from = from.toISOString().substr(0, 10);
-    program.to = (new Date).toISOString().substr(0, 10);
+    opts.from = from.toISOString().substr(0, 10);
+    opts.to = (new Date).toISOString().substr(0, 10);
     period = undefined;
   }
+
   // mite’s "periods" strings using underscore like in "this_month", "this_week"
   // but sometimes the user enters a minus instead of underscore, then replace
   // it
@@ -237,24 +238,24 @@ function getRequestOptions(period, program) {
   }
 
   const data = {
-    ...(typeof program.billable === 'boolean' && { billable: program.billable }),
-    ...(program.customerId && { customer_id: program.customerId }),
-    ...(program.reversed && { direction: 'asc' }),
-    ...(program.groupBy && { group_by: program.groupBy }),
-    ...(program.limit && { limit: program.limit }),
-    ...(typeof program.locked === 'boolean' && { locked: program.locked }),
-    ...(program.search && { note: program.search }),
-    ...(program.projectId && { project_id: program.projectId }),
-    ...(program.serviceId && { service_id: program.serviceId }),
-    ...(program.sort && { sort: program.sort }),
-    ...(typeof program.tracking === 'boolean' && { tracking: program.tracking }),
-    ...(program.userId && { user_id: program.userId}),
+    ...(typeof opts.billable === 'boolean' && { billable: opts.billable }),
+    ...(opts.customerId && { customer_id: opts.customerId }),
+    ...(opts.reversed && { direction: 'asc' }),
+    ...(opts.groupBy && { group_by: opts.groupBy }),
+    ...(opts.limit && { limit: opts.limit }),
+    ...(typeof opts.locked === 'boolean' && { locked: opts.locked }),
+    ...(opts.search && { note: opts.search }),
+    ...(opts.projectId && { project_id: opts.projectId }),
+    ...(opts.serviceId && { service_id: opts.serviceId }),
+    ...(opts.sort && { sort: opts.sort }),
+    ...(typeof opts.tracking === 'boolean' && { tracking: opts.tracking }),
+    ...(opts.userId && { user_id: opts.userId}),
   };
 
   // add optional time period using from & to
-  if (program.from && program.to) {
-    data.from = program.from;
-    data.to = program.to;
+  if (opts.from && opts.to) {
+    data.from = opts.from;
+    data.to = opts.to;
   } else if (period) {
     data.at = period;
   }
@@ -266,18 +267,18 @@ function getRequestOptions(period, program) {
  * Callback function to filter time entries which are shown depending on the
  * command line options
  *
- * @param {object} program
+ * @param {object} opts
  * @param {MiteTimeEntry} entry
  * @return {boolean}
  */
-function filterData(program, row) {
+function filterData(opts, row) {
   let valid = true;
-  if (program.minDuration) {
-    const minDuration = formater.durationToMinutes(program.minDuration, 10);
+  if (opts.minDuration) {
+    const minDuration = formater.durationToMinutes(opts.minDuration, 10);
     valid &= row.minutes >= minDuration;
   }
-  if (program.maxDuration) {
-    const maxDuration = formater.durationToMinutes(program.maxDuration, 10);
+  if (opts.maxDuration) {
+    const maxDuration = formater.durationToMinutes(opts.maxDuration, 10);
     valid &= row.minutes <= maxDuration;
   }
   return valid;
@@ -299,29 +300,30 @@ function getReport(items, columns, format) {
 
 function main(period) {
   const mite = miteApi(config.get());
+  const opts = program.opts();
 
-  const requestOpts = getRequestOptions(period, program);
+  const requestOpts = getRequestOptions(period, opts);
   // "columns" default option is different
-  if (!program.columns) {
+  if (!opts.columns) {
     // when groupBy is used, make sure that revenue and duration are used
-    if (program.groupBy) {
-      program.columns = program.groupBy + ',revenue,duration';
+    if (opts.groupBy) {
+      opts.columns = opts.groupBy + ',revenue,duration';
     } else {
-      program.columns = config.get().listColumns;
+      opts.columns = config.get().listColumns;
     }
   }
-  const columns = columnOptions.resolve(program.columns, listCommand.columns.options);
+  const columns = columnOptions.resolve(opts.columns, listCommand.columns.options);
 
   mite.getTimeEntries(requestOpts, (err, results) => {
     if (err) return handleError(err);
 
     // decide wheter to output grouped report or single entry report
     let items = results
-      .map(data => data[program.groupBy ? 'time_entry_group' : 'time_entry'])
+      .map(data => data[opts.groupBy ? 'time_entry_group' : 'time_entry'])
       .filter(v => v)
-      .filter(filterData.bind(this, program))
+      .filter(filterData.bind(this, opts))
       ;
-    const report = getReport(items, columns, program.format);
+    const report = getReport(items, columns, opts.format);
     console.log(report);
   });
 } // main

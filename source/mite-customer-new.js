@@ -34,16 +34,16 @@ Examples:
     mite customer new --name "World Company" --hourly-rate 80
 `);
 
-function main(name) {
+function main(name, opts) {
   if (typeof name !== 'string' || !name) {
     throw new MissingRequiredArgumentError('Missing or empty required option --name <name>');
   }
 
   const data = {
-    ...(typeof program.archived === 'boolean' && { archived: program.archived }),
-    ...(typeof program.hourlyRate === 'number' && { hourly_rate: program.hourlyRate }),
+    ...(typeof opts.archived === 'boolean' && { archived: opts.archived }),
+    ...(typeof opts.hourlyRate === 'number' && { hourly_rate: opts.hourlyRate }),
     ...(typeof name === 'string' && { name: name }),
-    ...(typeof program.note === 'string' && { note: program.note })
+    ...(typeof opts.note === 'string' && { note: opts.note })
   };
 
   const mite = miteApi(config.get());
@@ -59,7 +59,7 @@ https://${config.get('account')}.mite.yo.lk/customers/${customerId}/edit`);
 
 try {
   program.parse();
-  main(program.name).catch(handleError);
+  main(program.name, program.opts()).catch(handleError);
 } catch (err) {
   handleError(err);
 }

@@ -138,23 +138,23 @@ function inquireNote(updateData, note) {
   });
 }
 
-async function getUpdatedTimeEntryData(program, note, timeEntry) {
+async function getUpdatedTimeEntryData(opts, note, timeEntry) {
   // prepare an object which contains the data for the time entrywhich will
   // be updated
   let updateData = {
     id: timeEntry.id,
     ...(typeof note === 'string' && { note }),
-    ...(program.date && { date_at: program.date }),
-    ...(program.projectId && { project_id: program.projectId }),
-    ...(program.serviceId && { service_id: program.serviceId }),
-    ...(program.userId && { user_id: program.userId }),
+    ...(opts.date && { date_at: opts.date }),
+    ...(opts.projectId && { project_id: opts.projectId }),
+    ...(opts.serviceId && { service_id: opts.serviceId }),
+    ...(opts.userId && { user_id: opts.userId }),
   };
 
   // substract, add or set minutes directly using the --duration option
-  if (program.duration) {
-    const durationValueStr = program.duration.replace(/[\s+-]/, '');
+  if (opts.duration) {
+    const durationValueStr = opts.duration.replace(/[\s+-]/, '');
     const minutes = formater.durationToMinutes(durationValueStr);
-    switch(program.duration.substr(0, 1)) {
+    switch(opts.duration.substr(0, 1)) {
       case '+':
         updateData.minutes = timeEntry.minutes + minutes;
         break;
@@ -166,7 +166,7 @@ async function getUpdatedTimeEntryData(program, note, timeEntry) {
     }
   }
 
-  if (program.editor) {
+  if (opts.editor) {
     // always open up editor when --editor argument was used
     return openEditor(updateData.note || timeEntry.note).then((editorContent) => {
       updateData.note = editorContent;
@@ -174,10 +174,10 @@ async function getUpdatedTimeEntryData(program, note, timeEntry) {
     });
   } else if (
     !note &&
-    !program.projectId &&
-    !program.serviceId &&
-    !program.duration &&
-    !program.userId
+    !opts.projectId &&
+    !opts.serviceId &&
+    !opts.duration &&
+    !opts.userId
   ) {
     // ask for note only when no note was passed to cli
     return inquireNote(updateData, updateData.note || timeEntry.note);
@@ -203,7 +203,7 @@ async function main(timeEntryId, note) {
   }
 
   return getTimeEntryData(timeEntryId)
-    .then(getUpdatedTimeEntryData.bind(this, program, note))
+    .then(getUpdatedTimeEntryData.bind(this, program.opts(), note))
     .then(entry => updateTimeEntry(entry.id, entry).then(() => entry))
     .then(entry => console.log(`Successfully modified note of time entry (id: ${entry.id})`))
     .catch(handleError);
