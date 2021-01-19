@@ -24,7 +24,8 @@ can only be unlocked by an admin or owner.`,
     '--force',
     'try to bypass user id or role restrictions as a admin or owner'
   )
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   Lock a single entry identified by it’s id:
@@ -32,16 +33,17 @@ Examples:
 
   Lock multiple entries selected by using mite list:
     mite list this_month --search "query" --columns id --format text | xargs -n1 mite lock
-  `));
+  `);
 
 function main(timeEntryId) {
+  const opts = program.opts();
   if (!timeEntryId) {
     throw new MissingRequiredArgumentError('Missing required <timeEntryId>');
   }
   const mite = miteApi(config.get());
   const data = {
     locked: true,
-    ...(typeof program.force === 'boolean' && { force: program.force })
+    ...(typeof opts.force === 'boolean' && { force: opts.force })
   };
   return util.promisify(mite.updateTimeEntry)(timeEntryId, data)
     .then(() => console.log(`Successfully locked time entry (id: ${timeEntryId})`))
@@ -49,7 +51,7 @@ function main(timeEntryId) {
 }
 
 try {
-  program.action(main).parse(process.argv);
+  program.action(main).parse();
 } catch (err) {
   handleError(err);
 }

@@ -42,5 +42,5 @@ if (process.argv.slice(2)[0] === 'completion') {
   const env = autoComplete.parseEnv(process.env);
   autoComplete.completion(env, program);
 } else {
-  program.parse(process.argv);
+  program.parse();
 }

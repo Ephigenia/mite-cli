@@ -11,10 +11,9 @@ program
   .command('list', 'list all projects').alias('ls')
   .command('new', 'creates a new project').alias('create')
   .command('update', 'update a single project')
-  .parse(process.argv);
+  .parse();
 
 // show help message when the required first argument is not given
 if (!program.args.length) {
   program.help();
-  process.exit();
 }

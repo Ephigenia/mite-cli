@@ -18,7 +18,8 @@ program
       projectId: 'Id of the project which should get delete'
     }
   )
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   Delete a single project
@@ -26,7 +27,7 @@ Examples:
 
   Delete a whole set of projects
     mite projects --columns id --archived yes --format text | xargs -n1 mite project delete
-`));
+`);
 
 function main(projectId) {
   if (!projectId) {
@@ -39,7 +40,7 @@ function main(projectId) {
 }
 
 try {
-  program.action(main).parse(process.argv);
+  program.action(main).parse();
 } catch (err) {
   handleError(err);
 }

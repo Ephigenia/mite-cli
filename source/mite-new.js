@@ -30,8 +30,8 @@ program
     }
   )
   .arguments('[note] [project] [service] [minutes] [date]')
-  .on('--help', function() {
-    console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   Create a new time entry interactively:
@@ -51,8 +51,7 @@ Examples:
 
   Create a note from the last git commit message
     git log -1 --pretty=%B | xargs echo -n | mite new projectx communication 30
-`);
-  })
+`)
   .action(function(note) {
     let args = Array.prototype.slice.call(arguments);
     args = args.slice(0, -1);
@@ -70,7 +69,7 @@ Examples:
         process.exit(1);
       });
   })
-  .parse(process.argv);
+  .parse();
 
 // show help message when number of arguments is to much
 if (process.argv.length > 7)  {

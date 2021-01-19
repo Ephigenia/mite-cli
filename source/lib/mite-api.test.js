@@ -1,8 +1,9 @@
 'use strict';
 
 const expect = require('chai').expect;
+
 const miteApi = require('./mite-api');
-const config = require('./../mite-config');
+const config = require('./../config');
 
 describe('mite-api wrapper', () => {
 

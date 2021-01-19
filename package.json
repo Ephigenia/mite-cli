@@ -64,14 +64,14 @@
     "preversion": "npm test && npm run lint && npm run audit:strict",
     "start": "node $npm_package_main",
     "tdd": "npm run test -- --watch",
-    "test": "mocha --check-leaks --exit source/**/*test.js",
+    "test": "mocha",
     "test:security": "snyk test --severity-threshold=high",
     "version:recommend": "conventional-recommended-bump --preset angular",
     "version": "npm run changelog && git add CHANGELOG.md"
   },
   "dependencies": {
     "chalk": "^4.0.0",
-    "commander": "^4.1.1",
+    "commander": "^7.0.0",
     "csv-string": "^4.0.1",
     "external-editor": "^3.1.0",
     "inquirer": "^7.1.0",

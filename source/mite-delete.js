@@ -14,7 +14,8 @@ program
   .description('delete a time entry', {
     timeEntryId: 'The id of the time entry which should be deleted'
   })
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   Delete a single entry identified by it’s id:
@@ -22,7 +23,7 @@ Examples:
 
   Delete multiple entries from a project selected by using mite list:
     mite list this_month --project-id 123128 --columns id --format text | xargs -n1 mite delete
-`));
+`);
 
 function main(timeEntryId) {
   if (!timeEntryId) {
@@ -39,7 +40,7 @@ function main(timeEntryId) {
 }
 
 try {
-  program.action(main).parse(process.argv);
+  program.action(main).parse();
 } catch (err) {
   handleError(err);
 }

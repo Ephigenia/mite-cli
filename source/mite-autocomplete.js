@@ -40,4 +40,4 @@ program.on('command:*', function (operands) {
   process.exit(1);
 });
 
-program.parse(process.argv);
+program.parse();

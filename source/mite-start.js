@@ -18,7 +18,8 @@ program
     '-l, --last',
     're-start time-tracking of the last created time-entry',
   )
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   Start the time entry with the id 127831
@@ -26,16 +27,17 @@ Examples:
 
   Start the most recently created time-entry
     mite start --last
-`));
+`);
 
 async function main(timeEntryId) {
+  const opts = program.opts();
   // the "magic" entry id "last" acts like the "--last" option
   if (String(timeEntryId).toLowerCase()  === 'last') {
-    program.last = true;
+    opts.last = true;
   }
   // "--last" was used, ignore timeEntryId and use the id of the latest entry
   // of the current user if there’s one
-  if (program.last) {
+  if (opts.last) {
     timeEntryId = (await mite.getMyRecentTimeEntry() || {}).id;
   }
   if (!timeEntryId) {
@@ -48,7 +50,7 @@ async function main(timeEntryId) {
 }
 
 try {
-  program.action(main).parse(process.argv);
+  program.action(main).parse();
 } catch (err) {
   handleError(err);
 }

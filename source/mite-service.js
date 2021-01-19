@@ -10,10 +10,9 @@ program
   .command('delete', 'delete a single service').alias('rm')
   .command('list', 'list services').alias('ls')
   .command('update', 'update a single service')
-  .parse(process.argv);
+  .parse();
 
 // show help message when the required first argument is not given
 if (!program.args.length) {
   program.help();
-  process.exit();
 }
