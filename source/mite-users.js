@@ -59,7 +59,8 @@ Note that users with the role time-tracker will not be able to list users!
     commandOptions.sort.description(usersCommand.sort.options),
     usersCommand.sort.default
   ))
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   list all users
@@ -79,7 +80,7 @@ Examples:
 
   export all users to a csv file
     mite users --columns id,role,name,email,archived,language --format csv > users.csv
-  `));
+  `);
 
 /**
  * Filter function for matching a user against a search query which searches
@@ -104,36 +105,37 @@ function filterUsersByQuery(query, user) {
 }
 
 async function main() {
+  const opts = program.opts();
   const miteApi = require('./lib/mite-api')(config.get());
 
-  const opts = {
+  const options = {
     limit: 1000,
     offset: 0,
-    ...(program.email && { email: program.email }),
-    ...(program.search && { query: program.search }),
+    ...(opts.email && { email: opts.email }),
+    ...(opts.search && { query: opts.search }),
   };
 
-  return miteApi.getUsers(opts)
+  return miteApi.getUsers(options)
     .then((users) => users
-      .filter(({ archived }) => program.archived === 'all' && true || archived === program.archived)
-      .filter(({ role }) => !program.role && true || program.role.indexOf(role) > -1)
-      .filter(filterUsersByQuery.bind(this, program.search))
+      .filter(({ archived }) => opts.archived === 'all' && true || archived === opts.archived)
+      .filter(({ role }) => !opts.role && true || opts.role.indexOf(role) > -1)
+      .filter(filterUsersByQuery.bind(this, opts.search))
     )
     .then(items => miteApi.sort(
       items,
-      commandOptions.sort.resolve(program.sort, usersCommand.sort.options),
+      commandOptions.sort.resolve(opts.sort, usersCommand.sort.options),
     ))
     .then((items) => {
-      const columns = commandOptions.columns.resolve(program.columns, usersCommand.columns.options);
+      const columns = commandOptions.columns.resolve(opts.columns, usersCommand.columns.options);
       const tableData = DataOutput.compileTableData(items, columns);
-      console.log(DataOutput.formatData(tableData, program.format, columns));
+      console.log(DataOutput.formatData(tableData, opts.format, columns));
     })
     .catch(handleError);
 } // main
 
 
 try {
-  program.action(main).parse(process.argv);
+  program.action(main).parse();
 } catch (err) {
   handleError(err);
 }

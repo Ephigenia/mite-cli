@@ -37,7 +37,8 @@ program
     'will update also the associated time-entries when changing archived ' +
     'stat or, hourly rate',
   )
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
 Put a project into the archive:
@@ -54,21 +55,22 @@ Unarchive all archived projects
 
 Update the hourly_rate and update all time-entries
   mite project update --hourly-rate 9000 --update-entries 1234
-`));
+`);
 
 function main(projectId) {
+  const opts = program.opts();
   if (!projectId) {
     throw new MissingRequiredArgumentError('Missing required <projectId>');
   }
   const mite = miteApi(config.get());
   const data = {
-    ...(typeof program.archived === 'boolean' && { archived: program.archived }),
-    ...(program.budgetType && { budget_type: program.budgetType }),
-    ...(program.budget && { budget: program.budget }),
-    ...(typeof program.hourlyRate === 'number' && { hourly_rate: program.hourlyRate }),
-    ...(typeof program.name === 'string' && { name: program.name }),
-    ...(typeof program.note === 'string' && { note: program.note }),
-    ...(typeof program.updateEntries === 'boolean' && { update_hourly_rate_on_time_entries: true }),
+    ...(typeof opts.archived === 'boolean' && { archived: opts.archived }),
+    ...(opts.budgetType && { budget_type: opts.budgetType }),
+    ...(opts.budget && { budget: opts.budget }),
+    ...(typeof opts.hourlyRate === 'number' && { hourly_rate: opts.hourlyRate }),
+    ...(typeof opts.name === 'string' && { name: opts.name }),
+    ...(typeof opts.note === 'string' && { note: opts.note }),
+    ...(typeof opts.updateEntries === 'boolean' && { update_hourly_rate_on_time_entries: true }),
   };
 
   return util.promisify(mite.updateProject)(projectId, data)
@@ -79,7 +81,7 @@ function main(projectId) {
 try {
   program
     .action(main)
-    .parse(process.argv);
+    .parse();
 } catch (err) {
   handleError(err);
 }

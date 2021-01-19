@@ -17,7 +17,8 @@ program
     key: 'the configuration key which should be set',
     value: 'the value which should be used'
   })
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   set the subdomain and api key that should be used
@@ -29,7 +30,7 @@ Examples:
 
   set a value of a configuration variable back to it’s default:
     mite config set listColumns
-  `))
+  `)
   .action((key, value) => {
     try {
       if (!key) {
@@ -58,21 +59,21 @@ Examples:
 
 program.command('get [key]')
   .description('get a configruation variable’s value')
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   Get the current value of the "account" config variable:
     mite config get account
-  `))
+  `)
   .action((key) => console.log(config.get(key)));
 
 program.command('list')
   .description('list all currently defined config vars')
   .action(() => console.log(config.get()));
 
-program.parse(process.argv);
+program.parse();
 
 if (!program.args.length) {
   program.help();
-  process.exit();
 }

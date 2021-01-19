@@ -24,7 +24,8 @@ Use the --force argument if you want to bypass that restriction as admin.`,
     '--force',
     'bypass user id or role restrictions as a admin or owner'
   )
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   Unlock a single entry identified by it’s id:
@@ -32,16 +33,17 @@ Examples:
 
   Unlock multiple entries selected by using mite list:
     mite list this_month --search "query" --columns id --format text | xargs -n1 mite unlock
-  `));
+  `);
 
 function main (timeEntryId) {
+  const opts = program.opts();
   if (!timeEntryId) {
     throw new MissingRequiredArgumentError('Missing required <timeEntryId>');
   }
   const mite = miteApi(config.get());
   const data = {
     locked: false,
-    ...(typeof program.force === 'boolean' && { force: program.force })
+    ...(typeof opts.force === 'boolean' && { force: opts.force })
   };
   return util.promisify(mite.updateTimeEntry)(timeEntryId, data)
     .then(() => console.log(timeEntryId))
@@ -49,7 +51,7 @@ function main (timeEntryId) {
 }
 
 try {
-  program.action(main).parse(process.argv);
+  program.action(main).parse();
 } catch (err) {
   handleError(err);
 }

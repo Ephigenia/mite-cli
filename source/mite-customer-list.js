@@ -38,7 +38,8 @@ Note that users with the role time tracker will not be able to list customers!
     commandOptions.sort.description(customersCommand.sort.options),
     customersCommand.sort.default
   ))
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   Search for specific customers
@@ -55,35 +56,37 @@ Examples:
 
   Use resulting customers to update their archived state
     mite customer list --search company 1 --colums id --format text | xargs -n1 mite customer update --archived false
-  `));
+  `);
 
+// TODO add limit option
+// TODO add offset option
 async function main() {
+  const opts = program.opts();
   const miteApi = require('./lib/mite-api')(config.get());
 
-  const opts = {
+  const options = {
     limit: 1000,
-    ...(program.search && { query: program.search })
+    ...(opts.search && { query: opts.search })
   };
 
-  return miteApi.getCustomers(opts)
+  return miteApi.getCustomers(options)
     .then((customers) => customers
-      .filter(({ archived }) => program.archived === 'all' ? true : program.archived === archived)
+      .filter(({ archived }) => opts.archived === 'all' ? true : opts.archived === archived)
     )
     .then(items => miteApi.sort(
       items,
-      commandOptions.sort.resolve(program.sort, customersCommand.sort.options),
+      commandOptions.sort.resolve(opts.sort, customersCommand.sort.options),
     ))
     .then(items => {
-      const columns = commandOptions.columns.resolve(program.columns, customersCommand.columns.options);
+      const columns = commandOptions.columns.resolve(opts.columns, customersCommand.columns.options);
       const tableData = DataOutput.compileTableData(items, columns);
-      console.log(DataOutput.formatData(tableData, program.format, columns));
+      console.log(DataOutput.formatData(tableData, opts.format, columns));
     })
     .catch(handleError);
 } // main
 
-
 try {
-  program.action(main).parse(process.argv);
+  program.action(main).parse();
 } catch (err) {
   handleError(err);
 }

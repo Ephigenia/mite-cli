@@ -37,7 +37,8 @@ program
     commandOptions.sort.description(projectsCommand.sort.options),
     projectsCommand.sort.default
   ))
-  .on('--help', () => console.log(`
+  .addHelpText('after', `
+
 Examples:
 
   list all projects
@@ -66,7 +67,7 @@ Examples:
 
   use the resulting projects in another command to archive the listed projects
     mite projects list --columns id --format text | xargs -n1 mite project update --archived false
-  `));
+  `);
 
 /**
  * Filter function which searches for the given query in the project’s
@@ -94,37 +95,38 @@ function filterProjectsByCustomerName(query, project) {
 }
 
 async function main() {
+  const opts = program.opts();
   const miteApi = require('./lib/mite-api')(config.get());
 
-  const opts = {
+  const options = {
     limit: 10000,
     // ...(program.search && { name: program.search }),
-    ...(program.search && { query: program.search }),
-    ...(program.customerId && { customer_id: program.customerId }),
+    ...(opts.search && { query: opts.search }),
+    ...(opts.customerId && { customer_id: opts.customerId }),
   };
 
-  return miteApi.getProjects(opts)
+  return miteApi.getProjects(options)
     .then(projects => projects
-      .filter(({ archived }) => program.archived === 'all' ? true : archived === program.archived)
-      .filter(filterProjectsByCustomerName.bind(null, program.customer))
+      .filter(({ archived }) => opts.archived === 'all' ? true : archived === opts.archived)
+      .filter(filterProjectsByCustomerName.bind(null, opts.customer))
     )
     .then(items => miteApi.sort(
       items,
-      commandOptions.sort.resolve(program.sort, projectsCommand.sort.options),
+      commandOptions.sort.resolve(opts.sort, projectsCommand.sort.options),
       { customer: 'customer_name' }
     ))
     .then(items => miteApi.getUsedProjectBudgets(items))
     .then(items => miteApi.getProjectsTotalRevenue(items))
     .then(items => {
-      const columns = commandOptions.columns.resolve(program.columns, projectsCommand.columns.options);
+      const columns = commandOptions.columns.resolve(opts.columns, projectsCommand.columns.options);
       const tableData = DataOutput.compileTableData(items, columns);
-      console.log(DataOutput.formatData(tableData, program.format, columns));
+      console.log(DataOutput.formatData(tableData, opts.format, columns));
     })
     .catch(handleError);
 } // main
 
 try {
-  program.action(main).parse(process.argv);
+  program.action(main).parse();
 } catch (err) {
   handleError(err);
 }
