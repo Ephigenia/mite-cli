@@ -13,6 +13,5 @@ module.exports = {
   timeout: 2000,
   ui: 'bdd',
   spec: './source/lib/**.test.js',
-  'watch-files': ['source/**/*.js'],
-  'watch-ignore': []
+  'watch-files': ['source/**/*.js']
 };
