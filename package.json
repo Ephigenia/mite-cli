@@ -80,7 +80,7 @@
     "nconf": "^0.11.2",
     "node-fetch": "^2.6.0",
     "open": "7.4.1",
-    "table": "6.0.7",
+    "table": "^6.0.3",
     "tabtab": "^3.0.2",
     "weeknumber": "^1.1.2"
   },
