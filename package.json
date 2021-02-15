@@ -81,7 +81,7 @@
     "nconf": "^0.11.2",
     "node-fetch": "^2.6.0",
     "open": "7.4.1",
-    "table": "6.0.7",
+    "table": "^6.0.3",
     "tabtab": "^3.0.2",
     "weeknumber": "^1.1.2"
   },
@@ -89,7 +89,7 @@
     "chai": "4.3.0",
     "conventional-changelog-cli": "2.1.1",
     "conventional-recommended-bump": "6.1.0",
-    "eslint": "^7.20.0",
+    "eslint": "7.20.0",
     "mocha": "8.3.0"
   }
 }
