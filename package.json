@@ -38,8 +38,8 @@
     }
   ],
   "engines": {
-    "node": ">=10.16.3",
-    "npm": ">=6.9.0"
+    "node": ">=10",
+    "npm": ">=6"
   },
   "repository": {
     "type": "git",
