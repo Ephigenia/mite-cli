@@ -1,14 +1,13 @@
-.circleci
 .DS_Store
 .editorconfig
 .eslintrc
 .github/
+.mocharc.js
 .npmignore
 .nvmrc
 .prettierignore
-.prettierignore
-.prettierignore
+CHANGELOG.md
+CONTRIBUTING.md
 coverage/
-renovate.json
 renovate.json
 source/**/*test.js
