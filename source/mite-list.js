@@ -170,97 +170,84 @@ Examples:
 `)
   .parse();
 
+function guessRequestParamsFromPeriod(period) {
+  if (!period) return {};
+
+  const periodLc = period.toLowerCase();
+  const now = new Date();
+  // use notation of "3d" or "5w" to translate into from and to time periods
+  const matches = String(periodLc).match(/^(\d+)(d|w|m|y|day|week|month|year)s?$/);
+  if (matches) {
+    const from = new Date(now.getTime());
+    const amount = parseInt(matches[1], 10);
+    switch(matches[2].substr(0, 1)) {
+      case 'd':
+        from.setDate(from.getDate() - amount);
+        break;
+      case 'w':
+          from.setDate(from.getDate() - amount * 7);
+        break;
+      case 'm':
+        from.setMonth(from.getMonth() - amount);
+        break;
+      case 'y':
+        console.log(parseInt(matches[1]));
+        from.setFullYear(from.getFullYear() - amount);
+        break;
+    }
+    return {
+      from: from.toISOString().substr(0, 10),
+      to: now.toISOString().substr(0, 10),
+    };
+  }
+
+  // check if the period is a week day name and calculate the date of this
+  // weekday, f.e. "friday" from last week becomes the date a string
+  const weekdays = new Set(['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa']);
+  const weekdayIndex = [...weekdays].indexOf(periodLc.substr(0, 2));
+  if (weekdayIndex >= 0) {
+    const todayIndex = (new Date).getDay();
+    if (todayIndex <= weekdayIndex) {
+      now.setDate(now.getDate() - (7 - weekdayIndex + todayIndex));
+    } else {
+      now.setDate(now.getDate() - weekdayIndex - 1);
+    }
+    return {
+      at: now.toISOString().substr(0, 10)
+    };
+  }
+
+  return {
+    at: String(period).replace(/-/g, '_'),
+  };
+}
+
 /**
  * Returns the request options for requesting the time entries or grouped
  * time entries for the given time entries and filtering options.
  *
  * @param {string} period
- * @param {object} program
+ * @param {object} opts
  * @return {Object<String, any>} time entries or grouped time entries
  */
 function getRequestOptions(period, opts) {
-  // use notation of "3d" or "5w" to translate into from and to time periods
-  const matches = String(period).match(/^(\d+)(d|w|m|day|week|month)s?$/);
-  if (matches) {
-    const from = new Date();
-    switch(matches[2]) {
-      case 'd':
-      case 'day':
-        from.setDate(from.getDate() - parseInt(matches[1], 10));
-        break;
-      case 'w':
-      case 'week':
-          from.setDate(from.getDate() - parseInt(matches[1], 10) * 7);
-        break;
-      case 'm':
-      case 'month':
-        from.setMonth(from.getMonth() - parseInt(matches[1], 10));
-        break;
-      case 'y':
-      case 'year':
-        from.setFullYear(from.getFullYear() - parseInt(matches[1], 10));
-        break;
-    }
-    opts.from = from.toISOString().substr(0, 10);
-    opts.to = (new Date).toISOString().substr(0, 10);
-    period = undefined;
-  }
-
-  // mite’s "periods" strings using underscore like in "this_month", "this_week"
-  // but sometimes the user enters a minus instead of underscore, then replace
-  // it
-  if (typeof period === 'string') {
-    if (!period.match(/[\d]+/)) {
-      period = period.replace(/-/g, '_');
-    }
-
-    // check if the period is a week day name and calculate the date of this
-    // weekday, f.e. "friday" from last week becomes the date a string
-    const weekdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-    const matchingWeekday = weekdays.find(weekday => {
-      return (
-        weekday === period ||
-        period.toLowerCase() === weekday.toLowerCase() ||
-        period.toLowerCase() === weekday.substr(0, 2)
-      );
-    });
-    if (matchingWeekday) {
-      const weekdayIndex = weekdays.indexOf(matchingWeekday);
-      const todayIndex = (new Date).getDay();
-      const now = new Date();
-      if (todayIndex <= weekdayIndex) {
-        now.setDate(now.getDate() - (7 - weekdayIndex + todayIndex));
-      } else {
-        now.setDate(now.getDate() - weekdayIndex - 1);
-      }
-      period = now.toISOString().substr(0, 10);
-    }
-  }
-
-  const data = {
+  return {
+    ...guessRequestParamsFromPeriod(period),
     ...(typeof opts.billable === 'boolean' && { billable: opts.billable }),
     ...(opts.customerId && { customer_id: opts.customerId }),
-    ...(opts.reversed && { direction: 'asc' }),
+    ...(opts.from && { from: opts.from}),
     ...(opts.groupBy && { group_by: opts.groupBy }),
     ...(opts.limit && { limit: opts.limit }),
     ...(typeof opts.locked === 'boolean' && { locked: opts.locked }),
-    ...(opts.search && { note: opts.search }),
     ...(opts.projectId && { project_id: opts.projectId }),
+    ...(opts.reversed && { direction: 'asc' }),
+    ...(opts.search && { note: opts.search }),
     ...(opts.serviceId && { service_id: opts.serviceId }),
     ...(opts.sort && { sort: opts.sort }),
     ...(typeof opts.tracking === 'boolean' && { tracking: opts.tracking }),
+    ...(opts.to && { to: opts.to}),
     ...(opts.userId && { user_id: opts.userId}),
   };
-
-  // add optional time period using from & to
-  if (opts.from && opts.to) {
-    data.from = opts.from;
-    data.to = opts.to;
-  } else if (period) {
-    data.at = period;
-  }
-
-  return data;
 }
 
 /**
