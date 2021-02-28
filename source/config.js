@@ -24,6 +24,8 @@ try {
 }
 
 nconf.defaults({
+  cacheFilename: path.resolve(path.join(homedir, '.mite-cli-cache.json')),
+  cacheTtl: 5 * 24 * 3600, // default ttl for file caches set to 7 days
   currency: '€',
   applicationName: `mite-cli/${pkg.version}`,
   customersColumns: customersCommand.columns.default,
