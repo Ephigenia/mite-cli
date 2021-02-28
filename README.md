@@ -8,6 +8,7 @@ Easy to use CLI tool for creating, listing, starting and stopping time tracking 
 [![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2FEphigenia%2Fmite-cli.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2FEphigenia%2Fmite-cli?ref=badge_shield)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/Ephigenia/mite-cli.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Ephigenia/mite-cli/context:javascript)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/Ephigenia/mite-cli.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Ephigenia/mite-cli/context:javascript)
+[![Rate on Openbase](https://badges.openbase.com/js/rating/ikea-availability-checker.svg)](https://openbase.com/js/ikea-availability-checker?utm_source=embedded&utm_medium=badge&utm_campaign=rate-badge)
 
 - [Features](#features)
 - [Installation](#installation)
