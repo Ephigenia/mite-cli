@@ -1,3 +1,14 @@
+## [1.7.1](https://github.com/Ephigenia/mite-cli/compare/v1.7.0...v1.7.1) (2021-03-10)
+
+
+### Bug Fixes
+
+* list guessing of time period parameter ([9040bf3](https://github.com/Ephigenia/mite-cli/commit/9040bf360eefff49c7bcace51fffb4cd48927ed7))
+* **deps:** update dependency open to v8 ([#134](https://github.com/Ephigenia/mite-cli/issues/134)) ([766f36d](https://github.com/Ephigenia/mite-cli/commit/766f36dfd6490decf507b9a3a063577916bf6be9))
+* **deps:** update dependency open to v8.0.2 ([#136](https://github.com/Ephigenia/mite-cli/issues/136)) ([ccc9e52](https://github.com/Ephigenia/mite-cli/commit/ccc9e52d6045bbf7814c8477b99650a0c842de49))
+
+
+
 # [1.7.0](https://github.com/Ephigenia/mite-cli/compare/v1.6.0...v1.7.0) (2021-02-28)
 
 
