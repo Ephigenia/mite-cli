@@ -44,6 +44,26 @@ Commit Messages
 Please follow the very common [angular commit messages guidelines](https://github.com/angular/angular/blob/master/CONTRIBUTING.md#-commit-message-guidelines).
 
 
+Testing
+===============================================================================
+
+The project has low coverage of tests right now. Some of the helper functions and api methods are covered by test. The project has preconfigured [mocha](https://mochajs.org/) test runner using [chaijs](https://www.chaijs.com/) for asserting.
+
+### Run all Tests
+
+    npm run test -s
+
+### TDD
+
+    npm run tdd -s
+
+### Run specific tests
+
+Use `grep` to run only those tests where the describe and/or it blocks are matching.
+
+    npm run tdd -s -- --grep="period"
+
+
 Releasing
 ===============================================================================
 

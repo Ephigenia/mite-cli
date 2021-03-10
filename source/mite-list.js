@@ -13,6 +13,7 @@ const listCommand = require('./lib/commands/list');
 const columnOptions = require('./lib/options/columns');
 const commandOptions = require('./lib/options');
 const { handleError } = require('./lib/errors');
+const { guessRequestParamsFromPeriod } = require('./lib/period');
 
 // no other options or comamnd line arguments used, default "period" to "today"
 if (process.argv.length === 2) {
@@ -169,58 +170,6 @@ Examples:
     NO_COLOR=1 mite list last-month --project-id 1234 --columns date,service,note,duration --format md | md-to-pdf
 `)
   .parse();
-
-function guessRequestParamsFromPeriod(period) {
-  if (!period) return {};
-
-  const periodLc = period.toLowerCase();
-  const now = new Date();
-  // use notation of "3d" or "5w" to translate into from and to time periods
-  const matches = String(periodLc).match(/^(\d+)(d|w|m|y|day|week|month|year)s?$/);
-  if (matches) {
-    const from = new Date(now.getTime());
-    const amount = parseInt(matches[1], 10);
-    switch(matches[2].substr(0, 1)) {
-      case 'd':
-        from.setDate(from.getDate() - amount);
-        break;
-      case 'w':
-          from.setDate(from.getDate() - amount * 7);
-        break;
-      case 'm':
-        from.setMonth(from.getMonth() - amount);
-        break;
-      case 'y':
-        console.log(parseInt(matches[1]));
-        from.setFullYear(from.getFullYear() - amount);
-        break;
-    }
-    return {
-      from: from.toISOString().substr(0, 10),
-      to: now.toISOString().substr(0, 10),
-    };
-  }
-
-  // check if the period is a week day name and calculate the date of this
-  // weekday, f.e. "friday" from last week becomes the date a string
-  const weekdays = new Set(['su', 'mo', 'tu', 'we', 'th', 'fr', 'sa']);
-  const weekdayIndex = [...weekdays].indexOf(periodLc.substr(0, 2));
-  if (weekdayIndex >= 0) {
-    const todayIndex = (new Date).getDay();
-    if (todayIndex <= weekdayIndex) {
-      now.setDate(now.getDate() - (7 - weekdayIndex + todayIndex));
-    } else {
-      now.setDate(now.getDate() - weekdayIndex - 1);
-    }
-    return {
-      at: now.toISOString().substr(0, 10)
-    };
-  }
-
-  return {
-    at: String(period).replace(/-/g, '_'),
-  };
-}
 
 /**
  * Returns the request options for requesting the time entries or grouped
