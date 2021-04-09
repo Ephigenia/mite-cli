@@ -33,8 +33,13 @@ class Cache {
     if (this.loaded) {
       return this;
     }
-    const content = await fs.promises.readFile(this.filename);
-    this.cache = this.deserialize(content);
+    // check if file exists prior to reading
+    const exists = fs.existsSync(this.filename);
+    // const isReadable = await fs.promises.access(this.filename, fs.constants.F_OK);
+    if (exists) {
+      const content = await fs.promises.readFile(this.filename);
+      this.cache = this.deserialize(content);
+    }
     this.loaded = true;
     return this;
   }
