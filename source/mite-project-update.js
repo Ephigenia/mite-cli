@@ -51,7 +51,7 @@ Change the name and note of a project
   mite project update --name "new name" --note="my new note" 123456
 
 Unarchive all archived projects
-  mite projects --archived false --columns id --format text | xargs -n1 mite project update --archived true
+  mite projects --archived false --columns id --plain | xargs -n1 mite project update --archived true
 
 Update the hourly_rate and update all time-entries
   mite project update --hourly-rate 9000 --update-entries 1234

@@ -28,7 +28,7 @@ Note that users with the role time tracker will not be able to list customers!
     commandOptions.columns.description(customersCommand.columns.options),
     config.get().customersColumns
   ))
-  .option.apply(program, commandOptions.toArgs(commandOptions.format, undefined, config.get('outputFormat')))
+  .option.apply(program, commandOptions.toArgs(commandOptions.json))
   .option(
     '--search <regexp>',
     'optional case-insensitive regular expression matchin on project’s name'
@@ -38,6 +38,8 @@ Note that users with the role time tracker will not be able to list customers!
     commandOptions.sort.description(customersCommand.sort.options),
     customersCommand.sort.default
   ))
+  .option.apply(program, commandOptions.toArgs(commandOptions.plain))
+  .option.apply(program, commandOptions.toArgs(commandOptions.pretty))
   .addHelpText('after', `
 
 Examples:
@@ -49,13 +51,13 @@ Examples:
     mite customer list --sort hourly_rate
 
   Export all archived customers
-    mite customer list --archived true --format csv > archived_customers.json
+    mite customer list --archived true --json > archived_customers.json
 
   Use different columns
     mite customer list --columns name,hourly_rate
 
   Use resulting customers to update their archived state
-    mite customer list --search company 1 --colums id --format text | xargs -n1 mite customer update --archived false
+    mite customer list --search company 1 --colums id --plain | xargs -n1 mite customer update --archived false
   `);
 
 // TODO add limit option
@@ -78,9 +80,10 @@ async function main() {
       commandOptions.sort.resolve(opts.sort, customersCommand.sort.options),
     ))
     .then(items => {
+      const format = DataOutput.getFormatFromOptions(opts, config);
       const columns = commandOptions.columns.resolve(opts.columns, customersCommand.columns.options);
-      const tableData = DataOutput.compileTableData(items, columns);
-      console.log(DataOutput.formatData(tableData, opts.format, columns));
+      const tableData = DataOutput.compileTableData(items, columns, format);
+      console.log(DataOutput.formatData(tableData, format, columns));
     })
     .catch(handleError);
 } // main

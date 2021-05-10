@@ -32,7 +32,7 @@ Examples:
     mite lock 1283761
 
   Lock multiple entries selected by using mite list:
-    mite list this_month --search "query" --columns id --format text | xargs -n1 mite lock
+    mite list this_month --search "query" --columns id --plain | xargs -n1 mite lock
   `);
 
 function main(timeEntryId) {

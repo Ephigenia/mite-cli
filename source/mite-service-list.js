@@ -15,12 +15,14 @@ program
   .description('list, filter & search for services')
   .option.apply(program, commandOptions.toArgs(commandOptions.archived, 'filter for archived or unarchived services only', 'all'))
   .option.apply(program, commandOptions.toArgs(commandOptions.billable, 'filter for billable or not-billable services only', 'all'))
-  .option.apply(program, commandOptions.toArgs(commandOptions.format, undefined, config.get('outputFormat')))
   .option.apply(program, commandOptions.toArgs(
     commandOptions.columns,
     commandOptions.columns.description(servicesCommand.columns.options),
     config.get().servicesColumns
   ))
+  .option.apply(program, commandOptions.toArgs(commandOptions.json))
+  .option.apply(program, commandOptions.toArgs(commandOptions.plain))
+  .option.apply(program, commandOptions.toArgs(commandOptions.pretty))
   .option.apply(program, commandOptions.toArgs(
     commandOptions.sort,
     commandOptions.sort.description(servicesCommand.sort.options),
@@ -46,8 +48,8 @@ Examples:
   show archived services with custom columns
     mite service list --columns name,hourly_rate,created_at
 
-  export all archived services as csv
-    mite service list --columns id,name,hourly_rate,billable --archived true --format csv > all_services.csv
+  export all archived services as json
+    mite service list --columns id,name,hourly_rate,billable --archived true --json > all_services.csv
   `);
 
 async function main() {
@@ -70,9 +72,10 @@ async function main() {
       commandOptions.sort.resolve(opts.sort, servicesCommand.sort.options),
     ))
     .then(items => {
+      const format = DataOutput.getFormatFromOptions(opts, config);
       const columns = commandOptions.columns.resolve(program.columns, servicesCommand.columns.options);
-      const tableData = DataOutput.compileTableData(items, columns);
-      console.log(DataOutput.formatData(tableData, program.format, columns));
+      const tableData = DataOutput.compileTableData(items, columns, format);
+      console.log(DataOutput.formatData(tableData, format, columns));
     })
     .catch(handleError);
 } // main

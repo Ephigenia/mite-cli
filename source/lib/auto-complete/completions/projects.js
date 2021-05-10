@@ -7,7 +7,7 @@ const {
   getCustomerOptions,
   removeAlreadyUsedOptions
 } = require('../helpers');
-const DataOutput = require('./../../data-output');
+const options = require('./../../options');
 const projectsCommand = require('./../../commands/projects');
 
 const defaults = [
@@ -16,8 +16,16 @@ const defaults = [
     description: 'defines wheter archived projects should be shown',
   },
   {
-    name: '--format',
-    description: 'defines the output format',
+    name: options.plain.definition,
+    description: options.plain.description(),
+  },
+  {
+    name: options.pretty.definition,
+    description: options.pretty.description(),
+  },
+  {
+    name: options.json.definition,
+    description: options.json.description(),
   },
   {
     name: '--columns',
@@ -71,9 +79,6 @@ module.exports = async ({ prev, line }) => {
       })));
     case '--customer-id':
       return await getCustomerOptions();
-    case '--format':
-    case '-f':
-      return DataOutput.FORMATS;
     case '--search':
       return ['query'];
     case '--sort':

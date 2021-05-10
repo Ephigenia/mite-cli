@@ -46,7 +46,9 @@ Can be single dates, duraions and weekday names: \n\
     '--customer-id <id>',
     'customer id, can be either a single ID, or multiple comma-separated IDs.'
   )
-  .option.apply(program, commandOptions.toArgs(commandOptions.format, null, config.get('outputFormat')))
+  .option.apply(program, commandOptions.toArgs(commandOptions.json))
+  .option.apply(program, commandOptions.toArgs(commandOptions.plain))
+  .option.apply(program, commandOptions.toArgs(commandOptions.pretty))
   .option(
     '--from <period|YYYY-MM-DD>',
     'in combination with "to" used for selecting a specific time frame of ' +
@@ -149,25 +151,25 @@ Examples:
     mite list this_year --billable true --columns user,duration --group-by user --sort duration
 
   export all time-entries from the current month as csv:
-    mite list last_week --format csv --columns user,id
+    mite list last_week --json --columns user,id | jq '.[] | @csv'
 
-  create a markdown report of all customer and their generated profits:
-    mite list this_year --format md --group-by customer --sort revenue
+  create a report of all customer and their generated profits:
+    mite list this_year --group-by customer --sort revenue
 
   The output of mite list can be forwarded to other commands using xargs. The
   following example will delete all matchin entries:
-    mite list this_month --search="query" --columns id --format text | xargs -n1 mite delete
+    mite list this_month --search="query" --columns id --plain | xargs -n1 mite delete
 
   Get the notes for one specific service, project for the last month to put
   them on a bill or similar
-    mite list last_month --project-id 2681601 --service-id 325329 --columns note --format text | sort -u
+    mite list last_month --project-id 2681601 --service-id 325329 --columns note --plain | sort -u
 
   Show a seperate report for all users showing the revenues and times per
   service for all users matching a query:
-    mite users --search marc --columns id --format text | xargs mite list last_month --group-by service --user-id
+    mite users --search marc --columns id --plain | xargs mite list last_month --group-by service --user-id
 
   Create PDF with time entries from a specific project for the last month
-    NO_COLOR=1 mite list last-month --project-id 1234 --columns date,service,note,duration --format md | md-to-pdf
+    NO_COLOR=1 mite list last-month --project-id 1234 --columns date,service,note,duration --json | jq '.[] | @csv' | npx csv2md
 `)
   .parse();
 
@@ -259,7 +261,8 @@ function main(period) {
       .filter(v => v)
       .filter(filterData.bind(this, opts))
       ;
-    const report = getReport(items, columns, opts.format);
+    const format = DataOutput.getFormatFromOptions(opts, config);
+    const report = getReport(items, columns, format);
     console.log(report);
   });
 } // main

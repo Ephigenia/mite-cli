@@ -8,6 +8,9 @@ const options = {
   columns: require('./columns'),
   format: require('./format'),
   hourlyRate: require('./hourly-rate'),
+  json: require('./json'),
+  plain: require('./plain'),
+  pretty: require('./pretty'),
   sort: require('./sort'),
   tracking: require('./tracking'),
 };

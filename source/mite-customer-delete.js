@@ -26,7 +26,7 @@ Examples:
     mite customer delete 123456
 
   Delete a whole set of customers
-    mite customers --columns id --archived yes --format text | xargs -n1 mite customer delete
+    mite customers --columns id --archived yes --plain | xargs -n1 mite customer delete
   `);
 
 function main(customerId) {

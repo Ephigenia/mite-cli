@@ -51,7 +51,7 @@ Examples:
     mite customer update --hourly-rate 9000 --update-entries 123456
 
   Unarchive all archived customers
-    mite customers --columns id --archived true --format text | xargs -n1 mite customer update --archived false
+    mite customers --columns id --archived true --plain | xargs -n1 mite customer update --archived false
   `);
 
 function main(customerId, opts) {

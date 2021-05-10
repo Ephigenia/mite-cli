@@ -12,61 +12,61 @@ Easy to use CLI tool for creating, listing, starting and stopping time tracking 
 
 - [Features](#features)
 - [Installation](#installation)
-    - [Global](#global)
-    - [Local](#local)
-    - [via NPX](#via-npx)
+  - [Global](#global)
+  - [Local](#local)
+  - [via NPX](#via-npx)
 - [Configuration](#configuration)
-    - [Configuration Options](#configuration-options)
-        - [Defaults](#defaults)
-    - [Auto-Completion](#auto-completion)
+  - [Configuration Options](#configuration-options)
+    - [Defaults](#defaults)
+  - [Auto-Completion](#auto-completion)
 - [Usage](#usage)
-    - [Time Entries](#time-entries)
-        - [List](#list)
-            - [Filter by time](#filter-by-time)
-            - [Other Filters](#other-filters)
-            - [Grouping / Reports](#grouping--reports)
-            - [Advanced Examples](#advanced-examples)
-        - [Disabling Unicode Characters](#disabling-unicode-characters)
-        - [Create Time-Entries](#create-time-entries)
-            - [Interactive](#interactive)
-            - [Non-Interactive](#non-interactive)
-            - [Shortcuts](#shortcuts)
-            - [Advanced Usage](#advanced-usage)
-            - [Start & Open Entry](#start--open-entry)
-        - [Tracker](#tracker)
-            - [Start Tracking](#start-tracking)
-            - [Resume Tracking](#resume-tracking)
-            - [Stop Tracking](#stop-tracking)
-        - [Modify Time-Entries](#modify-time-entries)
-            - [Change Note](#change-note)
-            - [Change Service or Project](#change-service-or-project)
-            - [Set Tracked Time](#set-tracked-time)
-            - [Adding/Removing Time](#addingremoving-time)
-            - [Move Time Entry to another date](#move-time-entry-to-another-date)
-            - [Un-/Lock Entry](#un-lock-entry)
-        - [Delete entry](#delete-entry)
-        - [Open](#open)
-    - [Users](#users)
-    - [Customers](#customers)
-        - [Create Customer](#create-customer)
-        - [Update Customer](#update-customer)
-        - [Delete Customer](#delete-customer)
-    - [Projects](#projects)
-        - [Create Project](#create-project)
-        - [Update Project](#update-project)
-        - [Delete Project](#delete-project)
-    - [Services](#services)
-        - [Update Service](#update-service)
-        - [Delete Service](#delete-service)
+  - [Time Entries](#time-entries)
+    - [List](#list)
+      - [Filter by time](#filter-by-time)
+      - [Other Filters](#other-filters)
+      - [Grouping / Reports](#grouping--reports)
+      - [Advanced Examples](#advanced-examples)
+    - [Disabling Unicode Characters](#disabling-unicode-characters)
+    - [Create Time-Entries](#create-time-entries)
+      - [Interactive](#interactive)
+      - [Non-Interactive](#non-interactive)
+      - [Shortcuts](#shortcuts)
+      - [Advanced Usage](#advanced-usage)
+      - [Start & Open Entry](#start--open-entry)
+    - [Tracker](#tracker)
+      - [Start Tracking](#start-tracking)
+      - [Resume Tracking](#resume-tracking)
+      - [Stop Tracking](#stop-tracking)
+    - [Modify Time-Entries](#modify-time-entries)
+      - [Change Note](#change-note)
+      - [Change Service or Project](#change-service-or-project)
+      - [Set Tracked Time](#set-tracked-time)
+      - [Adding/Removing Time](#addingremoving-time)
+      - [Move Time Entry to another date](#move-time-entry-to-another-date)
+      - [Un-/Lock Entry](#un-lock-entry)
+    - [Delete entry](#delete-entry)
+    - [Open](#open)
+  - [Users](#users)
+  - [Customers](#customers)
+    - [Create Customer](#create-customer)
+    - [Update Customer](#update-customer)
+    - [Delete Customer](#delete-customer)
+  - [Projects](#projects)
+    - [Create Project](#create-project)
+    - [Update Project](#update-project)
+    - [Delete Project](#delete-project)
+  - [Services](#services)
+    - [Update Service](#update-service)
+    - [Delete Service](#delete-service)
 - [Advanced Topics](#advanced-topics)
-    - [Columns](#columns)
-    - [Plotting Charts](#plotting-charts)
-    - [Alternate Output formats](#alternate-output-formats)
-    - [Exporting CSVs](#exporting-csvs)
-    - [Batch-Edit Time Entries](#batch-edit-time-entries)
-    - [Monthly/Daily summary](#monthlydaily-summary)
-    - [Generating PDFs](#generating-pdfs)
-    - [Tmux Integration](#tmux-integration)
+  - [Columns](#columns)
+  - [Plotting Charts](#plotting-charts)
+  - [Alternate Output formats](#alternate-output-formats)
+  - [Exporting CSVs](#exporting-csvs)
+  - [Batch-Edit Time Entries](#batch-edit-time-entries)
+  - [Monthly/Daily summary](#monthlydaily-summary)
+  - [Generating PDFs](#generating-pdfs)
+  - [Tmux Integration](#tmux-integration)
 - [Other Projects](#other-projects)
 - [Contributing](#contributing)
 - [License](#license)
@@ -342,7 +342,7 @@ When creating a bill for a project create a list of all services worked on in a 
 
 In order to fill the details of the services you’ll need all the notes from that specific service. Get the notes for one specific service, a project for the last month to put them on a bill or similar:
 
-    mite list last_month --project-id 2681601 --service-id 325329 --columns note --format text | sort -u
+    mite list last_month --project-id 2681601 --service-id 325329 --columns note --plain | sort -u
 
 ### Disabling Unicode Characters
 
@@ -350,7 +350,7 @@ Some columns like "duration", "hours" add some Unicode characters to f.e. indica
 
 You can disable this behavior by setting the (`NO_COLOR`)[https://no-color.org/] variable before calling mite:
 
-    NO_COLOR=1 mite list --columns date,service,note,duration --format md
+    NO_COLOR=1 mite list --columns date,service,note,duration --plain
 
 ### Create Time-Entries
 
@@ -506,7 +506,7 @@ Unlock a single time entry
 
 Locking all entries from the last month from a specific customer using `mite list` and `xargs`:
 
-    mite list last_month --customer-id 128171 --columns id --format text | xargs -n1 mite lock
+    mite list last_month --customer-id 128171 --columns id --plain | xargs -n1 mite lock
 
 ### Delete entry
 
@@ -516,7 +516,7 @@ Delete a single entry
 
 Deleting a set of entries filtered using `mite list` and `xargs`:
 
-    mite list this_month --project-id 128717 --columns id --format text | xargs -n1 mite delete
+    mite list this_month --project-id 128717 --columns id --plain | xargs -n1 mite delete
 
 ### Open
 
@@ -568,11 +568,11 @@ show all-time tracking users from a company (all have a specific email domain)
 
 export all users to a CSV file
 
-    mite users --columns id,role,name,email,archived,language --format csv > users.csv
+    mite users --columns id,role,name,email,archived,language --json | jq '.[] | @csv' > users.csv
 
 Show a report for all users showing the revenues and times per service for all users matching a query
 
-    mite users --search marc --columns id --format text | xargs mite list last_month --group-by service --user-id
+    mite users --search marc --columns id --plain | xargs mite list last_month --group-by service --user-id
 
 
 
@@ -600,7 +600,7 @@ Use different columns
 
 Export all archived customers
 
-    mite customer list --archived true --format csv > archived_customers.csv
+    mite customer list --archived true --json | jq '.[] | @csv' > archived_customers.csv
 
 ### Create Customer
 
@@ -618,7 +618,7 @@ Archive a single customer
 
 Archive multiple customers using xargs:
 
-    mite customer list --columns id --format text | xargs -n1 mite customer update --archived false
+    mite customer list --columns id --plain | xargs -n1 mite customer update --archived false
 
 ### Delete Customer
 
@@ -628,7 +628,7 @@ Delete a single customer
 
 Delete a whole set of customers
 
-    mite customer list --columns id --archived yes --format text | xargs -n1 mite customer delete
+    mite customer list --columns id --archived yes --plain | xargs -n1 mite customer delete
 
 Projects
 --------------------------------------------------------------------------------
@@ -652,11 +652,11 @@ List, filter and search for projects. Example showing only archived projects ord
 
 Export all projects using other columns as CSV:
 
-    mite project list --columns id,customer-id,customer_name --format csv > projects_export.csv
+    mite project list --columns id,customer-id,customer_name --json | jq '.[] | @csv' > projects_export.csv
 
 Unarchive all archived projects from a specific customer using `xargs`:
 
-    mite project list --customer-id 123456 --columns id --format text | xargs -n1 mite project update --archived false
+    mite project list --customer-id 123456 --columns id --plain | xargs -n1 mite project update --archived false
 
 
 ### Create Project
@@ -689,7 +689,7 @@ Update hourly rate of a project while updating all already associated time entri
 
 Archive multiple projects using xargs:
 
-    mite project list --columns id --format text | xargs -n1 mite project update --archived false
+    mite project list --columns id --plain | xargs -n1 mite project update --archived false
 
 ### Delete Project
 
@@ -699,7 +699,7 @@ Delete a project:
 
 Delete all archived projects:
 
-    mite project list --columns id --archived yes --format text | xargs -n1 mite project delete
+    mite project list --columns id --archived yes --plain | xargs -n1 mite project delete
 
 
 Services
@@ -773,14 +773,14 @@ Specifying the columns is important when you want to use the ids of items in oth
 
 The following example uses the ids of all time entries to lock them:
 
-    mite list last_month --columns id --format text | xargs -n1 mite lock
+    mite list last_month --columns id --plain | xargs -n1 mite lock
 
 Plotting Charts
 --------------------------------------------------------------------------------
 
 The following command will list all customers from last year and plot their minuets as bar charts to the terminal so that it’s easy to compare the values to each other:
 
-    mite list last_year --group-by year,customer --columns customer,minutes --format tsv \
+    mite list last_year --group-by year,customer --columns customer,minutes --plain | jq '.[] | @tsv' \
         | sed "$ d" \
         | gnuplot -e \
         "
@@ -795,7 +795,7 @@ There are even more charting possibilities using the open-source [gnuplot](http:
 
 You can also reproduce the charts from the mite admin showing the number of hours worked in the last month:
 
-    mite list this_month --group-by day --columns day,minutes --format tsv \
+    mite list this_month --group-by day --columns day,minutes --plain | jq '.[] | @tsv' \
         | sed "$ d" \
         | gnuplot -e \
         "
@@ -865,7 +865,7 @@ The following formats are supported:
 
 There are alternative output formats which may be useful when you automatically process the results such as `json`, `csv`, `text`:
 
-    mite list last_week --format csv --columns user,id
+    mite list last_week --columns user,id --json | jq '.[] | @csv' 
 
     Date,User,Duration
     2018-11-02,Marcel Eichner,1:10
@@ -885,32 +885,32 @@ Exporting CSVs
 
 Creating a time-sheet for your clients can be done like this:
 
-    mite list last_month --format csv --columns date,service,note,duration
+    mite list last_month --json --columns date,service,note,duration --plain | jq '.[] | @csv'
 
 Batch-Edit Time Entries
 --------------------------------------------------------------------------------
 
 Using Ids from the output for further processing using `xargs`:
 
-    mite list --columns id --format text | xargs -n1 mite lock
+    mite list --columns id --plain | xargs -n1 mite lock
 
 Monthly/Daily summary
 --------------------------------------------------------------------------------
 
 Show only the notes from yesterday’s entries to put them into a standup message:
 
-    mite list yesterday --format text --columns note --format text
+    mite list yesterday --plain --columns note --plain
 
 Showing all billable entries’ notes of a specific project:
 
-    mite list last_month --project-id 456 --columns note --format text --billable yes
+    mite list last_month --project-id 456 --columns note --plain --billable yes
 
 Generating PDFs
 --------------------------------------------------------------------------------
 
-The most common use case for creating pdfs is when a client asks for a nice looking pdf with the entries from a specific project and timeframe. The mite-cli cannot create pdfs on it’s own but you can use the power of other tools like [md-to-pdf](https://www.npmjs.com/package/md-to-pdf):
+The most common use case for creating pdfs is when a client asks for a nice looking pdf with the entries from a specific project and timeframe. The mite-cli cannot create pdfs on it’s own but you can use the power of other tools like [jq](https://stedolan.github.io/jq/) & [md-to-pdf](https://www.npmjs.com/package/md-to-pdf):
 
-    NO_COLOR mite-cli list last_month --project-id 1234 --columns=date,note,duration --format md | md-to-pdf > "./time-entries-$(date +%Y%m%d).pdf"
+    NO_COLOR mite-cli list last_month --project-id 1234 --columns=date,note,duration --json | jq '.[] | @csv' | md-to-pdf > "./time-entries-$(date +%Y%m%d).pdf"
 
 `md-to-pdf` can be improved by adding custom stylesheets, templates for headers and footers and can be adjusted to your needs.
 

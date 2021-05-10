@@ -27,11 +27,6 @@ Note that users with the role time-tracker will not be able to list users!
     commandOptions.columns.description(usersCommand.columns.options),
     config.get().usersColumns
   ))
-  .option.apply(program, commandOptions.toArgs(
-    commandOptions.format,
-    undefined,
-    config.get('outputFormat')
-  ))
   .option(
     '--name <query>',
     'Optional case-sensitive query for names'
@@ -40,6 +35,7 @@ Note that users with the role time-tracker will not be able to list users!
     '--email <query>',
     'Optional case-sensitive search for users emails'
   )
+  .option.apply(program, commandOptions.toArgs(commandOptions.json))
   .option(
     '--role <role>',
     'Optional user role to filter, multiple arguments comma-separated',
@@ -54,6 +50,8 @@ Note that users with the role time-tracker will not be able to list users!
     '--search <regexp>',
     'Optional cient-side regexp searching in user name, email and note.'
   )
+  .option.apply(program, commandOptions.toArgs(commandOptions.plain))
+  .option.apply(program, commandOptions.toArgs(commandOptions.pretty))
   .option.apply(program, commandOptions.toArgs(
     commandOptions.sort,
     commandOptions.sort.description(usersCommand.sort.options),
@@ -78,8 +76,8 @@ Examples:
   show all users while using all columns
     mite users --columns all
 
-  export all users to a csv file
-    mite users --columns id,role,name,email,archived,language --format csv > users.csv
+  export all users to json
+    mite users --columns id,role,name,email,archived,language --json > users.json
   `);
 
 /**
@@ -126,9 +124,10 @@ async function main() {
       commandOptions.sort.resolve(opts.sort, usersCommand.sort.options),
     ))
     .then((items) => {
+      const format = DataOutput.getFormatFromOptions(opts, config);
       const columns = commandOptions.columns.resolve(opts.columns, usersCommand.columns.options);
-      const tableData = DataOutput.compileTableData(items, columns);
-      console.log(DataOutput.formatData(tableData, opts.format, columns));
+      const tableData = DataOutput.compileTableData(items, columns, format);
+      console.log(DataOutput.formatData(tableData, format, columns));
     })
     .catch(handleError);
 } // main
