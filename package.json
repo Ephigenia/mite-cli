@@ -72,8 +72,8 @@
     "version": "npm run changelog && git add CHANGELOG.md"
   },
   "dependencies": {
-    "chalk": "^4.1.0",
-    "commander": "^7.1.0",
+    "chalk": "^4.1.1",
+    "commander": "^7.2.0",
     "csv-string": "^4.0.1",
     "external-editor": "^3.1.0",
     "inquirer": "^8.0.0",
@@ -81,7 +81,7 @@
     "mite-api": "^0.1.1",
     "nconf": "^0.11.2",
     "node-fetch": "^2.6.0",
-    "open": "8.0.6",
+    "open": "^8.0.8",
     "table": "^6.0.3",
     "tabtab": "^3.0.2",
     "weeknumber": "^1.1.2"
@@ -90,7 +90,7 @@
     "chai": "4.3.4",
     "conventional-changelog-cli": "2.1.1",
     "conventional-recommended-bump": "6.1.0",
-    "eslint": "7.25.0",
-    "mocha": "8.3.2"
+    "eslint": "^7.26.0",
+    "mocha": "^8.4.0"
   }
 }
