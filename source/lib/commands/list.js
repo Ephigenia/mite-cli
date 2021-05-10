@@ -167,9 +167,7 @@ module.exports.columns = {
       width: 10,
       alignment: 'right',
       format: (value) => {
-        if (!value) {
-          return undefined;
-        }
+        value = value || 0;
         return formater.budget(formater.BUDGET_TYPE.CENTS, value);
       },
       reducer: (sum, cur) => {
