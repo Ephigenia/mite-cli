@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-const options = require('./../../opions');
+const options = require('./../../options');
 const usersCommand = require('./../../commands/users');
 const { USER_ROLES } = require('./../../constants');
 const { removeAlreadyUsedOptions } = require('../helpers');
