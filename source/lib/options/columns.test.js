@@ -4,7 +4,7 @@ const expect = require('chai').expect;
 
 const columns = require('./columns');
 
-describe.only('options columns', () => {
+describe('options columns', () => {
   describe('parse', () => {
     it('normalizes the string', () => {
       expect(columns.parse(',')).to.equal('');

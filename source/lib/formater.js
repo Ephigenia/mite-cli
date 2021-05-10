@@ -142,13 +142,13 @@ module.exports = {
     const CURRENCY = config.get().currency;
     switch(type) {
       case BUDGET_TYPE.MINUTES_PER_MONTH:
-        return this.minutesToDuration(value) + ' h/m';
+        return this.minutesToDuration(value) + 'h/m';
       case BUDGET_TYPE.MINUTES:
-        return this.minutesToDuration(value) + ' h';
+        return this.minutesToDuration(value) + 'h';
       case BUDGET_TYPE.CENTS:
-        return this.price(value / 100) + ' ' + CURRENCY;
+        return this.price(value / 100) + CURRENCY;
       case BUDGET_TYPE.CENTS_PER_MONTH:
-        return this.price(value / 100) + ' ' + CURRENCY + '/m';
+        return this.price(value / 100) + CURRENCY + '/m';
       default:
         throw new Error(`Unknown budget format type: "${type}"`);
     }

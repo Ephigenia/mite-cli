@@ -103,7 +103,7 @@ describe('formater', () => {
         expect(formater.durationToMinutes(row[0])).to.equal(row[1]);
       });
     });
-    it('just returns integer values assuming they are minuetes', () => {
+    it('just returns integer values assuming they are minutes', () => {
       expect(formater.durationToMinutes(827)).to.equal(827);
     });
   });
@@ -141,31 +141,31 @@ describe('formater', () => {
     });
     describe('minutes & minutes_per_month', () => {
       it('returns durations', () => {
-        expect(formater.budget(BUDGET_TYPE.MINUTES, 60)).to.equal('1:00 h');
+        expect(formater.budget(BUDGET_TYPE.MINUTES, 60)).to.equal('1:00h');
       });
     });
     describe('cents per month', () => {
       it('adds €/m', () => {
         const result = formater.budget(BUDGET_TYPE.CENTS_PER_MONTH, 100);
-        expect(result).to.equal('1.00 €/m');
+        expect(result).to.equal('1.00€/m');
       });
     });
     describe('cents', () => {
       it('rounds correctly', () => {
         const result = formater.budget(BUDGET_TYPE.CENTS, 9.985);
-        expect(result).to.equal('0.10 €');
+        expect(result).to.equal('0.10€');
       });
       it('can format big values', () => {
         const result = formater.budget(BUDGET_TYPE.CENTS, 2912.21121);
-        expect(result).to.equal('29.12 €');
+        expect(result).to.equal('29.12€');
       });
       it('can format very big values', () => {
         const result = formater.budget(BUDGET_TYPE.CENTS, 98726134.91928);
-        expect(result).to.equal('987,261.35 €');
+        expect(result).to.equal('987,261.35€');
       });
       it('formats the value to 2 number diget', () => {
         const result = formater.budget(BUDGET_TYPE.CENTS, 0.01);
-        expect(result).to.equal('0.00 €');
+        expect(result).to.equal('0.00€');
       });
     });
   }); // budget
