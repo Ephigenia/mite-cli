@@ -32,7 +32,7 @@ nconf.defaults({
   listColumns: listCommand.columns.default,
   // https://regexr.com/50d36
   noteHighlightRegexp: '(([a-z0-9\\/-]+)?\\!\\d{1,6})|([A-Z]{1,10}-\\d{1,10})|(#\\d+)|(\\(\\d\\d?:\\d\\d\\s(to|bis)\\s\\d\\d?:\\d\\d\\))',
-  outputFormat: DataOutput.FORMAT.TABLE,
+  outputFormat: DataOutput.FORMAT.DEFAULT,
   projectsColumns: projectsCommand.columns.default,
   servicesColumns: servicesCommand.columns.default,
   usersColumns: usersCommand.columns.default,

@@ -13,6 +13,7 @@ const table = tableLib.table;
 const FORMAT = {
   JSON: 'json',
   TABLE: 'table',
+  DEFAULT: 'table',
   TEXT: 'text',
 };
 const FORMATS = Object.values(FORMAT);
@@ -154,6 +155,7 @@ module.exports = {
     if (options.json) return FORMAT.JSON;
     if (options.plain) return FORMAT.TEXT;
     if (options.pretty) return FORMAT.TABLE;
+    if (!config.outputFormat) return FORMAT.DEFAULT;
     return config.outputFormat;
   },
   supportsExtendedFormat,
