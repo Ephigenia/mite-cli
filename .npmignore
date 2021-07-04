@@ -5,6 +5,7 @@
 .mocharc.js
 .npmignore
 .nvmrc
+.nyc_output/
 .prettierignore
 CHANGELOG.md
 CONTRIBUTING.md
