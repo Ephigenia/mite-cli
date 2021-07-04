@@ -9,14 +9,14 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x]
+        nodeVersion: [10.x, 12.x, 14.x]
 
     steps:
     - uses: actions/checkout@v2
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js ${{ matrix.nodeVersion }}
       uses: actions/setup-node@v2
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: ${{ matrix.nodeVersion }}
     - name: npm install, build, and test
       run: npm ci
     - name: eslint
@@ -25,7 +25,7 @@ jobs:
         github_token: ${{ secrets.github_token }}
         eslint: true
     - name: depcheck
-      if: matrix.node == '14.x'
+      if: matrix.nodeVersion == '14.x'
       run: npm run -s depcheck
     - name: test
       run: npm test
@@ -34,7 +34,7 @@ jobs:
     - name: Jest Lcov Reporter
       uses: vebr/jest-lcov-reporter@v0.2.1
       # only run this step when node version matches
-      if: matrix.node == '14.x'
+      if: matrix.nodeVersion == '14.x'
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         lcov-file: ./coverage/lcov.info
