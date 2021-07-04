@@ -25,8 +25,17 @@ jobs:
         github_token: ${{ secrets.github_token }}
         eslint: true
     - name: depcheck
+      if: matrix.node == '14.x'
       run: npm run -s depcheck
     - name: test
       run: npm test
       env:
         CI: true
+    - name: Jest Lcov Reporter
+      uses: vebr/jest-lcov-reporter@v0.2.1
+      # only run this step when node version matches
+      if: matrix.node == '14.x'
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        lcov-file: ./coverage/lcov.info
+        update-comment: true
