@@ -60,6 +60,7 @@
     "audit:strict": "npm audit --production --audit-level=high",
     "changelog:preview": "conventional-changelog --output-unreleased -p angular",
     "changelog": "conventional-changelog -s -i CHANGELOG.md -p angular -r 0",
+    "depcheck": "npx depcheck",
     "lint": "eslint source",
     "lint:fix": "npm run lint -- --fix",
     "postversion": "git push && git push --tags",
@@ -92,5 +93,8 @@
     "conventional-recommended-bump": "6.1.0",
     "eslint": "7.26.0",
     "mocha": "8.4.0"
+  },
+  "optionalDependencies": {
+    "depcheck": "1.4.2"
   }
 }

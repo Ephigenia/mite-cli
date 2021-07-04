@@ -20,10 +20,12 @@ jobs:
     - name: npm install, build, and test
       run: npm ci
     - name: eslint
-        uses: samuelmeuli/lint-action@v1
-        with:
-          github_token: ${{ secrets.github_token }}
-          eslint: true
+      uses: samuelmeuli/lint-action@v1
+      with:
+        github_token: ${{ secrets.github_token }}
+        eslint: true
+    - name: depcheck
+      run: npm run -s depcheck
     - name: test
       run: npm test
       env:
