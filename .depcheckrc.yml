@@ -1,0 +1,4 @@
+# configuration file used by depcheck
+# whiltelist dependencies that are false-positives detected by depcheck
+# please add comment why package gets whitelisted
+# https://www.npmjs.com/package/depcheck
