@@ -32,7 +32,7 @@ Examples:
     mite unlock 1283761
 
   Unlock multiple entries selected by using mite list:
-    mite list this_month --search "query" --columns id --format text | xargs -n1 mite unlock
+    mite list this_month --search "query" --columns id --plain | xargs -n1 mite unlock
   `);
 
 function main (timeEntryId) {

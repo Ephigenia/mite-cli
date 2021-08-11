@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 'use strict';
 
-const DataOutput = require('./../../data-output');
 const customersCommand = require('./../../commands/customers');
 const { removeAlreadyUsedOptions } = require('../helpers');
+const options = require('./../../options');
 
 const defaults = [
   {
@@ -15,8 +15,16 @@ const defaults = [
     description: 'define the columns that are shown',
   },
   {
-    name: '--format',
-    description: 'defines the output format',
+    name: options.plain.definition,
+    description: options.plain.description(),
+  },
+  {
+    name: options.pretty.definition,
+    description: options.pretty.description(),
+  },
+  {
+    name: options.json.definition,
+    description: options.json.description(),
   },
   {
     name: '--help',
@@ -51,9 +59,6 @@ module.exports = async ({ prev, line }) => {
       return ['yes', 'no', 'all'];
     case '--columns':
       return Object.keys(customersCommand.columns.options).concat(['all']);
-    case '--format':
-    case '-f':
-      return DataOutput.FORMATS;
     case '--search':
       return ['query'];
     case '--sort':

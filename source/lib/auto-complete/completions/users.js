@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-const DataOutput = require('./../../data-output');
+const options = require('./../../options');
 const usersCommand = require('./../../commands/users');
 const { USER_ROLES } = require('./../../constants');
 const { removeAlreadyUsedOptions } = require('../helpers');
@@ -20,8 +20,16 @@ const defaults = [
     description: 'given a email will list only users with that email',
   },
   {
-    name: '--format',
-    description: 'defines the output format',
+    name: options.plain.definition,
+    description: options.plain.description(),
+  },
+  {
+    name: options.pretty.definition,
+    description: options.pretty.description(),
+  },
+  {
+    name: options.json.definition,
+    description: options.json.description(),
   },
   {
     name: '--help',
@@ -68,9 +76,6 @@ module.exports = async ({ prev, line }) => {
     case '--name':
     case '--search':
       return ['query'];
-    case '--format':
-    case '-f':
-      return DataOutput.FORMATS;
     case '--role':
       return Object.values(USER_ROLES);
     case '--sort':

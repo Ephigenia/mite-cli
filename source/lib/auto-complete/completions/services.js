@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-const DataOutput = require('./../../data-output');
+const options = require('./../../options');
 const servicesCommand = require('./../../commands/services');
 const { removeAlreadyUsedOptions } = require('../helpers');
 
@@ -19,8 +19,16 @@ const defaults = [
     description: 'define the columns that are shown',
   },
   {
-    name: '--format',
-    description: 'defines the output format',
+    name: options.plain.definition,
+    description: options.plain.description(),
+  },
+  {
+    name: options.pretty.definition,
+    description: options.pretty.description(),
+  },
+  {
+    name: options.json.definition,
+    description: options.json.description(),
   },
   {
     name: '--help',
@@ -57,9 +65,6 @@ module.exports = async ({ prev, line }) => {
       return ['yes', 'no'];
     case '--columns':
       return Object.keys(servicesCommand.columns.options).concat(['all']);
-    case '--format':
-    case '-f':
-      return DataOutput.FORMATS;
     case '--search':
       return ['query'];
     case '--sort':

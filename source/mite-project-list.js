@@ -27,7 +27,7 @@ program
     commandOptions.columns.description(projectsCommand.columns.options),
     config.get().projectsColumns
   ))
-  .option.apply(program, commandOptions.toArgs(commandOptions.format, undefined, config.get('outputFormat')))
+  .option.apply(program, commandOptions.toArgs(commandOptions.json))
   .option(
     '--search <regexp>',
     'optional case-insensitive regular expression matching on the name'
@@ -37,6 +37,8 @@ program
     commandOptions.sort.description(projectsCommand.sort.options),
     projectsCommand.sort.default
   ))
+  .option.apply(program, commandOptions.toArgs(commandOptions.plain))
+  .option.apply(program, commandOptions.toArgs(commandOptions.pretty))
   .addHelpText('after', `
 
 Examples:
@@ -51,7 +53,7 @@ Examples:
     mite projects list --search "customer\\d+|other-name"
 
   list projects while setting different columns and export to csv
-    mite projects list --columns id,customer_id,customer_name --format csv > projects_export.csv
+    mite projects list --columns id,customer_id,customer_name --plain > projects_export.csv
 
   show all projects ordered by their budget while only showing their names and bugets
     mite projects list --sort budget
@@ -62,11 +64,11 @@ Examples:
   show all projects by a specific customer
     mite projects list --customer Client1
 
-  export the resulting list as csv
-    mite projects list --format csv > my-projects.csv
+  export the resulting list as json
+    mite projects list --plain > my-projects.json
 
   use the resulting projects in another command to archive the listed projects
-    mite projects list --columns id --format text | xargs -n1 mite project update --archived false
+    mite projects list --columns id --plain | xargs -n1 mite project update --archived false
   `);
 
 /**
@@ -118,9 +120,10 @@ async function main() {
     .then(items => miteApi.getUsedProjectBudgets(items))
     .then(items => miteApi.getProjectsTotalRevenue(items))
     .then(items => {
+      const format = DataOutput.getFormatFromOptions(opts, config);
       const columns = commandOptions.columns.resolve(opts.columns, projectsCommand.columns.options);
-      const tableData = DataOutput.compileTableData(items, columns);
-      console.log(DataOutput.formatData(tableData, opts.format, columns));
+      const tableData = DataOutput.compileTableData(items, columns, format);
+      console.log(DataOutput.formatData(tableData, format, columns));
     })
     .catch(handleError);
 } // main

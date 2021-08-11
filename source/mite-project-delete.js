@@ -26,7 +26,7 @@ Examples:
     mite project delete 123456
 
   Delete a whole set of projects
-    mite projects --columns id --archived yes --format text | xargs -n1 mite project delete
+    mite projects --columns id --archived yes --plain | xargs -n1 mite project delete
 `);
 
 function main(projectId) {

@@ -23,7 +23,7 @@ Examples:
     mite service delete 123456
 
   Delete a whole set of services
-    mite services --columns id --archived yes --format text | xargs -n1 mite service delete
+    mite services --columns id --archived yes --plain | xargs -n1 mite service delete
 `);
 
 function main(serviceId) {

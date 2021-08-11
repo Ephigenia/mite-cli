@@ -2,10 +2,8 @@
 
 const chalk = require('chalk');
 const assert = require('assert');
-const csvString = require('csv-string');
 const tableLib = require('table');
 const table = tableLib.table;
-const markdownTable = require('markdown-table');
 
 /**
  * @type {FORMAT}
@@ -13,12 +11,10 @@ const markdownTable = require('markdown-table');
  * @enum {string}
  */
 const FORMAT = {
-  CSV: 'csv',
   JSON: 'json',
-  MD: 'md',
   TABLE: 'table',
+  DEFAULT: 'table',
   TEXT: 'text',
-  TSV: 'tsv',
 };
 const FORMATS = Object.values(FORMAT);
 
@@ -31,9 +27,7 @@ function supportsExtendedFormat(format) {
     return false;
   }
   return [
-    FORMAT.MD,
-    FORMAT.TABLE,
-    FORMAT.TEXT,
+    FORMAT.TABLE
   ].indexOf(format) !== -1;
 }
 
@@ -129,36 +123,41 @@ function formatData(data, format, columns = []) {
 
   // format the output according to the given format
   switch(format) {
-    case FORMAT.CSV:
-      return csvString.stringify(data);
     case FORMAT.JSON: {
       // ignore table header
       const jsonString = JSON.stringify(data.slice(1));
       // remove ansi color codes
       return stripColorColodes(jsonString);
     }
-    case FORMAT.MD:
-      return markdownTable(data);
     case FORMAT.TABLE: {
       const tableConfig = {
         border: tableLib.getBorderCharacters('norc'),
-        columns
+        columns,
       };
       return table(data, tableConfig);
     }
     case FORMAT.TEXT:
       // ignore table header
-      return data.slice(1).join('\n');
-    case FORMAT.TSV:
-      return csvString.stringify(data, '\t').trim();
+      return data
+        .slice(1)
+        .map(row => row.join('|'))
+        .join('\n');
     default:
-      throw new Error(`Unknown output format "${format}" specified.`);
+      throw new Error(`Unknown output format: ${JSON.stringify(format)}.`);
   }
 }
 
 module.exports = {
   FORMAT,
   FORMATS,
+  getFormatFromOptions: (options, config) => {
+    // get default option from config
+    if (options.json) return FORMAT.JSON;
+    if (options.plain) return FORMAT.TEXT;
+    if (options.pretty) return FORMAT.TABLE;
+    if (!config.outputFormat) return FORMAT.DEFAULT;
+    return config.outputFormat;
+  },
   supportsExtendedFormat,
   formatData,
   compileTableData,

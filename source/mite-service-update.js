@@ -56,7 +56,7 @@ Examples:
     mite service update --name "new name" 123456
 
   Unarchive all archived services
-    mite services --archived false --columns id --format text | xargs -n1 mite service update --archived true
+    mite services --archived false --columns id --plain | xargs -n1 mite service update --archived true
   `);
 
 function main(serviceId) {

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 'use strict';
 
-const DataOutput = require('./../../data-output');
 const listCommand = require('./../../commands/list');
+const options = require('./../../options');
 
 const {
   getCustomerOptions,
@@ -31,8 +31,16 @@ const defaults = [
     description: 'list only time entries from the given customer',
   },
   {
-    name: '--format',
-    description: 'defines the output format',
+    name: options.plain.definition,
+    description: options.plain.description(),
+  },
+  {
+    name: options.pretty.definition,
+    description: options.pretty.description(),
+  },
+  {
+    name: options.json.definition,
+    description: options.json.description(),
   },
   {
     name: '--from',
@@ -141,9 +149,6 @@ module.exports = async ({ words, prev, lastPartial, line }) => {
       return await getCustomerOptions();
     case '--group-by':
       return listCommand.groupBy.options;
-    case '--format':
-    case '-f':
-      return DataOutput.FORMATS;
     case '--from':
     case '--to':
       return TIME_FRAMES.concat(dateCompletion(lastPartial));

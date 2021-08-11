@@ -38,7 +38,7 @@
     }
   ],
   "engines": {
-    "node": ">=10",
+    "node": ">=14",
     "npm": ">=6"
   },
   "repository": {
@@ -73,25 +73,23 @@
     "version": "npm run changelog && git add CHANGELOG.md"
   },
   "dependencies": {
-    "chalk": "^4.1.1",
-    "commander": "^8.0.0",
-    "csv-string": "^4.0.1",
+    "chalk": "4.1.2",
+    "commander": "8.1.0",
     "external-editor": "^3.1.0",
-    "inquirer": "^8.0.0",
-    "markdown-table": "^2.0.0",
+    "inquirer": "8.1.2",
     "mite-api": "^0.1.1",
-    "nconf": "^0.11.2",
+    "nconf": "0.11.3",
     "node-fetch": "^2.6.0",
-    "open": "^8.0.8",
-    "table": "^6.0.3",
+    "open": "8.2.1",
+    "table": "6.7.1",
     "tabtab": "^3.0.2",
-    "weeknumber": "^1.1.2"
+    "weeknumber": "1.2.1"
   },
   "devDependencies": {
     "chai": "4.3.4",
     "conventional-changelog-cli": "2.1.1",
     "conventional-recommended-bump": "6.1.0",
-    "eslint": "7.31.0",
+    "eslint": "7.32.0",
     "mocha": "9.0.3",
     "nyc": "15.1.0"
   },
