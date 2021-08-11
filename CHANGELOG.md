@@ -1,11 +1,25 @@
+# [1.8.0](https://github.com/Ephigenia/mite-cli/compare/v1.7.1...v1.8.0) (2021-08-11)
+
+
+### Bug Fixes
+
+* 0 revenue returns as number instead of blank ([cacb4dc](https://github.com/Ephigenia/mite-cli/commit/cacb4dcd0d09947c9439db91955ae64f9a3c2eb4))
+* **deps:** update dependency open to v8.0.5 ([#143](https://github.com/Ephigenia/mite-cli/issues/143)) ([a74b6e3](https://github.com/Ephigenia/mite-cli/commit/a74b6e3f0b1d7977bab20800efac7d579909861e))
+* **deps:** update dependency open to v8.0.6 ([#147](https://github.com/Ephigenia/mite-cli/issues/147)) ([3759f6d](https://github.com/Ephigenia/mite-cli/commit/3759f6d57c7c91f7419f1f06243ccdda9427a007))
+* format artifact ([ff03472](https://github.com/Ephigenia/mite-cli/commit/ff03472b1f47b32731c8457041e324c71e31a172))
+* number with units omit space ([040af74](https://github.com/Ephigenia/mite-cli/commit/040af747d4b0ce7bc860463fd00a796b27d999a7))
+* undefined config outputFormat handling ([6b7e4ac](https://github.com/Ephigenia/mite-cli/commit/6b7e4acc45550fbd9e0075df4678942f0b627411))
+
+
+
 ## [1.7.1](https://github.com/Ephigenia/mite-cli/compare/v1.7.0...v1.7.1) (2021-03-10)
 
 
 ### Bug Fixes
 
-* list guessing of time period parameter ([9040bf3](https://github.com/Ephigenia/mite-cli/commit/9040bf360eefff49c7bcace51fffb4cd48927ed7))
 * **deps:** update dependency open to v8 ([#134](https://github.com/Ephigenia/mite-cli/issues/134)) ([766f36d](https://github.com/Ephigenia/mite-cli/commit/766f36dfd6490decf507b9a3a063577916bf6be9))
 * **deps:** update dependency open to v8.0.2 ([#136](https://github.com/Ephigenia/mite-cli/issues/136)) ([ccc9e52](https://github.com/Ephigenia/mite-cli/commit/ccc9e52d6045bbf7814c8477b99650a0c842de49))
+* list guessing of time period parameter ([9040bf3](https://github.com/Ephigenia/mite-cli/commit/9040bf360eefff49c7bcace51fffb4cd48927ed7))
 
 
 
@@ -46,8 +60,8 @@
 
 * adds alias mite resume which runs mite start --last ([#78](https://github.com/Ephigenia/mite-cli/issues/78)) ([69489aa](https://github.com/Ephigenia/mite-cli/commit/69489aad3d94b11d197c099aa536dea78c9e61e0))
 * amend last & start --last ([#82](https://github.com/Ephigenia/mite-cli/issues/82)) ([d193b35](https://github.com/Ephigenia/mite-cli/commit/d193b35d50891eeeffc975e940b4bd62fbecf81f)), closes [#77](https://github.com/Ephigenia/mite-cli/issues/77) [#77](https://github.com/Ephigenia/mite-cli/issues/77)
-* list understands 1y or 2year ([#26](https://github.com/Ephigenia/mite-cli/issues/26)) ([14d0140](https://github.com/Ephigenia/mite-cli/commit/14d0140f94628eea7cf080cd894c7dccba9abef8))
 * **amend:** adds user-id option to change assigend user ([8444405](https://github.com/Ephigenia/mite-cli/commit/844440522f448dcc1e7bce3623544cc16d0d661d))
+* list understands 1y or 2year ([#26](https://github.com/Ephigenia/mite-cli/issues/26)) ([14d0140](https://github.com/Ephigenia/mite-cli/commit/14d0140f94628eea7cf080cd894c7dccba9abef8))
 
 
 
@@ -56,11 +70,11 @@
 
 ### Bug Fixes
 
-* **customer-update:** fix archived flag for completion ([225b586](https://github.com/Ephigenia/mite-cli/commit/225b5865b90a223c7d6fb09f02398dfc2951d26c))
 * artifact for logging in mite-api ([1ed50e2](https://github.com/Ephigenia/mite-cli/commit/1ed50e2870a7b2cf14e07adfe1917e34cc0d389c))
-* different list commands use regexp for matching for items ([140d41a](https://github.com/Ephigenia/mite-cli/commit/140d41aba2c0555640058d2ca93a302b7b61bca9))
+* **customer-update:** fix archived flag for completion ([225b586](https://github.com/Ephigenia/mite-cli/commit/225b5865b90a223c7d6fb09f02398dfc2951d26c))
 * **deps:** update dependency chalk to v4 ([675945a](https://github.com/Ephigenia/mite-cli/commit/675945a519047e32534d691bee5b7422632fe9f1))
 * **deps:** update dependency csv-string to v4 ([67206da](https://github.com/Ephigenia/mite-cli/commit/67206da1030e59792bcc2c275562fa49ffee6a38))
+* different list commands use regexp for matching for items ([140d41a](https://github.com/Ephigenia/mite-cli/commit/140d41aba2c0555640058d2ca93a302b7b61bca9))
 * **users:** search query used correctly ([33680ed](https://github.com/Ephigenia/mite-cli/commit/33680eda8830db170061360c73b11c663c1056aa))
 
 
@@ -182,15 +196,15 @@
 
 ### Bug Fixes
 
-* **customer:** new now accepts the name ([3207b62](https://github.com/Ephigenia/mite-cli/commit/3207b62bd4ef84c82eef2d72cb079453017171b6))
 * **customer-new:** show server error messages correctly ([f76b3e2](https://github.com/Ephigenia/mite-cli/commit/f76b3e2353eacd608213b378a1f64df8ee94f486))
+* **customer:** new now accepts the name ([3207b62](https://github.com/Ephigenia/mite-cli/commit/3207b62bd4ef84c82eef2d72cb079453017171b6))
 * **errors:** check for lowercased NODE_ENV ([658e6ca](https://github.com/Ephigenia/mite-cli/commit/658e6caa9ec2b5aca68f3253687c1aa404d8ed18))
 * **list:** table footer not empty anymore ([5a3d727](https://github.com/Ephigenia/mite-cli/commit/5a3d727887d0e99df8d66fa97b2a7676d1f86f8a))
 * **mite-amend:** only match timeEntryId when it’s truish ([895857d](https://github.com/Ephigenia/mite-cli/commit/895857dce496fd5cf30ac0b626c7a56f8454c9a5))
 * **mite-api:** addTimeEntry callback argument order ([03ec43c](https://github.com/Ephigenia/mite-cli/commit/03ec43ca8a6c51a1390cdc9097a327cf26780c7a))
-* **project:** new now accepts the name ([e3bb65d](https://github.com/Ephigenia/mite-cli/commit/e3bb65d3bfcf28b707226cbc8cb5666bda862c5a))
 * **project-new:** correct default for budgetType ([bd7fd58](https://github.com/Ephigenia/mite-cli/commit/bd7fd58d9ce75acfb13a6b26214bf13648faba49))
 * **project-new:** show server error messages correctly ([97f2534](https://github.com/Ephigenia/mite-cli/commit/97f253442c7f204bb45dbc26e7b3d3cdf144c4ad))
+* **project:** new now accepts the name ([e3bb65d](https://github.com/Ephigenia/mite-cli/commit/e3bb65d3bfcf28b707226cbc8cb5666bda862c5a))
 * **start:** correct error message shown ([d7510a7](https://github.com/Ephigenia/mite-cli/commit/d7510a7ce2d91fdb369e57e01872fe3ceee1138f))
 
 
@@ -200,17 +214,17 @@
 
 ### Bug Fixes
 
-* **mite-new:** different response format from mite-api package ([24a99dd](https://github.com/Ephigenia/mite-cli/commit/24a99ddea1393f34ca70cd8c31807df1c6714316))
-* **projects-list:** projects with no customer show blank value ([bdba7ef](https://github.com/Ephigenia/mite-cli/commit/bdba7ef796c256165e44f68e869e84089a1187bd))
 * correct description for --hourly-rate option ([1cf1c56](https://github.com/Ephigenia/mite-cli/commit/1cf1c56e6dfad1b89bada5df87e1f089762cbe68))
-* only use update_entries when flag is set ([e59d1eb](https://github.com/Ephigenia/mite-cli/commit/e59d1ebed01fb50d8f6e2e0c41721566b006ee9b))
-* removes custom error code as mite-api lib covers most of the cases ([677e1d6](https://github.com/Ephigenia/mite-cli/commit/677e1d6e71e2681065cea35806e21092958df48f))
 * **customer-update:** typo in success message ([75f81fd](https://github.com/Ephigenia/mite-cli/commit/75f81fd12b77dc95f9efd4d77d78ea2e31157a0f))
+* err or err.message output upon errors in most of sub commands ([b888702](https://github.com/Ephigenia/mite-cli/commit/b888702e5049c37abbe10079438f74d4f6f2033e))
 * **list:** service and project id & date-completion improvment ([7c7a355](https://github.com/Ephigenia/mite-cli/commit/7c7a355ae97ec6039d10a5741a1b8eebba5dfb08))
 * **mite-list:** empty table headers in grouped output ([c38628e](https://github.com/Ephigenia/mite-cli/commit/c38628e7ef606e8916b34cb53a4fd796b28308f8))
 * **mite-list:** no default limit value ([01a96f5](https://github.com/Ephigenia/mite-cli/commit/01a96f5d72640db0b4c359a86df60794840dc269))
+* **mite-new:** different response format from mite-api package ([24a99dd](https://github.com/Ephigenia/mite-cli/commit/24a99ddea1393f34ca70cd8c31807df1c6714316))
+* only use update_entries when flag is set ([e59d1eb](https://github.com/Ephigenia/mite-cli/commit/e59d1ebed01fb50d8f6e2e0c41721566b006ee9b))
+* **projects-list:** projects with no customer show blank value ([bdba7ef](https://github.com/Ephigenia/mite-cli/commit/bdba7ef796c256165e44f68e869e84089a1187bd))
+* removes custom error code as mite-api lib covers most of the cases ([677e1d6](https://github.com/Ephigenia/mite-cli/commit/677e1d6e71e2681065cea35806e21092958df48f))
 * **sort:** string or array parameter ([2eef4a6](https://github.com/Ephigenia/mite-cli/commit/2eef4a6758031a71c1bfa519dfc9f030eeb308c7))
-* err or err.message output upon errors in most of sub commands ([b888702](https://github.com/Ephigenia/mite-cli/commit/b888702e5049c37abbe10079438f74d4f6f2033e))
 
 
 ### Code Refactoring
@@ -220,28 +234,28 @@
 
 ### Features
 
+* adds archived column and option can be set to "all" ([d1e2ad0](https://github.com/Ephigenia/mite-cli/commit/d1e2ad0c21af64ce0a8c4a630e39f844219ec79b))
+* adds config customizable columns for all listing commands ([84ca387](https://github.com/Ephigenia/mite-cli/commit/84ca387d222faf67dfb65835d06379f8cde73c0d))
+* adds customer-delete ([aa1a31b](https://github.com/Ephigenia/mite-cli/commit/aa1a31b92a0e153a99a7e97c11cf4c14989134c8))
+* adds JSON output format ([fe95bd3](https://github.com/Ephigenia/mite-cli/commit/fe95bd3bf7f31e29d85447c6f92d61cdf97ccd24))
+* adds JSON output format ([5b054a0](https://github.com/Ephigenia/mite-cli/commit/5b054a0a2bff8b40489f44fb396d78af5afb97cb))
+* **config:** adds ability to modify note hightlighting pattern ([e8f4dc1](https://github.com/Ephigenia/mite-cli/commit/e8f4dc177c0f9ea54f4147d5d582686cc83d96d2))
 * **config:** adds currency code as config option ([a50046b](https://github.com/Ephigenia/mite-cli/commit/a50046bcecd6f8b910681440c2288248ccdb476b))
+* **customer:** adds auto-completion for delete & update ([e56457d](https://github.com/Ephigenia/mite-cli/commit/e56457dcf2c24d22db94b1d5ad1e2b1a1388621c))
+* **list:** adds "all" as option for columns which show all colums available ([7d1fc5c](https://github.com/Ephigenia/mite-cli/commit/7d1fc5c924cbad11808c2f0889816c05e9fcfff9))
 * **list:** adds tracking column ([b770e5f](https://github.com/Ephigenia/mite-cli/commit/b770e5fca1fe736ba68f4f7e5ac0d9ac07d98217))
 * **list:** sort by multiple fields in asc and desc order ([861332c](https://github.com/Ephigenia/mite-cli/commit/861332c1faccb938a8eb2cb0acaece3bfb84cbae))
 * **mite-amend:** pass note as argument or pipe-in ([e699c8e](https://github.com/Ephigenia/mite-cli/commit/e699c8eb22e98160fc88b17cf563540c478c1576))
 * **mite-amend:** use first argument as note if it’s not numeric ([97efeac](https://github.com/Ephigenia/mite-cli/commit/97efeac0fef254e00df5dc327402c85059fd42e4))
+* **project-delete:** adds auto-completion ([cb9fe8d](https://github.com/Ephigenia/mite-cli/commit/cb9fe8ddf382aaa7095382c253d381b940a8c039))
 * **project-new:** adds ability to create new customers ([e21107b](https://github.com/Ephigenia/mite-cli/commit/e21107b446ea179c6112297bcaec6668ce54ad60))
 * **project-new:** adds ability to create new projects ([0605e6c](https://github.com/Ephigenia/mite-cli/commit/0605e6cfef8387d3d095fc319ef9ea28a425bf05))
-* adds config customizable columns for all listing commands ([84ca387](https://github.com/Ephigenia/mite-cli/commit/84ca387d222faf67dfb65835d06379f8cde73c0d))
-* adds JSON output format ([fe95bd3](https://github.com/Ephigenia/mite-cli/commit/fe95bd3bf7f31e29d85447c6f92d61cdf97ccd24))
-* adds JSON output format ([5b054a0](https://github.com/Ephigenia/mite-cli/commit/5b054a0a2bff8b40489f44fb396d78af5afb97cb))
 * **project-update:** adds budget & budget_type options ([3c94dd4](https://github.com/Ephigenia/mite-cli/commit/3c94dd48c40e8dced5b7f71239c7f628aeb4d028))
-* update hourly_rate and update entries in customer, project and service ([c213cf0](https://github.com/Ephigenia/mite-cli/commit/c213cf04f83f0a48bf5e5e43b56f3ec1f7848bce))
-* **config:** adds ability to modify note hightlighting pattern ([e8f4dc1](https://github.com/Ephigenia/mite-cli/commit/e8f4dc177c0f9ea54f4147d5d582686cc83d96d2))
-* **customer:** adds auto-completion for delete & update ([e56457d](https://github.com/Ephigenia/mite-cli/commit/e56457dcf2c24d22db94b1d5ad1e2b1a1388621c))
-* **list:** adds "all" as option for columns which show all colums available ([7d1fc5c](https://github.com/Ephigenia/mite-cli/commit/7d1fc5c924cbad11808c2f0889816c05e9fcfff9))
 * **project:** adds ability to delete ([60dd072](https://github.com/Ephigenia/mite-cli/commit/60dd072ef16a3735aba95cd27226b7cd135e994c))
-* **project-delete:** adds auto-completion ([cb9fe8d](https://github.com/Ephigenia/mite-cli/commit/cb9fe8ddf382aaa7095382c253d381b940a8c039))
 * **projects-list:** adds archived column ([d52af59](https://github.com/Ephigenia/mite-cli/commit/d52af59abe26826c313dd1c6c7f6033eee20c628))
 * **service:** adds ability to update service’s properties ([bc893b9](https://github.com/Ephigenia/mite-cli/commit/bc893b9b64c66ce917da8927ac966727d96ee720))
 * **service:** adds auto-completion for delete & update ([ca92479](https://github.com/Ephigenia/mite-cli/commit/ca92479f87a8b142926792bd2ce2077a4008b761))
-* adds archived column and option can be set to "all" ([d1e2ad0](https://github.com/Ephigenia/mite-cli/commit/d1e2ad0c21af64ce0a8c4a630e39f844219ec79b))
-* adds customer-delete ([aa1a31b](https://github.com/Ephigenia/mite-cli/commit/aa1a31b92a0e153a99a7e97c11cf4c14989134c8))
+* update hourly_rate and update entries in customer, project and service ([c213cf0](https://github.com/Ephigenia/mite-cli/commit/c213cf04f83f0a48bf5e5e43b56f3ec1f7848bce))
 
 
 ### BREAKING CHANGES
@@ -272,18 +286,20 @@
 
 ### Bug Fixes
 
-* **config:** re-enable resetting values to their default ([2248b48](https://github.com/Ephigenia/mite-cli/commit/2248b48c4bc248e2dbdd44e6938da2e258355636))
-* typo in auto-completion name in lock and unlock ([8620b2e](https://github.com/Ephigenia/mite-cli/commit/8620b2ea23c3f05d4c07938a2e7839e14d34e187))
-* **mite:** accidential dublicate parsing of argv ([93ad79e](https://github.com/Ephigenia/mite-cli/commit/93ad79e86c9d33ae4d3feb45b3100de32f19d237))
-* typo in mite autocomplete uninstall ([697b6ed](https://github.com/Ephigenia/mite-cli/commit/697b6edc821b04e03def7fa8e7ab282f5eb37b0a))
 * **amend:** more precise error message with no tracker or invalid id ([dd47fde](https://github.com/Ephigenia/mite-cli/commit/dd47fde96b5c0bffb0936398785a837b685715b0))
 * **config:** prevent setting of undefined variable ([5eaa01d](https://github.com/Ephigenia/mite-cli/commit/5eaa01d4cc48f8f763b2b7aa84420e62d0884ea4))
+* **config:** re-enable resetting values to their default ([2248b48](https://github.com/Ephigenia/mite-cli/commit/2248b48c4bc248e2dbdd44e6938da2e258355636))
 * mistakenly changed alias for customers ([7d02c0a](https://github.com/Ephigenia/mite-cli/commit/7d02c0aaca40675999e1694b4a4f81a610c7714c))
+* **mite:** accidential dublicate parsing of argv ([93ad79e](https://github.com/Ephigenia/mite-cli/commit/93ad79e86c9d33ae4d3feb45b3100de32f19d237))
 * **projects:** customer_name exact matches ([45ef317](https://github.com/Ephigenia/mite-cli/commit/45ef317f50065d08822f900a5f72337fe5f319f9))
+* typo in auto-completion name in lock and unlock ([8620b2e](https://github.com/Ephigenia/mite-cli/commit/8620b2ea23c3f05d4c07938a2e7839e14d34e187))
+* typo in mite autocomplete uninstall ([697b6ed](https://github.com/Ephigenia/mite-cli/commit/697b6edc821b04e03def7fa8e7ab282f5eb37b0a))
 
 
 ### Features
 
+* adds --help to all the auto-completions ([ff40cf5](https://github.com/Ephigenia/mite-cli/commit/ff40cf524d81a0ac3f43612000a90ab3775576f6))
+* adds base for auto-completion for all mite subcommands ([96e7f44](https://github.com/Ephigenia/mite-cli/commit/96e7f445582b2cbcc19e81cc45bfcf16c7abb176))
 * adds outputFormat to config to define global output format ([c95eac4](https://github.com/Ephigenia/mite-cli/commit/c95eac498ae307db151a4d1c6f38d19043b85c44))
 * **amend:** auto-completed provides list of 5 last entries of the user ([87309f4](https://github.com/Ephigenia/mite-cli/commit/87309f460416cf50dd4183a40dd9c289d8412f3f))
 * **customer-update:** adds auto-completion for customer list and archived state ([eefb1b9](https://github.com/Ephigenia/mite-cli/commit/eefb1b9d169ee6ee9364da095ff093fe91e07d65))
@@ -306,18 +322,16 @@
 * **new:** accepts minutes in duration format HH:MM ([2b14588](https://github.com/Ephigenia/mite-cli/commit/2b1458823e888df21fa7a30ae8d6eefe7cba43ad))
 * **new:** adds auto-completion for project, services, minutes and date ([4e8ac36](https://github.com/Ephigenia/mite-cli/commit/4e8ac366aff9ccc54fe1470814487e499dafc65a))
 * **new:** create new time entries using project or service ids ([afa2830](https://github.com/Ephigenia/mite-cli/commit/afa2830e1f016333f239c7ecf9667c17c86cde29))
-* **project:** update a project f.e. archive/unarchive it ([d5342c6](https://github.com/Ephigenia/mite-cli/commit/d5342c645e82e284028ed6258ff6a4631487705b))
 * **project-update:** adds auto-completion for argument and project ids ([a36923d](https://github.com/Ephigenia/mite-cli/commit/a36923d63fc74d77f416c3350b90ac1727512dfa))
 * **project-update:** auto-comple list depends on archived option ([cb37578](https://github.com/Ephigenia/mite-cli/commit/cb37578b83714fb4d1e29b2c2634f20a25268412))
 * **project-update:** change name and note of a project ([1a8a76a](https://github.com/Ephigenia/mite-cli/commit/1a8a76ac5f508271d3adca3c52d8eacce61af4a4))
 * **projects:** adds auto-completion for options and option values ([06e4c4b](https://github.com/Ephigenia/mite-cli/commit/06e4c4b2b27ecc01b4ed1aaef68c339a2fdec7fb))
+* **project:** update a project f.e. archive/unarchive it ([d5342c6](https://github.com/Ephigenia/mite-cli/commit/d5342c645e82e284028ed6258ff6a4631487705b))
 * **services:** adds --columns option ([0736812](https://github.com/Ephigenia/mite-cli/commit/073681235c9409dab642c3c3da8fde5cb22591a8))
 * **services:** adds auto-completion for options and option values ([29f44bb](https://github.com/Ephigenia/mite-cli/commit/29f44bb2a812a9cec7413d49bd0a4bf1f3be1881))
 * **start:** adds auto-completion which shows latest 5 entries ([25201d0](https://github.com/Ephigenia/mite-cli/commit/25201d041d3d6156eec84483d387704c1597cd31))
 * **unlock:** adds sub-command to unlock single time entries ([47db187](https://github.com/Ephigenia/mite-cli/commit/47db1879db4db82bc9aa666032f1fd3de943f178))
-* adds --help to all the auto-completions ([ff40cf5](https://github.com/Ephigenia/mite-cli/commit/ff40cf524d81a0ac3f43612000a90ab3775576f6))
 * **users:** adds auto-completion options and option values ([12b325f](https://github.com/Ephigenia/mite-cli/commit/12b325f2a38bcf6f862dbc6e4e17ea134d85e3df))
-* adds base for auto-completion for all mite subcommands ([96e7f44](https://github.com/Ephigenia/mite-cli/commit/96e7f445582b2cbcc19e81cc45bfcf16c7abb176))
 
 
 
@@ -347,9 +361,9 @@
 
 ### Bug Fixes
 
-* wrongly increased version number ([106a152](https://github.com/Ephigenia/mite-cli/commit/106a15202e4c6e160455c2282eecf87f8b1d1e90))
 * **list:** correct revenue reduction for correct sum ([6f24c46](https://github.com/Ephigenia/mite-cli/commit/6f24c46eae752a6baf28102490ed831dfbae100f))
 * **list:** default sort option using constant ([e833a2d](https://github.com/Ephigenia/mite-cli/commit/e833a2dc1788d671587f42afc7ef14fe587d1299))
+* wrongly increased version number ([106a152](https://github.com/Ephigenia/mite-cli/commit/106a15202e4c6e160455c2282eecf87f8b1d1e90))
 
 
 ### Features
@@ -424,9 +438,9 @@
 * **list:** adds group_by argument and alternate table output format ([541d0f3](https://github.com/Ephigenia/mite-cli/commit/541d0f343f48c76b6ecda3075d0385aaf370aca2))
 * **list:** highlight jira identifiers ([cabd423](https://github.com/Ephigenia/mite-cli/commit/cabd4235f90442335e14a7bf5b96f42de063465c))
 * **project:** show archived & not archived in one list ([185c876](https://github.com/Ephigenia/mite-cli/commit/185c876f6e34b72c2c1aa0e522044ae92faa87d4))
-* **project:** sort by budgets & hourly_rate ([0609b91](https://github.com/Ephigenia/mite-cli/commit/0609b918abcd4a3969d99dae646a44ae202466f2))
 * **projects:** list projects ([0a32f3a](https://github.com/Ephigenia/mite-cli/commit/0a32f3a72c635f1df8e219b1e6484a8b646e49df))
 * **projects:** order by customer_name & id ([59103c3](https://github.com/Ephigenia/mite-cli/commit/59103c3ec8db24fe9b14728fa54b419104a0ef5d))
+* **project:** sort by budgets & hourly_rate ([0609b91](https://github.com/Ephigenia/mite-cli/commit/0609b918abcd4a3969d99dae646a44ae202466f2))
 * **projects:** search for customer names ([15a9c0d](https://github.com/Ephigenia/mite-cli/commit/15a9c0d92f67295064bc5d8c27736df8ff4b402b))
 * **services:** adds list of services ([c0464f5](https://github.com/Ephigenia/mite-cli/commit/c0464f5956fa4b585a642abe231db8513c985309))
 * **services:** show archived & not archived in one list ([0b4556f](https://github.com/Ephigenia/mite-cli/commit/0b4556f25147f7f2ad7381889c5571a8859a1cb6))
@@ -465,8 +479,8 @@
 
 ### Bug Fixes
 
-* migrates cli-table2 to table package ([acf59ac](https://github.com/Ephigenia/mite-cli/commit/acf59acdcd74f886dd3f508afd6bf12d5d5ff367))
 * **list:** use checkmark instead of lock due to char width ([3d88cfc](https://github.com/Ephigenia/mite-cli/commit/3d88cfcd85c489ff1db3cbe425f95e4003bc35f2))
+* migrates cli-table2 to table package ([acf59ac](https://github.com/Ephigenia/mite-cli/commit/acf59acdcd74f886dd3f508afd6bf12d5d5ff367))
 
 
 
@@ -493,10 +507,10 @@
 
 ### Bug Fixes
 
+* adds alias "ls" for "list" and "create" for "new" ([1072252](https://github.com/Ephigenia/mite-cli/commit/1072252cb794d69b4f61cdeaa70fd51cacdeb128))
 * **budgets:** adds duration column to table output ([0d1b5b1](https://github.com/Ephigenia/mite-cli/commit/0d1b5b10c7b1624f01e03d42d17266073f7cea91))
 * **open:** also open mite url when time entry id not given ([b4f21c9](https://github.com/Ephigenia/mite-cli/commit/b4f21c9da6307df77d7f266aa15204e7a6fef29e))
 * **open:** alternate message when no id given ([b68377d](https://github.com/Ephigenia/mite-cli/commit/b68377d26438279ce9a980b8ff19fbb1bf849096))
-* adds alias "ls" for "list" and "create" for "new" ([1072252](https://github.com/Ephigenia/mite-cli/commit/1072252cb794d69b4f61cdeaa70fd51cacdeb128))
 * **start:** adds verbose error message when entry not found ([b8637ea](https://github.com/Ephigenia/mite-cli/commit/b8637ea6eee909397b795b6bf5cf596d726f100c))
 
 
@@ -511,8 +525,8 @@
 
 ### Features
 
-* mite open to open specific entries in browser ([8ac7edb](https://github.com/Ephigenia/mite-cli/commit/8ac7edbcb14cf8ff9134d0e5a5dbcc072d317ec4))
 * **list:** adds billable argument ([6f743a4](https://github.com/Ephigenia/mite-cli/commit/6f743a48ca681163f299597d5964cdac60ee4301))
+* mite open to open specific entries in browser ([8ac7edb](https://github.com/Ephigenia/mite-cli/commit/8ac7edbcb14cf8ff9134d0e5a5dbcc072d317ec4))
 
 
 
@@ -529,9 +543,9 @@
 
 ### Features
 
-* start time entry by id ([ded7161](https://github.com/Ephigenia/mite-cli/commit/ded716155d821eb43c94a3dc9cb02b34764389e6))
 * **list:** show time entry id ([a2babbb](https://github.com/Ephigenia/mite-cli/commit/a2babbbc989b736de50d6a91b43646e06418be15))
 * running time entry indicated with unicode triangle "▶" ([e9879f6](https://github.com/Ephigenia/mite-cli/commit/e9879f6ef398b881d75abaff9c76258f3d0b3034))
+* start time entry by id ([ded7161](https://github.com/Ephigenia/mite-cli/commit/ded716155d821eb43c94a3dc9cb02b34764389e6))
 * stop any running entry ([4eab9e6](https://github.com/Ephigenia/mite-cli/commit/4eab9e6ba6a601801054aa22c4a0e7d86dd233ed))
 
 
@@ -547,8 +561,8 @@
 
 ### Features
 
-* **list:** add search query filter ([f7e96cf](https://github.com/Ephigenia/mite-cli/commit/f7e96cf2eef5ba06eae35a9eb94c7d8594a1c01c))
 * add project_id, customer_id for list & budget ([bd94fbd](https://github.com/Ephigenia/mite-cli/commit/bd94fbd985e9984d220f99d477caace88304f576))
+* **list:** add search query filter ([f7e96cf](https://github.com/Ephigenia/mite-cli/commit/f7e96cf2eef5ba06eae35a9eb94c7d8594a1c01c))
 
 
 
