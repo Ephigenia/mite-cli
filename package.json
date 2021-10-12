@@ -74,14 +74,14 @@
   },
   "dependencies": {
     "chalk": "4.1.2",
-    "commander": "8.1.0",
+    "commander": "8.2.0",
     "external-editor": "^3.1.0",
-    "inquirer": "8.1.2",
+    "inquirer": "8.2.0",
     "mite-api": "^0.1.1",
     "nconf": "0.11.3",
     "node-fetch": "^2.6.0",
     "open": "8.3.0",
-    "table": "6.0.3",
+    "table": "6.7.2",
     "tabtab": "^3.0.2",
     "weeknumber": "1.2.1"
   },
