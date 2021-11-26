@@ -73,7 +73,7 @@
     "version": "npm run changelog && git add CHANGELOG.md"
   },
   "dependencies": {
-    "chalk": "4.1.2",
+    "chalk": "5.0.0",
     "commander": "8.2.0",
     "external-editor": "^3.1.0",
     "inquirer": "8.2.0",
