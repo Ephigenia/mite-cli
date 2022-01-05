@@ -4,7 +4,7 @@
 
     - which OS / Terminal are you using
     - mite-cli version
- -->
+-->
 
 ## Description
 <!---
