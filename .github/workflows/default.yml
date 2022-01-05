@@ -1,0 +1,53 @@
+name: default
+
+on: [push]
+
+jobs:
+  lint:
+    name: Lint Code Base
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        # Full git history is needed to get a proper list of changed files within `super-linter`
+        fetch-depth: 0
+    - uses: github/super-linter/slim@v4
+      env:
+        DEFAULT_BRANCH: master
+        GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+        VALIDATE_ALL_CODEBASE: true
+        VALIDATE_JAVASCRIPT_ES: true
+        VALIDATE_EDITORCONFIG: true
+        VALIDATE_YAML: true
+        VALIDATE_BASH: true
+        VALIDATE_BASH_EXEC: true
+        FILTER_REGEX_EXCLUDE: CHANGELOG.md
+
+  test:
+    name: nodejs
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        nodeVersion: [10.x, 12.x, 14.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.nodeVersion }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.nodeVersion }}
+        cache: 'npm'
+    - run: npm ci --no-optional
+    - run: npm test
+    - name: Archive code coverage results
+      uses: actions/upload-artifact@v2
+      with:
+        name: code-coverage-report
+        path: coverage
+        retention-days: 30
+    - uses: vebr/jest-lcov-reporter@v0.2.1
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        lcov-file: ./coverage/lcov.info
+        update-comment: true
