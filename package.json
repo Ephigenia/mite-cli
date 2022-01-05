@@ -71,13 +71,13 @@
   },
   "dependencies": {
     "chalk": "4.1.2",
-    "commander": "8.2.0",
+    "commander": "8.3.0",
     "external-editor": "^3.1.0",
     "inquirer": "8.2.0",
     "mite-api": "^0.1.1",
     "nconf": "0.11.3",
     "node-fetch": "2.6.2",
-    "open": "8.3.0",
+    "open": "8.4.0",
     "table": "^6.0.3",
     "tabtab": "^3.0.2",
     "weeknumber": "1.2.1"
@@ -86,10 +86,9 @@
     "@commitlint/cli": "16.0.1",
     "@commitlint/config-angular": "16.0.0",
     "chai": "4.3.4",
-    "conventional-changelog-cli": "2.1.1",
-    "eslint": "8.0.0",
+    "eslint": "8.6.0",
     "husky": "7.0.4",
-    "mocha": "9.1.2",
+    "mocha": "9.1.3",
     "nyc": "15.1.0",
     "pinst": "2.1.6"
   }
