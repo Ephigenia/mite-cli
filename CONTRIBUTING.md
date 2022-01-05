@@ -69,13 +69,13 @@ Releasing
 
 ### Check the new version recommended according to the git log:
 
-  npm run version:recommend
+    npm run version:recommend
 
 ### Check changelog output for next version
 
-  npm run changelog:preview
+    npm run changelog:preview
 
 ### Create new Release & Publish:
 
-  npm version minor;
-  npm publish;
+    npm version minor;
+    npm publish;
