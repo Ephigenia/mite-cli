@@ -1,3 +1,14 @@
+## [1.8.1-alpha.1](https://github.com/Ephigenia/mite-cli/compare/v1.8.0...v1.8.1-alpha.1) (2022-01-10)
+
+
+### Bug Fixes
+
+* **deps:** update dependency commander to v8.2.0 ([#188](https://github.com/Ephigenia/mite-cli/issues/188)) ([7f5ccd5](https://github.com/Ephigenia/mite-cli/commit/7f5ccd542c6ec434487672caf73a006f40429938))
+* **deps:** update dependency inquirer to v8.2.0 ([#189](https://github.com/Ephigenia/mite-cli/issues/189)) ([a4effc6](https://github.com/Ephigenia/mite-cli/commit/a4effc62a13d44f4316a69be1ebd0516434c3a57))
+* **deps:** update dependency open to v8.3.0 ([#193](https://github.com/Ephigenia/mite-cli/issues/193)) ([655df03](https://github.com/Ephigenia/mite-cli/commit/655df038aef92d8dab2b0c77d32f6fe7b7028670))
+* **deps:** update dependency table to v6.7.2 ([#192](https://github.com/Ephigenia/mite-cli/issues/192)) ([a54cabe](https://github.com/Ephigenia/mite-cli/commit/a54cabee34fc6b8b23c29627d1593343257a0ea0))
+* increase node version in .nvmrc ([8a71168](https://github.com/Ephigenia/mite-cli/commit/8a71168b58ee0c8ad07e6341d8786eeca57eb529))
+
 # [1.8.0](https://github.com/Ephigenia/mite-cli/compare/v1.7.1...v1.8.0) (2021-08-11)
 
 
@@ -567,6 +578,3 @@
 
 
 # 0.0.0 (2017-08-01)
-
-
-
