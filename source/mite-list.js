@@ -30,9 +30,11 @@ Can be single dates, duraions and weekday names: \n\
 - "today" shows todays time entries (default)\n\
 - "last_week" or "last-week" shows entries from the whole last week\n\
 - "7days", "2days", "3m" shows time entries since 7 days, 2days or 3 months\n\
+- "cw2" for the calendar week 2, MO-SO\n\
+- "2021 cw3" for 2021 calendar week 3, MO-So\n\
 - "2019-10-12" shows all entries from that exact date\n\
-- "2021-01" entries for january 2021, or even shorter "211"
-- "2020" all entries from 2020
+- "2021-01" entries for january 2021, or even shorter "211"\n\
+- "2020" all entries from 2020\n\
 - "friday", "fr" or other weekday names or abbreviations show all entries since \
   this last weekday`
   })

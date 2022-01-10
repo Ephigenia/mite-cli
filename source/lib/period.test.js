@@ -12,6 +12,8 @@ describe('period', () => {
     describe('Year & Month notation (YYYY-MM)', () => {
       const tests = [
         '2020-01',
+        '2020 01',
+        '2020-01',
         '2020/01',
         '2020_01',
         '2020-1',
@@ -20,6 +22,7 @@ describe('period', () => {
         '202001',
         '2020_1',
         '20-1',
+        '20 1',
         '201',
         '20-01',
         '20/01',
@@ -52,6 +55,14 @@ describe('period', () => {
       const result = guessRequestParamsFromPeriod('2021');
       expect(result).to.deep.equal({
         at: '2021'
+      });
+    });
+
+    it('it understands calendar week notation', () => {
+      const result = guessRequestParamsFromPeriod('2022 cw2');
+      expect(result).to.deep.equal({
+        from: new Date(2022, 0, 10),
+        to: new Date(2022, 0, 17),
       });
     });
 

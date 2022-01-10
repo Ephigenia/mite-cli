@@ -1,5 +1,17 @@
 'use strict';
 
+function normalizeShortYear(year) {
+  if (year < 50) year = 2000 + year;
+  if (year < 100) year = 1900 + year;
+  return year;
+}
+
+function weekDateToDate(year, week, day) {
+  const firstDayOfYear = new Date(year, 0, 1)
+  const days = 2 + day + (week - 1) * 7 - firstDayOfYear.getDay()
+  return new Date(year, 0, days)
+}
+
 function guessRequestParamsFromPeriod(period) {
   if (!period) return {};
 
@@ -42,12 +54,22 @@ function guessRequestParamsFromPeriod(period) {
       at: year,
     };
   } else {
+    let year, month, cw;
+    [, year, cw ] = (period.match(/^(\d{2,4})[-_/\\ ]?cw(\d{1,2})$/i) || [])
+      .map(v => parseInt(v));
+    if (year && cw) {
+      year = normalizeShortYear(year);
+      return {
+        from: weekDateToDate(year, cw + 1, 0),
+        to: weekDateToDate(year, cw + 2, 0),
+      };
+    }
+
     // `YYYYMM`, `YYYYM`, `YYM` and with optional seperators
-    let [ , year, month ] = (period.match(/^(\d{2,4})[-_/\\]?(\d{1,2})$/) || [])
+    [, year, month ] = (period.match(/^(\d{2,4})[-_/\\ ]?(\d{1,2})$/) || [])
       .map(v => parseInt(v));
     if (year, month) {
-      if (year < 50) year = 2000 + year;
-      if (year < 100) year = 1900 + year;
+      year = normalizeShortYear(year);
       return {
         from: new Date(year, month - 1, 0),
         to: new Date(year, month, 0),
