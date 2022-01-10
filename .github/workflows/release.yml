@@ -33,4 +33,4 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
       - run: npm ci
-      - run: npx semantic-release --dry-run
+      - run: npx semantic-release
