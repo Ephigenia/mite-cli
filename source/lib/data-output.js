@@ -132,7 +132,16 @@ function formatData(data, format, columns = []) {
     case FORMAT.TABLE: {
       const tableConfig = {
         border: tableLib.getBorderCharacters('norc'),
-        columns,
+        // table validation of column object is very strict, doesnt’t allow
+        // additional attributes not defined in the schema
+        // SEE: https://github.com/gajus/table/blob/master/src/schemas/shared.json
+        columns: columns.map(column => {
+          delete column.attribute;
+          delete column.reducer;
+          delete column.format;
+          delete column.label;
+          return column;
+        }),
       };
       return table(data, tableConfig);
     }

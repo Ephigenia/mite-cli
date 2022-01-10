@@ -66,7 +66,7 @@
     "_postinstall": "husky install",
     "prepublishOnly": "pinst --disable",
     "postpublish": "pinst --enable",
-    "start": "node $npm_package_main",
+    "start": "node source/mite.js",
     "tdd": "npm run test -- --watch",
     "test": "NODE_ENV=test nyc --reporter=text-summary --reporter lcov mocha \"./{,!(node_modules)/**}/*.test.js\""
   },

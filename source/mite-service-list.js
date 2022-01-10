@@ -55,7 +55,7 @@ Examples:
 async function main() {
   const opts = program.opts();
   const miteApi = require('./lib/mite-api')(config.get());
-
+  console.log(opts);
   const options = {
     limit: 1000,
     offset: 0,
@@ -73,7 +73,7 @@ async function main() {
     ))
     .then(items => {
       const format = DataOutput.getFormatFromOptions(opts, config);
-      const columns = commandOptions.columns.resolve(program.columns, servicesCommand.columns.options);
+      const columns = commandOptions.columns.resolve(opts.columns, servicesCommand.columns.options);
       const tableData = DataOutput.compileTableData(items, columns, format);
       console.log(DataOutput.formatData(tableData, format, columns));
     })

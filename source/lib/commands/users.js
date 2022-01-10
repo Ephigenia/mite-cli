@@ -58,7 +58,7 @@ module.exports.columns = {
     },
     role: {
       width: 10,
-      align: 'right',
+      alignment: 'right',
       label: 'User Role',
       attribute: 'role',
     },
