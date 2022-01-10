@@ -35,16 +35,24 @@ function guessRequestParamsFromPeriod(period) {
     };
   }
 
-  // match year & month notations: `YYYYMM`, `YYYYM`, `YYM`
-  let [ , year, month ] = (period.match(/^(\d{2,4})[-_/\\]?(\d{1,2})$/) || [])
-    .map(v => parseInt(v));
-  if (year, month) {
-    if (year < 50) year = 2000 + year;
-    if (year < 100) year = 1900 + year;
+  // match YYYY
+  let [ year ] = (period.match(/^\d{4}$/) || []);
+  if (year) {
     return {
-      from: new Date(year, month - 1, 0),
-      to: new Date(year, month, 0),
+      at: year,
     };
+  } else {
+    // `YYYYMM`, `YYYYM`, `YYM` and with optional seperators
+    let [ , year, month ] = (period.match(/^(\d{2,4})[-_/\\]?(\d{1,2})$/) || [])
+      .map(v => parseInt(v));
+    if (year, month) {
+      if (year < 50) year = 2000 + year;
+      if (year < 100) year = 1900 + year;
+      return {
+        from: new Date(year, month - 1, 0),
+        to: new Date(year, month, 0),
+      };
+    }
   }
 
   if (period.match(/this/)) return { at: periodLc };

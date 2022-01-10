@@ -32,6 +32,7 @@ Can be single dates, duraions and weekday names: \n\
 - "7days", "2days", "3m" shows time entries since 7 days, 2days or 3 months\n\
 - "2019-10-12" shows all entries from that exact date\n\
 - "2021-01" entries for january 2021, or even shorter "211"
+- "2020" all entries from 2020
 - "friday", "fr" or other weekday names or abbreviations show all entries since \
   this last weekday`
   })
@@ -183,6 +184,7 @@ Examples:
  * @return {Object<String, any>} time entries or grouped time entries
  */
 function getRequestOptions(period, opts) {
+  console.log(guessRequestParamsFromPeriod(period));
   return {
     ...guessRequestParamsFromPeriod(period),
     ...(typeof opts.billable === 'boolean' && { billable: opts.billable }),

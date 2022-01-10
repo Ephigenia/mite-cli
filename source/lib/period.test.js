@@ -16,6 +16,8 @@ describe('period', () => {
         '2020_01',
         '2020-1',
         '2020/1',
+        '20201',
+        '202001',
         '2020_1',
         '20-1',
         '201',
@@ -45,6 +47,13 @@ describe('period', () => {
         });
       });
     }); // Date-Month Notation
+
+    it('normal dates', () => {
+      const result = guessRequestParamsFromPeriod('2021');
+      expect(result).to.deep.equal({
+        at: '2021'
+      });
+    });
 
     describe('short notation of time periods', () => {
       [
