@@ -31,6 +31,7 @@ Can be single dates, duraions and weekday names: \n\
 - "last_week" or "last-week" shows entries from the whole last week\n\
 - "7days", "2days", "3m" shows time entries since 7 days, 2days or 3 months\n\
 - "2019-10-12" shows all entries from that exact date\n\
+- "2021-01" entries for january 2021, or even shorter "211"
 - "friday", "fr" or other weekday names or abbreviations show all entries since \
   this last weekday`
   })
@@ -186,7 +187,7 @@ function getRequestOptions(period, opts) {
     ...guessRequestParamsFromPeriod(period),
     ...(typeof opts.billable === 'boolean' && { billable: opts.billable }),
     ...(opts.customerId && { customer_id: opts.customerId }),
-    ...(opts.from && { from: opts.from}),
+    ...(opts.from && { from: opts.from }),
     ...(opts.groupBy && { group_by: opts.groupBy }),
     ...(opts.limit && { limit: opts.limit }),
     ...(typeof opts.locked === 'boolean' && { locked: opts.locked }),

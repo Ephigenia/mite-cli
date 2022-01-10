@@ -9,6 +9,43 @@ describe('period', () => {
   const DATE_STR_REGEXP = /^20\d\d-[012]\d-[0123]\d$/;
 
   describe('guessRequestParamsFromPeriod', () => {
+    describe('Year & Month notation (YYYY-MM)', () => {
+      const tests = [
+        '2020-01',
+        '2020/01',
+        '2020_01',
+        '2020-1',
+        '2020/1',
+        '2020_1',
+        '20-1',
+        '201',
+        '20-01',
+        '20/01',
+        '20_01',
+      ];
+      tests.forEach(input => it(`returns the whole january for ${JSON.stringify(input)}`, () => {
+        const result = guessRequestParamsFromPeriod(input);
+        expect(result).to.deep.equal({
+          from: new Date(2020, 0, 0),
+          to: new Date(2020, 1, 0),
+        });
+      }));
+      it('can parse two-digit months', () => {
+        const result = guessRequestParamsFromPeriod('2020-12');
+        expect(result).to.deep.equal({
+          from: new Date(2020, 11, 0),
+          to: new Date(2020, 12, 0),
+        });
+      });
+      it('can parse short 1999 notations', () => {
+        const result = guessRequestParamsFromPeriod('99-01');
+        expect(result).to.deep.equal({
+          from: new Date(1999, 0, 0),
+          to: new Date(1999, 1, 0),
+        });
+      });
+    }); // Date-Month Notation
+
     describe('short notation of time periods', () => {
       [
         '1d',
