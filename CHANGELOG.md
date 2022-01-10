@@ -1,3 +1,10 @@
+## [1.8.1-alpha.2](https://github.com/Ephigenia/mite-cli/compare/v1.8.1-alpha.1...v1.8.1-alpha.2) (2022-01-10)
+
+
+### Bug Fixes
+
+* **service:** use of columns argument ([b9efcc1](https://github.com/Ephigenia/mite-cli/commit/b9efcc1729f814395fbce044a26beadbe269b736))
+
 ## [1.8.1-alpha.1](https://github.com/Ephigenia/mite-cli/compare/v1.8.0...v1.8.1-alpha.1) (2022-01-10)
 
 
