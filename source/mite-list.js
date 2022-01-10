@@ -151,7 +151,7 @@ Examples:
     mite list this_year --billable true --columns user,duration --group-by user --sort duration
 
   export all time-entries from the current month as csv:
-    mite list last_week --json --columns user,id | jq -cr '.[] | @csv'
+    mite list last_week --json --columns user,id | jq -rM '.[] | @csv'
 
   create a report of all customer and their generated profits:
     mite list this_year --group-by customer --sort revenue
@@ -169,7 +169,7 @@ Examples:
     mite users --search marc --columns id --plain | xargs mite list last_month --group-by service --user-id
 
   Create PDF with time entries from a specific project for the last month
-    NO_COLOR=1 mite list last-month --project-id 1234 --columns date,service,note,duration --json | jq -cr '.[] | @csv' | npx csv2md
+    NO_COLOR=1 mite list last-month --project-id 1234 --columns date,service,note,duration --json | jq -rM '.[] | @csv' | npx csv2md
 `)
   .parse();
 

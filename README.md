@@ -568,7 +568,7 @@ show all-time tracking users from a company (all have a specific email domain)
 
 export all users to a CSV file
 
-    mite users --columns id,role,name,email,archived,language --json | jq -cr '.[] | @csv' > users.csv
+    mite users --columns id,role,name,email,archived,language --json | jq -rM '.[] | @csv' > users.csv
 
 Show a report for all users showing the revenues and times per service for all users matching a query
 
@@ -600,7 +600,7 @@ Use different columns
 
 Export all archived customers
 
-    mite customer list --archived true --json | jq -cr '.[] | @csv' > archived_customers.csv
+    mite customer list --archived true --json | jq -rM '.[] | @csv' > archived_customers.csv
 
 ### Create Customer
 
@@ -652,7 +652,7 @@ List, filter and search for projects. Example showing only archived projects ord
 
 Export all projects using other columns as CSV:
 
-    mite project list --columns id,customer-id,customer_name --json | jq -cr '.[] | @csv' > projects_export.csv
+    mite project list --columns id,customer-id,customer_name --json | jq -rM '.[] | @csv' > projects_export.csv
 
 Unarchive all archived projects from a specific customer using `xargs`:
 
@@ -780,7 +780,7 @@ Plotting Charts
 
 The following command will list all customers from last year and plot their minuets as bar charts to the terminal so that it’s easy to compare the values to each other:
 
-    mite list last_year --group-by year,customer --columns customer,minutes --plain | jq -cr '.[] | @tsv' \
+    mite list last_year --group-by year,customer --columns customer,minutes --plain | jq -rM '.[] | @tsv' \
         | sed "$ d" \
         | gnuplot -e \
         "
@@ -795,7 +795,7 @@ There are even more charting possibilities using the open-source [gnuplot](http:
 
 You can also reproduce the charts from the mite admin showing the number of hours worked in the last month:
 
-    mite list this_month --group-by day --columns day,minutes --plain | jq -cr '.[] | @tsv' \
+    mite list this_month --group-by day --columns day,minutes --plain | jq -rM '.[] | @tsv' \
         | sed "$ d" \
         | gnuplot -e \
         "
@@ -865,7 +865,7 @@ The following formats are supported:
 
 There are alternative output formats which may be useful when you automatically process the results such as `json`, `csv`, `text`:
 
-    mite list last_week --columns user,id --json | jq -cr '.[] | @csv' 
+    mite list last_week --columns user,id --json | jq -rM '.[] | @csv' 
 
     Date,User,Duration
     2018-11-02,Bruce Banner,1:10
@@ -885,7 +885,7 @@ Exporting CSVs
 
 Creating a time-sheet for your clients can be done like this:
 
-    mite list last_month --json --columns date,service,note,duration --plain | jq -cr '.[] | @csv'
+    mite list last_month --json --columns date,service,note,duration --plain | jq -rM '.[] | @csv'
 
 Batch-Edit Time Entries
 --------------------------------------------------------------------------------
@@ -910,7 +910,7 @@ Generating PDFs
 
 The most common use case for creating pdfs is when a client asks for a nice looking pdf with the entries from a specific project and timeframe. The mite-cli cannot create pdfs on it’s own but you can use the power of other tools like [jq](https://stedolan.github.io/jq/) & [md-to-pdf](https://www.npmjs.com/package/md-to-pdf):
 
-    NO_COLOR mite-cli list last_month --project-id 1234 --columns=date,note,duration --json | jq -cr '.[] | @csv' | md-to-pdf > "./time-entries-$(date +%Y%m%d).pdf"
+    NO_COLOR mite-cli list last_month --project-id 1234 --columns=date,note,duration --json | jq -rM '.[] | @csv' | md-to-pdf > "./time-entries-$(date +%Y%m%d).pdf"
 
 `md-to-pdf` can be improved by adding custom stylesheets, templates for headers and footers and can be adjusted to your needs.
 
