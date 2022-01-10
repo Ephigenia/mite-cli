@@ -83,7 +83,7 @@
     "weeknumber": "1.2.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "16.0.1",
+    "@commitlint/cli": "16.0.2",
     "@commitlint/config-angular": "16.0.0",
     "chai": "4.3.4",
     "eslint": "8.6.0",
