@@ -15,6 +15,14 @@ function weekDateToDate(year, week, day) {
 function guessRequestParamsFromPeriod(period) {
   if (!period) return {};
 
+  const seperators = ['\\-', '_', '/', '\\', ' '];
+  const sep = '[' + seperators.join('') + ']';
+  const fullDateRegExp = new RegExp('^(\\d{4})' + sep + '?(\\d\\d)' + sep + '?(\\d\\d)$', 'i');
+  let [isFullDate, year, month, day] = period.match(fullDateRegExp) || [];
+  if (isFullDate) {
+    return { at: `${year}-${month}-${day}` };
+  }
+
   const periodLc = period.toLowerCase().replace(/-/g, '_');
   const now = new Date();
 

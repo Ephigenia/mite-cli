@@ -6,7 +6,11 @@ const tableLib = require('table');
 const table = tableLib.table;
 
 /**
- * @type {FORMAT}
+ * @typedef {'json'|'table'|'text'} FORMAT
+ */
+
+/**
+ * @type {object<string, FORMAT>}
  * @readonly
  * @enum {string}
  */
@@ -16,6 +20,9 @@ const FORMAT = {
   DEFAULT: 'table',
   TEXT: 'text',
 };
+/**
+ * @type {FORMAT[]}
+ */
 const FORMATS = Object.values(FORMAT);
 
 /**
@@ -93,7 +100,7 @@ function getTableFooterColumns(items, columns) {
     if (columnSum && columnDefinition.format) {
       return columnDefinition.format(columnSum);
     }
-    return columnSum || undefined;
+    return columnSum || '';
   });
 }
 

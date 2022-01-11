@@ -14,6 +14,7 @@ const columnOptions = require('./lib/options/columns');
 const commandOptions = require('./lib/options');
 const { handleError } = require('./lib/errors');
 const { guessRequestParamsFromPeriod } = require('./lib/period');
+const { FORMAT } = require('./lib/data-output');
 
 // no other options or comamnd line arguments used, default "period" to "today"
 if (process.argv.length === 2) {
@@ -226,12 +227,19 @@ function filterData(opts, row) {
   return valid;
 }
 
-function getReport(items, columns, format) {
+/**
+ * @param {array<object>} items
+ * @param {import('./lib/data-output').ColumnDefinition[]} columns
+ * @param {import('./lib/data-output').FORMAT} format
+ * @param {boolean} [includeSums=true]
+ * @returns {array<object>}
+ */
+function getReport(items, columns, format, includeSums = true) {
   const tableData = DataOutput.compileTableData(items, columns, format);
 
   // Table footer
   // add table footer if any of the table columns has a reducer
-  if (columnOptions.hasReducer(columns)) {
+  if (includeSums && columnOptions.hasReducer(columns)) {
     let footerColumns = DataOutput.getTableFooterColumns(items, columns);
     footerColumns = footerColumns.map(v => v ? chalk.bold(v) : v); // make footer bold
     tableData.push(footerColumns);
@@ -265,7 +273,7 @@ function main(period) {
       .filter(filterData.bind(this, opts))
       ;
     const format = DataOutput.getFormatFromOptions(opts, config);
-    const report = getReport(items, columns, format);
+    const report = getReport(items, columns, format, format === FORMAT.TABLE);
     console.log(report);
   });
 } // main
