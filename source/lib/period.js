@@ -1,14 +1,69 @@
 'use strict';
 
+function normalizeShortYear(year) {
+  if (year < 50) year = 2000 + year;
+  if (year < 100) year = 1900 + year;
+  return year;
+}
+
+function YYYYMMDD(date) {
+  return date.toISOString().substring(0, 10);
+}
+
+function weekDateToDate(year, week, day) {
+  const firstDayOfYear = new Date(year, 0, 1);
+  const days = 2 + day + (week - 1) * 7 - firstDayOfYear.getDay();
+  return new Date(Date.UTC(year, 0, days));
+}
+
 function guessRequestParamsFromPeriod(period) {
   if (!period) return {};
 
+  let year, month, day;
+
   const seperators = ['\\-', '_', '/', '\\', ' '];
   const sep = '[' + seperators.join('') + ']';
+
+  // YYYY-MM-DD
   const fullDateRegExp = new RegExp('^(\\d{4})' + sep + '?(\\d\\d)' + sep + '?(\\d\\d)$', 'i');
-  let [isFullDate, year, month, day] = period.match(fullDateRegExp) || [];
+  let isFullDate;
+  [isFullDate, year, month, day] = period.match(fullDateRegExp) || [];
   if (isFullDate) {
     return { at: `${year}-${month}-${day}` };
+  }
+
+  // YYYY
+  let isJustYear;
+  [isJustYear, year ] = (period.match(/^(\d{4})$/) || []).map(v => parseInt(v));
+  if (isJustYear) {
+    return {
+      from: YYYYMMDD(new Date(Date.UTC(year, 0, 1))),
+      to: YYYYMMDD(new Date(Date.UTC(year, 12, 0))),
+    };
+  }
+
+  let isCalendarWeek, cw;
+  // YYYY cwX (calendar week notation)
+  [isCalendarWeek, year, cw ] = (period.match(/^(\d{2,4})[-_/\\ ]?cw(\d{1,2})$/i) || [])
+    .map(v => parseInt(v));
+  if (isCalendarWeek && year && cw) {
+    year = normalizeShortYear(year);
+    return {
+      from: YYYYMMDD(weekDateToDate(year, cw + 1, 0)),
+      to: YYYYMMDD(weekDateToDate(year, cw + 2, 0)),
+    };
+  }
+
+  // `YYYYMM`, `YYYYM`, `YYM` and with optional seperators
+  let isYearAndMonth;
+  [isYearAndMonth, year, month ] = (period.match(/^(\d{2,4})[-_/\\ ]?(\d{1,2})$/) || [])
+    .map(v => parseInt(v));
+  if (isYearAndMonth && year && month) {
+    year = normalizeShortYear(year);
+    return {
+      from: YYYYMMDD(new Date(Date.UTC(year, month - 1, 1))),
+      to: YYYYMMDD(new Date(Date.UTC(year, month, 0))),
+    };
   }
 
   const periodLc = period.toLowerCase().replace(/-/g, '_');
@@ -22,7 +77,7 @@ function guessRequestParamsFromPeriod(period) {
   if (matches) {
     const from = new Date(now.getTime());
     const amount = parseInt(matches[1], 10);
-    switch(matches[2].substr(0, 1)) {
+    switch(matches[2].substring(0, 1)) {
       case 'd':
         from.setDate(from.getDate() - amount);
         break;
@@ -38,8 +93,8 @@ function guessRequestParamsFromPeriod(period) {
         break;
     }
     return {
-      from: from.toISOString().substr(0, 10),
-      to: now.toISOString().substr(0, 10),
+      from: YYYYMMDD(from),
+      to: YYYYMMDD(now),
     };
   }
 
@@ -58,7 +113,7 @@ function guessRequestParamsFromPeriod(period) {
       now.setDate(now.getDate() - weekdayIndex - 1);
     }
     return {
-      at: now.toISOString().substr(0, 10)
+      at: YYYYMMDD(now),
     };
   }
 
