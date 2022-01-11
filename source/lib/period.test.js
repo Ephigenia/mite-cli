@@ -62,5 +62,18 @@ describe('period', () => {
         expect(guessRequestParamsFromPeriod('this_month')).to.have.property('at').to.eql('this_month');
       });
     });
+
+    describe('YYYY-MM-DD', function() {
+      [
+        '2020-01-01',
+        '2020/01/01',
+        '2020-01-01',
+        '2020_01_01',
+        '20200101',
+      ].forEach((period) => it(`understands ${JSON.stringify(period)}`, function() {
+        const result = guessRequestParamsFromPeriod(period);
+        expect(result).to.have.property('at').to.eq('2020-01-01');
+      }));
+    });
   }); // guessRequestParamsFromPeriod
 }); // suite
