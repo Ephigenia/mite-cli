@@ -23,7 +23,7 @@ if (process.argv.length === 2) {
 
 program
   .version(pkg.version)
-  .arguments('<period>')
+  .arguments('[period]')
   .description('list time entries', {
     period:
       `name of the period for which the time entries should be shown. \
@@ -201,7 +201,7 @@ function getRequestOptions(period, opts) {
     ...(opts.serviceId && { service_id: opts.serviceId }),
     ...(opts.sort && { sort: opts.sort }),
     ...(typeof opts.tracking === 'boolean' && { tracking: opts.tracking }),
-    ...(opts.to && { to: opts.to}),
+    ...(opts.to && { to: opts.to }),
     ...(opts.userId && { user_id: opts.userId}),
   };
 }

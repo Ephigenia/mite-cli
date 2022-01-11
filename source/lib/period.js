@@ -6,10 +6,14 @@ function normalizeShortYear(year) {
   return year;
 }
 
+function YYYYMMDD(date) {
+  return date.toISOString().substring(0, 10);
+}
+
 function weekDateToDate(year, week, day) {
-  const firstDayOfYear = new Date(year, 0, 1)
-  const days = 2 + day + (week - 1) * 7 - firstDayOfYear.getDay()
-  return new Date(year, 0, days)
+  const firstDayOfYear = new Date(year, 0, 1);
+  const days = 2 + day + (week - 1) * 7 - firstDayOfYear.getDay();
+  return new Date(Date.UTC(year, 0, days));
 }
 
 function guessRequestParamsFromPeriod(period) {
@@ -30,10 +34,11 @@ function guessRequestParamsFromPeriod(period) {
 
   // YYYY
   let isJustYear;
-  [isJustYear, year ] = (period.match(/^(\d{4})$/) || []);
+  [isJustYear, year ] = (period.match(/^(\d{4})$/) || []).map(v => parseInt(v));
   if (isJustYear) {
     return {
-      at: year,
+      from: YYYYMMDD(new Date(Date.UTC(year, 0, 1))),
+      to: YYYYMMDD(new Date(Date.UTC(year, 12, 0))),
     };
   }
 
@@ -44,8 +49,8 @@ function guessRequestParamsFromPeriod(period) {
   if (isCalendarWeek && year && cw) {
     year = normalizeShortYear(year);
     return {
-      from: weekDateToDate(year, cw + 1, 0),
-      to: weekDateToDate(year, cw + 2, 0),
+      from: YYYYMMDD(weekDateToDate(year, cw + 1, 0)),
+      to: YYYYMMDD(weekDateToDate(year, cw + 2, 0)),
     };
   }
 
@@ -56,8 +61,8 @@ function guessRequestParamsFromPeriod(period) {
   if (isYearAndMonth && year && month) {
     year = normalizeShortYear(year);
     return {
-      from: new Date(year, month - 1, 0),
-      to: new Date(year, month, 0),
+      from: YYYYMMDD(new Date(Date.UTC(year, month - 1, 1))),
+      to: YYYYMMDD(new Date(Date.UTC(year, month, 0))),
     };
   }
 
@@ -72,7 +77,7 @@ function guessRequestParamsFromPeriod(period) {
   if (matches) {
     const from = new Date(now.getTime());
     const amount = parseInt(matches[1], 10);
-    switch(matches[2].substr(0, 1)) {
+    switch(matches[2].substring(0, 1)) {
       case 'd':
         from.setDate(from.getDate() - amount);
         break;
@@ -88,8 +93,8 @@ function guessRequestParamsFromPeriod(period) {
         break;
     }
     return {
-      from: from.toISOString().substr(0, 10),
-      to: now.toISOString().substr(0, 10),
+      from: YYYYMMDD(from),
+      to: YYYYMMDD(now),
     };
   }
 
@@ -108,7 +113,7 @@ function guessRequestParamsFromPeriod(period) {
       now.setDate(now.getDate() - weekdayIndex - 1);
     }
     return {
-      at: now.toISOString().substr(0, 10)
+      at: YYYYMMDD(now),
     };
   }
 

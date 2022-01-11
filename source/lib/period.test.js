@@ -31,22 +31,22 @@ describe('period', () => {
       tests.forEach(input => it(`returns the whole january for ${JSON.stringify(input)}`, () => {
         const result = guessRequestParamsFromPeriod(input);
         expect(result).to.deep.equal({
-          from: new Date(2020, 0, 0),
-          to: new Date(2020, 1, 0),
+          from: '2020-01-01',
+          to: '2020-01-31',
         });
       }));
       it('can parse two-digit months', () => {
         const result = guessRequestParamsFromPeriod('2020-12');
         expect(result).to.deep.equal({
-          from: new Date(2020, 11, 0),
-          to: new Date(2020, 12, 0),
+          from: '2020-12-01',
+          to: '2020-12-31',
         });
       });
       it('can parse short 1999 notations', () => {
         const result = guessRequestParamsFromPeriod('99-01');
         expect(result).to.deep.equal({
-          from: new Date(1999, 0, 0),
-          to: new Date(1999, 1, 0),
+          from: '1999-01-01',
+          to: '1999-01-31',
         });
       });
     }); // Date-Month Notation
@@ -68,7 +68,8 @@ describe('period', () => {
       it('YYYY', () => {
         const result = guessRequestParamsFromPeriod('2021');
         expect(result).to.deep.equal({
-          at: '2021'
+          from: '2021-01-01',
+          to: '2021-12-31',
         });
       });
     });
@@ -77,8 +78,8 @@ describe('period', () => {
       it('it understands calendar week notation', () => {
         const result = guessRequestParamsFromPeriod('2022 cw2');
         expect(result).to.deep.equal({
-          from: new Date(2022, 0, 10),
-          to: new Date(2022, 0, 17),
+          from: '2022-01-10',
+          to: '2022-01-17',
         });
       });
     });
