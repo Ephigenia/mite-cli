@@ -1,3 +1,16 @@
+# [1.9.0](https://github.com/Ephigenia/mite-cli/compare/v1.8.1...v1.9.0) (2022-01-11)
+
+
+### Bug Fixes
+
+* **list:** period as full data like YYYY-MM-DD ([e9ad990](https://github.com/Ephigenia/mite-cli/commit/e9ad99047d5d254ef6cc1232ac3e2ccfd3f8243d))
+* **list:** undefined in footer columns ([ecc9aaf](https://github.com/Ephigenia/mite-cli/commit/ecc9aaf89c6803d9f11fae401e4db631371e758f))
+
+
+### Features
+
+* **list:** use calendar weeks and other additional period formats ([#208](https://github.com/Ephigenia/mite-cli/issues/208)) ([3c00cec](https://github.com/Ephigenia/mite-cli/commit/3c00cec09d0f0a964d9358523bfac1b475afc3bf))
+
 ## [1.8.1](https://github.com/Ephigenia/mite-cli/compare/v1.8.0...v1.8.1) (2022-01-10)
 
 
