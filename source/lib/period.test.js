@@ -9,7 +9,7 @@ describe('period', () => {
   const DATE_STR_REGEXP = /^20\d\d-[012]\d-[0123]\d$/;
 
   describe('guessRequestParamsFromPeriod', () => {
-    describe('Year & Month notation (YYYY-MM)', () => {
+    describe('YYYY-MM', () => {
       const tests = [
         '2020-01',
         '2020 01',
@@ -51,18 +51,35 @@ describe('period', () => {
       });
     }); // Date-Month Notation
 
-    it('normal dates', () => {
-      const result = guessRequestParamsFromPeriod('2021');
-      expect(result).to.deep.equal({
-        at: '2021'
+    describe('YYYY-MM-DD', function() {
+      [
+        '2020-01-01',
+        '2020/01/01',
+        '2020-01-01',
+        '2020_01_01',
+        '20200101',
+      ].forEach((period) => it(`understands ${JSON.stringify(period)}`, function() {
+        const result = guessRequestParamsFromPeriod(period);
+        expect(result).to.have.property('at').to.eq('2020-01-01');
+      }));
+    });
+
+    describe('YYYY', () => {
+      it('YYYY', () => {
+        const result = guessRequestParamsFromPeriod('2021');
+        expect(result).to.deep.equal({
+          at: '2021'
+        });
       });
     });
 
-    it('it understands calendar week notation', () => {
-      const result = guessRequestParamsFromPeriod('2022 cw2');
-      expect(result).to.deep.equal({
-        from: new Date(2022, 0, 10),
-        to: new Date(2022, 0, 17),
+    describe('YYYY cwX', () => {
+      it('it understands calendar week notation', () => {
+        const result = guessRequestParamsFromPeriod('2022 cw2');
+        expect(result).to.deep.equal({
+          from: new Date(2022, 0, 10),
+          to: new Date(2022, 0, 17),
+        });
       });
     });
 
@@ -118,19 +135,6 @@ describe('period', () => {
         expect(guessRequestParamsFromPeriod('this-month')).to.have.property('at').to.eql('this_month');
         expect(guessRequestParamsFromPeriod('this_month')).to.have.property('at').to.eql('this_month');
       });
-    });
-
-    describe('YYYY-MM-DD', function() {
-      [
-        '2020-01-01',
-        '2020/01/01',
-        '2020-01-01',
-        '2020_01_01',
-        '20200101',
-      ].forEach((period) => it(`understands ${JSON.stringify(period)}`, function() {
-        const result = guessRequestParamsFromPeriod(period);
-        expect(result).to.have.property('at').to.eq('2020-01-01');
-      }));
     });
   }); // guessRequestParamsFromPeriod
 }); // suite

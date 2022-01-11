@@ -15,12 +15,50 @@ function weekDateToDate(year, week, day) {
 function guessRequestParamsFromPeriod(period) {
   if (!period) return {};
 
+  let year, month, day;
+
   const seperators = ['\\-', '_', '/', '\\', ' '];
   const sep = '[' + seperators.join('') + ']';
+
+  // YYYY-MM-DD
   const fullDateRegExp = new RegExp('^(\\d{4})' + sep + '?(\\d\\d)' + sep + '?(\\d\\d)$', 'i');
-  let [isFullDate, year, month, day] = period.match(fullDateRegExp) || [];
+  let isFullDate;
+  [isFullDate, year, month, day] = period.match(fullDateRegExp) || [];
   if (isFullDate) {
     return { at: `${year}-${month}-${day}` };
+  }
+
+  // YYYY
+  let isJustYear;
+  [isJustYear, year ] = (period.match(/^(\d{4})$/) || []);
+  if (isJustYear) {
+    return {
+      at: year,
+    };
+  }
+
+  let isCalendarWeek, cw;
+  // YYYY cwX (calendar week notation)
+  [isCalendarWeek, year, cw ] = (period.match(/^(\d{2,4})[-_/\\ ]?cw(\d{1,2})$/i) || [])
+    .map(v => parseInt(v));
+  if (isCalendarWeek && year && cw) {
+    year = normalizeShortYear(year);
+    return {
+      from: weekDateToDate(year, cw + 1, 0),
+      to: weekDateToDate(year, cw + 2, 0),
+    };
+  }
+
+  // `YYYYMM`, `YYYYM`, `YYM` and with optional seperators
+  let isYearAndMonth;
+  [isYearAndMonth, year, month ] = (period.match(/^(\d{2,4})[-_/\\ ]?(\d{1,2})$/) || [])
+    .map(v => parseInt(v));
+  if (isYearAndMonth && year && month) {
+    year = normalizeShortYear(year);
+    return {
+      from: new Date(year, month - 1, 0),
+      to: new Date(year, month, 0),
+    };
   }
 
   const periodLc = period.toLowerCase().replace(/-/g, '_');
@@ -53,36 +91,6 @@ function guessRequestParamsFromPeriod(period) {
       from: from.toISOString().substr(0, 10),
       to: now.toISOString().substr(0, 10),
     };
-  }
-
-  // match YYYY
-  let [ year ] = (period.match(/^\d{4}$/) || []);
-  if (year) {
-    return {
-      at: year,
-    };
-  } else {
-    let year, month, cw;
-    [, year, cw ] = (period.match(/^(\d{2,4})[-_/\\ ]?cw(\d{1,2})$/i) || [])
-      .map(v => parseInt(v));
-    if (year && cw) {
-      year = normalizeShortYear(year);
-      return {
-        from: weekDateToDate(year, cw + 1, 0),
-        to: weekDateToDate(year, cw + 2, 0),
-      };
-    }
-
-    // `YYYYMM`, `YYYYM`, `YYM` and with optional seperators
-    [, year, month ] = (period.match(/^(\d{2,4})[-_/\\ ]?(\d{1,2})$/) || [])
-      .map(v => parseInt(v));
-    if (year, month) {
-      year = normalizeShortYear(year);
-      return {
-        from: new Date(year, month - 1, 0),
-        to: new Date(year, month, 0),
-      };
-    }
   }
 
   if (period.match(/this/)) return { at: periodLc };
