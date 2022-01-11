@@ -186,7 +186,6 @@ Examples:
  * @return {Object<String, any>} time entries or grouped time entries
  */
 function getRequestOptions(period, opts) {
-  console.log(guessRequestParamsFromPeriod(period));
   return {
     ...guessRequestParamsFromPeriod(period),
     ...(typeof opts.billable === 'boolean' && { billable: opts.billable }),
@@ -256,7 +255,6 @@ function main(period) {
     }
   }
   const columns = columnOptions.resolve(opts.columns, listCommand.columns.options);
-
   mite.getTimeEntries(requestOpts, (err, results) => {
     if (err) return handleError(err);
 
