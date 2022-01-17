@@ -79,7 +79,7 @@ describe('period', () => {
         const result = guessRequestParamsFromPeriod('2022 cw2');
         expect(result).to.deep.equal({
           from: '2022-01-10',
-          to: '2022-01-17',
+          to: '2022-01-16',
         });
       });
     });

@@ -50,7 +50,7 @@ function guessRequestParamsFromPeriod(period) {
     year = normalizeShortYear(year);
     return {
       from: YYYYMMDD(weekDateToDate(year, cw + 1, 0)),
-      to: YYYYMMDD(weekDateToDate(year, cw + 2, 0)),
+      to: YYYYMMDD(weekDateToDate(year, cw + 2, -1)),
     };
   }
 
