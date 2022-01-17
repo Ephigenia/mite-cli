@@ -50,7 +50,7 @@ function main(name, opts) {
   return util.promisify(mite.addCustomer)(data)
     .then(body => {
       const customerId = body.customer.id;
-      console.log(`Successfully created customer (id: ${customerId}).
+      process.stdout.write(`Successfully created customer (id: ${customerId}).
 
 Please use web-interface to modify complicated service & hourly rates settings:
 https://${config.get('account')}.mite.yo.lk/customers/${customerId}/edit`);

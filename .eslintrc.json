@@ -12,7 +12,7 @@
     "eslint:recommended"
   ],
   "rules": {
-    "no-console": 0,
+    "no-console": 1,
     "semi": [1, "always"]
   }
 }

@@ -88,7 +88,6 @@ function guessRequestParamsFromPeriod(period) {
         from.setMonth(from.getMonth() - amount);
         break;
       case 'y':
-        console.log(parseInt(matches[1]));
         from.setFullYear(from.getFullYear() - amount);
         break;
     }

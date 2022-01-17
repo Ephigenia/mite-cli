@@ -274,7 +274,7 @@ function main(period) {
       ;
     const format = DataOutput.getFormatFromOptions(opts, config);
     const report = getReport(items, columns, format, format === FORMAT.TABLE);
-    console.log(report);
+    process.stdout.write(report);
   });
 } // main
 

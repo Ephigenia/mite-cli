@@ -36,6 +36,7 @@ program.command('uninstall')
   });
 
 program.on('command:*', function (operands) {
+  // eslint-disable-next-line no-console
   console.error(`error: unknown command '${operands[0]}'`);
   process.exit(1);
 });
