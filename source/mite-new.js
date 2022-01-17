@@ -65,6 +65,7 @@ Examples:
     }
     main.apply(main, args).catch(handleError)
       .catch(err => {
+        // eslint-disable-next-line no-console
         console.error('Error while creating time entry:', err.message || err);
         process.exit(1);
       });
@@ -144,16 +145,16 @@ function checkResults(options, query, type) {
 
   switch (searchResults.length) {
     case 0:
-      console.log(`No ${type}s found that match "${query}".`);
+      process.stdout.write(`No ${type}s found that match "${query}".`);
       break;
     case 1:
       return searchResults;
     default:
-      console.log(`Found multiple ${type}s matching  "${query}":`);
-      searchResults.forEach(current => console.log(`- ${current.name}`));
+      process.stdout.write(`Found multiple ${type}s matching  "${query}":`);
+      searchResults.forEach(current => process.stdout.write(`- ${current.name}`));
       break;
   }
-  console.log(
+  process.stdout.write(
     `Use the exact name of an existing ${type}s. List available ${type}s `+
     `using "mite ${type}s"`
   );
@@ -262,11 +263,11 @@ async function main(note, project, service, minutes, date) {
     if (startTracker) {
       return miteTracker.start(timeEntryId)
         .then(() => {
-          console.log(timeEntryId);
+          process.stdout.write(timeEntryId);
           process.exit(0);
         });
     }
-    console.log(timeEntryId);
+    process.stdout.write(timeEntryId);
     process.exit(0);
   })
   .catch(handleError);

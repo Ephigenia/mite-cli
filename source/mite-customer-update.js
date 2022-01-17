@@ -68,7 +68,7 @@ function main(customerId, opts) {
   };
 
   return util.promisify(mite.updateCustomer)(customerId, data)
-    .then(() => console.log(`Successfully updated customer (id: ${customerId})`))
+    .then(() => process.stdout.write(`Successfully updated customer (id: ${customerId})`))
     .catch(handleError);
 }
 

@@ -63,7 +63,7 @@ function main(name, opts) {
   return util.promisify(mite.addProject)(data)
     .then(body => {
       const projectId = body.project.id;
-      console.log(`Successfully created project (id: ${projectId}).
+      process.stdout.write(`Successfully created project (id: ${projectId}).
 
 Please use web-interface to modify complicated service & hourly rates settings:
 https://${config.get('account')}.mite.yo.lk/reports/projects/${projectId}`);

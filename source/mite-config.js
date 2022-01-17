@@ -44,9 +44,9 @@ Examples:
           throw new GeneralError(err.message);
         }
         if (value === undefined) {
-          console.log(`successfully set "${key}" to the default value`);
+          process.stdout.write(`successfully set "${key}" to the default value`);
         } else {
-          console.log(`successfully set "${key}" to "${value}"`);
+          process.stdout.write(`successfully set "${key}" to "${value}"`);
         }
         // make sure file is only write- and readable by the user
         const configFilename = config.stores.file.file;
@@ -66,11 +66,11 @@ Examples:
   Get the current value of the "account" config variable:
     mite config get account
   `)
-  .action((key) => console.log(config.get(key)));
+  .action((key) => process.stdout.write(config.get(key)));
 
 program.command('list')
   .description('list all currently defined config vars')
-  .action(() => console.log(config.get()));
+  .action(() => process.stdout.write(config.get()));
 
 program.parse();
 

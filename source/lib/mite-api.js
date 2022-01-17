@@ -207,11 +207,6 @@ class MiteApiWrapper {
       // at: 'this_month',
     };
     return util.promisify(this.mite.getTimeEntries)(query)
-      // .then(r => {
-
-      //   console.log(r);
-      //   return r;
-      // })
       .then(r => r.map(i => i.time_entry_group));
   }
 

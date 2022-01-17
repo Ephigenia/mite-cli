@@ -219,7 +219,7 @@ async function main(timeEntryId, note) {
   return getTimeEntryData(timeEntryId)
     .then(getUpdatedTimeEntryData.bind(this, program.opts(), note))
     .then(entry => updateTimeEntry(entry.id, entry).then(() => entry))
-    .then(entry => console.log(`Successfully modified note of time entry (id: ${entry.id})`))
+    .then(entry => process.stdout.write(`Successfully modified note of time entry (id: ${entry.id})`))
     .catch(handleError);
 }
 
