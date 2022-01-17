@@ -37,6 +37,10 @@ has the required permissions to do it.`,
     }
   )
   .option(
+    '--append',
+    'appends the given text to the currently running entry'
+  )
+  .option(
     '-e, --editor',
     'open preferred $EDITOR for editing'
   )
@@ -79,6 +83,9 @@ Examples:
 
   If you leave out the id the currently tracked note will be changed
     mite amend "created a programmable list of items"
+
+  Append a text to the currently running entry (while you’re working on it)
+    mite amend --apend "added some other stuff"
 
   Change project and service
     mite amend 12345678 --service-id 918772 --project-id 129379
@@ -139,6 +146,13 @@ function inquireNote(updateData, note) {
 }
 
 async function getUpdatedTimeEntryData(opts, note, timeEntry) {
+
+  // append the given text to the already existing note when there’s one
+  if (opts.append && note) {
+    note = [timeEntry.note, note]
+      .join(timeEntry.note ? ', ' : '');
+  }
+
   // prepare an object which contains the data for the time entrywhich will
   // be updated
   let updateData = {
