@@ -253,7 +253,6 @@ function main(period) {
   const opts = program.opts();
 
   const requestOpts = getRequestOptions(period, opts);
-  console.log(requestOpts);
   // "columns" default option is different
   if (!opts.columns) {
     // when groupBy is used, make sure that revenue and duration are used
