@@ -55,7 +55,6 @@ Examples:
 async function main() {
   const opts = program.opts();
   const miteApi = require('./lib/mite-api')(config.get());
-  console.log(opts);
   const options = {
     limit: 1000,
     offset: 0,
