@@ -16,7 +16,7 @@ function main() {
       }
       return miteTracker.stop(id);
     })
-    .then((id) => console.log(id))
+    .then((id) => process.stdout.write(id))
     .catch(handleError);
 }
 

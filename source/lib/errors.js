@@ -43,6 +43,7 @@ function handleError(error) {
   const exitCode = error.exitCode || DEFAULT_EXIT_CODE;
 
   if (NODE_ENV === 'production') {
+    // eslint-disable-next-line no-console
     console.error(error.message || error);
     process.exit(exitCode);
   } else {

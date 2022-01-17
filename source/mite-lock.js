@@ -46,7 +46,7 @@ function main(timeEntryId) {
     ...(typeof opts.force === 'boolean' && { force: opts.force })
   };
   return util.promisify(mite.updateTimeEntry)(timeEntryId, data)
-    .then(() => console.log(`Successfully locked time entry (id: ${timeEntryId})`))
+    .then(() => process.stdout.write(`Successfully locked time entry (id: ${timeEntryId})`))
     .catch(handleError);
 }
 

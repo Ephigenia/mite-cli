@@ -74,7 +74,7 @@ function main(projectId) {
   };
 
   return util.promisify(mite.updateProject)(projectId, data)
-    .then(() => console.log(`Successfully updated project (id: ${projectId})`))
+    .then(() => process.stdout.write(`Successfully updated project (id: ${projectId})`))
     .catch(handleError);
 }
 

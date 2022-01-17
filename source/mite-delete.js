@@ -35,7 +35,7 @@ function main(timeEntryId) {
       const message = (err && err.message) ? err.message : err;
       handleError(new Error(`Error while deleted time entry (id: ${timeEntryId}) ${message}`));
     }
-    console.log(timeEntryId);
+    process.stdout.write(timeEntryId);
   });
 }
 

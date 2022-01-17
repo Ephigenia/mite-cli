@@ -123,7 +123,7 @@ async function main() {
       const format = DataOutput.getFormatFromOptions(opts, config);
       const columns = commandOptions.columns.resolve(opts.columns, projectsCommand.columns.options);
       const tableData = DataOutput.compileTableData(items, columns, format);
-      console.log(DataOutput.formatData(tableData, format, columns));
+      process.stdout.write(DataOutput.formatData(tableData, format, columns));
     })
     .catch(handleError);
 } // main
