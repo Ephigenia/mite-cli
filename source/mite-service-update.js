@@ -74,7 +74,7 @@ function main(serviceId) {
     ...(typeof opts.updateEntries === 'boolean' && { update_hourly_rate_on_time_entries: true }),
   };
   return util.promisify(mite.updateProject)(serviceId, data)
-    .then(() => process.stdout.write(`Successfully updated service (id: ${serviceId})`))
+    .then(() => process.stdout.write(`Successfully updated service (id: ${serviceId})\n`))
     .catch(handleError);
 }
 

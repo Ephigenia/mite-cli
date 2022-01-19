@@ -35,7 +35,7 @@ function main(projectId) {
   }
   const mite = miteApi(config.get());
   return util.promisify(mite.deleteProject)(projectId)
-    .then(() => process.stdout.write(`Successfully deleted project (id: ${projectId})`))
+    .then(() => process.stdout.write(`Successfully deleted project (id: ${projectId})\n`))
     .catch(handleError);
 }
 

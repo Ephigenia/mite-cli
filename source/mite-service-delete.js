@@ -32,7 +32,7 @@ function main(serviceId) {
   }
   const mite = miteApi(config.get());
   return util.promisify(mite.deleteService)(serviceId)
-    .then(() => process.stdout.write(`Successfully deleted service (id: ${serviceId})`))
+    .then(() => process.stdout.write(`Successfully deleted service (id: ${serviceId})\n`))
     .catch(handleError);
 }
 
