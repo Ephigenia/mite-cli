@@ -1,3 +1,10 @@
+## [1.10.2](https://github.com/Ephigenia/mite-cli/compare/v1.10.1...v1.10.2) (2022-01-20)
+
+
+### Bug Fixes
+
+* stdout with line-break and strings ([0fcb79b](https://github.com/Ephigenia/mite-cli/commit/0fcb79b7f7ff5d8abb8371051d05bc17d05e88bf))
+
 ## [1.10.1](https://github.com/Ephigenia/mite-cli/compare/v1.10.0...v1.10.1) (2022-01-17)
 
 
