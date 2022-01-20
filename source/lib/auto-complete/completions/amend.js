@@ -19,6 +19,10 @@ const defaults = [
     description: 'open $EDITOR for editing the entry’s note'
   },
   {
+  name: '--append',
+  description: 'append the given note to the existing one'
+  },
+  {
     name: '--duration',
     description: 'set, substract or add mimnutes',
   },
