@@ -46,7 +46,7 @@ function main (timeEntryId) {
     ...(typeof opts.force === 'boolean' && { force: opts.force })
   };
   return util.promisify(mite.updateTimeEntry)(timeEntryId, data)
-    .then(() => process.stdout.write(timeEntryId))
+    .then(() => process.stdout.write(`${timeEntryId}\n`))
     .catch(handleError);
 }
 

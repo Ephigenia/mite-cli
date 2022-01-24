@@ -35,7 +35,7 @@ function main(customerId) {
   }
   const mite = miteApi(config.get());
   return util.promisify(mite.deleteCustomer)(customerId)
-    .then(() => process.stdout.write(`Successfully deleted customer (id: ${customerId})`))
+    .then(() => process.stdout.write(`Successfully deleted customer (id: ${customerId})\n`))
     .catch(handleError);
 }
 

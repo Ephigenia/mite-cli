@@ -10,13 +10,13 @@ const { handleError, GeneralError } = require('./lib/errors');
 function main() {
   const miteTracker = require('./lib/mite-tracker')(config.get());
   return miteTracker.get()
-    .then(id => {
-      if (!id) {
+    .then(timeEntryId => {
+      if (!timeEntryId) {
         throw new GeneralError('No running time entry found.');
       }
-      return miteTracker.stop(id);
+      return miteTracker.stop(timeEntryId);
     })
-    .then((id) => process.stdout.write(id))
+    .then((timeEntryId) => process.stdout.write(`${timeEntryId}\n`))
     .catch(handleError);
 }
 

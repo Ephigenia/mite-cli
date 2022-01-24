@@ -1,3 +1,24 @@
+## [1.10.1](https://github.com/Ephigenia/mite-cli/compare/v1.10.0...v1.10.1) (2022-01-17)
+
+
+### Bug Fixes
+
+* removes console.log ([78cd664](https://github.com/Ephigenia/mite-cli/commit/78cd66470c837a42524fcc1c058a99d543d1ff85))
+
+# [1.10.0](https://github.com/Ephigenia/mite-cli/compare/v1.9.0...v1.10.0) (2022-01-17)
+
+
+### Bug Fixes
+
+* **list:** calculation of cw end date ([a34a821](https://github.com/Ephigenia/mite-cli/commit/a34a8217ec679f2831c9abc063c05f3de837dd79))
+* remove console statemants ([56c8ca3](https://github.com/Ephigenia/mite-cli/commit/56c8ca3a4203ed16da0e917ae406306e3b0be3c4))
+* removes console statements ([fad0763](https://github.com/Ephigenia/mite-cli/commit/fad076316499512927ea7d187a98e8c05a55614a))
+
+
+### Features
+
+* **amend:** append texts to the current note ([#213](https://github.com/Ephigenia/mite-cli/issues/213)) ([1d6d8e6](https://github.com/Ephigenia/mite-cli/commit/1d6d8e679a509aa4d0ee6bf327d64a87e4dd79c9))
+
 # [1.9.0](https://github.com/Ephigenia/mite-cli/compare/v1.8.1...v1.9.0) (2022-01-11)
 
 

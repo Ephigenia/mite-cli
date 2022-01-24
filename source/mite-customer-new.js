@@ -53,7 +53,7 @@ function main(name, opts) {
       process.stdout.write(`Successfully created customer (id: ${customerId}).
 
 Please use web-interface to modify complicated service & hourly rates settings:
-https://${config.get('account')}.mite.yo.lk/customers/${customerId}/edit`);
+https://${config.get('account')}.mite.yo.lk/customers/${customerId}/edit\n`);
     });
 }
 

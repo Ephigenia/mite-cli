@@ -45,7 +45,7 @@ async function main(timeEntryId) {
   }
   mite.tracker.start(timeEntryId)
     // output the id of the entry which was started for piping
-    .then(() => process.stdout.write(timeEntryId))
+    .then(() => process.stdout.write(`${timeEntryId}\n`))
     .catch(handleError);
 }
 

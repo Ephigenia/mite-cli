@@ -83,7 +83,7 @@ async function main() {
       const format = DataOutput.getFormatFromOptions(opts, config);
       const columns = commandOptions.columns.resolve(opts.columns, customersCommand.columns.options);
       const tableData = DataOutput.compileTableData(items, columns, format);
-      process.stdout.write(DataOutput.formatData(tableData, format, columns));
+      process.stdout.write(DataOutput.formatData(tableData, format, columns) + '\n');
     })
     .catch(handleError);
 } // main

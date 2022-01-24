@@ -145,18 +145,18 @@ function checkResults(options, query, type) {
 
   switch (searchResults.length) {
     case 0:
-      process.stdout.write(`No ${type}s found that match "${query}".`);
+      process.stdout.write(`No ${type}s found that match "${query}".\n`);
       break;
     case 1:
       return searchResults;
     default:
-      process.stdout.write(`Found multiple ${type}s matching  "${query}":`);
-      searchResults.forEach(current => process.stdout.write(`- ${current.name}`));
+      process.stdout.write(`Found multiple ${type}s matching  "${query}":\n`);
+      searchResults.forEach(current => process.stdout.write(`- ${current.name}\n`));
       break;
   }
   process.stdout.write(
     `Use the exact name of an existing ${type}s. List available ${type}s `+
-    `using "mite ${type}s"`
+    `using "mite ${type}s"\n`
   );
   process.exit(1);
 }
@@ -263,11 +263,11 @@ async function main(note, project, service, minutes, date) {
     if (startTracker) {
       return miteTracker.start(timeEntryId)
         .then(() => {
-          process.stdout.write(timeEntryId);
+          process.stdout.write(`${timeEntryId}\n`);
           process.exit(0);
         });
     }
-    process.stdout.write(timeEntryId);
+    process.stdout.write(`${timeEntryId}\n`);
     process.exit(0);
   })
   .catch(handleError);
