@@ -11,6 +11,10 @@ const {
 
 const defaults = [
   {
+    name: '--append',
+    description: 'append the given text to the currently running entry'
+  },
+  {
     name: '--help',
     description: 'show help message'
   },
