@@ -1,3 +1,10 @@
+## [1.10.3](https://github.com/Ephigenia/mite-cli/compare/v1.10.2...v1.10.3) (2022-03-28)
+
+
+### Bug Fixes
+
+* **amend:** add --append to autocompletion ([8040baa](https://github.com/Ephigenia/mite-cli/commit/8040baa5e723f4559d5f7a63e2b07932be819b4b))
+
 ## [1.10.2](https://github.com/Ephigenia/mite-cli/compare/v1.10.1...v1.10.2) (2022-01-20)
 
 
