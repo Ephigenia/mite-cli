@@ -72,28 +72,28 @@
   },
   "dependencies": {
     "chalk": "4.1.2",
-    "commander": "8.3.0",
+    "commander": "9.1.0",
     "external-editor": "3.1.0",
-    "inquirer": "8.2.0",
+    "inquirer": "8.2.2",
     "mite-api": "0.1.1",
     "nconf": "0.11.3",
     "node-fetch": "2.6.2",
     "open": "8.4.0",
-    "table": "6.0.3",
+    "table": "6.8.0",
     "tabtab": "3.0.2",
     "weeknumber": "1.2.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "16.0.2",
-    "@commitlint/config-angular": "16.0.0",
+    "@commitlint/cli": "16.2.3",
+    "@commitlint/config-angular": "16.2.3",
     "@semantic-release/changelog": "6.0.1",
     "@semantic-release/git": "10.0.1",
-    "chai": "4.3.4",
-    "eslint": "8.6.0",
+    "chai": "4.3.6",
+    "eslint": "8.12.0",
     "husky": "7.0.4",
-    "mocha": "9.2.0",
+    "mocha": "9.2.2",
     "nyc": "15.1.0",
     "pinst": "2.1.6",
-    "semantic-release": "18.0.1"
+    "semantic-release": "19.0.2"
   }
 }
