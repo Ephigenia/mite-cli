@@ -94,6 +94,6 @@
     "mocha": "9.2.2",
     "nyc": "15.1.0",
     "pinst": "3.0.0",
-    "semantic-release": "19.0.2"
+    "semantic-release": "19.0.3"
   }
 }
