@@ -23,7 +23,7 @@ module.exports.sort = {
 
 module.exports.groupBy = {
   // list of valid options taken from
-  // https://mite.yo.lk/en/api/time-entries.html#list-grouped
+  // https://mite.de/en/api/time-entries.html#list-grouped
   options: [
     'customer',
     'day',
