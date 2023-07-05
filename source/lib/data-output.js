@@ -1,6 +1,6 @@
 'use strict';
 
-const chalk = require('chalk');
+const colors = require('ansi-colors');
 const assert = require('assert');
 const tableLib = require('table');
 const table = tableLib.table;
@@ -70,14 +70,14 @@ function compileTableData(items, columns, format = FORMAT.TABLE) {
     });
     // show archived items in grey
     if (item.archived) {
-      row = row.map(v => v ? chalk.grey(v) : v);
+      row = row.map(v => v ? colors.grey(v) : v);
     }
     // colorize the whole row when it’s actively tracked or archived
     if (item.tracking) {
-      row = row.map(v => v ? chalk.yellow(v) : v);
+      row = row.map(v => v ? colors.yellow(v) : v);
     }
     if (item.locked) {
-      row = row.map(v => v ? chalk.grey(v) : v);
+      row = row.map(v => v ? colors.grey(v) : v);
     }
     return row;
   });
@@ -124,7 +124,7 @@ function formatData(data, format, columns = []) {
   if (columns && columns.length > 0) {
     data.unshift(columns
       .map(columnDefinition => columnDefinition.label)
-      .map(v => chalk.bold(v))
+      .map(v => colors.bold(v))
     );
   }
 
