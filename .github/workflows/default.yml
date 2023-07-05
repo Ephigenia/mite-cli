@@ -71,7 +71,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@v3
         with:
-          node-version-file: '.nvmrc'
+          node-version: 20
           check-latest: true
           cache: npm
       - run: npm ci --no-audit --ignore-scripts
