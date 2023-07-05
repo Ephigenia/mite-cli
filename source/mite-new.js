@@ -3,7 +3,7 @@
 
 const program = require('commander');
 const inquirer = require('inquirer');
-const chalk = require('chalk');
+const colors = require('ansi-colors');
 
 const pkg = require('./../package.json');
 const config = require('./config');
@@ -106,7 +106,7 @@ function getServiceChoices(pretty = true) {
       const nameParts = [service.name];
       if (pretty) {
         if (service.billable) {
-          nameParts.push(chalk.yellow.bold('$'));
+          nameParts.push(colors.yellow.bold('$'));
         }
       }
       return { name: nameParts.join(' '), value: service.id};
