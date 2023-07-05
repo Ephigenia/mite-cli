@@ -2,7 +2,7 @@
 'use strict';
 
 const program = require('commander');
-const chalk = require('chalk');
+const colors = require('ansi-colors');
 const miteApi = require('mite-api');
 
 const pkg = require('./../package.json');
@@ -241,7 +241,7 @@ function getReport(items, columns, format, includeSums = true) {
   // add table footer if any of the table columns has a reducer
   if (includeSums && columnOptions.hasReducer(columns)) {
     let footerColumns = DataOutput.getTableFooterColumns(items, columns);
-    footerColumns = footerColumns.map(v => v ? chalk.bold(v) : v); // make footer bold
+    footerColumns = footerColumns.map(v => v ? colors.bold(v) : v); // make footer bold
     tableData.push(footerColumns);
   }
 
