@@ -8,7 +8,7 @@ class MiteTracker {
   constructor(config) {
     this.config = config;
 
-    this.BASE_URL = `https://${config.account}.mite.yo.lk`;
+    this.BASE_URL = `https://${config.account}.mite.de`;
 
     const headers = {
       'User-Agent': config.applicationName,

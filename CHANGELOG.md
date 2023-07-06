@@ -1,3 +1,10 @@
+## [1.10.4](https://github.com/Ephigenia/mite-cli/compare/v1.10.3...v1.10.4) (2023-07-06)
+
+
+### Bug Fixes
+
+* update mite domain name to mite.de ([#234](https://github.com/Ephigenia/mite-cli/issues/234)) ([c809f97](https://github.com/Ephigenia/mite-cli/commit/c809f9764d7d8e81237c260bdd03c415b481bd23))
+
 ## [1.10.3](https://github.com/Ephigenia/mite-cli/compare/v1.10.2...v1.10.3) (2022-03-28)
 
 
