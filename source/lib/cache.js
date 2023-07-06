@@ -53,8 +53,9 @@ class Cache {
     return JSON.stringify(input);
   }
 
-  clear() {
+  async clear() {
     this.cache = {};
+    await fs.promises.writeFile(this.filename, '{}');
     return this;
   }
 

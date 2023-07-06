@@ -4,8 +4,8 @@
 const program = require("commander");
 
 const pkg = require("./../package.json");
+const Cache = require("./lib/cache");
 const config = require("./config");
-const fs = require('fs');
 const { handleError } = require("./lib/errors");
 
 program
@@ -14,9 +14,10 @@ program
 
 function main() {
   const cachePath = config.stores.defaults.store.cacheFilename;
-  fs.writeFile(cachePath, '{}', (err) => {
-    if (err) throw err;
-    process.stdout.write('Cache cleared.\n');
+  const cache = new Cache(cachePath);
+  process.stdout.write('Clearing cache...\n');
+  cache.clear().then(() => {
+    process.stdout.write('Cleared.\n');
   });
 }
 
