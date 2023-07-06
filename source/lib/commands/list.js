@@ -1,7 +1,7 @@
 'use strict';
 
 const weekNumber = require('weeknumber');
-const chalk = require('chalk');
+const colors = require('ansi-colors');
 
 const supportsExtendedFormat = require('./../data-output').supportsExtendedFormat;
 
@@ -85,7 +85,7 @@ module.exports.columns = {
         const colorFunction = formater.getDurationColor(value);
         duration = colorFunction(duration);
         if (timeEntry && timeEntry.locked) {
-          duration = chalk.green('✔') + ' ' + duration;
+          duration = colors.bgBlackBrightgreen('✔') + ' ' + duration;
         }
         if (timeEntry && timeEntry.tracking) {
           duration = '▶ ' + duration;

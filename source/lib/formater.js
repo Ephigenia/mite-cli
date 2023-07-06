@@ -1,6 +1,6 @@
 'use strict';
 
-const chalk = require('chalk');
+const colors = require('ansi-colors');
 
 const { USER_ROLES, BUDGET_TYPE } = require('./constants');
 
@@ -31,7 +31,7 @@ module.exports = {
       const highlightRegexp = new RegExp(config.get().noteHighlightRegexp, 'g');
       const matches = result.match(highlightRegexp) || [];
       matches.forEach((str) => {
-        result = result.replace(str, chalk.bold(chalk.blue(str)));
+        result = result.replace(str, colors.bold(colors.blue(str)));
       });
     }
     return result;
@@ -40,9 +40,9 @@ module.exports = {
   username: (username, item) => {
     switch(item.role) {
       case USER_ROLES.ADMIN:
-        return chalk.yellow(username);
+        return colors.yellow(username);
       case USER_ROLES.OWNER:
-        return chalk.red(username);
+        return colors.red(username);
       default:
         return username;
     }
@@ -77,9 +77,9 @@ module.exports = {
     // format the durations in orange or red if they are larger than
     // some maximums to indicate possibly wrong entries
     if (minutes > 60 * 12) {
-      return chalk.red;
+      return colors.red;
     } else if (minutes > 60 * 8) {
-      return chalk.yellow;
+      return colors.yellow;
     }
     return v => v;
   },
@@ -88,9 +88,9 @@ module.exports = {
     // format the durations in orange or red if they are larger than
     // some maximums to indicate possibly wrong entries
     if (percentage > 0.90) {
-      return chalk.red;
+      return colors.red;
     } else if (percentage > 0.75) {
-      return chalk.yellow;
+      return colors.yellow;
     }
     return v => v;
   },
