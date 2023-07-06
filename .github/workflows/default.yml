@@ -53,11 +53,6 @@ jobs:
         name: code-coverage-report
         path: coverage
         retention-days: 90
-    - uses: vebr/jest-lcov-reporter@v0.2.1
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        lcov-file: ./coverage/lcov.info
-        update-comment: true
 
   release:
     # ignore pull-requests created by dependabot as it doesn’t has access
