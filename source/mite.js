@@ -27,6 +27,7 @@ program
   .command('stop', 'stop any running counter')
   .command('unlock', 'unlock single time entry')
   .command('users', 'list, filter & search for users')
+  .command('clearcache', 'clear cache of mite data')
   .description(`_______ _____ _______ _______     _______        _____
 |  |  |   |      |    |______ ___ |       |        |
 |  |  | __|__    |    |______     |_____  |_____ __|__
