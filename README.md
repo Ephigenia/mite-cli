@@ -1,4 +1,4 @@
-Easy to use CLI tool for creating, listing, starting and stopping time tracking entries in [Mite](https://mite.yo.lk) and much other things using the [mite-api](https://www.npmjs.com/package/mite-api) npm package which is using the [official mite api](https://mite.yo.lk/api/index.html).
+Easy to use CLI tool for creating, listing, starting and stopping time tracking entries in [Mite](https://mite.de) and much other things using the [mite-api](https://www.npmjs.com/package/mite-api) npm package which is using the [official mite api](https://mite.de/api/index.html).
 
 [![MIT License](https://badges.frapsoft.com/os/mit/mit.svg?v=102)](https://github.com/ellerbrock/open-source-badge/)
 [![NPM Package](https://badge.fury.io/js/mite-cli.svg)](https://www.npmjs.com/package/mite-cli)
@@ -93,7 +93,7 @@ _______ _____ _______ _______     _______        _____
 |  |  |   |      |    |______ ___ |       |        |
 |  |  | __|__    |    |______     |_____  |_____ __|__
 
-command line tool for time tracking service mite.yo.lk
+command line tool for time tracking service mite.de
 https://github.com/Ephigenia/mite-cli/
 
 
@@ -155,7 +155,7 @@ Configuration
 ===============================================================================
 
 Before you can start, you’ll need to setup the mite account name ("mycompany" in
-https://**mycompany**.mite.yo.lk) and API key ("Account" -> "My Account").
+https://**mycompany**.mite.de) and API key ("Account" -> "My Account").
 
     mite config set account <name>
     mite config set apiKey <key>
@@ -244,7 +244,7 @@ When an entry is currently active and tracked it will be yellow and indicated wi
 
 #### Filter by time
 
-You also can request longer time frames by using the first argument which is basically the [`at` parameter](https://mite.yo.lk/en/api/time-entries.html#list-all) of the time entries API:
+You also can request longer time frames by using the first argument which is basically the [`at` parameter](https://mite.de/en/api/time-entries.html#list-all) of the time entries API:
 
     mite list this_month
 

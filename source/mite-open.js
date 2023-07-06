@@ -47,7 +47,7 @@ function main(timeEntryId) {
     });
   })
   .then((entry) => {
-    let url = `https://${config.get('account')}.mite.yo.lk/`;
+    let url = `https://${config.get('account')}.mite.de/`;
     process.stdout.write('No time entry id given, opening the organisation’s account\n');
     if (entry) {
       url += 'daily/#' + (entry.date_at).replace('-', '/') + '?open=time_entry_' + entry.id;
