@@ -10,6 +10,7 @@ program
   .version(pkg.version)
   .command('amend', 'edit note, service, project of a specific time entry or the currently runnning entry').alias('reword')
   .command('autocomplete', 'install/uninstall autocompletion')
+  .command('cache', 'manage cache of mite-cli')
   .command('config', 'show or set configuration settings')
   .command('customer', 'create/delete/list/update customer')
   .command('customers', 'list, filter & search customers').alias('clients')

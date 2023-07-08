@@ -59,6 +59,7 @@ Easy to use CLI tool for creating, listing, starting and stopping time tracking 
         - [Update Service](#update-service)
         - [Delete Service](#delete-service)
 - [Advanced Topics](#advanced-topics)
+    - [Cache](#cache)
     - [Columns](#columns)
     - [Plotting Charts](#plotting-charts)
     - [Alternate Output formats](#alternate-output-formats)
@@ -741,6 +742,14 @@ Delete a single service
 
 Advanced Topics
 ===============================================================================
+
+Cache
+--------------------------------------------------------------------------------
+The cache stores data retrieved from the Mite API. You can clear it up using the `cache` command
+
+    mite cache clear
+
+A common scenario is when data in Mite is updated (e.g. a new customer is added), and Mite-CLI does not reflect the changes. This is because the cache system is preventing Mite-CLI from displaying the updated data. To resolve this issue, simply clear the cache and create a new entry to fetch the latest data from Mite.
 
 Columns
 --------------------------------------------------------------------------------
