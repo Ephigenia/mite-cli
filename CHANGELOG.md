@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/Ephigenia/mite-cli/compare/v1.10.4...v1.11.0) (2023-07-08)
+
+
+### Features
+
+* **cache:** add clear cache command ([#241](https://github.com/Ephigenia/mite-cli/issues/241)) ([007a2c3](https://github.com/Ephigenia/mite-cli/commit/007a2c332e75f7ee40d5fbaa06fd68bef95f111e))
+
 ## [1.10.4](https://github.com/Ephigenia/mite-cli/compare/v1.10.3...v1.10.4) (2023-07-06)
 
 
