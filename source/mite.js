@@ -10,6 +10,7 @@ program
   .version(pkg.version)
   .command('amend', 'edit note, service, project of a specific time entry or the currently runnning entry').alias('reword')
   .command('autocomplete', 'install/uninstall autocompletion')
+  .command('cache', 'manage cache of mite-cli')
   .command('config', 'show or set configuration settings')
   .command('customer', 'create/delete/list/update customer')
   .command('customers', 'list, filter & search customers').alias('clients')
@@ -27,7 +28,6 @@ program
   .command('stop', 'stop any running counter')
   .command('unlock', 'unlock single time entry')
   .command('users', 'list, filter & search for users')
-  .command('cache', 'manage cache of mite-cli')
   .description(`_______ _____ _______ _______     _______        _____
 |  |  |   |      |    |______ ___ |       |        |
 |  |  | __|__    |    |______     |_____  |_____ __|__
