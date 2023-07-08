@@ -12,8 +12,8 @@ function main() {
   const cachePath = config.stores.defaults.store.cacheFilename;
   const cache = new Cache(cachePath);
   process.stdout.write('Clearing cache...\n');
-  cache.clear().then(() => {
-    process.stdout.write('Cleared.\n');
+  return cache.clear().save().then(() => {
+    process.stdout.write("Cleared.\n");
   });
 }
 
