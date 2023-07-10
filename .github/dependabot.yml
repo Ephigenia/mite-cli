@@ -23,9 +23,10 @@ updates:
           - "@semantic-release*"
           - "semantic-release*"
       dev-testing:
-        - "chai"
-        - "mocha"
-        - "nyc"
+        patterns:
+          - "chai"
+          - "mocha"
+          - "nyc"
       dev-other:
         patterns:
           - "eslint*"
