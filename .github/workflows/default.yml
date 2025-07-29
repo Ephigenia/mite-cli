@@ -48,7 +48,7 @@ jobs:
         cache: 'npm'
     - run: npm ci --no-audit --ignore-scripts
     - run: npm test
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         name: code-coverage-report
         path: coverage
