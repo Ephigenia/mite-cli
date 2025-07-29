@@ -139,7 +139,7 @@ Please note that all examples in this README.md assume that you have installed m
 
 ## Local
 
-    npm insall mite-cli
+    npm install mite-cli
 
 Then you can call mite-cli binary link created in `node_modules/.bin`:
 
