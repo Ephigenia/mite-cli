@@ -1,23 +1,23 @@
 // For format details, see https://aka.ms/devcontainer.json. For config options, see the
 // README at: https://github.com/devcontainers/templates/tree/main/src/javascript-node
 {
-	"name": "Node.js",
-	"image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bullseye",
+  "name": "Node.js",
+  "image": "mcr.microsoft.com/devcontainers/javascript-node:1-22-bullseye",
 
-	"features": {
+  "features": {
     "ghcr.io/devcontainers/features/github-cli:1": {},
     "ghcr.io/eitsupi/devcontainer-features/jq-likes:2": {}
   },
 
-	"customizations": {
-		"vscode": {
-			"settings": {},
-			"extensions": [
+  "customizations": {
+    "vscode": {
+      "settings": {},
+      "extensions": [
         "GitHub.copilot",
         "EditorConfig.EditorConfig"
-			]
-		}
-	},
+      ]
+    }
+  },
 
-	"postCreateCommand": "npm ci"
+  "postCreateCommand": "npm ci"
 }
