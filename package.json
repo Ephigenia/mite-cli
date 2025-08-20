@@ -91,7 +91,7 @@
     "chai": "4.3.7",
     "eslint": "8.44.0",
     "husky": "9.1.7",
-    "mocha": "10.2.0",
+    "mocha": "10.8.2",
     "nyc": "15.1.0",
     "pinst": "3.0.0",
     "semantic-release": "24.2.7"
