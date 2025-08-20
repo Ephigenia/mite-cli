@@ -88,11 +88,11 @@
     "@commitlint/config-angular": "19.8.1",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/git": "10.0.1",
-    "chai": "4.3.7",
+    "chai": "5.2.1",
     "eslint": "8.44.0",
     "husky": "9.1.7",
-    "mocha": "10.8.2",
-    "nyc": "15.1.0",
+    "mocha": "11.7.1",
+    "nyc": "17.1.0",
     "pinst": "3.0.0",
     "semantic-release": "24.2.7"
   }
