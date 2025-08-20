@@ -84,16 +84,16 @@
     "weeknumber": "1.2.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "17.6.6",
-    "@commitlint/config-angular": "17.6.6",
+    "@commitlint/cli": "19.8.1",
+    "@commitlint/config-angular": "19.8.1",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/git": "10.0.1",
     "chai": "4.3.7",
     "eslint": "8.44.0",
-    "husky": "8.0.3",
+    "husky": "9.1.7",
     "mocha": "10.2.0",
     "nyc": "15.1.0",
     "pinst": "3.0.0",
-    "semantic-release": "23.0.8"
+    "semantic-release": "24.2.7"
   }
 }
