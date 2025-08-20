@@ -10,7 +10,8 @@ updates:
     # Check the npm registry for updates every day (weekdays)
     schedule:
       interval: "weekly"
-
+    cooldown:
+      default-days: 14
     ignore:
       - dependency-name: "node-fetch"
         versions: ["3.x"]
@@ -35,4 +36,6 @@ updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "monthly"
+    cooldown:
+      default-days: 14
