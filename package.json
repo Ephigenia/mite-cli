@@ -78,7 +78,7 @@
     "mite-api": "0.1.1",
     "nconf": "0.13.0",
     "node-fetch": "2.6.12",
-    "open": "9.1.0",
+    "open": "10.2.0",
     "table": "6.8.1",
     "tabtab": "3.0.2",
     "weeknumber": "1.2.1"
