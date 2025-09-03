@@ -77,7 +77,7 @@
     "inquirer": "9.2.7",
     "mite-api": "0.1.1",
     "nconf": "0.13.0",
-    "node-fetch": "2.6.12",
+    "node-fetch": "2.7.0",
     "open": "10.2.0",
     "table": "6.8.1",
     "tabtab": "3.0.2",
