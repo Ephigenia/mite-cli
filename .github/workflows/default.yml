@@ -67,7 +67,6 @@ jobs:
           cache: 'npm'
       - run: npm ci --no-audit --ignore-scripts
       - run: npm run start -- help
-      - run: npm run start -- config
 
   release:
     # ignore pull-requests created by dependabot as it doesn’t has access
