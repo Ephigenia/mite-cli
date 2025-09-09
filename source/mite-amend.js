@@ -2,7 +2,7 @@
 'use strict';
 
 const fs = require('fs');
-const program = require('commander');
+const { program } = require('commander');
 const util = require('util');
 const inquirer = require('inquirer');
 const formater = require('./lib/formater');
