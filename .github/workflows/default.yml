@@ -54,6 +54,20 @@ jobs:
         path: coverage
         retention-days: 90
 
+  smoke-test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        nodeVersion: [20.x, 22.x, 24.x]
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.nodeVersion }}
+          cache: 'npm'
+      - run: npm ci --no-audit --ignore-scripts
+      - run: npm run start -- help
+
   release:
     # ignore pull-requests created by dependabot as it doesn’t has access
     # to the secrets used
