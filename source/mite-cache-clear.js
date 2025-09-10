@@ -1,4 +1,4 @@
-const program = require('commander');
+const { program } = require('commander');
 const pkg = require("./../package.json");
 const config = require('./config');
 const Cache = require("./lib/cache");

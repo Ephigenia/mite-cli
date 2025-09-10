@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-const program = require('commander');
+const { program } = require('commander');
 const inquirer = require('inquirer');
 const colors = require('ansi-colors');
 

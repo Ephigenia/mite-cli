@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-const program = require('commander');
+const { program } = require('commander');
 
 const DataOutput = require('./lib/data-output');
 const pkg = require('./../package.json');
