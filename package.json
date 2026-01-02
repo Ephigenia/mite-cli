@@ -84,8 +84,8 @@
     "weeknumber": "1.2.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "20.1.0",
-    "@commitlint/config-angular": "20.0.0",
+    "@commitlint/cli": "20.2.0",
+    "@commitlint/config-angular": "20.2.0",
     "@semantic-release/changelog": "6.0.3",
     "@semantic-release/git": "10.0.1",
     "chai": "6.2.1",
