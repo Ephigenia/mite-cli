@@ -9,6 +9,7 @@ Easy to use CLI tool for creating, listing, starting and stopping time tracking 
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/Ephigenia/mite-cli.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Ephigenia/mite-cli/context:javascript)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/Ephigenia/mite-cli.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/Ephigenia/mite-cli/context:javascript)
 [![Rate on Openbase](https://badges.openbase.com/js/rating/mite-cli.svg)](https://openbase.com/js/mite-cli?utm_source=embedded&utm_medium=badge&utm_campaign=rate-badge)
+[![kandi X-Ray](https://kandi.openweaver.com/badges/xray.svg)](https://kandi.openweaver.com/javascript/Ephigenia/mite-cli)
 
 - [Features](#features)
 - [Installation](#installation)
