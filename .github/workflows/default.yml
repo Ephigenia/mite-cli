@@ -10,6 +10,9 @@ on:
       - alpha
       - beta
 
+permissions:
+  contents: read      # semantic-release needs this to publish GitHub releases/tags
+
 jobs:
   lint:
     name: Lint Code Base
@@ -71,21 +74,31 @@ jobs:
   release:
     # ignore pull-requests created by dependabot as it doesn’t has access
     # to the secrets used
-    if: ${{ github.actor != 'dependabot[bot]' }}
+    if: ${{ github.event_name == 'push' && github.actor != 'dependabot[bot]' }}
     runs-on: ubuntu-latest
-    needs: [test]
+    concurrency:
+      group: release-${{ github.ref }}
+      cancel-in-progress: false
+    permissions:
+      contents: write      # semantic-release needs this to publish GitHub releases/tags
+      issues: write        # if you use the GitHub-release/comment plugins
+      pull-requests: write # same
+      id-token: write      # required for OIDC trusted publishing
+    needs:
+      - test
+      - smoke-test
     steps:
       - uses: actions/checkout@v6.0.2
         with:
           persist-credentials: false
+          fetch-depth: 0
       - uses: actions/setup-node@v6.3.0
         with:
-          node-version: 20
+          node-version: 22
           check-latest: true
           cache: npm
       - run: npm ci --no-audit --ignore-scripts
+      - run: npm install -g npm@latest
       - run: npx semantic-release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
