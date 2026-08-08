@@ -554,12 +554,14 @@ jobs:
 #### Semantic Release Pre-Check Job
 ```yaml
 # Add to your existing CI workflow
-- name: Validate Commit Messages
+- name: Set up Node.js
   uses: actions/setup-node@v4
   with:
     node-version: 22
-- run: npm ci
-- run: npx commitlint --from ${{ github.event.pull_request.base.sha }} --to HEAD --verbose
+- name: Install dependencies
+  run: npm ci
+- name: Validate Commit Messages
+  run: npx commitlint --from ${{ github.event.pull_request.base.sha }} --to HEAD --verbose
 ```
 
 #### Coverage Reporting Job
