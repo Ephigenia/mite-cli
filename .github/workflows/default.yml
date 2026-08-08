@@ -9,10 +9,10 @@ on:
       - next-major
       - alpha
       - beta
-      
+
 permissions:
   contents: read      # semantic-release needs this to publish GitHub releases/tags
-      
+
 jobs:
   lint:
     name: Lint Code Base
