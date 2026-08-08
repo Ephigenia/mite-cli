@@ -9,10 +9,10 @@ on:
       - next-major
       - alpha
       - beta
-      
+
 permissions:
   contents: read      # semantic-release needs this to publish GitHub releases/tags
-      
+
 jobs:
   lint:
     name: Lint Code Base
@@ -94,7 +94,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/setup-node@v6.3.0
         with:
-          node-version: 20
+          node-version: 22
           check-latest: true
           cache: npm
       - run: npm ci --no-audit --ignore-scripts
