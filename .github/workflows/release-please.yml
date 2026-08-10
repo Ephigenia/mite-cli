@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - alpha
 
 permissions:
   contents: write
@@ -19,7 +20,7 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
           release-type: node
-          target-branch: master
+          target-branch: ${{ github.ref_name }}
 
       - uses: actions/checkout@v4
         if: ${{ steps.release.outputs.release_created }}
@@ -33,5 +34,8 @@ jobs:
       - run: npm ci --no-audit --ignore-scripts
         if: ${{ steps.release.outputs.release_created }}
 
+      - run: npm publish --provenance --tag alpha
+        if: ${{ steps.release.outputs.release_created && github.ref_name == 'alpha' }}
+
       - run: npm publish --provenance
-        if: ${{ steps.release.outputs.release_created }}
+        if: ${{ steps.release.outputs.release_created && github.ref_name == 'master' }}

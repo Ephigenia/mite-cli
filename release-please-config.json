@@ -17,5 +17,9 @@
   "extra-files": [],
   "packages": {
     ".": {}
-  }
+  },
+  "branches": [
+    {"name": "master"},
+    {"name": "alpha", "prerelease": true}
+  ]
 }
