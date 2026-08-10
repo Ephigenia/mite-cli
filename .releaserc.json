@@ -1,4 +1,11 @@
 {
+  "branches": [
+    "master",
+    { "name": "next", "prerelease": "next" },
+    { "name": "next-major", "prerelease": "next-major" },
+    { "name": "alpha", "prerelease": "alpha" },
+    { "name": "beta", "prerelease": "beta" }
+  ],
   "plugins": [
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
