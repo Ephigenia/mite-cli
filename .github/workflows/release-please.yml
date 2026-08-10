@@ -8,6 +8,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  id-token: write
 
 jobs:
   release-please:
@@ -32,7 +33,5 @@ jobs:
       - run: npm ci --no-audit --ignore-scripts
         if: ${{ steps.release.outputs.release_created }}
 
-      - run: npm publish
+      - run: npm publish --provenance
         if: ${{ steps.release.outputs.release_created }}
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
