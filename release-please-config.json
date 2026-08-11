@@ -8,7 +8,7 @@
     {"type": "refactor", "section": "Code Refactoring"},
     {"type": "build", "section": "Build System"},
     {"type": "revert", "section": "Reverts"},
-    {"type": "chore", "section": "Miscellaneous Chores"},
+    {"type": "chore", "section": "Miscellaneous Chores", "hidden": false},
     {"type": "docs", "section": "Documentation", "hidden": true},
     {"type": "style", "section": "Styles", "hidden": true},
     {"type": "test", "section": "Tests", "hidden": true},
