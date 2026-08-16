@@ -5,6 +5,13 @@
 
 * **cache:** add clear cache command ([#241](https://github.com/Ephigenia/mite-cli/issues/241)) ([007a2c3](https://github.com/Ephigenia/mite-cli/commit/007a2c332e75f7ee40d5fbaa06fd68bef95f111e))
 
+## [1.11.1](https://github.com/Ephigenia/mite-cli/compare/v1.11.0...v1.11.1) (2026-08-16)
+
+
+### Bug Fixes
+
+* **ci:** resolve conventional-changelog-angular exports error in Check PR title workflow ([#358](https://github.com/Ephigenia/mite-cli/issues/358)) ([2a9e8bf](https://github.com/Ephigenia/mite-cli/commit/2a9e8bf46feee6dcbb2bf841d16f4188da11db72))
+
 ## [1.10.4](https://github.com/Ephigenia/mite-cli/compare/v1.10.3...v1.10.4) (2023-07-06)
 
 
