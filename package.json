@@ -84,8 +84,8 @@
     "weeknumber": "1.2.1"
   },
   "devDependencies": {
-    "@commitlint/cli": "21.2.2",
-    "@commitlint/config-angular": "21.2.2",
+    "@commitlint/cli": "21.2.3",
+    "@commitlint/config-angular": "21.2.3",
     "chai": "6.2.2",
     "eslint": "10.10.0",
     "husky": "9.1.7",
